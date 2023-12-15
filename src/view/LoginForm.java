@@ -30,6 +30,8 @@ import db.JDBCUntil;
 import model.Account;
 import javax.swing.JCheckBox;
 import java.awt.Rectangle;
+import javax.swing.ImageIcon;
+import javax.swing.border.LineBorder;
 
 public class LoginForm extends JFrame {
 
@@ -75,12 +77,10 @@ public class LoginForm extends JFrame {
 			System.out.println(e);
 		}
 		
-		
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 438, 574);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(0, 206, 209));
+		contentPane.setBackground(new Color(118, 215, 196));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
@@ -149,6 +149,7 @@ public class LoginForm extends JFrame {
 		contentPane.add(lblNewLabel_2);
 
 		jtfuser = new JTextField();
+		jtfuser.setBackground(new Color(118, 215, 196));
 		jtfuser.setBorder(null);
 		jtfuser.setFont(font_1);
 		jtfuser.setBounds(86, 153, 260, 38);
@@ -156,6 +157,7 @@ public class LoginForm extends JFrame {
 		jtfuser.setColumns(10);
 
 		jtfpassword = new JPasswordField();
+		jtfpassword.setBackground(new Color(118, 215, 196));
 		jtfpassword.setEchoChar('*');
 		jtfpassword.setBorder(null);
 		jtfpassword.setFont(font_1);
@@ -194,9 +196,9 @@ public class LoginForm extends JFrame {
 			}
 		});
 		chckbxNewCheckBox.setFont(font);
-		chckbxNewCheckBox.setBackground(new Color(0, 206, 209));
+		chckbxNewCheckBox.setBackground(new Color(118, 215, 196));
 		chckbxNewCheckBox.setBorder(null);
-		chckbxNewCheckBox.setBounds(86, 294, 147, 15);
+		chckbxNewCheckBox.setBounds(86, 302, 147, 15);
 		contentPane.add(chckbxNewCheckBox);
 		
 		JLabel lblNewLabel_3 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
@@ -204,6 +206,16 @@ public class LoginForm extends JFrame {
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3.setBounds(10, 485, 406, 31);
 		contentPane.add(lblNewLabel_3);
+		
+		JLabel lblNewLabel_4 = new JLabel("");
+		lblNewLabel_4.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_4.setBounds(86, 195, 260, 2);
+		contentPane.add(lblNewLabel_4);
+		
+		JLabel lblNewLabel_4_1 = new JLabel("");
+		lblNewLabel_4_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblNewLabel_4_1.setBounds(86, 294, 260, 2);
+		contentPane.add(lblNewLabel_4_1);
 	}
 
 	public void checkLogin() {
@@ -225,6 +237,7 @@ public class LoginForm extends JFrame {
 								JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
 								this.dispose();
 								// setvisible main;
+								MainForm.main(null);
 							} catch (Exception e) {
 								System.out.println(e);
 							}

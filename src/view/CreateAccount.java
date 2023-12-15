@@ -45,6 +45,7 @@ public class CreateAccount extends JFrame {
 	private JPasswordField pass1;
 	private String otpNumber;
 	public Font font;
+	public Font font_1;
 	public Font font1;
 	public Font font2;
 
@@ -77,6 +78,7 @@ public class CreateAccount extends JFrame {
 		try {
 			File fontStyle = new File("src/font/Roboto-Medium.ttf");
 			font = Font.createFont(Font.TRUETYPE_FONT, fontStyle).deriveFont(11f);
+			font_1 = Font.createFont(Font.TRUETYPE_FONT, fontStyle).deriveFont(14f);
 			font1 = Font.createFont(Font.TRUETYPE_FONT, fontStyle).deriveFont(16f);
 			font2 = Font.createFont(Font.TRUETYPE_FONT, fontStyle).deriveFont(22f);
 
@@ -222,8 +224,7 @@ public class CreateAccount extends JFrame {
 							Account ac = new Account(tfuser.getText(), pass, tfname.getText(), tfmail.getText(), i, 1);
 							AccountDAO.getInstance().insert(ac);
 							JOptionPane.showMessageDialog(null, "Đăng ký thành công!");
-							check(1);
-
+							closeFrame();
 						} else {
 							JOptionPane.showMessageDialog(null, "Mã xác nhận không chính xác!");
 						}
@@ -367,8 +368,7 @@ public class CreateAccount extends JFrame {
 		return false;
 	}
 
-	public static int check(int a) {
-		int i = a;
-		return i;
+	private void closeFrame() {
+		this.dispose();
 	}
 }
