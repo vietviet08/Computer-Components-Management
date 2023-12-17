@@ -1,6 +1,5 @@
 package test;
 
-import model.main;
 import view.LoginForm;
 
 public class maintest {

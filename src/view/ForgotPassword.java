@@ -10,12 +10,16 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+
+import com.formdev.flatlaf.FlatIntelliJLaf;
 
 import controller.BCrypt;
 import controller.SendEmailSMTP;
@@ -46,6 +50,8 @@ public class ForgotPassword extends JFrame {
 			public void run() {
 				try {
 					ForgotPassword frame = new ForgotPassword();
+					UIManager.setLookAndFeel(new FlatIntelliJLaf());
+					frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

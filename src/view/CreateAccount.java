@@ -14,6 +14,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -58,6 +59,7 @@ public class CreateAccount extends JFrame {
 				try {
 					UIManager.setLookAndFeel(new FlatLightLaf());
 					CreateAccount frame = new CreateAccount();
+					frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

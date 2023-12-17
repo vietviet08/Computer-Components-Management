@@ -23,21 +23,22 @@ public class AccountDAO implements DAOInterface<Account> {
 		int ketQua = 0;
 		try {
 			Connection con = JDBCUntil.getConnection();
+
 			String sql = "INSERT INTO account (username, password, email, fullname, sex, status) VALUES (?,?,?,?,?,?)";
+
 			PreparedStatement pst = con.prepareStatement(sql);
+
 			pst.setString(4, t.getFullName());
 			pst.setString(1, t.getUser());
 			pst.setString(2, t.getPassword());
 			pst.setInt(5, t.getSex());
 			pst.setInt(6, t.getStatus());
 			pst.setString(3, t.getEmail());
-			// Buoc 4 thuc thi cau lenh sql
+
 			ketQua = pst.executeUpdate();
-			// Buoc 5 Xu ly
-			// Buoc 6 ngat ket noi den voi co so du lieu
+
 			JDBCUntil.closeConnection(con);
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return ketQua;
@@ -48,8 +49,11 @@ public class AccountDAO implements DAOInterface<Account> {
 		int ketQua = 0;
 		try {
 			Connection con = JDBCUntil.getConnection();
+
 			String sql = "UPDATE account SET username=?, password=?, email=?, fullname=?, sex=?, status=? WHERE username=?";
+
 			PreparedStatement pst = con.prepareStatement(sql);
+
 			pst.setString(4, t.getFullName());
 			pst.setString(2, t.getPassword());
 			pst.setInt(6, t.getStatus());
@@ -58,9 +62,9 @@ public class AccountDAO implements DAOInterface<Account> {
 			pst.setString(3, t.getEmail());
 
 			ketQua = pst.executeUpdate();
+
 			JDBCUntil.closeConnection(con);
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return ketQua;
@@ -71,13 +75,16 @@ public class AccountDAO implements DAOInterface<Account> {
 		int ketQua = 0;
 		try {
 			Connection con = JDBCUntil.getConnection();
+
 			String sql = "DELETE FROM account WHERE username=?";
+
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setString(1, t.getUser());
+
 			ketQua = pst.executeUpdate();
+
 			JDBCUntil.closeConnection(con);
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return ketQua;
@@ -88,9 +95,12 @@ public class AccountDAO implements DAOInterface<Account> {
 		ArrayList<Account> ketQua = new ArrayList<Account>();
 		try {
 			Connection con = JDBCUntil.getConnection();
+
 			String sql = "SELECT * FROM account";
+
 			PreparedStatement pst = con.prepareStatement(sql);
 			ResultSet rs = pst.executeQuery();
+
 			while (rs.next()) {
 				String userName = rs.getString("userName");
 				String password = rs.getString("password");
@@ -103,7 +113,6 @@ public class AccountDAO implements DAOInterface<Account> {
 				ketQua.add(acc);
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return ketQua;
@@ -129,7 +138,6 @@ public class AccountDAO implements DAOInterface<Account> {
 			}
 			JDBCUntil.closeConnection(con);
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
 		return acc;
 	}
@@ -138,7 +146,9 @@ public class AccountDAO implements DAOInterface<Account> {
 		int ketQua = 0;
 		try {
 			Connection con = JDBCUntil.getConnection();
+
 			String sql = "UPDATE account SET password=? WHERE email=?";
+			
 			PreparedStatement pst = con.prepareStatement(sql);
 			pst.setString(1, password);
 			pst.setString(2, email);
@@ -147,7 +157,6 @@ public class AccountDAO implements DAOInterface<Account> {
 			JDBCUntil.closeConnection(con);
 
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return ketQua;

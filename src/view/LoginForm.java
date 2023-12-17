@@ -3,14 +3,13 @@ package view;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.SystemColor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,18 +19,13 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
-import com.formdev.flatlaf.FlatLightLaf;
 
 import controller.BCrypt;
 import dao.AccountDAO;
-import db.JDBCUntil;
 import model.Account;
-import javax.swing.JCheckBox;
-import java.awt.Rectangle;
-import javax.swing.ImageIcon;
-import javax.swing.border.LineBorder;
 
 public class LoginForm extends JFrame {
 
@@ -43,6 +37,7 @@ public class LoginForm extends JFrame {
 	public Font font1;
 	public Font font2;
 	public Font font_1;
+	public static String fullN;
 	/**
 	 * Launch the application.
 	 */
@@ -52,6 +47,7 @@ public class LoginForm extends JFrame {
 			public void run() {
 				try {
 					LoginForm frame = new LoginForm();
+					frame.setResizable(false);
 					UIManager.setLookAndFeel(new FlatIntelliJLaf());
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -89,7 +85,7 @@ public class LoginForm extends JFrame {
 		JLabel lblNewLabel = new JLabel("Login");
 		lblNewLabel.setFont(new Font("Stencil", Font.BOLD, 66));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(112, 23, 199, 77);
+		lblNewLabel.setBounds(86, 23, 199, 77);
 		contentPane.add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel("Username");
@@ -130,8 +126,10 @@ public class LoginForm extends JFrame {
 		lblNewLabel_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ForgotPassword fp = new ForgotPassword();
-				fp.setVisible(true);
+//				ForgotPassword fp = new ForgotPassword();
+//				fp.setVisible(true);
+				ForgotPassword.main(null);
+				
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -143,7 +141,7 @@ public class LoginForm extends JFrame {
 			}
 		});
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_2.setFont(font);
+		lblNewLabel_2.setFont(font_1);
 //		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel_2.setBounds(219, 402, 127, 17);
 		contentPane.add(lblNewLabel_2);
@@ -168,8 +166,8 @@ public class LoginForm extends JFrame {
 		lblNewLabel_2_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				CreateAccount ca = new CreateAccount();
-				ca.setVisible(true);
+//				CreateAccount ca = new CreateAccount();
+				CreateAccount.main(null);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -181,7 +179,7 @@ public class LoginForm extends JFrame {
 			}
 		});
 		lblNewLabel_2_1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_2_1.setFont(font);
+		lblNewLabel_2_1.setFont(font_1);
 //		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel_2_1.setBounds(86, 402, 114, 17);
 		contentPane.add(lblNewLabel_2_1);
@@ -216,6 +214,11 @@ public class LoginForm extends JFrame {
 		lblNewLabel_4_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblNewLabel_4_1.setBounds(86, 294, 260, 2);
 		contentPane.add(lblNewLabel_4_1);
+		
+		JLabel lblNewLabel_5 = new JLabel("");
+		lblNewLabel_5.setIcon(new ImageIcon(LoginForm.class.getResource("/icon/icons8-admin-64.png")));
+		lblNewLabel_5.setBounds(284, 24, 73, 59);
+		contentPane.add(lblNewLabel_5);
 	}
 
 	public void checkLogin() {
@@ -234,6 +237,7 @@ public class LoginForm extends JFrame {
 					if (BCrypt.checkpw(passwordcheck, acc.getPassword())) {
 						if (acc.getStatus() == 1) {
 							try {
+								fullN = checkFullName(acc);
 								JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
 								this.dispose();
 								// setvisible main;
@@ -253,5 +257,13 @@ public class LoginForm extends JFrame {
 				System.out.println(e);
 			}
 		}
+	}
+	
+	public String checkFullName(Account ac) {
+		String name = ac.getFullName();
+		
+		
+		return name;
+		
 	}
 }
