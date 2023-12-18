@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
 
+import color.SetColor;
 import controller.BCrypt;
 import controller.SendEmailSMTP;
 import dao.AccountDAO;
@@ -50,6 +51,7 @@ public class ForgotPassword extends JFrame {
 			public void run() {
 				try {
 					ForgotPassword frame = new ForgotPassword();
+					frame.setLocationRelativeTo(null);
 					UIManager.setLookAndFeel(new FlatIntelliJLaf());
 					frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					frame.setVisible(true);
@@ -86,7 +88,7 @@ public class ForgotPassword extends JFrame {
 		contentPane.setLayout(new CardLayout(0, 0));
 
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(189, 195, 199));
+		panel.setBackground(SetColor.blueOp);
 		contentPane.add(panel, "name_110486029726200");
 		panel.setLayout(null);
 
@@ -120,12 +122,13 @@ public class ForgotPassword extends JFrame {
 		panel.add(btnNewButton);
 
 		JLabel lblNewLabel = new JLabel("Nhập email khôi phục ");
+		lblNewLabel.setForeground(SetColor.whiteFont);
 		lblNewLabel.setFont(font);
 		lblNewLabel.setBounds(31, 29, 139, 22);
 		panel.add(lblNewLabel);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(189, 195, 199));
+		panel_1.setBackground(SetColor.blueOp);
 		contentPane.add(panel_1, "name_110530074295400");
 		panel_1.setLayout(null);
 
@@ -161,21 +164,24 @@ public class ForgotPassword extends JFrame {
 		panel_1.add(btnHonThnh);
 
 		JLabel lblNhapMaXac = new JLabel("Nhập mã xác nhận:");
+		lblNhapMaXac.setForeground(SetColor.whiteFont);
 		lblNhapMaXac.setFont(font);
 		lblNhapMaXac.setBounds(10, 56, 116, 22);
 		panel_1.add(lblNhapMaXac);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(189, 195, 199));
+		panel_2.setBackground(SetColor.blueOp);
 		contentPane.add(panel_2, "name_111129428559600");
 		panel_2.setLayout(null);
 
 		JLabel lblNewLabel_1 = new JLabel("Nhập mật khẩu mới");
 		lblNewLabel_1.setFont(font);
+		lblNewLabel_1.setForeground(SetColor.whiteFont);
 		lblNewLabel_1.setBounds(36, 32, 117, 25);
 		panel_2.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_1_1 = new JLabel("Nhập lại mật khẩu");
+		lblNewLabel_1_1.setForeground(SetColor.whiteFont);
 		lblNewLabel_1_1.setFont(font);
 		lblNewLabel_1_1.setBounds(36, 68, 117, 25);
 		panel_2.add(lblNewLabel_1_1);
@@ -203,8 +209,9 @@ public class ForgotPassword extends JFrame {
 		panel_2.add(btnNewButton_1);
 
 		JCheckBox checkbox = new JCheckBox("Hiển thị mật khẩu");
+		checkbox.setForeground(SetColor.whiteFont);
+		checkbox.setBackground(SetColor.blueOp);
 		checkbox.setFont(font);
-		checkbox.setBackground(new Color(189, 195, 199));
 		checkbox.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

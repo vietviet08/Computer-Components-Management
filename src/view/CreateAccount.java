@@ -27,6 +27,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+import color.SetColor;
 import controller.BCrypt;
 import controller.SendEmailSMTP;
 import dao.AccountDAO;
@@ -59,6 +60,7 @@ public class CreateAccount extends JFrame {
 				try {
 					UIManager.setLookAndFeel(new FlatLightLaf());
 					CreateAccount frame = new CreateAccount();
+					frame.setLocationRelativeTo(null);
 					frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -91,7 +93,7 @@ public class CreateAccount extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 644, 365);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(40, 180, 99));
+		contentPane.setBackground(SetColor.green);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
@@ -136,54 +138,61 @@ public class CreateAccount extends JFrame {
 		contentPane.add(btnNewButton_2);
 
 		JLabel lblNewLabel = new JLabel("Tên đăng nhập");
+//		lblNewLabel.setForeground(SetColor.whiteFont);
 		lblNewLabel.setFont(font1);
 //		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel.setBounds(50, 64, 154, 34);
+		lblNewLabel.setBounds(28, 62, 154, 34);
 		contentPane.add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel("Mật khẩu");
+//		lblNewLabel_1.setForeground(SetColor.whiteFont);
 		lblNewLabel_1.setFont(font1);
 //		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_1.setBounds(50, 130, 81, 34);
+		lblNewLabel_1.setBounds(28, 128, 81, 34);
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel("Nhập lại mật khẩu");
+//		lblNewLabel_2.setForeground(SetColor.whiteFont);
 		lblNewLabel_2.setFont(font1);
 //		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_2.setBounds(50, 190, 154, 34);
+		lblNewLabel_2.setBounds(28, 188, 154, 34);
 		contentPane.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("Họ và tên");
+//		lblNewLabel_3.setForeground(SetColor.whiteFont);
 		lblNewLabel_3.setFont(font1);
 //		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_3.setBounds(50, 251, 81, 34);
+		lblNewLabel_3.setBounds(28, 249, 81, 34);
 		contentPane.add(lblNewLabel_3);
 
 		tfuser = new JTextField();
-		tfuser.setBounds(214, 72, 165, 26);
+		tfuser.setBounds(166, 72, 213, 26);
 		contentPane.add(tfuser);
 		tfuser.setColumns(10);
 
 		tfname = new JTextField();
 		tfname.setColumns(10);
-		tfname.setBounds(214, 257, 165, 26);
+		tfname.setBounds(166, 257, 213, 26);
 		contentPane.add(tfname);
 
 		lblNewLabel_4 = new JLabel("Giới tính");
+//		lblNewLabel_4.setForeground(SetColor.whiteFont);
 		lblNewLabel_4.setFont(font1);
 //		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNewLabel_4.setBounds(415, 64, 81, 34);
 		contentPane.add(lblNewLabel_4);
 
 		JRadioButton rbtnam = new JRadioButton("Nam");
-		rbtnam.setBackground(new Color(40, 180, 99));
+//		rbtnam.setForeground(SetColor.whiteFont);
+		rbtnam.setBackground(SetColor.green);
 		rbtnam.setBounds(502, 72, 61, 23);
 		rbtnam.setSelected(true);
 		rbtnam.setActionCommand("nam");
 		contentPane.add(rbtnam);
 
 		JRadioButton rbtnu = new JRadioButton("Nữ");
-		rbtnu.setBackground(new Color(40, 180, 99));
+//		rbtnu.setForeground(SetColor.whiteFont);
+		rbtnu.setBackground(SetColor.green);
 		rbtnu.setBounds(565, 72, 61, 23);
 		rbtnu.setActionCommand("nu");
 		contentPane.add(rbtnu);
@@ -250,14 +259,15 @@ public class CreateAccount extends JFrame {
 		contentPane.add(btnNewButton);
 
 		JLabel lblNewLabel_2_1 = new JLabel("Email");
+//		lblNewLabel_2_1.setForeground(SetColor.whiteFont);
 		lblNewLabel_2_1.setFont(font1);
 //		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_2_1.setBounds(415, 138, 48, 34);
+		lblNewLabel_2_1.setBounds(415, 138, 37, 34);
 		contentPane.add(lblNewLabel_2_1);
 
 		tfmail = new JTextField();
 		tfmail.setColumns(10);
-		tfmail.setBounds(468, 138, 154, 26);
+		tfmail.setBounds(461, 138, 161, 26);
 		contentPane.add(tfmail);
 
 		tfotp = new JTextField();
@@ -286,46 +296,35 @@ public class CreateAccount extends JFrame {
 		pass2 = new JPasswordField();
 		pass2.setEchoChar('*');
 		pass2.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		pass2.setBounds(214, 193, 165, 26);
+		pass2.setBounds(166, 193, 213, 26);
 		contentPane.add(pass2);
 
 		pass1 = new JPasswordField();
 		pass1.setEchoChar('*');
 		pass1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		pass1.setBounds(214, 139, 165, 26);
+		pass1.setBounds(166, 139, 213, 26);
 		contentPane.add(pass1);
 
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Hiển thị mật khẩu");
-		chckbxNewCheckBox.setBackground(new Color(40, 180, 99));
-		chckbxNewCheckBox.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (chckbxNewCheckBox.isSelected())
-					pass1.setEchoChar((char) 0);
-				else
-					pass1.setEchoChar('*');
-			}
-		});
-		chckbxNewCheckBox.setFont(font);
-		chckbxNewCheckBox.setBounds(214, 169, 165, 17);
-		contentPane.add(chckbxNewCheckBox);
-
 		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("Hiển thị mật khẩu");
-		chckbxNewCheckBox_1.setBackground(new Color(40, 180, 99));
+		chckbxNewCheckBox_1.setBackground(SetColor.green);
 		chckbxNewCheckBox_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (chckbxNewCheckBox_1.isSelected())
+				if (chckbxNewCheckBox_1.isSelected()) {
+					pass1.setEchoChar((char) 0);
 					pass2.setEchoChar((char) 0);
-				else
+				} else {
+					pass1.setEchoChar('*');
 					pass2.setEchoChar('*');
+				}
 			}
 		});
 		chckbxNewCheckBox_1.setFont(font);
-		chckbxNewCheckBox_1.setBounds(214, 224, 165, 17);
+		chckbxNewCheckBox_1.setBounds(166, 226, 165, 17);
 		contentPane.add(chckbxNewCheckBox_1);
 
 		JLabel lblNewLabel_5 = new JLabel("***Vui lòng điền đầy đủ thông tin để hoàn tất quá trình đăng ký tài khoản!");
+		lblNewLabel_5.setForeground(SetColor.redB);
 		lblNewLabel_5.setFont(font);
 		lblNewLabel_5.setBounds(50, 11, 552, 34);
 		contentPane.add(lblNewLabel_5);
