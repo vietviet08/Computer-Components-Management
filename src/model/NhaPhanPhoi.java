@@ -13,6 +13,12 @@ public class NhaPhanPhoi {
 		super();
 	}
 
+//
+	public NhaPhanPhoi(String idNPP) {
+		super();
+		this.idNPP = idNPP;
+	}
+
 	public NhaPhanPhoi(String idNPP, String tenNPP, String diaChi, String email, int sdt) {
 		super();
 		this.idNPP = idNPP;

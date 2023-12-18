@@ -14,7 +14,7 @@ public class SanPhamDAO implements DAOInterface<Products> {
 	public static SanPhamDAO getInstance() {
 		return new SanPhamDAO();
 	}
-	
+
 	@Override
 	public int insert(Products t) {
 		int check = 0;
@@ -22,14 +22,13 @@ public class SanPhamDAO implements DAOInterface<Products> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "INSERT INTO sanpham (idsanpham, tensanpham, idloaisp, idnpp, soluongtonkho) VALUES (?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO sanpham (idsanpham, tensanpham, idnpp, soluongtonkho) VALUES (?, ?, ?, ?, ?);";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
 			ps.setString(1, t.getIdSanPham());
 			ps.setString(2, t.getTenSanPham());
-			ps.setString(3, t.getIdLoaiSP());
-			ps.setString(4, t.getIdNhaPhanPhoi());
+			ps.setString(4, t.getIdNPP());
 			ps.setInt(5, t.getSoLuongTonKho());
 
 			check = ps.executeUpdate();
@@ -55,8 +54,7 @@ public class SanPhamDAO implements DAOInterface<Products> {
 			PreparedStatement ps = con.prepareStatement(sql);
 
 			ps.setString(1, t.getTenSanPham());
-			ps.setString(2, t.getIdLoaiSP());
-			ps.setString(3, t.getIdNhaPhanPhoi());
+			ps.setString(3, t.getIdNPP());
 			ps.setInt(4, t.getSoLuongTonKho());
 			ps.setString(5, t.getIdSanPham());
 
@@ -107,8 +105,8 @@ public class SanPhamDAO implements DAOInterface<Products> {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				Products p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"),
-						rs.getString("idloaisp"), rs.getString("idnpp"), rs.getInt("soluongtonkho"));
+				Products p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"), rs.getString("idnpp"),
+						rs.getInt("soluongtonkho"));
 
 				list.add(p);
 			}
@@ -138,8 +136,8 @@ public class SanPhamDAO implements DAOInterface<Products> {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"), rs.getString("idloaisp"),
-						rs.getString("idnpp"), rs.getInt("soluongtonkho"));
+				p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"), rs.getString("idnpp"),
+						rs.getInt("soluongtonkho"));
 
 			}
 

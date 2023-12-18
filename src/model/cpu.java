@@ -2,13 +2,17 @@ package model;
 
 import java.util.Objects;
 
-public class cpu {
+public class cpu extends Products {
 	private String nameCpu;
 	private String xungNhip;
 	private int soNhan;
 	private int soLuong;
 	private String dienNangTieuThu;
 	private String boNhoDem;
+
+	public cpu() {
+		super();
+	}
 
 	public cpu(String nameCpu, String xungNhip, int soNhan, int soLuong, String dienNangTieuThu, String boNhoDem) {
 		super();
@@ -20,8 +24,39 @@ public class cpu {
 		this.boNhoDem = boNhoDem;
 	}
 
-	public cpu() {
-		super();
+//	
+	public cpu(String idSanPham, String nameCpu, String xungNhip, int soNhan, int soLuong, String dienNangTieuThu,
+			String boNhoDem) {
+		super(idSanPham);
+		this.nameCpu = nameCpu;
+		this.xungNhip = xungNhip;
+		this.soNhan = soNhan;
+		this.soLuong = soLuong;
+		this.dienNangTieuThu = dienNangTieuThu;
+		this.boNhoDem = boNhoDem;
+	}
+
+	public cpu(String idSanPham, String tenSanPham, int soLuongTonKho, String nameCpu, String xungNhip, int soNhan,
+			int soLuong, String dienNangTieuThu, String boNhoDem) {
+		super(idSanPham, tenSanPham, soLuongTonKho);
+		this.nameCpu = nameCpu;
+		this.xungNhip = xungNhip;
+		this.soNhan = soNhan;
+		this.soLuong = soLuong;
+		this.dienNangTieuThu = dienNangTieuThu;
+		this.boNhoDem = boNhoDem;
+	}
+
+	public cpu(String idNPP, String tenNPP, String diaChi, String email, int sdt, String idSanPham, String tenSanPham,
+			int soLuongTonKho, String nameCpu, String xungNhip, int soNhan, int soLuong, String dienNangTieuThu,
+			String boNhoDem) {
+		super(idNPP, tenNPP, diaChi, email, sdt, idSanPham, tenSanPham, soLuongTonKho);
+		this.nameCpu = nameCpu;
+		this.xungNhip = xungNhip;
+		this.soNhan = soNhan;
+		this.soLuong = soLuong;
+		this.dienNangTieuThu = dienNangTieuThu;
+		this.boNhoDem = boNhoDem;
 	}
 
 	public String getNameCpu() {
@@ -75,19 +110,26 @@ public class cpu {
 	@Override
 	public String toString() {
 		return "cpu [nameCpu=" + nameCpu + ", xungNhip=" + xungNhip + ", soNhan=" + soNhan + ", soLuong=" + soLuong
-				+ ", dienNangTieuThu=" + dienNangTieuThu + ", boNhoDem=" + boNhoDem + "]";
+				+ ", dienNangTieuThu=" + dienNangTieuThu + ", boNhoDem=" + boNhoDem + ", getIdSanPham()="
+				+ getIdSanPham() + ", getTenSanPham()=" + getTenSanPham() + ", getSoLuongTonKho()=" + getSoLuongTonKho()
+				+ ", toString()=" + super.toString() + ", hashCode()=" + hashCode() + ", getIdNPP()=" + getIdNPP()
+				+ ", getTenNPP()=" + getTenNPP() + ", getDiaChi()=" + getDiaChi() + ", getEmail()=" + getEmail()
+				+ ", getSdt()=" + getSdt() + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(boNhoDem, dienNangTieuThu, nameCpu, soLuong, soNhan, xungNhip);
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(boNhoDem, dienNangTieuThu, nameCpu, soLuong, soNhan, xungNhip);
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;

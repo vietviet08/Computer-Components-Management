@@ -119,7 +119,7 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 		getContentPane().setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 71, 1188, 430);
+		scrollPane.setBounds(0, 51, 1188, 450);
 		getContentPane().add(scrollPane);
 
 		tableNpp = new JTable();
@@ -129,7 +129,7 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 		setDefaultTable();
 
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 631, 70);
+		panel.setBounds(0, 0, 631, 48);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 
@@ -156,7 +156,7 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 			}
 		});
 		btnNewButton_1.setFont(font);
-		btnNewButton_1.setBounds(10, 11, 99, 52);
+		btnNewButton_1.setBounds(10, 8, 99, 33);
 		panel.add(btnNewButton_1);
 
 		JButton btnNewButton_2 = new JButton("Xóa");
@@ -191,7 +191,7 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 			}
 		});
 		btnNewButton_2.setFont(font);
-		btnNewButton_2.setBounds(119, 11, 99, 52);
+		btnNewButton_2.setBounds(119, 8, 99, 33);
 		panel.add(btnNewButton_2);
 
 		JButton btnNewButton_3 = new JButton("Sửa");
@@ -219,7 +219,7 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 			}
 		});
 		btnNewButton_3.setFont(font);
-		btnNewButton_3.setBounds(228, 11, 87, 52);
+		btnNewButton_3.setBounds(228, 8, 87, 33);
 		panel.add(btnNewButton_3);
 
 		JButton btnNewButton_4 = new JButton("Nhập Excel");
@@ -309,7 +309,7 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 			}
 		});
 		btnNewButton_4.setFont(font);
-		btnNewButton_4.setBounds(329, 11, 138, 52);
+		btnNewButton_4.setBounds(329, 8, 138, 33);
 		panel.add(btnNewButton_4);
 
 		JButton btnNewButton_5 = new JButton("Xuất Excel");
@@ -367,11 +367,11 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 			public void mousePressed(MouseEvent e) {
 			}
 		});
-		btnNewButton_5.setBounds(477, 11, 142, 52);
+		btnNewButton_5.setBounds(477, 8, 142, 33);
 		panel.add(btnNewButton_5);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(632, 0, 556, 70);
+		panel_1.setBounds(632, 0, 556, 48);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 
@@ -389,7 +389,7 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 
 		});
 		comboBox.setFont(font);
-		comboBox.setBounds(0, 11, 99, 52);
+		comboBox.setBounds(0, 8, 99, 33);
 		panel_1.add(comboBox);
 
 		tfSeach = new JTextField();
@@ -426,13 +426,13 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 
 		});
 		tfSeach.setColumns(10);
-		tfSeach.setBounds(109, 11, 302, 52);
+		tfSeach.setBounds(109, 8, 302, 33);
 		panel_1.add(tfSeach);
 
 		JButton btnNewButton = new JButton("Tìm kiếm");
 		btnNewButton.setFont(font);
 		btnNewButton.setIcon(new ImageIcon(NhaPhanPhoiForm.class.getResource("/icon/icons8-search-24.png")));
-		btnNewButton.setBounds(421, 11, 118, 52);
+		btnNewButton.setBounds(421, 8, 118, 33);
 		panel_1.add(btnNewButton);
 	}
 

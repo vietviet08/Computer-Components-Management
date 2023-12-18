@@ -173,6 +173,8 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				maincontent.removeAll();
+				CPUForm cf = new CPUForm();
+				maincontent.add(cf).setVisible(true);
 			}
 
 			@Override
