@@ -2,11 +2,12 @@ package model;
 
 import java.util.Objects;
 
-public class ram {
+public class ram extends Products {
 	private String tenRam;
 	private String loai;
 	private String dungLuong;
 	private String bus;
+	private double donGia;
 
 	public ram() {
 		super();
@@ -18,6 +19,59 @@ public class ram {
 		this.loai = loai;
 		this.dungLuong = dungLuong;
 		this.bus = bus;
+	}
+
+	public ram(String idSanPham, String tenRam, String loai, String dungLuong, String bus, double donGia) {
+		super(idSanPham);
+		this.tenRam = tenRam;
+		this.loai = loai;
+		this.dungLuong = dungLuong;
+		this.bus = bus;
+		this.donGia = donGia;
+	}
+
+	public ram(String idSanPham, String tenSanPham, String idNPP, int soLuongTonKho, String tenRam, String loai,
+			String dungLuong, String bus) {
+		super(idSanPham, tenSanPham, idNPP, soLuongTonKho);
+		this.tenRam = tenRam;
+		this.loai = loai;
+		this.dungLuong = dungLuong;
+		this.bus = bus;
+	}
+
+	public ram(String idSanPham, String tenSanPham, int soLuongTonKho, String tenRam, String loai, String dungLuong,
+			String bus) {
+		super(idSanPham, tenSanPham, soLuongTonKho);
+		this.tenRam = tenRam;
+		this.loai = loai;
+		this.dungLuong = dungLuong;
+		this.bus = bus;
+	}
+
+	public ram(String idNPP, String tenNPP, String diaChi, String email, int sdt, String idSanPham, String tenSanPham,
+			int soLuongTonKho, String tenRam, String loai, String dungLuong, String bus) {
+		super(idNPP, tenNPP, diaChi, email, sdt, idSanPham, tenSanPham, soLuongTonKho);
+		this.tenRam = tenRam;
+		this.loai = loai;
+		this.dungLuong = dungLuong;
+		this.bus = bus;
+	}
+
+	public ram(String idSanPham, String tenSanPham, NhaPhanPhoi npp, int soLuongTonKho, String tenRam, String loai,
+			String dungLuong, String bus) {
+		super(idSanPham, tenSanPham, npp, soLuongTonKho);
+		this.tenRam = tenRam;
+		this.loai = loai;
+		this.dungLuong = dungLuong;
+		this.bus = bus;
+	}
+
+	public double getDonGia() {
+		return donGia;
+	}
+
+	public void setDonGia(double donGia) {
+		this.donGia = donGia;
 	}
 
 	public String getTenRam() {

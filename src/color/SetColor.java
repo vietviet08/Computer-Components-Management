@@ -11,5 +11,6 @@ public class SetColor {
 	public static Color redB = new Color(220, 19, 46);
 	public static Color blue = new Color(64, 143, 221);
 	public static Color blueOp = new Color(98, 181, 244);
-//	34, 153, 84
+	public static Color blueBaby = new Color(214, 234, 248);
+	//	34, 153, 84
 }

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,8 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.text.DateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -34,8 +33,6 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import color.SetColor;
-import jxl.write.DateTime;
-import java.awt.FlowLayout;
 
 public class MainForm extends JFrame {
 
@@ -209,6 +206,8 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				maincontent.removeAll();
+				RAMForm rf = new RAMForm();
+				maincontent.add(rf).setVisible(true);
 			}
 
 			@Override
@@ -238,6 +237,8 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				maincontent.removeAll();
+				VGAForm vf = new VGAForm();
+				maincontent.add(vf).setVisible(true);
 			}
 
 			@Override

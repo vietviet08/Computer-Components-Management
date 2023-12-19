@@ -150,4 +150,61 @@ public class SanPhamDAO implements DAOInterface<Products> {
 		return p;
 	}
 
+	public static ArrayList<Products> getIDSanPham(String name) {
+		ArrayList<Products> list = new ArrayList<>();
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "select * from sanpham where idsanpham like 'cpu%';";
+
+			switch (name) {
+			case "cpu":
+				sql = "select * from sanpham where idsanpham like 'cpu%';";
+				break;
+			case "ram":
+				sql = "select * from sanpham where idsanpham like 'ram%';";
+				break;
+			case "vga":
+				sql = "select * from sanpham where idsanpham like 'RTX%' or idsanpham like 'GTX%';";
+				break;
+
+			case "mainboard":
+				sql = "select * from sanpham where idsanpham like 'main%';";
+				break;
+			case "chuot":
+				sql = "select * from sanpham where idsanpham like 'mou%';";
+				break;
+
+			case "banphim":
+				sql = "select * from sanpham where idsanpham like 'keyb%';";
+				break;
+
+			case "manhinh":
+				sql = "select * from sanpham where idsanpham like 'scr%';";
+				break;
+
+			default:
+				break;
+			}
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Products p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"), rs.getString("idnpp"),
+						rs.getInt("soluongtonkho"));
+
+				list.add(p);
+			}
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
 }

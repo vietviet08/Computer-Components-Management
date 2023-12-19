@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -27,6 +29,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -36,6 +39,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import color.SetColor;
 import controller.TimKiemNPP;
 import dao.NhaPhanPhoiDAO;
 import model.NhaPhanPhoi;
@@ -122,7 +126,22 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 		scrollPane.setBounds(0, 51, 1188, 450);
 		getContentPane().add(scrollPane);
 
-		tableNpp = new JTable();
+		tableNpp = new JTable() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+				Component returnComp = super.prepareRenderer(renderer, row, column);
+				if (!returnComp.getBackground().equals(getSelectionBackground())) {
+					Color bg = (row % 2 == 0 ? SetColor.blueBaby : Color.WHITE);
+					returnComp.setBackground(bg);
+					bg = null;
+				}
+				return returnComp;
+			}
+		};
 		tableNpp.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "new", "new", "new", "new", "new" }));
 		scrollPane.setViewportView(tableNpp);
 

@@ -22,6 +22,10 @@ import javax.swing.SwingConstants;
 
 public class CapNhatNhaPhanPhoi extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	public Font font;
 	public Font font_1;

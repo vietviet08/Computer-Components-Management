@@ -9,17 +9,15 @@ import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import color.SetColor;
 import dao.NhaPhanPhoiDAO;
 import model.NhaPhanPhoi;
-import javax.swing.JPanel;
-import java.awt.SystemColor;
-import javax.swing.SwingConstants;
 
 public class ThemNhaPhanPhoi extends JFrame {
 	/**

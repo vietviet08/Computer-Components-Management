@@ -22,7 +22,7 @@ public class cpuDAO implements DAOInterface<cpu> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "INSERT INTO cpu (idsanpham, tencpu, xungnhip, sonhan, soluong, diennangtieuthu, bonhodem) VALUES (?, ?, ?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO cpu (idsanpham, tencpu, xungnhip, sonhan, soluong, diennangtieuthu, bonhodem, dongia) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -33,6 +33,7 @@ public class cpuDAO implements DAOInterface<cpu> {
 			ps.setInt(5, t.getSoLuong());
 			ps.setString(6, t.getDienNangTieuThu());
 			ps.setString(7, t.getBoNhoDem());
+			ps.setDouble(8, t.getDonGia());
 			check = ps.executeUpdate();
 
 			JDBCUntil.closeConnection(con);
@@ -46,14 +47,55 @@ public class cpuDAO implements DAOInterface<cpu> {
 
 	@Override
 	public int update(cpu t) {
-		// TODO Auto-generated method stub
-		return 0;
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "UPDATE cpu SET tencpu = ?, xungnhip = ?, sonhan = ?, soluong = ?, diennangtieuthu = ?, bonhodem = ?, dongia = ? WHERE idsanpham = ?;";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getNameCpu());
+			ps.setString(2, t.getXungNhip());
+			ps.setInt(3, t.getSoNhan());
+			ps.setInt(4, t.getSoLuong());
+			ps.setString(5, t.getDienNangTieuThu());
+			ps.setString(6, t.getBoNhoDem());
+			ps.setDouble(8, t.getDonGia());
+			ps.setString(7, t.getIdSanPham());
+			check = ps.executeUpdate();
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
 	}
 
 	@Override
 	public int delete(cpu t) {
-		// TODO Auto-generated method stub
-		return 0;
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "DELETE FROM cpu WHERE idsanpham = ?;";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getIdSanPham());
+			check = ps.executeUpdate();
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
 	}
 
 	@Override
@@ -71,7 +113,7 @@ public class cpuDAO implements DAOInterface<cpu> {
 			while (rs.next()) {
 				cpu chip = new cpu(rs.getString("idsanpham"), rs.getString("tencpu"), rs.getString("xungnhip"),
 						rs.getInt("sonhan"), rs.getInt("soluong"), rs.getString("diennangtieuthu"),
-						rs.getString("bonhodem"));
+						rs.getString("bonhodem"), rs.getDouble("dongia"));
 				c.add(chip);
 			}
 			JDBCUntil.closeConnection(con);
@@ -83,8 +125,30 @@ public class cpuDAO implements DAOInterface<cpu> {
 
 	@Override
 	public cpu selectById(String t) {
-		// TODO Auto-generated method stub
-		return null;
+		cpu c = null;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "SELECT * FROM cpu WHERE idsanpham = ?;";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				c = new cpu(rs.getString("idsanpham"), rs.getString("tencpu"), rs.getString("xungnhip"),
+						rs.getInt("sonhan"), rs.getInt("soluong"), rs.getString("diennangtieuthu"),
+						rs.getString("bonhodem"), rs.getDouble("dongia"));
+			}
+			JDBCUntil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return c;
 	}
 
 }

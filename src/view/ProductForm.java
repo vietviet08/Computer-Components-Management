@@ -1,11 +1,13 @@
 package view;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -14,13 +16,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
+import color.SetColor;
 import dao.SanPhamDAO;
-import dao.cpuDAO;
 import model.Products;
-import model.cpu;
 
 public class ProductForm extends JInternalFrame {
 
@@ -149,9 +150,11 @@ public class ProductForm extends JInternalFrame {
 		textField.setBounds(109, 8, 302, 33);
 		panel_2.add(textField);
 
-		String select[] = { "ID Sản phẩm", "Tên sản phẩm", "Loại sản phẩm" };
-		JComboBox comboBox = new JComboBox(select);
+		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setFont(font);
+		comboBox.setModel(new DefaultComboBoxModel<>(
+		new String[]  { "ID Sản phẩm", "ID nhà phân phối","Tên sản phẩm", "Số lượng tồn kho" 
+		}));
 		comboBox.setBounds(10, 8, 89, 33);
 		panel_2.add(comboBox);
 
@@ -160,7 +163,22 @@ public class ProductForm extends JInternalFrame {
 		scrollPane.setBounds(0, 53, 1188, 452);
 		getContentPane().add(scrollPane);
 
-		table = new JTable();
+		table = new JTable() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+				Component returnComp = super.prepareRenderer(renderer, row, column);
+				if (!returnComp.getBackground().equals(getSelectionBackground())) {
+					Color bg = (row % 2 == 0 ? SetColor.blueBaby : Color.WHITE);
+					returnComp.setBackground(bg);
+					bg = null;
+				}
+				return returnComp;
+			}
+		};
 		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "ID Sản phẩm", "Tên sản phẩm",
 				"ID loại sản phẩm", "ID Nhà phân phối", "Số lượng tồn kho" }));
 		scrollPane.setViewportView(table);

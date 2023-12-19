@@ -1,6 +1,6 @@
 package model;
 
-public class chuot {
+public class chuot extends Products {
 	private String hangChuot;
 	private int soNut;
 	private String kieuKetNoi;
@@ -9,6 +9,7 @@ public class chuot {
 	private String doPhanGiai;
 	private String kichCo;
 	private String trongLuong;
+	private double donGia;
 
 	public chuot() {
 		super();
@@ -25,6 +26,81 @@ public class chuot {
 		this.doPhanGiai = doPhanGiai;
 		this.kichCo = kichCo;
 		this.trongLuong = trongLuong;
+	}
+
+	public chuot(String idSanPham, String hangChuot, int soNut, String kieuKetNoi, String denLED, String mauSac,
+			String doPhanGiai, String kichCo, String trongLuong, double donGia) {
+		super(idSanPham);
+		this.hangChuot = hangChuot;
+		this.soNut = soNut;
+		this.kieuKetNoi = kieuKetNoi;
+		this.denLED = denLED;
+		this.mauSac = mauSac;
+		this.doPhanGiai = doPhanGiai;
+		this.kichCo = kichCo;
+		this.trongLuong = trongLuong;
+		this.donGia = donGia;
+	}
+
+	public chuot(String idSanPham, String tenSanPham, String idNPP, int soLuongTonKho, String hangChuot, int soNut,
+			String kieuKetNoi, String denLED, String mauSac, String doPhanGiai, String kichCo, String trongLuong) {
+		super(idSanPham, tenSanPham, idNPP, soLuongTonKho);
+		this.hangChuot = hangChuot;
+		this.soNut = soNut;
+		this.kieuKetNoi = kieuKetNoi;
+		this.denLED = denLED;
+		this.mauSac = mauSac;
+		this.doPhanGiai = doPhanGiai;
+		this.kichCo = kichCo;
+		this.trongLuong = trongLuong;
+	}
+
+	public chuot(String idSanPham, String tenSanPham, int soLuongTonKho, String hangChuot, int soNut, String kieuKetNoi,
+			String denLED, String mauSac, String doPhanGiai, String kichCo, String trongLuong) {
+		super(idSanPham, tenSanPham, soLuongTonKho);
+		this.hangChuot = hangChuot;
+		this.soNut = soNut;
+		this.kieuKetNoi = kieuKetNoi;
+		this.denLED = denLED;
+		this.mauSac = mauSac;
+		this.doPhanGiai = doPhanGiai;
+		this.kichCo = kichCo;
+		this.trongLuong = trongLuong;
+	}
+
+	public chuot(String idNPP, String tenNPP, String diaChi, String email, int sdt, String idSanPham, String tenSanPham,
+			int soLuongTonKho, String hangChuot, int soNut, String kieuKetNoi, String denLED, String mauSac,
+			String doPhanGiai, String kichCo, String trongLuong) {
+		super(idNPP, tenNPP, diaChi, email, sdt, idSanPham, tenSanPham, soLuongTonKho);
+		this.hangChuot = hangChuot;
+		this.soNut = soNut;
+		this.kieuKetNoi = kieuKetNoi;
+		this.denLED = denLED;
+		this.mauSac = mauSac;
+		this.doPhanGiai = doPhanGiai;
+		this.kichCo = kichCo;
+		this.trongLuong = trongLuong;
+	}
+
+	public chuot(String idSanPham, String tenSanPham, NhaPhanPhoi npp, int soLuongTonKho, String hangChuot, int soNut,
+			String kieuKetNoi, String denLED, String mauSac, String doPhanGiai, String kichCo, String trongLuong) {
+		super(idSanPham, tenSanPham, npp, soLuongTonKho);
+		this.hangChuot = hangChuot;
+		this.soNut = soNut;
+		this.kieuKetNoi = kieuKetNoi;
+		this.denLED = denLED;
+		this.mauSac = mauSac;
+		this.doPhanGiai = doPhanGiai;
+		this.kichCo = kichCo;
+		this.trongLuong = trongLuong;
+	}
+
+	public double getDonGia() {
+		return donGia;
+	}
+
+	public void setDonGia(double donGia) {
+		this.donGia = donGia;
 	}
 
 	public String getHangChuot() {

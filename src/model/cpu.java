@@ -9,6 +9,7 @@ public class cpu extends Products {
 	private int soLuong;
 	private String dienNangTieuThu;
 	private String boNhoDem;
+	private double donGia;
 
 	public cpu() {
 		super();
@@ -26,7 +27,7 @@ public class cpu extends Products {
 
 //	
 	public cpu(String idSanPham, String nameCpu, String xungNhip, int soNhan, int soLuong, String dienNangTieuThu,
-			String boNhoDem) {
+			String boNhoDem, double donGia) {
 		super(idSanPham);
 		this.nameCpu = nameCpu;
 		this.xungNhip = xungNhip;
@@ -34,6 +35,7 @@ public class cpu extends Products {
 		this.soLuong = soLuong;
 		this.dienNangTieuThu = dienNangTieuThu;
 		this.boNhoDem = boNhoDem;
+		this.donGia = donGia;
 	}
 
 	public cpu(String idSanPham, String tenSanPham, int soLuongTonKho, String nameCpu, String xungNhip, int soNhan,
@@ -57,6 +59,14 @@ public class cpu extends Products {
 		this.soLuong = soLuong;
 		this.dienNangTieuThu = dienNangTieuThu;
 		this.boNhoDem = boNhoDem;
+	}
+
+	 public double getDonGia() {
+		return donGia;
+	}
+
+	public void setDonGia(double donGia) {
+		this.donGia = donGia;
 	}
 
 	public String getNameCpu() {
