@@ -141,6 +141,7 @@ public class RAMForm extends JInternalFrame {
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				ThemRAM.main(null);
 			}
 		});
 		btnNewButton_1.setFont(font);
@@ -152,6 +153,17 @@ public class RAMForm extends JInternalFrame {
 		btnNewButton_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if(table.getSelectedRow()==-1) {
+					JOptionPane.showMessageDialog(null, "Vui lòng chọn RAM để xóa!");
+				}else {
+					int answ = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn xóa sản phẩm này?", "Cảnh báo", JOptionPane.YES_NO_OPTION);
+					if(answ==JOptionPane.YES_OPTION) {
+						ram ram =  getSelectRAM();
+						ramDAO.getInstance().delete(ram);
+						JOptionPane.showMessageDialog(null, "Xóa thành công!");
+						loadDataToTable(ramDAO.getInstance().selectAll());
+					}
+				}
 			}
 		});
 		btnNewButton_2.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/icons8-delete-24.png")));
@@ -163,6 +175,7 @@ public class RAMForm extends JInternalFrame {
 		btnNewButton_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				CapNhatRAM.main(null);
 			}
 		});
 		btnNewButton_3.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/icons8-edit-24.png")));
@@ -356,7 +369,7 @@ public class RAMForm extends JInternalFrame {
 			}
 		});
 		comboBox_1.setFont(font);
-		comboBox_1.setModel(new DefaultComboBoxModel<String>(new String[] { "Giá tăng dần", "Giá giảm dần" }));
+		comboBox_1.setModel(new DefaultComboBoxModel<String>(new String[] {"Sắp xếp theo giá", "Giá tăng dần", "Giá giảm dần"}));
 		comboBox_1.setBounds(10, 8, 127, 33);
 		panel_1.add(comboBox_1);
 	}
@@ -391,7 +404,7 @@ public class RAMForm extends JInternalFrame {
 		return list;
 	}
 
-	public static ram getSelectCPU() {
+	public static ram getSelectRAM() {
 		ram c = ramDAO.getInstance().selectAll().get(table.getSelectedRow());
 		return c;
 	}

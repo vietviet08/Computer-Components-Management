@@ -40,6 +40,7 @@ public class PhieuNhapForm extends JInternalFrame {
 	private JTable table_1;
 	private static DefaultTableModel tableModel;
 	private final String columName[] = { "ID sản phẩm", "Tên sản phẩm", "ID nhà phân phối", "Số lượng tồn kho" };
+	private JTextField textField_1;
 
 	/**
 	 * Launch the application.
@@ -87,9 +88,15 @@ public class PhieuNhapForm extends JInternalFrame {
 	public PhieuNhapForm() {
 		setBounds(100, 100, 1200, 530);
 		getContentPane().setLayout(null);
+		
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNewLabel_1.setIcon(new ImageIcon(PhieuNhapForm.class.getResource("/icon/icons8-search-24.png")));
+		lblNewLabel_1.setBounds(508, 7, 48, 22);
+		getContentPane().add(lblNewLabel_1);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 801, 456);
+		scrollPane.setBounds(0, 36, 801, 420);
 		getContentPane().add(scrollPane);
 
 		table = new JTable() {
@@ -216,7 +223,7 @@ public class PhieuNhapForm extends JInternalFrame {
 			}
 		});
 		btnNewButton_2.setFont(SetFont.font1_());
-		btnNewButton_2.setBounds(697, 454, 104, 30);
+		btnNewButton_2.setBounds(697, 2, 104, 30);
 		getContentPane().add(btnNewButton_2);
 
 		ArrayList<NhaPhanPhoi> list = NhaPhanPhoiDAO.getInstance().selectAll();
@@ -230,6 +237,15 @@ public class PhieuNhapForm extends JInternalFrame {
 		comboBox.setModel(new DefaultComboBoxModel<String>(combo));
 		comboBox.setBounds(811, 397, 155, 22);
 		getContentPane().add(comboBox);
+		
+		JComboBox<String> comboBox_1 = new JComboBox<>();
+		comboBox_1.setBounds(571, 3, 116, 27);
+		getContentPane().add(comboBox_1);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(290, 3, 271, 28);
+		getContentPane().add(textField_1);
+		textField_1.setColumns(10);
 
 	}
 }

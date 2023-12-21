@@ -434,7 +434,7 @@ public class CPUForm extends JInternalFrame {
 
 			}
 		});
-		comboBoxSort.setModel(new DefaultComboBoxModel<String>(new String[] { "Giá tăng dần", "Giá giảm dần" }));
+		comboBoxSort.setModel(new DefaultComboBoxModel<String>(new String[] {"Sắp xếp theo giá", "Giá tăng dần", "Giá giảm dần"}));
 		comboBoxSort.setBounds(0, 8, 125, 32);
 		panel_1.add(comboBoxSort);
 

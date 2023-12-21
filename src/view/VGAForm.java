@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -25,6 +26,8 @@ import color.SetColor;
 import controller.FormatToVND;
 import dao.vgaDAO;
 import model.vga;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class VGAForm extends JInternalFrame {
 
@@ -69,7 +72,7 @@ public class VGAForm extends JInternalFrame {
 				df.setHorizontalAlignment(SwingConstants.RIGHT);
 				table.getColumnModel().getColumn(5).setCellRenderer(df);
 				String gia = FormatToVND.vnd(i.getDonGia());
-				
+
 				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getTenVGA(), i.getHangVGA(), i.getBoNho(), gia });
 			}
 		} catch (Exception e) {
@@ -113,30 +116,68 @@ public class VGAForm extends JInternalFrame {
 		panel.setLayout(null);
 
 		JButton btnNewButton_1 = new JButton("Thêm");
+		btnNewButton_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+			}
+		});
 		btnNewButton_1.setFont(font);
 		btnNewButton_1.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/icons8-add-24.png")));
 		btnNewButton_1.setBounds(10, 8, 99, 33);
 		panel.add(btnNewButton_1);
 
 		JButton btnNewButton_2 = new JButton("Xóa");
+		btnNewButton_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (table.getRowCount() == -1) {
+					JOptionPane.showMessageDialog(null, "Vui lòng chọn VGA để xóa");
+				} else {
+				int answ =	JOptionPane.showConfirmDialog(null, "Bạn chắc chắn xóa sản phẩm này?", "Cảnh báo", JOptionPane.YES_NO_OPTION);
+					if(answ==JOptionPane.YES_OPTION) {
+						vga v = getVGASelect();
+						vgaDAO.getInstance().delete(v);
+						JOptionPane.showMessageDialog(null, "Xóa thành công!");
+					}
+					
+				}
+			}
+		});
 		btnNewButton_2.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/icons8-delete-24.png")));
 		btnNewButton_2.setFont(font);
 		btnNewButton_2.setBounds(119, 8, 99, 33);
 		panel.add(btnNewButton_2);
 
 		JButton btnNewButton_3 = new JButton("Sửa");
+		btnNewButton_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
 		btnNewButton_3.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/icons8-edit-24.png")));
 		btnNewButton_3.setFont(font);
 		btnNewButton_3.setBounds(228, 8, 87, 33);
 		panel.add(btnNewButton_3);
 
 		JButton btnNewButton_4 = new JButton("Nhập Excel");
+		btnNewButton_4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
 		btnNewButton_4.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/icons8-import-csv-24.png")));
 		btnNewButton_4.setFont(font);
 		btnNewButton_4.setBounds(329, 8, 138, 33);
 		panel.add(btnNewButton_4);
 
 		JButton btnNewButton_5 = new JButton("Xuất Excel");
+		btnNewButton_5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
 		btnNewButton_5.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/icons8-export-excel-24.png")));
 		btnNewButton_5.setFont(font);
 		btnNewButton_5.setBounds(477, 8, 142, 33);
@@ -177,18 +218,22 @@ public class VGAForm extends JInternalFrame {
 		comboBox.setFont(font);
 		comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(
 				new String[] { "ID sản phẩm", "Tên VGA", "Hãng VGA", "Bộ nhớ", "Đơn giá" }));
-		comboBox.setBounds(10, 8, 99, 33);
+		comboBox.setBounds(146, 8, 99, 33);
 		panel_1.add(comboBox);
 
 		textField = new JTextField();
 		textField.setColumns(10);
-		textField.setBounds(119, 8, 302, 33);
+		textField.setBounds(255, 8, 302, 33);
 		panel_1.add(textField);
+		
+		JComboBox comboBox_1 = new JComboBox();
+		comboBox_1.setBounds(10, 8, 126, 33);
+		panel_1.add(comboBox_1);
+	}
 
-		JButton btnNewButton = new JButton("Tìm kiếm");
-		btnNewButton.setFont(null);
-		btnNewButton.setBounds(431, 8, 118, 33);
-		panel_1.add(btnNewButton);
+	public static vga getVGASelect() {
+		vga v = vgaDAO.getInstance().selectAll().get(table.getSelectedRow());
+		return v;
 	}
 
 }
