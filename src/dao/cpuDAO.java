@@ -62,8 +62,8 @@ public class cpuDAO implements DAOInterface<cpu> {
 			ps.setInt(4, t.getSoLuong());
 			ps.setString(5, t.getDienNangTieuThu());
 			ps.setString(6, t.getBoNhoDem());
-			ps.setDouble(8, t.getDonGia());
-			ps.setString(7, t.getIdSanPham());
+			ps.setDouble(7, t.getDonGia());
+			ps.setString(8, t.getIdSanPham());
 			check = ps.executeUpdate();
 
 			JDBCUntil.closeConnection(con);
@@ -150,5 +150,6 @@ public class cpuDAO implements DAOInterface<cpu> {
 
 		return c;
 	}
+	
 
 }

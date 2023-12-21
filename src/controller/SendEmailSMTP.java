@@ -1,12 +1,14 @@
 package controller;
 
-import javax.mail.*;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-import view.CreateAccount;
-
-import java.util.Properties;
 
 public class SendEmailSMTP {
 
@@ -17,7 +19,7 @@ public class SendEmailSMTP {
         prop.put("mail.smtp.host", "smtp.gmail.com");
         prop.put("mail.smtp.port", "587");
         prop.put("mail.smtp.auth", "true");
-        prop.put("mail.smtp.starttls.enable", "true"); //TLS
+        prop.put("mail.smtp.starttls.enable", "true"); 
 
         Session session = Session.getInstance(prop,
                 new javax.mail.Authenticator() {

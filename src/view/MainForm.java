@@ -571,7 +571,8 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				maincontent.removeAll();
-//				btnNhapHang.setBackground(new Color(211, 84, 0));
+				PhieuNhapForm pnf = new PhieuNhapForm();
+				maincontent.add(pnf).setVisible(true);;
 			}
 
 			@Override

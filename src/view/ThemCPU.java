@@ -23,6 +23,7 @@ import dao.cpuDAO;
 import font.SetFont;
 import model.Products;
 import model.cpu;
+import javax.swing.SwingConstants;
 
 public class ThemCPU extends JFrame {
 
@@ -147,13 +148,15 @@ public class ThemCPU extends JFrame {
 
 				cpu c = new cpu();
 				c.setIdSanPham(id);
-				c.setTenSanPham(ten);
+				c.setNameCpu(ten);
 				c.setXungNhip(xungNhip);
 				c.setSoNhan(soNhan);
 				c.setSoLuong(soLuong);
 				c.setDienNangTieuThu(dienNang);
 				c.setBoNhoDem(boNho);
 				c.setDonGia(gia);
+				
+				
 
 				cpuDAO.getInstance().insert(c);
 
@@ -217,6 +220,19 @@ public class ThemCPU extends JFrame {
 		tfTenCPU.setColumns(10);
 		tfTenCPU.setBounds(133, 122, 141, 30);
 		contentPane.add(tfTenCPU);
+		
+		JLabel lblNewLabel_1 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
+		lblNewLabel_1.setForeground(SetColor.redB);
+		lblNewLabel_1.setFont(SetFont.font());
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setBounds(103, 337, 389, 14);
+		contentPane.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("THÊM CPU");
+		lblNewLabel_2.setFont(SetFont.fontTitle());
+		lblNewLabel_2.setForeground(SetColor.yellow);
+		lblNewLabel_2.setBounds(10, 10, 267, 36);
+		contentPane.add(lblNewLabel_2);
 	}
 
 	private void closeFrame() {

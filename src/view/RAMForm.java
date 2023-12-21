@@ -2,24 +2,48 @@ package view;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import color.SetColor;
 import controller.FormatToVND;
@@ -64,14 +88,14 @@ public class RAMForm extends JInternalFrame {
 		try {
 			tableModel.setRowCount(0);
 			for (ram i : r) {
-				
+
 				DefaultTableCellRenderer df = new DefaultTableCellRenderer();
 				df.setHorizontalAlignment(SwingConstants.RIGHT);
 				table.getColumnModel().getColumn(5).setCellRenderer(df);
 				String gia = FormatToVND.vnd(i.getDonGia());
-				
-				tableModel.addRow(
-						new Object[] { i.getIdSanPham(), i.getTenRam(), i.getLoai(), i.getDungLuong(), i.getBus(), gia });
+
+				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getTenRam(), i.getLoai(), i.getDungLuong(),
+						i.getBus(), gia });
 			}
 		} catch (Exception e) {
 		}
@@ -114,30 +138,157 @@ public class RAMForm extends JInternalFrame {
 		panel.setLayout(null);
 
 		JButton btnNewButton_1 = new JButton("Thêm");
+		btnNewButton_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
 		btnNewButton_1.setFont(font);
 		btnNewButton_1.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/icons8-add-24.png")));
 		btnNewButton_1.setBounds(10, 8, 99, 33);
 		panel.add(btnNewButton_1);
 
 		JButton btnNewButton_2 = new JButton("Xóa");
+		btnNewButton_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
 		btnNewButton_2.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/icons8-delete-24.png")));
 		btnNewButton_2.setFont(font);
 		btnNewButton_2.setBounds(119, 8, 99, 33);
 		panel.add(btnNewButton_2);
 
 		JButton btnNewButton_3 = new JButton("Sửa");
+		btnNewButton_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
 		btnNewButton_3.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/icons8-edit-24.png")));
 		btnNewButton_3.setFont(font);
 		btnNewButton_3.setBounds(228, 8, 87, 33);
 		panel.add(btnNewButton_3);
 
 		JButton btnNewButton_4 = new JButton("Nhập Excel");
+		btnNewButton_4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+				int rowBanDau = model.getRowCount();
+
+				File excelFile;
+				FileInputStream excelFIS = null;
+				BufferedInputStream excelBIS = null;
+				XSSFWorkbook excelImportToJTable = null;
+				String defaultCurrentDirectoryPath = "C:\\Users\\DELL\\Desktop";
+				JFileChooser excelFileChooser = new JFileChooser(defaultCurrentDirectoryPath);
+				excelFileChooser.setDialogTitle("Select Excel File");
+				FileNameExtensionFilter fnef = new FileNameExtensionFilter("EXCEL FILES", "xls", "xlsx", "xlsm");
+				excelFileChooser.setFileFilter(fnef);
+				int excelChooser = excelFileChooser.showOpenDialog(null);
+				if (excelChooser == JFileChooser.APPROVE_OPTION) {
+					try {
+						excelFile = excelFileChooser.getSelectedFile();
+//		                jExcelFilePath.setText(excelFile.toString());
+						excelFIS = new FileInputStream(excelFile);
+						excelBIS = new BufferedInputStream(excelFIS);
+						excelImportToJTable = new XSSFWorkbook(excelBIS);
+						XSSFSheet excelSheet = excelImportToJTable.getSheetAt(0);
+
+						for (int row = 1; row <= excelSheet.getLastRowNum(); row++) {
+							XSSFRow excelRow = excelSheet.getRow(row);
+							XSSFCell id = excelRow.getCell(0);
+							XSSFCell ten = excelRow.getCell(1);
+							XSSFCell loairam = excelRow.getCell(2);
+							XSSFCell dungluong = excelRow.getCell(3);
+							XSSFCell bus = excelRow.getCell(4);
+							XSSFCell dongia = excelRow.getCell(5);
+
+							model.addRow(new Object[] { id, ten, loairam, dungluong, bus, dongia });
+						}
+						JOptionPane.showMessageDialog(null, "Thêm thành công!");
+						int answ = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm vào csdl không", "Thông báo",
+								JOptionPane.YES_NO_OPTION);
+						if (answ == JOptionPane.YES_OPTION) {
+							for (int i = rowBanDau; i <= model.getRowCount(); i++) {
+								String id = model.getValueAt(i, 0).toString();
+								String ten = model.getValueAt(i, 1).toString();
+								String loairam = model.getValueAt(i, 2).toString();
+								String dungluong = model.getValueAt(i, 3).toString();
+								String bus = model.getValueAt(i, 4).toString();
+								double dongia = Double.parseDouble(model.getValueAt(i, 5).toString());
+								ram r = new ram(id, ten, loairam, dungluong, bus, dongia);
+								ramDAO.getInstance().insert(r);
+							}
+						}
+					} catch (IOException iOException) {
+						JOptionPane.showMessageDialog(null, iOException.getMessage());
+					} finally {
+						try {
+							if (excelFIS != null) {
+								excelFIS.close();
+							}
+							if (excelBIS != null) {
+								excelBIS.close();
+							}
+							if (excelImportToJTable != null) {
+								excelImportToJTable.close();
+							}
+						} catch (IOException iOException) {
+							JOptionPane.showMessageDialog(null, iOException.getMessage());
+						}
+					}
+				}
+
+			}
+		});
 		btnNewButton_4.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/icons8-import-csv-24.png")));
 		btnNewButton_4.setFont(font);
 		btnNewButton_4.setBounds(329, 8, 138, 33);
 		panel.add(btnNewButton_4);
 
 		JButton btnNewButton_5 = new JButton("Xuất Excel");
+		btnNewButton_5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					JFileChooser jFileChooser = new JFileChooser();
+					jFileChooser.showSaveDialog(null);
+					File saveFile = jFileChooser.getSelectedFile();
+					if (saveFile != null) {
+						saveFile = new File(saveFile.toString() + ".xlsx");
+						Workbook wb = new XSSFWorkbook();
+						Sheet sheet = wb.createSheet("RAM");
+
+						Row rowCol = sheet.createRow(0);
+						for (int i = 0; i < table.getColumnCount(); i++) {
+							org.apache.poi.ss.usermodel.Cell cell = rowCol.createCell(i);
+							cell.setCellValue(table.getColumnName(i));
+						}
+
+						for (int j = 0; j < table.getRowCount(); j++) {
+							Row row = sheet.createRow(j + 1);
+							for (int k = 0; k < table.getColumnCount(); k++) {
+								org.apache.poi.ss.usermodel.Cell ce = row.createCell(k);
+								if (table.getValueAt(j, k) != null) {
+									ce.setCellValue(table.getValueAt(j, k).toString());
+								}
+
+							}
+						}
+						FileOutputStream out = new FileOutputStream(new File(saveFile.toString()));
+						wb.write(out);
+						wb.close();
+						out.close();
+						openFile(saveFile.toString());
+					}
+				} catch (Exception ex) {
+					System.out.println(ex);
+				}
+			}
+		});
 		btnNewButton_5.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/icons8-export-excel-24.png")));
 		btnNewButton_5.setFont(font);
 		btnNewButton_5.setBounds(477, 8, 142, 33);
@@ -174,22 +325,84 @@ public class RAMForm extends JInternalFrame {
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNewLabel.setIcon(new ImageIcon(RAMForm.class.getResource("/icon/icons8-search-24.png")));
+		lblNewLabel.setBounds(505, 14, 48, 22);
+		panel_1.add(lblNewLabel);
+
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setFont(font);
 		comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(
 				new String[] { "ID sản phẩm", "Tên RAM", "Loại RAM", "Dung lượng", "BUS", "Đơn giá" }));
-		comboBox.setBounds(10, 8, 99, 33);
+		comboBox.setBounds(146, 8, 99, 33);
 		panel_1.add(comboBox);
 
 		textField = new JTextField();
 		textField.setColumns(10);
-		textField.setBounds(119, 8, 302, 33);
+		textField.setBounds(255, 8, 302, 33);
 		panel_1.add(textField);
 
-		JButton btnNewButton = new JButton("Tìm kiếm");
-		btnNewButton.setFont(null);
-		btnNewButton.setBounds(431, 8, 118, 33);
-		panel_1.add(btnNewButton);
+		JComboBox<String> comboBox_1 = new JComboBox<String>();
+		comboBox_1.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (comboBox_1.getSelectedItem().toString().equals("Giá tăng dần")) {
+					loadDataToTable(giaTangDan());
+				} else if (comboBox_1.getSelectedItem().toString().equals("Giá giảm dần")) {
+					loadDataToTable(giaGiamDan());
+				}
+			}
+		});
+		comboBox_1.setFont(font);
+		comboBox_1.setModel(new DefaultComboBoxModel<String>(new String[] { "Giá tăng dần", "Giá giảm dần" }));
+		comboBox_1.setBounds(10, 8, 127, 33);
+		panel_1.add(comboBox_1);
+	}
+
+	private ArrayList<ram> giaTangDan() {
+		ArrayList<ram> list = ramDAO.getInstance().selectAll();
+		Collections.sort(list, new Comparator<ram>() {
+			@Override
+			public int compare(ram o1, ram o2) {
+				if (o1.getDonGia() > o2.getDonGia())
+					return 1;
+				if (o1.getDonGia() < o2.getDonGia())
+					return -1;
+				return 0;
+			}
+		});
+		return list;
+	}
+
+	private ArrayList<ram> giaGiamDan() {
+		ArrayList<ram> list = ramDAO.getInstance().selectAll();
+		Collections.sort(list, new Comparator<ram>() {
+			@Override
+			public int compare(ram o1, ram o2) {
+				if (o1.getDonGia() < o2.getDonGia())
+					return 1;
+				if (o1.getDonGia() > o2.getDonGia())
+					return -1;
+				return 0;
+			}
+		});
+		return list;
+	}
+
+	public static ram getSelectCPU() {
+		ram c = ramDAO.getInstance().selectAll().get(table.getSelectedRow());
+		return c;
+	}
+
+	private void openFile(String file) {
+		try {
+			File path = new File(file);
+			Desktop.getDesktop().open(path);
+		} catch (IOException e) {
+			System.out.println(e);
+		}
 	}
 
 }

@@ -2,22 +2,40 @@ package view;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import color.SetColor;
 import dao.SanPhamDAO;
@@ -104,30 +122,168 @@ public class ProductForm extends JInternalFrame {
 		getContentPane().add(panel_1);
 
 		JButton btnNewButton_1 = new JButton("Thêm");
+		btnNewButton_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ThemProduct.main(null);
+
+			}
+		});
 		btnNewButton_1.setFont(font);
 		btnNewButton_1.setIcon(new ImageIcon(ProductForm.class.getResource("/icon/icons8-add-24.png")));
 		btnNewButton_1.setBounds(10, 8, 99, 33);
 		panel_1.add(btnNewButton_1);
 
 		JButton btnNewButton_2 = new JButton("Xóa");
+		btnNewButton_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (table.getSelectedRow() == -1) {
+					JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm để xóa!");
+				} else {
+					int answ = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn xóa sản phẩm này?", "Cảnh báo",
+							JOptionPane.YES_NO_OPTION);
+					if (answ == JOptionPane.YES_OPTION) {
+						Products pr = SanPhamDAO.getInstance().selectAll().get(table.getSelectedRow());
+						SanPhamDAO.getInstance().delete(pr);
+						JOptionPane.showMessageDialog(null, "Xóa thành công!");
+					}
+				}
+			}
+		});
 		btnNewButton_2.setFont(font);
 		btnNewButton_2.setIcon(new ImageIcon(ProductForm.class.getResource("/icon/icons8-delete-24.png")));
 		btnNewButton_2.setBounds(119, 8, 99, 33);
 		panel_1.add(btnNewButton_2);
 
 		JButton btnNewButton_3 = new JButton("Sửa");
+		btnNewButton_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				CapNhatProduct.main(null);
+			}
+		});
 		btnNewButton_3.setFont(font);
 		btnNewButton_3.setIcon(new ImageIcon(ProductForm.class.getResource("/icon/icons8-edit-24.png")));
 		btnNewButton_3.setBounds(228, 8, 87, 33);
 		panel_1.add(btnNewButton_3);
 
 		JButton btnNewButton_4 = new JButton("Nhập Excel");
+		btnNewButton_4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+				int rowBanDau = model.getRowCount();
+
+				File excelFile;
+				FileInputStream excelFIS = null;
+				BufferedInputStream excelBIS = null;
+				XSSFWorkbook excelImportToJTable = null;
+				String defaultCurrentDirectoryPath = "C:\\Users\\DELL\\Desktop";
+				JFileChooser excelFileChooser = new JFileChooser(defaultCurrentDirectoryPath);
+				excelFileChooser.setDialogTitle("Select Excel File");
+				FileNameExtensionFilter fnef = new FileNameExtensionFilter("EXCEL FILES", "xls", "xlsx", "xlsm");
+				excelFileChooser.setFileFilter(fnef);
+				int excelChooser = excelFileChooser.showOpenDialog(null);
+				if (excelChooser == JFileChooser.APPROVE_OPTION) {
+					try {
+						excelFile = excelFileChooser.getSelectedFile();
+//		                jExcelFilePath.setText(excelFile.toString());
+						excelFIS = new FileInputStream(excelFile);
+						excelBIS = new BufferedInputStream(excelFIS);
+						excelImportToJTable = new XSSFWorkbook(excelBIS);
+						XSSFSheet excelSheet = excelImportToJTable.getSheetAt(0);
+
+						for (int row = 1; row <= excelSheet.getLastRowNum(); row++) {
+							XSSFRow excelRow = excelSheet.getRow(row);
+							XSSFCell idsp = excelRow.getCell(0);
+							XSSFCell ten = excelRow.getCell(1);
+							XSSFCell idnpp = excelRow.getCell(2);
+							XSSFCell soluongtonkho = excelRow.getCell(3);
+
+							model.addRow(new Object[] { idsp, ten, idnpp, soluongtonkho});
+						}
+						JOptionPane.showMessageDialog(null, "Thêm thành công!");
+						int answ = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm vào csdl không", "Thông báo",
+								JOptionPane.YES_NO_OPTION);
+						if (answ == JOptionPane.YES_OPTION) {
+							for (int i = rowBanDau; i <= model.getRowCount(); i++) {
+								String idsp = model.getValueAt(i, 0).toString();
+								String ten = model.getValueAt(i, 1).toString();
+								String idnpp = model.getValueAt(i, 2).toString();
+								int soluongtonkho = (int) model.getValueAt(i, 3);
+
+								Products p = new Products(idsp, ten, idnpp, soluongtonkho);
+								SanPhamDAO.getInstance().insert(p);
+							}
+						}
+					} catch (IOException iOException) {
+						JOptionPane.showMessageDialog(null, iOException.getMessage());
+					} finally {
+						try {
+							if (excelFIS != null) {
+								excelFIS.close();
+							}
+							if (excelBIS != null) {
+								excelBIS.close();
+							}
+							if (excelImportToJTable != null) {
+								excelImportToJTable.close();
+							}
+						} catch (IOException iOException) {
+							JOptionPane.showMessageDialog(null, iOException.getMessage());
+						}
+					}
+				}
+			}
+
+		});
 		btnNewButton_4.setFont(font);
 		btnNewButton_4.setIcon(new ImageIcon(ProductForm.class.getResource("/icon/icons8-import-csv-24.png")));
 		btnNewButton_4.setBounds(329, 8, 138, 33);
 		panel_1.add(btnNewButton_4);
 
 		JButton btnNewButton_5 = new JButton("Xuât Excel");
+		btnNewButton_5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					JFileChooser jFileChooser = new JFileChooser();
+					jFileChooser.showSaveDialog(null);
+					File saveFile = jFileChooser.getSelectedFile();
+					if (saveFile != null) {
+						saveFile = new File(saveFile.toString() + ".xlsx");
+						Workbook wb = new XSSFWorkbook();
+						Sheet sheet = wb.createSheet("Product");
+
+						Row rowCol = sheet.createRow(0);
+						for (int i = 0; i < table.getColumnCount(); i++) {
+							org.apache.poi.ss.usermodel.Cell cell = rowCol.createCell(i);
+							cell.setCellValue(table.getColumnName(i));
+						}
+
+						for (int j = 0; j < table.getRowCount(); j++) {
+							Row row = sheet.createRow(j + 1);
+							for (int k = 0; k < table.getColumnCount(); k++) {
+								org.apache.poi.ss.usermodel.Cell ce = row.createCell(k);
+								if (table.getValueAt(j, k) != null) {
+									ce.setCellValue(table.getValueAt(j, k).toString());
+								}
+
+							}
+						}
+						FileOutputStream out = new FileOutputStream(new File(saveFile.toString()));
+						wb.write(out);
+						wb.close();
+						out.close();
+						openFile(saveFile.toString());
+					}
+				} catch (Exception ex) {
+					System.out.println(ex);
+				}
+			}
+		});
 		btnNewButton_5.setFont(font);
 		btnNewButton_5.setIcon(new ImageIcon(ProductForm.class.getResource("/icon/icons8-export-excel-24.png")));
 		btnNewButton_5.setBounds(477, 8, 142, 33);
@@ -153,8 +309,7 @@ public class ProductForm extends JInternalFrame {
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setFont(font);
 		comboBox.setModel(new DefaultComboBoxModel<>(
-		new String[]  { "ID Sản phẩm", "ID nhà phân phối","Tên sản phẩm", "Số lượng tồn kho" 
-		}));
+				new String[] { "ID Sản phẩm", "ID nhà phân phối", "Tên sản phẩm", "Số lượng tồn kho" }));
 		comboBox.setBounds(10, 8, 89, 33);
 		panel_2.add(comboBox);
 
@@ -184,5 +339,20 @@ public class ProductForm extends JInternalFrame {
 		scrollPane.setViewportView(table);
 		setDefaultTable();
 
+	}
+
+	public static Products getProSelect() {
+		Products p = SanPhamDAO.getInstance().selectAll().get(table.getSelectedRow());
+
+		return p;
+	}
+
+	private void openFile(String file) {
+		try {
+			File path = new File(file);
+			Desktop.getDesktop().open(path);
+		} catch (IOException e) {
+			System.out.println(e);
+		}
 	}
 }
