@@ -200,7 +200,7 @@ public class ThemRAM extends JFrame {
 
 		JLabel lblNewLabel_1_4 = new JLabel("ID sản phẩm");
 		lblNewLabel_1_4.setForeground(new Color(254, 254, 254));
-		lblNewLabel_1_4.setFont(null);
+		lblNewLabel_1_4.setFont(SetFont.font1_());
 		lblNewLabel_1_4.setBounds(10, 41, 83, 23);
 		contentPane.add(lblNewLabel_1_4);
 
@@ -217,7 +217,7 @@ public class ThemRAM extends JFrame {
 
 		JLabel lblNewLabel_1_5 = new JLabel("ID RAM");
 		lblNewLabel_1_5.setForeground(new Color(254, 254, 254));
-		lblNewLabel_1_5.setFont(null);
+		lblNewLabel_1_5.setFont(SetFont.font1_());
 		lblNewLabel_1_5.setBounds(261, 41, 83, 23);
 		contentPane.add(lblNewLabel_1_5);
 
@@ -235,7 +235,7 @@ public class ThemRAM extends JFrame {
 
 		JLabel lblNewLabel_1_5_1 = new JLabel("Tồn kho");
 		lblNewLabel_1_5_1.setForeground(new Color(254, 254, 254));
-		lblNewLabel_1_5_1.setFont(null);
+		lblNewLabel_1_5_1.setFont(SetFont.font1_());
 		lblNewLabel_1_5_1.setBounds(10, 198, 83, 23);
 		contentPane.add(lblNewLabel_1_5_1);
 	}

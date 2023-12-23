@@ -22,7 +22,7 @@ public class SanPhamDAO implements DAOInterface<Products> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "INSERT INTO sanpham (idsanpham, tensanpham, trangthai, mota) VALUES (?, ?, ?, ?);";
+			String sql = "INSERT INTO sanpham (idsanpham, tensanpham, trangthai, motasanpham) VALUES (?, ?, ?, ?);";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -49,7 +49,7 @@ public class SanPhamDAO implements DAOInterface<Products> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "update sanpham set tensanpham = ?, trangthai = ? , mota = ? where idsanpham = ?;";
+			String sql = "update sanpham set tensanpham = ?, trangthai = ? , motasanpham = ? where idsanpham = ?;";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -137,7 +137,7 @@ public class SanPhamDAO implements DAOInterface<Products> {
 
 			while (rs.next()) {
 				p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"),
-						rs.getInt("trangthai"), rs.getString("mota"));
+						rs.getInt("trangthai"), rs.getString("motasanpham"));
 
 			}
 
@@ -193,7 +193,7 @@ public class SanPhamDAO implements DAOInterface<Products> {
 
 			while (rs.next()) {
 				Products p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"),
-						rs.getInt("trangthai"), rs.getString("mota"));
+						rs.getInt("trangthai"), rs.getString("motasanpham"));
 
 				list.add(p);
 			}

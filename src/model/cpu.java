@@ -16,6 +16,17 @@ public class cpu extends Products {
 	public cpu() {
 		super();
 	}
+	
+	
+
+	public cpu(String idSanPham, String idCpu, String nameCpu, double donGia) {
+		super(idSanPham);
+		this.idCpu = idCpu;
+		this.nameCpu = nameCpu;
+		this.donGia = donGia;
+	}
+
+
 
 	public cpu(String idCpu, String nameCpu, String xungNhip, int soNhan, int soLuong, String dienNangTieuThu,
 			String boNhoDem, int tonKho, double donGia) {

@@ -95,11 +95,18 @@ public class RAMForm extends JInternalFrame {
 
 				DefaultTableCellRenderer df = new DefaultTableCellRenderer();
 				df.setHorizontalAlignment(SwingConstants.RIGHT);
+				
+				DefaultTableCellRenderer center = new DefaultTableCellRenderer();
+				center.setHorizontalAlignment(SwingConstants.CENTER);
+				
 				table.getColumnModel().getColumn(7).setCellRenderer(df);
+				table.getColumnModel().getColumn(6).setCellRenderer(center);
+				table.getColumnModel().getColumn(3).setCellRenderer(center);
+				
 				String gia = FormatToVND.vnd(i.getDonGia());
 
-				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getTenRam(), i.getLoai(), i.getDungLuong(),
-						i.getBus(), gia });
+				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getIdRam(), i.getTenRam(), i.getLoai(),
+						i.getDungLuong(), i.getBus(), i.getTonkho(), gia });
 			}
 		} catch (Exception e) {
 		}
@@ -183,7 +190,7 @@ public class RAMForm extends JInternalFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (table.getSelectedRow() == -1) {
-					JOptionPane.showMessageDialog(null, "Vui lòng chọn RAM đẻ chính sửa!");
+					JOptionPane.showMessageDialog(null, "Vui lòng chọn RAM để chỉnh sửa!");
 				} else
 					CapNhatRAM.main(null);
 			}

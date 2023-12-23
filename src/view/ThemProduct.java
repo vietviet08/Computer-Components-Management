@@ -21,6 +21,8 @@ import dao.SanPhamDAO;
 import font.SetFont;
 import model.NhaPhanPhoi;
 import model.Products;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class ThemProduct extends JFrame {
 
@@ -108,38 +110,34 @@ public class ThemProduct extends JFrame {
 		contentPane.add(lblNewLabel_3);
 
 		JButton btnAdd = new JButton("Thêm");
+		btnAdd.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					addProduct();
+				}
+			}
+		});
 		btnAdd.setFont(SetFont.font1());
 		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				if (tfIDSP.getText().equals("") || tfTrangThai.equals("") || tfTenSP.equals("")) {
-					JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!");
-				} else {
-					if (kiemTraID()) {
-						JOptionPane.showMessageDialog(null, "ID sản phẩm đã tồn tại!");
-					} else {
-
-						String idsp = tfIDSP.getText();
-						String ten = tfTenSP.getText();
-						int trangthai = Integer.parseInt(tfTrangThai.getText());
-						String mota = txtMoTa.getText();
-
-						Products pro = new Products(idsp, ten, trangthai, mota);
-
-						SanPhamDAO.getInstance().insert(pro);
-
-						JOptionPane.showMessageDialog(null, "Thêm thành công");
-						ProductForm.loadDataToTable(SanPhamDAO.getInstance().selectAll());
-						closeFrame();
-					}
-				}
+				addProduct();
 			}
 		});
 		btnAdd.setBounds(10, 213, 111, 31);
 		contentPane.add(btnAdd);
 
 		JButton btnHuy = new JButton("Hủy");
+		btnHuy.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					closeFrame();
+				}
+			}
+		});
 		btnHuy.setFont(SetFont.font1());
 		btnHuy.addMouseListener(new MouseAdapter() {
 			@Override
@@ -186,5 +184,29 @@ public class ThemProduct extends JFrame {
 				return true;
 		}
 		return false;
+	}
+
+	private void addProduct() {
+		if (tfIDSP.getText().equals("") || tfTrangThai.equals("") || tfTenSP.equals("")) {
+			JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!");
+		} else {
+			if (kiemTraID()) {
+				JOptionPane.showMessageDialog(null, "ID sản phẩm đã tồn tại!");
+			} else {
+
+				String idsp = tfIDSP.getText();
+				String ten = tfTenSP.getText();
+				int trangthai = Integer.parseInt(tfTrangThai.getText());
+				String mota = txtMoTa.getText();
+
+				Products pro = new Products(idsp, ten, trangthai, mota);
+
+				SanPhamDAO.getInstance().insert(pro);
+
+				JOptionPane.showMessageDialog(null, "Thêm thành công");
+				ProductForm.loadDataToTable(SanPhamDAO.getInstance().selectAll());
+				closeFrame();
+			}
+		}
 	}
 }

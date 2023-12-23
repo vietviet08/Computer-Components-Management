@@ -17,6 +17,8 @@ import color.SetColor;
 import dao.SanPhamDAO;
 import font.SetFont;
 import model.Products;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class CapNhatProduct extends JFrame {
 
@@ -91,28 +93,19 @@ public class CapNhatProduct extends JFrame {
 		panel.add(lblNewLabel_1_1);
 
 		JButton btnNewButton = new JButton("Cập nhật");
+		btnNewButton.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+					updateProduct();
+				}
+			}
+		});
 		btnNewButton.setBorder(null);
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (tfTrangThai.getText().equals("") || tfTen.equals("")) {
-					JOptionPane.showMessageDialog(null, "Vui lòng điền đầy đủ thông tin!");
-
-				} else {
-					Products old = ProductForm.getProSelect();
-
-					String idsp = old.getIdSanPham();
-					String tensp = tfTen.getText();
-					int trangthai = Integer.parseInt(tfTrangThai.getText());
-					String mota = txtMoTa.getText();
-
-					Products p = new Products(idsp, tensp, trangthai, mota);
-
-					SanPhamDAO.getInstance().update(p);
-
-					JOptionPane.showInternalMessageDialog(null, "Cập nhật thành công!");
-					closeFrame();
-				}
+				updateProduct();
 			}
 		});
 		btnNewButton.setFont(SetFont.font1());
@@ -120,6 +113,14 @@ public class CapNhatProduct extends JFrame {
 		panel.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("Hủy");
+		btnNewButton_1.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ESCAPE) {
+					closeFrame();
+				}
+			}
+		});
 		btnNewButton_1.setBorder(null);
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -166,5 +167,27 @@ public class CapNhatProduct extends JFrame {
 		tfTrangThai.setText(String.valueOf(pr.getTrangThai()));
 		txtMoTa.setText(pr.getMoTa());
 //		tfSoLuongTonKho.setText(String.valueOf(pr.getSoLuongTonKho()));
+	}
+	
+	private void updateProduct() {
+		if (tfTrangThai.getText().equals("") || tfTen.equals("")) {
+			JOptionPane.showMessageDialog(null, "Vui lòng điền đầy đủ thông tin!");
+
+		} else {
+			Products old = ProductForm.getProSelect();
+
+			String idsp = old.getIdSanPham();
+			String tensp = tfTen.getText();
+			int trangthai = Integer.parseInt(tfTrangThai.getText());
+			String mota = txtMoTa.getText();
+
+			Products p = new Products(idsp, tensp, trangthai, mota);
+
+			SanPhamDAO.getInstance().update(p);
+
+			JOptionPane.showInternalMessageDialog(null, "Cập nhật thành công!");
+			ProductForm.loadDataToTable(SanPhamDAO.getInstance().selectAll());
+			closeFrame();
+		}
 	}
 }

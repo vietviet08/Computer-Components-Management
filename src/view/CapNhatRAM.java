@@ -1,4 +1,4 @@
-package view;
+	package view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -47,8 +47,8 @@ public class CapNhatRAM extends JFrame {
 			public void run() {
 				try {
 					CapNhatRAM frame = new CapNhatRAM();
-					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
 					setDefaultTF();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -66,9 +66,9 @@ public class CapNhatRAM extends JFrame {
 		setBounds(100, 100, 582, 368);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBackground(SetColor.blueOp);
 
 		setContentPane(contentPane);
-		contentPane.setBackground(SetColor.blueOp);
 		contentPane.setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("CẬP NHẬT RAM");
@@ -160,6 +160,7 @@ public class CapNhatRAM extends JFrame {
 
 				ramDAO.getInstance().update(r);
 				JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+				RAMForm.loadDataToTable(ramDAO.getInstance().selectAll());
 				closeFrame();
 			}
 		});
@@ -182,14 +183,14 @@ public class CapNhatRAM extends JFrame {
 
 		JLabel lblNewLabel_2_1_2 = new JLabel("ID sản phẩm");
 		lblNewLabel_2_1_2.setForeground(new Color(254, 254, 254));
-		lblNewLabel_2_1_2.setFont(null);
+		lblNewLabel_2_1_2.setFont(SetFont.font1_());
 		lblNewLabel_2_1_2.setBounds(35, 74, 84, 28);
 		contentPane.add(lblNewLabel_2_1_2);
 
 		ArrayList<Products> list = SanPhamDAO.getIDSanPham("ram");
 		String[] combo = new String[list.size()];
 
-		for (int i = 1; i <= list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) {
 			Products p = list.get(i);
 			combo[i] = p.getIdSanPham();
 		}
@@ -200,7 +201,7 @@ public class CapNhatRAM extends JFrame {
 
 		JLabel lblNewLabel_2_3_1 = new JLabel("Tồn kho");
 		lblNewLabel_2_3_1.setForeground(new Color(254, 254, 254));
-		lblNewLabel_2_3_1.setFont(null);
+		lblNewLabel_2_3_1.setFont(SetFont.font1_());
 		lblNewLabel_2_3_1.setBounds(302, 205, 84, 28);
 		contentPane.add(lblNewLabel_2_3_1);
 
@@ -222,7 +223,7 @@ public class CapNhatRAM extends JFrame {
 		tfLoai.setText(r.getLoai());
 		tfBus.setText(r.getBus());
 		tfGia.setText(String.valueOf(r.getDonGia()));
-		tfTonKho.setText(String.valueOf(tfTonKho.getText()));
+		tfTonKho.setText(String.valueOf(r.getTonkho()));
 		tfDungLuong.setText(r.getDungLuong());
 	}
 }

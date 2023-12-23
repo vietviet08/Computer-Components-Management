@@ -12,7 +12,7 @@ public class TimKiemRAM {
 		ArrayList<ram> listram = ramDAO.getInstance().selectAll();
 
 		for (ram ram : listram) {
-			if (ram.getIdSanPham().contains(key.toLowerCase())) {
+			if (ram.getIdSanPham().toLowerCase().contains(key.toLowerCase())) {
 				list.add(ram);
 			}
 		}
@@ -24,7 +24,7 @@ public class TimKiemRAM {
 		ArrayList<ram> listram = ramDAO.getInstance().selectAll();
 
 		for (ram ram : listram) {
-			if (ram.getIdRam().contains(key.toLowerCase())) {
+			if (ram.getIdRam().toLowerCase().contains(key.toLowerCase())) {
 				list.add(ram);
 			}
 		}
@@ -37,7 +37,7 @@ public class TimKiemRAM {
 		ArrayList<ram> listram = ramDAO.getInstance().selectAll();
 
 		for (ram ram : listram) {
-			if (ram.getTenRam().contains(key.toLowerCase())) {
+			if (ram.getTenRam().toLowerCase().contains(key.toLowerCase())) {
 				list.add(ram);
 			}
 		}
@@ -48,7 +48,7 @@ public class TimKiemRAM {
 		ArrayList<ram> listram = ramDAO.getInstance().selectAll();
 
 		for (ram ram : listram) {
-			if (ram.getLoai().contains(key.toLowerCase())) {
+			if (ram.getLoai().toLowerCase().contains(key.toLowerCase())) {
 				list.add(ram);
 			}
 		}
@@ -59,7 +59,7 @@ public class TimKiemRAM {
 		ArrayList<ram> listram = ramDAO.getInstance().selectAll();
 
 		for (ram ram : listram) {
-			if (ram.getDungLuong().contains(key.toLowerCase())) {
+			if (ram.getDungLuong().toLowerCase().contains(key.toLowerCase())) {
 				list.add(ram);
 			}
 		}
@@ -70,7 +70,7 @@ public class TimKiemRAM {
 		ArrayList<ram> listram = ramDAO.getInstance().selectAll();
 
 		for (ram ram : listram) {
-			if (ram.getBus().contains(key.toLowerCase())) {
+			if (ram.getBus().toLowerCase().contains(key.toLowerCase())) {
 				list.add(ram);
 			}
 		}

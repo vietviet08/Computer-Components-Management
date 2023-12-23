@@ -78,6 +78,8 @@ public class cpuDAO implements DAOInterface<cpu> {
 		return check;
 	}
 
+//	cần tạo method update số lượng sản phẩm khi được nhập hàng hoặc xuất hàng
+
 	@Override
 	public int delete(cpu t) {
 		int check = 0;
@@ -116,7 +118,31 @@ public class cpuDAO implements DAOInterface<cpu> {
 			while (rs.next()) {
 				cpu chip = new cpu(rs.getString("idsanpham"), rs.getString("idcpu"), rs.getString("tencpu"),
 						rs.getString("xungnhip"), rs.getInt("sonhan"), rs.getInt("soluong"),
-						rs.getString("diennangtieuthu"), rs.getString("bonhodem"),rs.getInt("tonkho"), rs.getDouble("dongia"));
+						rs.getString("diennangtieuthu"), rs.getString("bonhodem"), rs.getInt("tonkho"),
+						rs.getDouble("dongia"));
+				c.add(chip);
+			}
+			JDBCUntil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return c;
+	}
+
+	public ArrayList<cpu> selectNhapHang() {
+		ArrayList<cpu> c = new ArrayList<cpu>();
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "SELECT * FROM cpu;";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				cpu chip = new cpu(rs.getString("idsanpham"), rs.getString("idcpu"), rs.getString("tencpu"),
+						rs.getDouble("dongia"));
 				c.add(chip);
 			}
 			JDBCUntil.closeConnection(con);
@@ -144,7 +170,8 @@ public class cpuDAO implements DAOInterface<cpu> {
 			while (rs.next()) {
 				c = new cpu(rs.getString("idsanpham"), rs.getString("idcpu"), rs.getString("tencpu"),
 						rs.getString("xungnhip"), rs.getInt("sonhan"), rs.getInt("soluong"),
-						rs.getString("diennangtieuthu"), rs.getString("bonhodem"), rs.getInt("tonkho"),rs.getDouble("dongia"));
+						rs.getString("diennangtieuthu"), rs.getString("bonhodem"), rs.getInt("tonkho"),
+						rs.getDouble("dongia"));
 			}
 			JDBCUntil.closeConnection(con);
 		} catch (SQLException e) {
@@ -170,7 +197,8 @@ public class cpuDAO implements DAOInterface<cpu> {
 			while (rs.next()) {
 				cpu c = new cpu(rs.getString("idsanpham"), rs.getString("idcpu"), rs.getString("tencpu"),
 						rs.getString("xungnhip"), rs.getInt("sonhan"), rs.getInt("soluong"),
-						rs.getString("diennangtieuthu"), rs.getString("bonhodem"),rs.getInt("tonkho"), rs.getDouble("dongia"));
+						rs.getString("diennangtieuthu"), rs.getString("bonhodem"), rs.getInt("tonkho"),
+						rs.getDouble("dongia"));
 				list.add(c);
 			}
 			JDBCUntil.closeConnection(con);

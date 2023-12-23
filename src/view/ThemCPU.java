@@ -25,6 +25,8 @@ import model.Products;
 import model.cpu;
 import javax.swing.SwingConstants;
 import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class ThemCPU extends JFrame {
 
@@ -78,37 +80,37 @@ public class ThemCPU extends JFrame {
 
 		JLabel lblNewLabel = new JLabel("ID sản phẩm");
 		lblNewLabel.setForeground(SetColor.whiteFont);
-		lblNewLabel.setFont(SetFont.font());
+		lblNewLabel.setFont(SetFont.font1_());
 		lblNewLabel.setBounds(21, 57, 81, 30);
 		contentPane.add(lblNewLabel);
 
 		JLabel lblSNhn = new JLabel("Số nhân");
 		lblSNhn.setForeground(SetColor.whiteFont);
-		lblSNhn.setFont(SetFont.font());
+		lblSNhn.setFont(SetFont.font1_());
 		lblSNhn.setBounds(284, 57, 83, 30);
 		contentPane.add(lblSNhn);
 
 		JLabel lblNewLabel_1_1 = new JLabel("Số luồng");
 		lblNewLabel_1_1.setForeground(SetColor.whiteFont);
-		lblNewLabel_1_1.setFont(SetFont.font());
+		lblNewLabel_1_1.setFont(SetFont.font1_());
 		lblNewLabel_1_1.setBounds(401, 57, 61, 30);
 		contentPane.add(lblNewLabel_1_1);
 
 		JLabel lblXungNhp = new JLabel("Xung nhịp");
-		lblXungNhp.setFont(SetFont.font());
+		lblXungNhp.setFont(SetFont.font1_());
 		lblXungNhp.setForeground(SetColor.whiteFont);
 		lblXungNhp.setBounds(284, 122, 71, 30);
 		contentPane.add(lblXungNhp);
 
 		JLabel lblNewLabel_1_2 = new JLabel("Tồn kho");
 		lblNewLabel_1_2.setForeground(SetColor.whiteFont);
-		lblNewLabel_1_2.setFont(SetFont.font());
+		lblNewLabel_1_2.setFont(SetFont.font1_());
 		lblNewLabel_1_2.setBounds(284, 257, 83, 30);
 		contentPane.add(lblNewLabel_1_2);
 
 		JLabel lblinNngTiu = new JLabel("Điện năng tiêu thụ");
 		lblinNngTiu.setForeground(SetColor.whiteFont);
-		lblinNngTiu.setFont(SetFont.font());
+		lblinNngTiu.setFont(SetFont.font1_());
 		lblinNngTiu.setBounds(21, 257, 116, 30);
 		contentPane.add(lblinNngTiu);
 
@@ -138,53 +140,37 @@ public class ThemCPU extends JFrame {
 		contentPane.add(tfSoLuong);
 
 		JButton btnAdd = new JButton("Thêm");
+		btnAdd.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+					addCPU();
+				}
+			}
+		});
 		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (kiemTraIDCPU()) {
-					JOptionPane.showMessageDialog(null, "ID CPU đã tồn tại");
-				} else {
-
-					String id = (String) comboBox.getSelectedItem();
-					String ten = tfTenCPU.getText();
-					String xungNhip = tfXungNhip.getText();
-					int soNhan = Integer.parseInt(tfSoNhan.getText());
-					int soLuong = Integer.parseInt(tfSoLuong.getText());
-					String dienNang = tfDienNang.getText();
-					String boNho = tfBoNhoDem.getText();
-					double gia = Double.parseDouble(tfTonKho.getText());
-
-					cpu c = new cpu();
-					c.setIdSanPham(id);
-					c.setIdCpu(tfIDCPU.getText());
-					c.setNameCpu(ten);
-					c.setXungNhip(xungNhip);
-					c.setSoNhan(soNhan);
-					c.setSoLuong(soLuong);
-					c.setDienNangTieuThu(dienNang);
-					c.setBoNhoDem(boNho);
-					c.setTonKho(Integer.parseInt(tfTonKho.getText()));
-					c.setDonGia(gia);
-
-					cpuDAO.getInstance().insert(c);
-
-					JOptionPane.showMessageDialog(null, "Thêm thành công");
-
-					CPUForm.loadDataToTable(cpuDAO.getInstance().selectAll());
-
-					closeFrame();
-				}
+				addCPU();
 			}
 		});
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnAdd.setFont(SetFont.font1_());
+		btnAdd.setFont(SetFont.font1());
 		btnAdd.setBounds(299, 319, 97, 30);
 		contentPane.add(btnAdd);
 
 		JButton btnCancel = new JButton("Hủy");
+		btnCancel.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ESCAPE) {
+					closeFrame();
+				}
+			}
+		});
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -195,13 +181,13 @@ public class ThemCPU extends JFrame {
 				closeFrame();
 			}
 		});
-		btnCancel.setFont(SetFont.font1_());
+		btnCancel.setFont(SetFont.font1());
 		btnCancel.setBounds(429, 319, 97, 30);
 		contentPane.add(btnCancel);
 
 		JLabel lblNewLabel_1_1_1 = new JLabel("Bộ nhớ đệm");
 		lblNewLabel_1_1_1.setForeground(SetColor.whiteFont);
-		lblNewLabel_1_1_1.setFont(SetFont.font());
+		lblNewLabel_1_1_1.setFont(SetFont.font1_());
 		lblNewLabel_1_1_1.setBounds(284, 192, 71, 30);
 		contentPane.add(lblNewLabel_1_1_1);
 
@@ -225,7 +211,7 @@ public class ThemCPU extends JFrame {
 
 		JLabel lblTnCpu = new JLabel("Tên cpu");
 		lblTnCpu.setForeground(SetColor.whiteFont);
-		lblTnCpu.setFont(SetFont.font());
+		lblTnCpu.setFont(SetFont.font1_());
 		lblTnCpu.setBounds(21, 188, 71, 30);
 		contentPane.add(lblTnCpu);
 
@@ -249,7 +235,7 @@ public class ThemCPU extends JFrame {
 
 		JLabel lblIdCpu = new JLabel("ID CPU");
 		lblIdCpu.setForeground(new Color(254, 254, 254));
-		lblIdCpu.setFont(null);
+		lblIdCpu.setFont(SetFont.font1_());
 		lblIdCpu.setBounds(21, 122, 71, 30);
 		contentPane.add(lblIdCpu);
 
@@ -260,7 +246,7 @@ public class ThemCPU extends JFrame {
 		
 		JLabel lblNewLabel_1_2_1 = new JLabel("Đơn giá");
 		lblNewLabel_1_2_1.setForeground(new Color(254, 254, 254));
-		lblNewLabel_1_2_1.setFont(null);
+		lblNewLabel_1_2_1.setFont(SetFont.font1_());
 		lblNewLabel_1_2_1.setBounds(19, 319, 83, 30);
 		contentPane.add(lblNewLabel_1_2_1);
 		
@@ -295,5 +281,41 @@ public class ThemCPU extends JFrame {
 			}else break;
 		}
 		tfIDCPU.setText(id+code);
+	}
+	
+	private void addCPU() {
+		if (kiemTraIDCPU()) {
+			JOptionPane.showMessageDialog(null, "ID CPU đã tồn tại");
+		} else {
+
+			String id = (String) comboBox.getSelectedItem();
+			String ten = tfTenCPU.getText();
+			String xungNhip = tfXungNhip.getText();
+			int soNhan = Integer.parseInt(tfSoNhan.getText());
+			int soLuong = Integer.parseInt(tfSoLuong.getText());
+			String dienNang = tfDienNang.getText();
+			String boNho = tfBoNhoDem.getText();
+			double gia = Double.parseDouble(tfTonKho.getText());
+
+			cpu c = new cpu();
+			c.setIdSanPham(id);
+			c.setIdCpu(tfIDCPU.getText());
+			c.setNameCpu(ten);
+			c.setXungNhip(xungNhip);
+			c.setSoNhan(soNhan);
+			c.setSoLuong(soLuong);
+			c.setDienNangTieuThu(dienNang);
+			c.setBoNhoDem(boNho);
+			c.setTonKho(Integer.parseInt(tfTonKho.getText()));
+			c.setDonGia(gia);
+
+			cpuDAO.getInstance().insert(c);
+
+			JOptionPane.showMessageDialog(null, "Thêm thành công");
+
+			CPUForm.loadDataToTable(cpuDAO.getInstance().selectAll());
+
+			closeFrame();
+		}
 	}
 }

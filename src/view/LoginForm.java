@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Desktop.Action;
+import java.awt.Event;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -32,6 +34,7 @@ import color.SetColor;
 import controller.BCrypt;
 import dao.AccountDAO;
 import model.Account;
+import java.awt.event.KeyAdapter;
 
 public class LoginForm extends JFrame {
 
@@ -109,8 +112,16 @@ public class LoginForm extends JFrame {
 		lblNewLabel_1_2.setBounds(86, 226, 260, 23);
 		contentPane.add(lblNewLabel_1_2);
 
+		
 		JButton btnNewButton = new JButton("LOGIN");
-		btnNewButton.setMnemonic(KeyEvent.VK_ENTER);
+		btnNewButton.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+					checkLogin();
+				}
+			}
+		});
 		
 		btnNewButton.setBorder(null);
 		btnNewButton.setBorderPainted(false);
@@ -160,6 +171,14 @@ public class LoginForm extends JFrame {
 		contentPane.add(lblNewLabel_2);
 
 		jtfuser = new JTextField();
+		jtfuser.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+					checkLogin();
+				}
+			}
+		});
 		jtfuser.setBackground(SetColor.blueOp);
 		jtfuser.setBorder(null);
 		jtfuser.setFont(font_1);
@@ -168,6 +187,14 @@ public class LoginForm extends JFrame {
 		jtfuser.setColumns(10);
 
 		jtfpassword = new JPasswordField();
+		jtfpassword.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+					checkLogin();
+				}
+			}
+		});
 		jtfpassword.setBackground(SetColor.blueOp);
 		jtfpassword.setEchoChar('*');
 		jtfpassword.setBorder(null);

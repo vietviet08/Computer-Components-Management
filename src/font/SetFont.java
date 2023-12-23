@@ -59,7 +59,7 @@ public class SetFont {
 		Font f = null;
 		try {
 			File fontStyle1 = new File("src/font/Oswald-Medium.ttf");
-			f = Font.createFont(Font.TRUETYPE_FONT, fontStyle1).deriveFont(18f);
+			f = Font.createFont(Font.TRUETYPE_FONT, fontStyle1).deriveFont(20f);
 		} catch (Exception e) {
 			System.out.println(e);
 		}

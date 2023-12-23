@@ -62,7 +62,7 @@ public class CPUForm extends JInternalFrame {
 	private static JTable table;
 	private static DefaultTableModel tableModel;
 	private final String columName[] = { "ID sản phẩm", "ID CPU", "Tên CPU", "Xung nhịp", "Số nhân", "Số luồng",
-			"Điện năng tiêu thụ", "Bộ nhớ đệm", "Tồn kho","Đơn giá" };
+			"Điện năng tiêu thụ", "Bộ nhớ đệm", "Tồn kho", "Đơn giá" };
 	private JTextField textField;
 	public Font font;
 	public Font font_1;
@@ -108,7 +108,7 @@ public class CPUForm extends JInternalFrame {
 
 				String gia = FormatToVND.vnd(i.getDonGia());
 				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getIdCpu(), i.getNameCpu(), i.getXungNhip(),
-						i.getSoNhan(), i.getSoLuong(), i.getDienNangTieuThu(), i.getBoNhoDem(), gia });
+						i.getSoNhan(), i.getSoLuong(), i.getDienNangTieuThu(), i.getBoNhoDem(), i.getTonKho(), gia });
 			}
 		} catch (Exception e) {
 		}
@@ -250,8 +250,8 @@ public class CPUForm extends JInternalFrame {
 							XSSFCell tonkho = excelRow.getCell(8);
 							XSSFCell dongia = excelRow.getCell(9);
 
-							model.addRow(
-									new Object[] { idsp, idcpu, ten, xn, sonhan, soluong, diennang, bonho,tonkho, dongia });
+							model.addRow(new Object[] { idsp, idcpu, ten, xn, sonhan, soluong, diennang, bonho, tonkho,
+									dongia });
 						}
 						JOptionPane.showMessageDialog(null, "Thêm thành công!");
 						int answ = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm vào csdl không", "Thông báo",
@@ -370,7 +370,7 @@ public class CPUForm extends JInternalFrame {
 			}
 		};
 		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "New column", "New column", "New column",
-				"New column", "New column", "New column", "New column" }));
+				"New column", "New column", "New column", "New column", "New column", "New column", "New column" }));
 		scrollPane.setViewportView(table);
 
 		setDefaultTable();
@@ -395,7 +395,7 @@ public class CPUForm extends JInternalFrame {
 		panel_1.add(lblNewLabel_2);
 		comboBox.setFont(font);
 		comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID sản phẩm", "ID CPU", "Tên CPU",
-				"Xung nhịp", "Số nhân", "Số luồng", "Điện năng tiêu thụ", "Bộ nhớ đệm","Tồn kho", "Đơn giá" }));
+				"Xung nhịp", "Số nhân", "Số luồng", "Điện năng tiêu thụ", "Bộ nhớ đệm", "Tồn kho", "Đơn giá" }));
 		comboBox.setBounds(146, 8, 89, 33);
 		panel_1.add(comboBox);
 
@@ -423,9 +423,9 @@ public class CPUForm extends JInternalFrame {
 					list = TimKiemCPU.byBoNhoDem(key);
 				} else if (choose.equals("Đơn giá")) {
 					list = TimKiemCPU.byGia(key);
-				}else if (choose.equals("ID CPU")) {
+				} else if (choose.equals("ID CPU")) {
 					list = TimKiemCPU.byIDCPU(key);
-				}else if (choose.equals("Tồn kho")) {
+				} else if (choose.equals("Tồn kho")) {
 					list = TimKiemCPU.byTonKho(key);
 				}
 
@@ -447,10 +447,10 @@ public class CPUForm extends JInternalFrame {
 				} else if (comboBoxSort.getSelectedItem().toString().equals("Giá giảm dần")) {
 					ArrayList<cpu> giamdan = giaGiamDan();
 					loadDataToTable(giamdan);
-				}else if (comboBoxSort.getSelectedItem().toString().equals("Tồn kho tăng dần")) {
+				} else if (comboBoxSort.getSelectedItem().toString().equals("Tồn kho tăng dần")) {
 					ArrayList<cpu> tang = tonKhoTang();
 					loadDataToTable(tang);
-				}else if (comboBoxSort.getSelectedItem().toString().equals("Tồn kho giảm dần")) {
+				} else if (comboBoxSort.getSelectedItem().toString().equals("Tồn kho giảm dần")) {
 					ArrayList<cpu> giam = tonKhoGiam();
 					loadDataToTable(giam);
 				}
@@ -475,8 +475,8 @@ public class CPUForm extends JInternalFrame {
 
 			}
 		});
-		comboBoxSort.setModel(
-				new DefaultComboBoxModel<String>(new String[] { "Sắp xếp", "Giá tăng dần", "Giá giảm dần", "Tồn kho tăng dần", "Tồn kho giảm dần" }));
+		comboBoxSort.setModel(new DefaultComboBoxModel<String>(
+				new String[] { "Sắp xếp", "Giá tăng dần", "Giá giảm dần", "Tồn kho tăng dần", "Tồn kho giảm dần" }));
 		comboBoxSort.setBounds(0, 8, 125, 32);
 		panel_1.add(comboBoxSort);
 
@@ -525,7 +525,7 @@ public class CPUForm extends JInternalFrame {
 		});
 		return list;
 	}
-	
+
 	private ArrayList<cpu> tonKhoGiam() {
 		ArrayList<cpu> list = cpuDAO.getInstance().selectAll();
 		Collections.sort(list, new Comparator<cpu>() {
@@ -540,7 +540,7 @@ public class CPUForm extends JInternalFrame {
 		});
 		return list;
 	}
-	
+
 	private ArrayList<cpu> tonKhoTang() {
 		ArrayList<cpu> list = cpuDAO.getInstance().selectAll();
 		Collections.sort(list, new Comparator<cpu>() {

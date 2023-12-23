@@ -11,7 +11,7 @@ public class TimKiemVGA {
 		ArrayList<vga> listram = vgaDAO.getInstance().selectAll();
 
 		for (vga vga : listram) {
-			if (vga.getIdSanPham().contains(key.toLowerCase())) {
+			if (vga.getIdSanPham().toLowerCase().contains(key.toLowerCase())) {
 				list.add(vga);
 			}
 		}
@@ -23,7 +23,7 @@ public class TimKiemVGA {
 		ArrayList<vga> listram = vgaDAO.getInstance().selectAll();
 
 		for (vga vga : listram) {
-			if (vga.getIdVga().contains(key.toLowerCase())) {
+			if (vga.getIdVga().toLowerCase().contains(key.toLowerCase())) {
 				list.add(vga);
 			}
 		}
@@ -35,7 +35,7 @@ public class TimKiemVGA {
 		ArrayList<vga> listram = vgaDAO.getInstance().selectAll();
 
 		for (vga vga : listram) {
-			if (vga.getTenVGA().contains(key.toLowerCase())) {
+			if (vga.getTenVGA().toLowerCase().contains(key.toLowerCase())) {
 				list.add(vga);
 			}
 		}
@@ -47,7 +47,7 @@ public class TimKiemVGA {
 		ArrayList<vga> listram = vgaDAO.getInstance().selectAll();
 
 		for (vga vga : listram) {
-			if (vga.getHangVGA().contains(key.toLowerCase())) {
+			if (vga.getHangVGA().toLowerCase().contains(key.toLowerCase())) {
 				list.add(vga);
 			}
 		}
@@ -59,7 +59,7 @@ public class TimKiemVGA {
 		ArrayList<vga> listram = vgaDAO.getInstance().selectAll();
 
 		for (vga vga : listram) {
-			if (vga.getBoNho().contains(key.toLowerCase())) {
+			if (vga.getBoNho().toLowerCase().contains(key.toLowerCase())) {
 				list.add(vga);
 			}
 		}

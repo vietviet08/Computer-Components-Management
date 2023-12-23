@@ -48,6 +48,7 @@ import color.SetColor;
 import controller.FormatToVND;
 import controller.TimKiemVGA;
 import dao.vgaDAO;
+import font.SetFont;
 import model.vga;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -92,12 +93,19 @@ public class VGAForm extends JInternalFrame {
 		try {
 			tableModel.setRowCount(0);
 			for (vga i : v) {
-				DefaultTableCellRenderer df = new DefaultTableCellRenderer();
-				df.setHorizontalAlignment(SwingConstants.RIGHT);
-				table.getColumnModel().getColumn(6).setCellRenderer(df);
+				DefaultTableCellRenderer right = new DefaultTableCellRenderer();
+				right.setHorizontalAlignment(SwingConstants.RIGHT);
+				
+				DefaultTableCellRenderer center = new DefaultTableCellRenderer();
+				center.setHorizontalAlignment(SwingConstants.CENTER);
+				
+				table.getColumnModel().getColumn(6).setCellRenderer(right);
+				table.getColumnModel().getColumn(5).setCellRenderer(center);
+				
 				String gia = FormatToVND.vnd(i.getDonGia());
 
-				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getTenVGA(), i.getHangVGA(), i.getBoNho(), gia });
+				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getIdVga(), i.getTenVGA(), i.getHangVGA(),
+						i.getBoNho(), i.getTonKho(), gia });
 			}
 		} catch (Exception e) {
 		}
@@ -108,7 +116,7 @@ public class VGAForm extends JInternalFrame {
 		tableModel.setColumnIdentifiers(columName);
 		table.setDefaultEditor(Object.class, null);
 		table.setModel(tableModel);
-		table.getColumnModel().getColumn(0).setPreferredWidth(300);
+		table.getColumnModel().getColumn(0).setPreferredWidth(150);
 		table.getColumnModel().getColumn(1).setPreferredWidth(150);
 		table.getColumnModel().getColumn(2).setPreferredWidth(500);
 		table.getColumnModel().getColumn(3).setPreferredWidth(200);
@@ -417,6 +425,7 @@ public class VGAForm extends JInternalFrame {
 				}
 			}
 		});
+		comboBox_1.setFont(SetFont.font());
 		comboBox_1.setBounds(10, 8, 126, 33);
 		panel_1.add(comboBox_1);
 	}

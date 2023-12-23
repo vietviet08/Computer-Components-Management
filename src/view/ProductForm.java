@@ -324,6 +324,7 @@ public class ProductForm extends JInternalFrame {
 				}
 			}
 		});
+		comboBox_1.setFont(font);
 		comboBox_1.setBounds(10, 8, 128, 33);
 		panel_2.add(comboBox_1);
 

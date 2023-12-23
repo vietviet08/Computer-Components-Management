@@ -46,8 +46,8 @@ public class CapNhatVGA extends JFrame {
 			public void run() {
 				try {
 					CapNhatVGA frame = new CapNhatVGA();
-					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
 					setDefaultTF();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -90,6 +90,7 @@ public class CapNhatVGA extends JFrame {
 		contentPane.add(lblTnVga);
 
 		tfTen = new JTextField();
+		tfTen.setFont(SetFont.font());
 		tfTen.setBorder(null);
 		tfTen.setBounds(381, 57, 158, 25);
 		contentPane.add(tfTen);
@@ -124,6 +125,7 @@ public class CapNhatVGA extends JFrame {
 						Double.parseDouble(tfDonGia.getText()));
 				vgaDAO.getInstance().update(vvga);
 				JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
+				VGAForm.loadDataToTable(vgaDAO.getInstance().selectAll());
 				closeFrame();
 			}
 		});
@@ -145,18 +147,21 @@ public class CapNhatVGA extends JFrame {
 		contentPane.add(btnHy);
 
 		tfBoNho = new JTextField();
+		tfBoNho.setFont(SetFont.font());
 		tfBoNho.setColumns(10);
 		tfBoNho.setBorder(null);
 		tfBoNho.setBounds(381, 117, 158, 25);
 		contentPane.add(tfBoNho);
 
 		tfDonGia = new JTextField();
+		tfDonGia.setFont(SetFont.font());
 		tfDonGia.setColumns(10);
 		tfDonGia.setBorder(null);
 		tfDonGia.setBounds(381, 176, 158, 25);
 		contentPane.add(tfDonGia);
 
 		tfHang = new JTextField();
+		tfHang.setFont(SetFont.font());
 		tfHang.setColumns(10);
 		tfHang.setBorder(null);
 		tfHang.setBounds(101, 117, 158, 25);
@@ -171,13 +176,13 @@ public class CapNhatVGA extends JFrame {
 		ArrayList<Products> list = SanPhamDAO.getIDSanPham("vga");
 		String[] combo = new String[list.size()];
 
-		for (int i = 1; i <= list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) {
 			Products p = list.get(i);
 			combo[i] = p.getIdSanPham();
 		}
 
 		comboBox = new JComboBox<>(new DefaultComboBoxModel<String>(combo));
-		comboBox.setFont(SetFont.font1_());
+		comboBox.setFont(SetFont.font());
 		comboBox.setBounds(101, 57, 158, 25);
 		contentPane.add(comboBox);
 
@@ -188,6 +193,7 @@ public class CapNhatVGA extends JFrame {
 		contentPane.add(lblNewLabel_2_1_3);
 
 		tfTonKho = new JTextField();
+		tfTonKho.setFont(SetFont.font());
 		tfTonKho.setColumns(10);
 		tfTonKho.setBorder(null);
 		tfTonKho.setBounds(101, 176, 158, 25);

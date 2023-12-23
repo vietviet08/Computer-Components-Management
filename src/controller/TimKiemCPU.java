@@ -10,7 +10,7 @@ public class TimKiemCPU {
 		ArrayList<cpu> list = new ArrayList<cpu>();
 		ArrayList<cpu> listcpu = cpuDAO.getInstance().selectAll();
 		for (cpu cpu : listcpu) {
-			if (cpu.getIdSanPham().contains(key.toLowerCase())) {
+			if (cpu.getIdSanPham().toLowerCase().contains(key.toLowerCase())) {
 				list.add(cpu);
 			}
 		}
@@ -21,7 +21,7 @@ public class TimKiemCPU {
 		ArrayList<cpu> list = new ArrayList<cpu>();
 		ArrayList<cpu> listcpu = cpuDAO.getInstance().selectAll();
 		for (cpu cpu : listcpu) {
-			if (cpu.getIdCpu().contains(key.toLowerCase())) {
+			if (cpu.getIdCpu().toLowerCase().contains(key.toLowerCase())) {
 				list.add(cpu);
 			}
 		}
@@ -32,7 +32,7 @@ public class TimKiemCPU {
 		ArrayList<cpu> list = new ArrayList<cpu>();
 		ArrayList<cpu> listcpu = cpuDAO.getInstance().selectAll();
 		for (cpu cpu : listcpu) {
-			if (cpu.getNameCpu().contains(key.toLowerCase())) {
+			if (cpu.getNameCpu().toLowerCase().contains(key.toLowerCase())) {
 				list.add(cpu);
 			}
 		}
@@ -43,7 +43,7 @@ public class TimKiemCPU {
 		ArrayList<cpu> list = new ArrayList<cpu>();
 		ArrayList<cpu> listcpu = cpuDAO.getInstance().selectAll();
 		for (cpu cpu : listcpu) {
-			if (cpu.getXungNhip().contains(key.toLowerCase())) {
+			if (cpu.getXungNhip().toLowerCase().contains(key.toLowerCase())) {
 				list.add(cpu);
 			}
 		}
@@ -76,7 +76,7 @@ public class TimKiemCPU {
 		ArrayList<cpu> list = new ArrayList<cpu>();
 		ArrayList<cpu> listcpu = cpuDAO.getInstance().selectAll();
 		for (cpu cpu : listcpu) {
-			if (cpu.getDienNangTieuThu().contains(key.toLowerCase())) {
+			if (cpu.getDienNangTieuThu().toLowerCase().contains(key.toLowerCase())) {
 				list.add(cpu);
 			}
 		}
@@ -87,7 +87,7 @@ public class TimKiemCPU {
 		ArrayList<cpu> list = new ArrayList<cpu>();
 		ArrayList<cpu> listcpu = cpuDAO.getInstance().selectAll();
 		for (cpu cpu : listcpu) {
-			if (cpu.getBoNhoDem().contains(key.toLowerCase())) {
+			if (cpu.getBoNhoDem().toLowerCase().contains(key.toLowerCase())) {
 				list.add(cpu);
 			}
 		}
