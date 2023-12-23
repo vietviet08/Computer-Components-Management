@@ -3,56 +3,41 @@ package model;
 import java.util.Objects;
 
 public class mainboard extends Products {
+	private String idMainboard;
 	private String tenMain;
 	private String tenHang;
+	private int tonKho;
 	private double donGia;
 
 	public mainboard() {
 		super();
 	}
 
-	public mainboard(String tenMain, String tenHang) {
+	public mainboard(String idMainboard, String tenMain, String tenHang, int tonKho, double donGia) {
 		super();
+		this.idMainboard = idMainboard;
 		this.tenMain = tenMain;
 		this.tenHang = tenHang;
+		this.tonKho = tonKho;
+		this.donGia = donGia;
 	}
 
-	public mainboard(String idSanPham, String tenMain, String tenHang, double donGia) {
+	public mainboard(String idSanPham, String idMainboard, String tenMain, String tenHang, int tonKho, double donGia) {
 		super(idSanPham);
+		this.idMainboard = idMainboard;
 		this.tenMain = tenMain;
 		this.tenHang = tenHang;
+		this.tonKho = tonKho;
 		this.donGia = donGia;
 	}
 
-	public mainboard(String idSanPham, String tenSanPham, String idNPP, int soLuongTonKho, String tenMain,
-			String tenHang, double donGia) {
-		super(idSanPham, tenSanPham, idNPP, soLuongTonKho);
+	public mainboard(String idSanPham, String tenSanPham, int trangThai, String moTa, String idMainboard,
+			String tenMain, String tenHang, int tonKho, double donGia) {
+		super(idSanPham, tenSanPham, trangThai, moTa);
+		this.idMainboard = idMainboard;
 		this.tenMain = tenMain;
 		this.tenHang = tenHang;
-		this.donGia = donGia;
-	}
-
-	public mainboard(String idSanPham, String tenSanPham, int soLuongTonKho, String tenMain, String tenHang,
-			double donGia) {
-		super(idSanPham, tenSanPham, soLuongTonKho);
-		this.tenMain = tenMain;
-		this.tenHang = tenHang;
-		this.donGia = donGia;
-	}
-
-	public mainboard(String idNPP, String tenNPP, String diaChi, String email, int sdt, String idSanPham,
-			String tenSanPham, int soLuongTonKho, String tenMain, String tenHang, double donGia) {
-		super(idNPP, tenNPP, diaChi, email, sdt, idSanPham, tenSanPham, soLuongTonKho);
-		this.tenMain = tenMain;
-		this.tenHang = tenHang;
-		this.donGia = donGia;
-	}
-
-	public mainboard(String idSanPham, String tenSanPham, NhaPhanPhoi npp, int soLuongTonKho, String tenMain,
-			String tenHang, double donGia) {
-		super(idSanPham, tenSanPham, npp, soLuongTonKho);
-		this.tenMain = tenMain;
-		this.tenHang = tenHang;
+		this.tonKho = tonKho;
 		this.donGia = donGia;
 	}
 
@@ -80,26 +65,48 @@ public class mainboard extends Products {
 		this.tenHang = tenHang;
 	}
 
+	public String getIdMainboard() {
+		return idMainboard;
+	}
+
+	public void setIdMainboard(String idMainboard) {
+		this.idMainboard = idMainboard;
+	}
+
+	public int getTonKho() {
+		return tonKho;
+	}
+
+	public void setTonKho(int tonKho) {
+		this.tonKho = tonKho;
+	}
+
 	@Override
 	public String toString() {
-		return "main [tenMain=" + tenMain + ", tenHang=" + tenHang + "]";
+		return "mainboard [idMainboard=" + idMainboard + ", tenMain=" + tenMain + ", tenHang=" + tenHang + ", tonKho="
+				+ tonKho + ", donGia=" + donGia + ", getIdSanPham()=" + getIdSanPham() + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(tenHang, tenMain);
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(donGia, idMainboard, tenHang, tenMain, tonKho);
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		mainboard other = (mainboard) obj;
-		return Objects.equals(tenHang, other.tenHang) && Objects.equals(tenMain, other.tenMain);
+		return Double.doubleToLongBits(donGia) == Double.doubleToLongBits(other.donGia)
+				&& Objects.equals(idMainboard, other.idMainboard) && Objects.equals(tenHang, other.tenHang)
+				&& Objects.equals(tenMain, other.tenMain) && tonKho == other.tonKho;
 	}
 
 }

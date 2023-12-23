@@ -15,14 +15,15 @@ public class PhieuXuat extends Phieu {
 		this.idKhachHang = idKhachHang;
 	}
 
-	public PhieuXuat(String idPhieu, Timestamp thoiGianTao, String nguoiTao, double tongTien, String idKhachHang) {
-		super(idPhieu, thoiGianTao, nguoiTao, tongTien);
+	public PhieuXuat(String idPhieu, String idKhachHang, Timestamp thoiGianTao, String nguoiTao, double tongTien,
+			int trangThai) {
+		super(idPhieu, thoiGianTao, nguoiTao, tongTien, trangThai);
 		this.idKhachHang = idKhachHang;
 	}
 
-	public PhieuXuat(String idPhieu, Timestamp thoiGianTao, String nguoiTao, double tongTien, ChiTietPhieu ctp,
-			String idKhachHang) {
-		super(idPhieu, thoiGianTao, nguoiTao, tongTien, ctp);
+	public PhieuXuat(String idPhieu, String idKhachHang, Timestamp thoiGianTao, String nguoiTao, double tongTien,
+			int trangThai, ChiTietPhieu ctp) {
+		super(idPhieu, thoiGianTao, nguoiTao, tongTien, trangThai, ctp);
 		this.idKhachHang = idKhachHang;
 	}
 
@@ -36,9 +37,9 @@ public class PhieuXuat extends Phieu {
 
 	@Override
 	public String toString() {
-		return "PhieuXuat [idKhachHang=" + idKhachHang + ", getIdPhieu()=" + getIdPhieu() + ", getThoiGianTao()="
-				+ getThoiGianTao() + ", getNguoiTao()=" + getNguoiTao() + ", getTongTien()=" + getTongTien()
-				+ ", getCtp()=" + getCtp() + "]";
+		return "PhieuXuat [idKhachHang=" + idKhachHang + ", getTrangThai()=" + getTrangThai() + ", getIdPhieu()="
+				+ getIdPhieu() + ", getThoiGianTao()=" + getThoiGianTao() + ", getNguoiTao()=" + getNguoiTao()
+				+ ", getTongTien()=" + getTongTien() + ", getCtp()=" + getCtp() + "]";
 	}
 
 	@Override

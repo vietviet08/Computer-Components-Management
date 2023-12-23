@@ -763,7 +763,8 @@ public class MainForm extends JFrame {
 		panelDateTime.setBackground(blue);
 		ClockPane cp = new ClockPane();
 		cp.setBackground(blue);
-		panelDateTime.add(cp, cp.BOTTOM_ALIGNMENT);
+		panelDateTime.add(cp);
+//		 cp.BOTTOM_ALIGNMENT
 		panelDateTime.setBounds(0, 407, 179, 29);
 		panel_1.add(panelDateTime);
 		panelDateTime.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));

@@ -5,13 +5,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -32,8 +31,8 @@ public class ThemProduct extends JFrame {
 	private JPanel contentPane;
 	private JTextField tfIDSP;
 	private JTextField tfTenSP;
-	private JTextField tfSL;
-	private JComboBox<String> comboBox;
+	private JTextField tfTrangThai;
+	private JTextArea txtMoTa;
 
 	/**
 	 * Launch the application.
@@ -90,19 +89,13 @@ public class ThemProduct extends JFrame {
 		tfTenSP.setBounds(285, 67, 231, 31);
 		contentPane.add(tfTenSP);
 
-		JLabel lblNewLabel_1_1 = new JLabel("Số lượng tồn kho");
+		JLabel lblNewLabel_1_1 = new JLabel("Mô tả");
 		lblNewLabel_1_1.setForeground(SetColor.whiteFont);
 		lblNewLabel_1_1.setFont(SetFont.font1_());
 		lblNewLabel_1_1.setBounds(285, 109, 231, 31);
 		contentPane.add(lblNewLabel_1_1);
 
-		tfSL = new JTextField();
-		tfSL.setColumns(10);
-		tfSL.setBorder(null);
-		tfSL.setBounds(285, 140, 231, 31);
-		contentPane.add(tfSL);
-
-		JLabel lblNewLabel_2 = new JLabel("ID Nhà phân phối");
+		JLabel lblNewLabel_2 = new JLabel("Trạng thái");
 		lblNewLabel_2.setForeground(SetColor.whiteFont);
 		lblNewLabel_2.setFont(SetFont.font1_());
 		lblNewLabel_2.setBounds(10, 109, 231, 31);
@@ -114,31 +107,36 @@ public class ThemProduct extends JFrame {
 		lblNewLabel_3.setBounds(10, 11, 182, 23);
 		contentPane.add(lblNewLabel_3);
 
-		JButton btnAdd = new JButton("Thêm ");
+		JButton btnAdd = new JButton("Thêm");
 		btnAdd.setFont(SetFont.font1());
 		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				if (tfIDSP.getText().equals("") || tfSL.equals("") || tfTenSP.equals("")) {
+				if (tfIDSP.getText().equals("") || tfTrangThai.equals("") || tfTenSP.equals("")) {
 					JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!");
 				} else {
-					String idsp = tfIDSP.getText();
-					String ten = tfTenSP.getText();
-					int soluongtonkho = Integer.parseInt(tfSL.getText());
-					String idnpp = comboBox.getSelectedItem().toString();
+					if (kiemTraID()) {
+						JOptionPane.showMessageDialog(null, "ID sản phẩm đã tồn tại!");
+					} else {
 
-					Products pro = new Products(idsp, ten, idnpp, soluongtonkho);
+						String idsp = tfIDSP.getText();
+						String ten = tfTenSP.getText();
+						int trangthai = Integer.parseInt(tfTrangThai.getText());
+						String mota = txtMoTa.getText();
 
-					SanPhamDAO.getInstance().insert(pro);
+						Products pro = new Products(idsp, ten, trangthai, mota);
 
-					JOptionPane.showMessageDialog(null, "Thêm thành công");
-					ProductForm.loadDataToTable(SanPhamDAO.getInstance().selectAll());
-					closeFrame();
+						SanPhamDAO.getInstance().insert(pro);
+
+						JOptionPane.showMessageDialog(null, "Thêm thành công");
+						ProductForm.loadDataToTable(SanPhamDAO.getInstance().selectAll());
+						closeFrame();
+					}
 				}
 			}
 		});
-		btnAdd.setBounds(130, 215, 111, 31);
+		btnAdd.setBounds(10, 213, 111, 31);
 		contentPane.add(btnAdd);
 
 		JButton btnHuy = new JButton("Hủy");
@@ -149,7 +147,7 @@ public class ThemProduct extends JFrame {
 				closeFrame();
 			}
 		});
-		btnHuy.setBounds(285, 215, 111, 31);
+		btnHuy.setBounds(130, 213, 111, 31);
 		contentPane.add(btnHuy);
 
 		ArrayList<NhaPhanPhoi> list = NhaPhanPhoiDAO.getInstance().selectAll();
@@ -159,20 +157,34 @@ public class ThemProduct extends JFrame {
 			comboID[i] = npp.getIdNPP();
 		}
 
-		comboBox = new JComboBox<>();
-		comboBox.setModel(new DefaultComboBoxModel<String>(comboID));
-		comboBox.setBounds(10, 140, 231, 31);
-		contentPane.add(comboBox);
-		
 		JLabel lblNewLabel = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel.setFont(SetFont.font());
 		lblNewLabel.setForeground(SetColor.redB);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(75, 267, 399, 14);
 		contentPane.add(lblNewLabel);
+
+		txtMoTa = new JTextArea();
+		txtMoTa.setBounds(285, 143, 231, 101);
+		contentPane.add(txtMoTa);
+
+		tfTrangThai = new JTextField();
+		tfTrangThai.setColumns(10);
+		tfTrangThai.setBorder(null);
+		tfTrangThai.setBounds(10, 145, 231, 31);
+		contentPane.add(tfTrangThai);
 	}
 
 	private void closeFrame() {
 		this.dispose();
+	}
+
+	private boolean kiemTraID() {
+		ArrayList<Products> list = SanPhamDAO.getInstance().selectAll();
+		for (Products products : list) {
+			if (products.getIdSanPham().equals(tfIDSP.getText()))
+				return true;
+		}
+		return false;
 	}
 }

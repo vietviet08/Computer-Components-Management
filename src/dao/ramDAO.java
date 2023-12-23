@@ -22,16 +22,18 @@ public class ramDAO implements DAOInterface<ram> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "INSERT INTO ram (idsanpham, tenram, loairam, dungluong, bus dongia) VALUES (?, ?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO ram (idsanpham, idram, tenram, loairam, dungluong, bus, tonkho, dongia) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
 			ps.setString(1, t.getIdSanPham());
-			ps.setString(2, t.getTenRam());
-			ps.setString(3, t.getLoai());
-			ps.setString(4, t.getDungLuong());
-			ps.setString(5, t.getBus());
-			ps.setDouble(6, t.getDonGia());
+			ps.setString(2, t.getIdRam());
+			ps.setString(3, t.getTenRam());
+			ps.setString(4, t.getLoai());
+			ps.setString(5, t.getDungLuong());
+			ps.setString(6, t.getBus());
+			ps.setInt(7, t.getTonkho());
+			ps.setDouble(8, t.getDonGia());
 			check = ps.executeUpdate();
 
 			JDBCUntil.closeConnection(con);
@@ -50,16 +52,19 @@ public class ramDAO implements DAOInterface<ram> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "UPDATE ram SET  tenram = ?, loairam = ?, dungluong = ?, bus = ?, dongia = ? WHERE idsanpham = ?;";
+			String sql = "UPDATE ram SET idsanpham = ?, tenram = ?, loairam = ?, dungluong = ?, bus = ?, tonkho = ?, dongia = ? WHERE idram = ?;";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
-			ps.setString(1, t.getTenRam());
-			ps.setString(2, t.getLoai());
-			ps.setString(3, t.getDungLuong());
-			ps.setString(4, t.getBus());
-			ps.setString(5, t.getIdSanPham());
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getTenRam());
+			ps.setString(3, t.getLoai());
+			ps.setString(4, t.getDungLuong());
+			ps.setString(5, t.getBus());
 			ps.setDouble(6, t.getDonGia());
+			ps.setInt(7, t.getTonkho());
+			ps.setString(8, t.getIdRam());
+			
 
 			check = ps.executeUpdate();
 
@@ -79,11 +84,11 @@ public class ramDAO implements DAOInterface<ram> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "DELETE FORM ram WHERE idsanpham = ?;";
+			String sql = "DELETE FORM ram WHERE idram = ?;";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
-			ps.setString(1, t.getIdSanPham());
+			ps.setString(1, t.getIdRam());
 
 			check = ps.executeUpdate();
 
@@ -110,8 +115,8 @@ public class ramDAO implements DAOInterface<ram> {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				ram ram = new ram(rs.getString("idsanpham"), rs.getString("tenram"), rs.getString("loairam"),
-						rs.getString("dungluong"), rs.getString("bus"), rs.getDouble("dongia"));
+				ram ram = new ram(rs.getString("idsanpham"),rs.getString("idram"), rs.getString("tenram"), rs.getString("loairam"),
+						rs.getString("dungluong"), rs.getString("bus"),rs.getInt("tonkho"), rs.getDouble("dongia"));
 				r.add(ram);
 			}
 
@@ -131,7 +136,7 @@ public class ramDAO implements DAOInterface<ram> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "SELECT * FROM ram WHERE idsanpham = ?;";
+			String sql = "SELECT * FROM ram WHERE idram = ?;";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -140,8 +145,8 @@ public class ramDAO implements DAOInterface<ram> {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				r = new ram(rs.getString("idsanpham"), rs.getString("tenram"), rs.getString("loairam"),
-						rs.getString("dungluong"), rs.getString("bus"), rs.getDouble("dongia"));
+				r = new ram(rs.getString("idsanpham"),rs.getString("idram"), rs.getString("tenram"), rs.getString("loairam"),
+						rs.getString("dungluong"), rs.getString("bus"),rs.getInt("tonkho"), rs.getDouble("dongia"));
 			}
 
 			JDBCUntil.closeConnection(con);

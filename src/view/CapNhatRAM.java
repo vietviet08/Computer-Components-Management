@@ -1,23 +1,28 @@
 package view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import color.SetColor;
+import dao.SanPhamDAO;
 import dao.ramDAO;
 import font.SetFont;
+import model.Products;
 import model.ram;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class CapNhatRAM extends JFrame {
 
@@ -31,6 +36,8 @@ public class CapNhatRAM extends JFrame {
 	private static JTextField tfBus;
 	private static JTextField tfDungLuong;
 	private static JTextField tfGia;
+	private static JTextField tfTonKho;
+	private static JComboBox<String> comboBox;
 
 	/**
 	 * Launch the application.
@@ -56,7 +63,7 @@ public class CapNhatRAM extends JFrame {
 	public CapNhatRAM() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 582, 348);
+		setBounds(100, 100, 582, 368);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -74,67 +81,67 @@ public class CapNhatRAM extends JFrame {
 		lblNewLabel_1.setFont(SetFont.font());
 		lblNewLabel_1.setForeground(SetColor.redB);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(35, 292, 511, 14);
+		lblNewLabel_1.setBounds(35, 341, 511, 14);
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel("Tên RAM");
 		lblNewLabel_2.setFont(SetFont.font1_());
 		lblNewLabel_2.setForeground(SetColor.whiteFont);
-		lblNewLabel_2.setBounds(35, 70, 84, 28);
+		lblNewLabel_2.setBounds(302, 74, 84, 28);
 		contentPane.add(lblNewLabel_2);
 
 		tfTen = new JTextField();
 		tfTen.setBorder(null);
-		tfTen.setBounds(115, 70, 164, 28);
+		tfTen.setBounds(382, 74, 164, 28);
 		contentPane.add(tfTen);
 		tfTen.setColumns(10);
 
 		JLabel lblNewLabel_2_1 = new JLabel("Loại RAM");
 		lblNewLabel_2_1.setFont(SetFont.font1_());
 		lblNewLabel_2_1.setForeground(SetColor.whiteFont);
-		lblNewLabel_2_1.setBounds(302, 70, 84, 28);
+		lblNewLabel_2_1.setBounds(35, 136, 84, 28);
 		contentPane.add(lblNewLabel_2_1);
 
 		tfLoai = new JTextField();
 		tfLoai.setBorder(null);
 		tfLoai.setColumns(10);
-		tfLoai.setBounds(382, 70, 164, 28);
+		tfLoai.setBounds(115, 136, 164, 28);
 		contentPane.add(tfLoai);
 
 		JLabel lblNewLabel_2_1_1 = new JLabel("BUS");
 		lblNewLabel_2_1_1.setFont(SetFont.font1_());
 		lblNewLabel_2_1_1.setForeground(SetColor.whiteFont);
-		lblNewLabel_2_1_1.setBounds(302, 150, 84, 28);
+		lblNewLabel_2_1_1.setBounds(35, 205, 84, 28);
 		contentPane.add(lblNewLabel_2_1_1);
 
 		tfBus = new JTextField();
 		tfBus.setBorder(null);
 		tfBus.setColumns(10);
-		tfBus.setBounds(382, 150, 164, 28);
+		tfBus.setBounds(115, 205, 164, 28);
 		contentPane.add(tfBus);
 
 		tfDungLuong = new JTextField();
 		tfDungLuong.setBorder(null);
 		tfDungLuong.setColumns(10);
-		tfDungLuong.setBounds(115, 150, 164, 28);
+		tfDungLuong.setBounds(382, 136, 164, 28);
 		contentPane.add(tfDungLuong);
 
 		JLabel lblNewLabel_2_2 = new JLabel("Dung lượng");
 		lblNewLabel_2_2.setFont(SetFont.font1_());
 		lblNewLabel_2_2.setForeground(SetColor.whiteFont);
-		lblNewLabel_2_2.setBounds(35, 150, 84, 28);
+		lblNewLabel_2_2.setBounds(302, 136, 84, 28);
 		contentPane.add(lblNewLabel_2_2);
 
 		tfGia = new JTextField();
 		tfGia.setBorder(null);
 		tfGia.setColumns(10);
-		tfGia.setBounds(115, 232, 164, 28);
+		tfGia.setBounds(115, 272, 164, 28);
 		contentPane.add(tfGia);
 
 		JLabel lblNewLabel_2_3 = new JLabel("Đơn giá");
 		lblNewLabel_2_3.setFont(SetFont.font1_());
 		lblNewLabel_2_3.setForeground(SetColor.whiteFont);
-		lblNewLabel_2_3.setBounds(35, 232, 84, 28);
+		lblNewLabel_2_3.setBounds(35, 272, 84, 28);
 		contentPane.add(lblNewLabel_2_3);
 
 		JButton btnNewButton = new JButton("Cập nhật");
@@ -144,10 +151,12 @@ public class CapNhatRAM extends JFrame {
 
 				ram old = RAMForm.getSelectRAM();
 
-				String id = old.getIdSanPham();
+				String idsp = comboBox.getSelectedItem().toString();
 
-				ram r = new ram(id, tfTen.getText(), tfLoai.getText(), tfDungLuong.getText(), tfBus.getText(),
-						Double.parseDouble(tfGia.getText()));
+				String idram = old.getIdRam();
+
+				ram r = new ram(idsp, idram, tfTen.getText(), tfLoai.getText(), tfDungLuong.getText(), tfBus.getText(),
+						Integer.parseInt(tfTonKho.getText()), Double.parseDouble(tfGia.getText()));
 
 				ramDAO.getInstance().update(r);
 				JOptionPane.showMessageDialog(null, "Cập nhật thành công");
@@ -156,7 +165,7 @@ public class CapNhatRAM extends JFrame {
 		});
 		btnNewButton.setFont(SetFont.font1());
 		btnNewButton.setBorder(null);
-		btnNewButton.setBounds(302, 230, 112, 35);
+		btnNewButton.setBounds(301, 265, 112, 35);
 		contentPane.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("Hủy");
@@ -168,8 +177,38 @@ public class CapNhatRAM extends JFrame {
 		});
 		btnNewButton_1.setFont(SetFont.font1());
 		btnNewButton_1.setBorder(null);
-		btnNewButton_1.setBounds(435, 230, 112, 35);
+		btnNewButton_1.setBounds(434, 265, 112, 35);
 		contentPane.add(btnNewButton_1);
+
+		JLabel lblNewLabel_2_1_2 = new JLabel("ID sản phẩm");
+		lblNewLabel_2_1_2.setForeground(new Color(254, 254, 254));
+		lblNewLabel_2_1_2.setFont(null);
+		lblNewLabel_2_1_2.setBounds(35, 74, 84, 28);
+		contentPane.add(lblNewLabel_2_1_2);
+
+		ArrayList<Products> list = SanPhamDAO.getIDSanPham("ram");
+		String[] combo = new String[list.size()];
+
+		for (int i = 1; i <= list.size(); i++) {
+			Products p = list.get(i);
+			combo[i] = p.getIdSanPham();
+		}
+
+		comboBox = new JComboBox<>(new DefaultComboBoxModel<String>(combo));
+		comboBox.setBounds(115, 74, 164, 28);
+		contentPane.add(comboBox);
+
+		JLabel lblNewLabel_2_3_1 = new JLabel("Tồn kho");
+		lblNewLabel_2_3_1.setForeground(new Color(254, 254, 254));
+		lblNewLabel_2_3_1.setFont(null);
+		lblNewLabel_2_3_1.setBounds(302, 205, 84, 28);
+		contentPane.add(lblNewLabel_2_3_1);
+
+		tfTonKho = new JTextField();
+		tfTonKho.setColumns(10);
+		tfTonKho.setBorder(null);
+		tfTonKho.setBounds(382, 205, 164, 28);
+		contentPane.add(tfTonKho);
 	}
 
 	private void closeFrame() {
@@ -178,11 +217,12 @@ public class CapNhatRAM extends JFrame {
 
 	private static void setDefaultTF() {
 		ram r = RAMForm.getSelectRAM();
+		comboBox.setSelectedItem(r.getIdSanPham());
 		tfTen.setText(r.getTenRam());
 		tfLoai.setText(r.getLoai());
 		tfBus.setText(r.getBus());
 		tfGia.setText(String.valueOf(r.getDonGia()));
+		tfTonKho.setText(String.valueOf(tfTonKho.getText()));
 		tfDungLuong.setText(r.getDungLuong());
 	}
-
 }

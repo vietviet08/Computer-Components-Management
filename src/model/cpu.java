@@ -3,65 +3,81 @@ package model;
 import java.util.Objects;
 
 public class cpu extends Products {
+	private String idCpu;
 	private String nameCpu;
 	private String xungNhip;
 	private int soNhan;
 	private int soLuong;
 	private String dienNangTieuThu;
 	private String boNhoDem;
+	private int tonKho;
 	private double donGia;
 
 	public cpu() {
 		super();
 	}
 
-	public cpu(String nameCpu, String xungNhip, int soNhan, int soLuong, String dienNangTieuThu, String boNhoDem) {
+	public cpu(String idCpu, String nameCpu, String xungNhip, int soNhan, int soLuong, String dienNangTieuThu,
+			String boNhoDem, int tonKho, double donGia) {
 		super();
+		this.idCpu = idCpu;
 		this.nameCpu = nameCpu;
 		this.xungNhip = xungNhip;
 		this.soNhan = soNhan;
 		this.soLuong = soLuong;
 		this.dienNangTieuThu = dienNangTieuThu;
 		this.boNhoDem = boNhoDem;
-	}
-
-//	
-	public cpu(String idSanPham, String nameCpu, String xungNhip, int soNhan, int soLuong, String dienNangTieuThu,
-			String boNhoDem, double donGia) {
-		super(idSanPham);
-		this.nameCpu = nameCpu;
-		this.xungNhip = xungNhip;
-		this.soNhan = soNhan;
-		this.soLuong = soLuong;
-		this.dienNangTieuThu = dienNangTieuThu;
-		this.boNhoDem = boNhoDem;
+		this.tonKho = tonKho;
 		this.donGia = donGia;
 	}
 
-	public cpu(String idSanPham, String tenSanPham, int soLuongTonKho, String nameCpu, String xungNhip, int soNhan,
-			int soLuong, String dienNangTieuThu, String boNhoDem) {
-		super(idSanPham, tenSanPham, soLuongTonKho);
+//	
+	public cpu(String idSanPham, String idCpu, String nameCpu, String xungNhip, int soNhan, int soLuong,
+			String dienNangTieuThu, String boNhoDem, int tonKho, double donGia) {
+		super(idSanPham);
+		this.idCpu = idCpu;
 		this.nameCpu = nameCpu;
 		this.xungNhip = xungNhip;
 		this.soNhan = soNhan;
 		this.soLuong = soLuong;
 		this.dienNangTieuThu = dienNangTieuThu;
 		this.boNhoDem = boNhoDem;
+		this.tonKho = tonKho;
+		this.donGia = donGia;
 	}
 
-	public cpu(String idNPP, String tenNPP, String diaChi, String email, int sdt, String idSanPham, String tenSanPham,
-			int soLuongTonKho, String nameCpu, String xungNhip, int soNhan, int soLuong, String dienNangTieuThu,
-			String boNhoDem) {
-		super(idNPP, tenNPP, diaChi, email, sdt, idSanPham, tenSanPham, soLuongTonKho);
+	public cpu(String idSanPham, String tenSanPham, int trangThai, String moTa, String idCpu, String nameCpu,
+			String xungNhip, int soNhan, int soLuong, String dienNangTieuThu, String boNhoDem, int tonKho,
+			double donGia) {
+		super(idSanPham, tenSanPham, trangThai, moTa);
+		this.idCpu = idCpu;
 		this.nameCpu = nameCpu;
 		this.xungNhip = xungNhip;
 		this.soNhan = soNhan;
 		this.soLuong = soLuong;
 		this.dienNangTieuThu = dienNangTieuThu;
 		this.boNhoDem = boNhoDem;
+		this.tonKho = tonKho;
+		this.donGia = donGia;
 	}
 
-	 public double getDonGia() {
+	public int getTonKho() {
+		return tonKho;
+	}
+
+	public void setTonKho(int tonKho) {
+		this.tonKho = tonKho;
+	}
+
+	public String getIdCpu() {
+		return idCpu;
+	}
+
+	public void setIdCpu(String idCpu) {
+		this.idCpu = idCpu;
+	}
+
+	public double getDonGia() {
 		return donGia;
 	}
 
@@ -119,19 +135,17 @@ public class cpu extends Products {
 
 	@Override
 	public String toString() {
-		return "cpu [nameCpu=" + nameCpu + ", xungNhip=" + xungNhip + ", soNhan=" + soNhan + ", soLuong=" + soLuong
-				+ ", dienNangTieuThu=" + dienNangTieuThu + ", boNhoDem=" + boNhoDem + ", getIdSanPham()="
-				+ getIdSanPham() + ", getTenSanPham()=" + getTenSanPham() + ", getSoLuongTonKho()=" + getSoLuongTonKho()
-				+ ", toString()=" + super.toString() + ", hashCode()=" + hashCode() + ", getIdNPP()=" + getIdNPP()
-				+ ", getTenNPP()=" + getTenNPP() + ", getDiaChi()=" + getDiaChi() + ", getEmail()=" + getEmail()
-				+ ", getSdt()=" + getSdt() + "]";
+		return "cpu [idCpu=" + idCpu + ", nameCpu=" + nameCpu + ", xungNhip=" + xungNhip + ", soNhan=" + soNhan
+				+ ", soLuong=" + soLuong + ", dienNangTieuThu=" + dienNangTieuThu + ", boNhoDem=" + boNhoDem
+				+ ", tonKho=" + tonKho + ", donGia=" + donGia + ", getIdSanPham()=" + getIdSanPham() + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(boNhoDem, dienNangTieuThu, nameCpu, soLuong, soNhan, xungNhip);
+		result = prime * result
+				+ Objects.hash(boNhoDem, dienNangTieuThu, donGia, idCpu, nameCpu, soLuong, soNhan, tonKho, xungNhip);
 		return result;
 	}
 
@@ -145,7 +159,9 @@ public class cpu extends Products {
 			return false;
 		cpu other = (cpu) obj;
 		return Objects.equals(boNhoDem, other.boNhoDem) && Objects.equals(dienNangTieuThu, other.dienNangTieuThu)
-				&& Objects.equals(nameCpu, other.nameCpu) && soLuong == other.soLuong && soNhan == other.soNhan
+				&& Double.doubleToLongBits(donGia) == Double.doubleToLongBits(other.donGia)
+				&& Objects.equals(idCpu, other.idCpu) && Objects.equals(nameCpu, other.nameCpu)
+				&& soLuong == other.soLuong && soNhan == other.soNhan && tonKho == other.tonKho
 				&& Objects.equals(xungNhip, other.xungNhip);
 	}
 

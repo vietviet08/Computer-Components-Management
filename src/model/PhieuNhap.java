@@ -16,14 +16,15 @@ public class PhieuNhap extends Phieu {
 		this.idNPP = idNPP;
 	}
 
-	public PhieuNhap(String idPhieu, Timestamp thoiGianTao, String nguoiTao, double tongTien, String idNPP) {
-		super(idPhieu, thoiGianTao, nguoiTao, tongTien);
+	public PhieuNhap(String idPhieu, String idNPP, Timestamp thoiGianTao, String nguoiTao, double tongTien,
+			int trangThai) {
+		super(idPhieu, thoiGianTao, nguoiTao, tongTien, trangThai);
 		this.idNPP = idNPP;
 	}
 
-	public PhieuNhap(String idPhieu, Timestamp thoiGianTao, String nguoiTao, double tongTien, ChiTietPhieu ctp,
-			String idNPP) {
-		super(idPhieu, thoiGianTao, nguoiTao, tongTien, ctp);
+	public PhieuNhap(String idPhieu, String idNPP, Timestamp thoiGianTao, String nguoiTao, double tongTien,
+			int trangThai, ChiTietPhieu ctp) {
+		super(idPhieu, thoiGianTao, nguoiTao, tongTien, trangThai, ctp);
 		this.idNPP = idNPP;
 	}
 
@@ -37,9 +38,9 @@ public class PhieuNhap extends Phieu {
 
 	@Override
 	public String toString() {
-		return "PhieuNhap [idNPP=" + idNPP + ", getIdPhieu()=" + getIdPhieu() + ", getThoiGianTao()=" + getThoiGianTao()
-				+ ", getNguoiTao()=" + getNguoiTao() + ", getTongTien()=" + getTongTien() + ", getCtp()=" + getCtp()
-				+ "]";
+		return "PhieuNhap [idNPP=" + idNPP + ", getTrangThai()=" + getTrangThai() + ", getIdPhieu()=" + getIdPhieu()
+				+ ", getThoiGianTao()=" + getThoiGianTao() + ", getNguoiTao()=" + getNguoiTao() + ", getTongTien()="
+				+ getTongTien() + ", getCtp()=" + getCtp() + "]";
 	}
 
 	@Override

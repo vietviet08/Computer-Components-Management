@@ -1,0 +1,232 @@
+package view;
+
+import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import color.SetColor;
+import dao.SanPhamDAO;
+import dao.vgaDAO;
+import font.SetFont;
+import model.Products;
+import model.vga;
+import java.awt.Color;
+
+public class ThemVGA extends JFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private JTextField tfTen;
+	private JTextField tfBoNho;
+	private JTextField tfHang;
+	private JTextField tfDonGia;
+	private JComboBox<String> comboBox;
+	private static JTextField tfIDVGA;
+	private JTextField tfTonKho;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ThemVGA frame = new ThemVGA();
+					setDefaultIDVGA();
+					frame.setLocationRelativeTo(null);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public ThemVGA() {
+		setUndecorated(true);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setBounds(100, 100, 592, 307);
+		contentPane = new JPanel();
+		contentPane.setBackground(SetColor.blueOp);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JLabel lblNewLabel = new JLabel("THÊM VGA");
+		lblNewLabel.setFont(SetFont.fontTitle());
+		lblNewLabel.setForeground(SetColor.yellow);
+		lblNewLabel.setBounds(10, 11, 138, 24);
+		contentPane.add(lblNewLabel);
+
+		JLabel lblNewLabel_1 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
+		lblNewLabel_1.setForeground(SetColor.redB);
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setBounds(30, 282, 497, 14);
+		contentPane.add(lblNewLabel_1);
+
+		JLabel lblNewLabel_2 = new JLabel("ID Sản phẩm");
+		lblNewLabel_2.setFont(SetFont.font1_());
+		lblNewLabel_2.setForeground(SetColor.whiteFont);
+		lblNewLabel_2.setBounds(30, 63, 87, 25);
+		contentPane.add(lblNewLabel_2);
+
+		tfTen = new JTextField();
+		tfTen.setColumns(10);
+		tfTen.setBorder(null);
+		tfTen.setBounds(116, 123, 149, 25);
+		contentPane.add(tfTen);
+
+		JLabel lblNewLabel_2_1 = new JLabel("Tên VGA");
+		lblNewLabel_2_1.setFont(SetFont.font1_());
+		lblNewLabel_2_1.setForeground(SetColor.whiteFont);
+		lblNewLabel_2_1.setBounds(30, 123, 87, 25);
+		contentPane.add(lblNewLabel_2_1);
+
+		tfBoNho = new JTextField();
+		tfBoNho.setColumns(10);
+		tfBoNho.setBorder(null);
+		tfBoNho.setBounds(116, 183, 149, 25);
+		contentPane.add(tfBoNho);
+
+		JLabel lblNewLabel_2_1_1 = new JLabel("Bộ nhớ");
+		lblNewLabel_2_1_1.setFont(SetFont.font1_());
+		lblNewLabel_2_1_1.setForeground(SetColor.whiteFont);
+		lblNewLabel_2_1_1.setBounds(30, 183, 87, 25);
+		contentPane.add(lblNewLabel_2_1_1);
+
+		tfHang = new JTextField();
+		tfHang.setColumns(10);
+		tfHang.setBorder(null);
+		tfHang.setBounds(378, 123, 149, 25);
+		contentPane.add(tfHang);
+
+		JLabel lblNewLabel_2_2 = new JLabel("Hãng VGA");
+		lblNewLabel_2_2.setFont(SetFont.font1_());
+		lblNewLabel_2_2.setForeground(SetColor.whiteFont);
+		lblNewLabel_2_2.setBounds(292, 123, 87, 25);
+		contentPane.add(lblNewLabel_2_2);
+
+		tfDonGia = new JTextField();
+		tfDonGia.setColumns(10);
+		tfDonGia.setBorder(null);
+		tfDonGia.setBounds(378, 183, 149, 25);
+		contentPane.add(tfDonGia);
+
+		JLabel lblNewLabel_2_3 = new JLabel("Đơn giá");
+		lblNewLabel_2_3.setFont(SetFont.font1_());
+		lblNewLabel_2_3.setForeground(SetColor.whiteFont);
+		lblNewLabel_2_3.setBounds(292, 183, 87, 25);
+		contentPane.add(lblNewLabel_2_3);
+
+		ArrayList<Products> list = SanPhamDAO.getIDSanPham("vga");
+		String[] combo = new String[list.size()];
+		for (int i = 0; i < list.size(); i++) {
+			Products p = list.get(i);
+			combo[i] = p.getIdSanPham();
+		}
+		comboBox = new JComboBox<>(new DefaultComboBoxModel<String>(combo));
+		comboBox.setBounds(116, 64, 149, 25);
+		contentPane.add(comboBox);
+
+		JButton btnNewButton = new JButton("Thêm");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String idsp = comboBox.getSelectedItem().toString();
+				String idvga = tfIDVGA.getText();
+				String ten = tfTen.getText();
+				String hang = tfHang.getText();
+				String bonho = tfBoNho.getText();
+				int tonkho = Integer.parseInt(tfTonKho.getText());
+				double gia = Double.parseDouble(tfDonGia.getText());
+
+				if (ten.equals("") || hang.equals("") || bonho.equals("") || tfDonGia.equals("")) {
+					JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!");
+				} else {
+					vga v = new vga(idsp, idvga, ten, hang, bonho, tonkho, gia);
+					vgaDAO.getInstance().insert(v);
+					VGAForm.loadDataToTable(vgaDAO.getInstance().selectAll());
+					closeFrame();
+				}
+			}
+		});
+		btnNewButton.setFont(SetFont.font1());
+		btnNewButton.setBorder(null);
+		btnNewButton.setBounds(290, 241, 89, 30);
+		contentPane.add(btnNewButton);
+
+		JButton btnNewButton_1 = new JButton("Hủy");
+		btnNewButton_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				closeFrame();
+			}
+		});
+		btnNewButton_1.setFont(SetFont.font1());
+		btnNewButton_1.setBorder(null);
+		btnNewButton_1.setBounds(438, 241, 89, 30);
+		contentPane.add(btnNewButton_1);
+
+		JLabel lblNewLabel_2_1_2 = new JLabel("ID VGA");
+		lblNewLabel_2_1_2.setForeground(new Color(254, 254, 254));
+		lblNewLabel_2_1_2.setFont(SetFont.font1_());
+		lblNewLabel_2_1_2.setBounds(292, 63, 87, 25);
+		contentPane.add(lblNewLabel_2_1_2);
+
+		tfIDVGA = new JTextField();
+		tfIDVGA.setColumns(10);
+		tfIDVGA.setBorder(null);
+		tfIDVGA.setBounds(378, 63, 149, 25);
+		contentPane.add(tfIDVGA);
+
+		JLabel lblNewLabel_2_1_3 = new JLabel("Tồn kho");
+		lblNewLabel_2_1_3.setForeground(new Color(254, 254, 254));
+		lblNewLabel_2_1_3.setFont(SetFont.font1_());
+		lblNewLabel_2_1_3.setBounds(30, 241, 87, 25);
+		contentPane.add(lblNewLabel_2_1_3);
+
+		tfTonKho = new JTextField();
+		tfTonKho.setColumns(10);
+		tfTonKho.setBorder(null);
+		tfTonKho.setBounds(116, 241, 149, 25);
+		contentPane.add(tfTonKho);
+	}
+
+	private void closeFrame() {
+		this.dispose();
+	}
+	
+	private static void setDefaultIDVGA() {
+		String id = "VGA";
+		int code = 1;
+		
+		ArrayList<vga> list = vgaDAO.getInstance().selectAll();
+		
+		for (vga vga : list) {
+			if(vga.getIdVga().equals(id+code)) code++;
+			else break;
+		}
+		
+		tfIDVGA.setText(id+code);
+	}
+
+}

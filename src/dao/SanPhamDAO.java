@@ -22,14 +22,14 @@ public class SanPhamDAO implements DAOInterface<Products> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "INSERT INTO sanpham (idsanpham, tensanpham, idnpp, soluongtonkho) VALUES (?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO sanpham (idsanpham, tensanpham, trangthai, mota) VALUES (?, ?, ?, ?);";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
 			ps.setString(1, t.getIdSanPham());
 			ps.setString(2, t.getTenSanPham());
-			ps.setString(4, t.getIdNPP());
-			ps.setInt(5, t.getSoLuongTonKho());
+			ps.setInt(3, t.getTrangThai());
+			ps.setString(4, t.getMoTa());
 
 			check = ps.executeUpdate();
 
@@ -49,14 +49,14 @@ public class SanPhamDAO implements DAOInterface<Products> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "update sanpham set tensanpham = ?, idloaisp = ?, idnpp = ?, soluongtonkho = ? where idsanpham = ?;";
+			String sql = "update sanpham set tensanpham = ?, trangthai = ? , mota = ? where idsanpham = ?;";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
 			ps.setString(1, t.getTenSanPham());
-			ps.setString(3, t.getIdNPP());
-			ps.setInt(4, t.getSoLuongTonKho());
-			ps.setString(5, t.getIdSanPham());
+			ps.setInt(2, t.getTrangThai());
+			ps.setString(3, t.getMoTa());
+			ps.setString(4, t.getIdSanPham());
 
 			check = ps.executeUpdate();
 
@@ -105,8 +105,8 @@ public class SanPhamDAO implements DAOInterface<Products> {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				Products p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"), rs.getString("idnpp"),
-						rs.getInt("soluongtonkho"));
+				Products p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"),
+						rs.getInt("trangthai"), rs.getString("motasanpham"));
 
 				list.add(p);
 			}
@@ -136,8 +136,8 @@ public class SanPhamDAO implements DAOInterface<Products> {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"), rs.getString("idnpp"),
-						rs.getInt("soluongtonkho"));
+				p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"),
+						rs.getInt("trangthai"), rs.getString("mota"));
 
 			}
 
@@ -192,8 +192,8 @@ public class SanPhamDAO implements DAOInterface<Products> {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				Products p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"), rs.getString("idnpp"),
-						rs.getInt("soluongtonkho"));
+				Products p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"),
+						rs.getInt("trangthai"), rs.getString("mota"));
 
 				list.add(p);
 			}

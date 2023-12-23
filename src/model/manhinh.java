@@ -3,84 +3,61 @@ package model;
 import java.util.Objects;
 
 public class manhinh extends Products {
+	private String idManHinh;
 	private String hangManhinh;
 	private String tanSoQuet;
 	private String tamNen;
 	private String kichThuoc;
 	private String kieuManHinh;
 	private String doPhanGiai;
+	private int tonKho;
 	private double donGia;
 
 	public manhinh() {
 		super();
 	}
 
-	public manhinh(String hangManhinh, String tanSoQuet, String tamNen, String kichThuoc, String kieuManHinh,
-			String doPhanGiai) {
+	public manhinh(String idManHinh, String hangManhinh, String tanSoQuet, String tamNen, String kichThuoc,
+			String kieuManHinh, String doPhanGiai, int tonKho, double donGia) {
 		super();
+		this.idManHinh = idManHinh;
 		this.hangManhinh = hangManhinh;
 		this.tanSoQuet = tanSoQuet;
 		this.tamNen = tamNen;
 		this.kichThuoc = kichThuoc;
 		this.kieuManHinh = kieuManHinh;
 		this.doPhanGiai = doPhanGiai;
-	}
-
-	public manhinh(String idSanPham, String hangManhinh, String tanSoQuet, String tamNen, String kichThuoc,
-			String kieuManHinh, String doPhanGiai, double donGia) {
-		super(idSanPham);
-		this.hangManhinh = hangManhinh;
-		this.tanSoQuet = tanSoQuet;
-		this.tamNen = tamNen;
-		this.kichThuoc = kichThuoc;
-		this.kieuManHinh = kieuManHinh;
-		this.doPhanGiai = doPhanGiai;
+		this.tonKho = tonKho;
 		this.donGia = donGia;
 	}
 
-	public manhinh(String idSanPham, String tenSanPham, String idNPP, int soLuongTonKho, String hangManhinh,
-			String tanSoQuet, String tamNen, String kichThuoc, String kieuManHinh, String doPhanGiai) {
-		super(idSanPham, tenSanPham, idNPP, soLuongTonKho);
+	public manhinh(String idSanPham, String idManHinh, String hangManhinh, String tanSoQuet, String tamNen,
+			String kichThuoc, String kieuManHinh, String doPhanGiai, int tonKho, double donGia) {
+		super(idSanPham);
+		this.idManHinh = idManHinh;
 		this.hangManhinh = hangManhinh;
 		this.tanSoQuet = tanSoQuet;
 		this.tamNen = tamNen;
 		this.kichThuoc = kichThuoc;
 		this.kieuManHinh = kieuManHinh;
 		this.doPhanGiai = doPhanGiai;
+		this.tonKho = tonKho;
+		this.donGia = donGia;
 	}
 
-	public manhinh(String idSanPham, String tenSanPham, int soLuongTonKho, String hangManhinh, String tanSoQuet,
-			String tamNen, String kichThuoc, String kieuManHinh, String doPhanGiai) {
-		super(idSanPham, tenSanPham, soLuongTonKho);
+	public manhinh(String idSanPham, String tenSanPham, int trangThai, String moTa, String idManHinh,
+			String hangManhinh, String tanSoQuet, String tamNen, String kichThuoc, String kieuManHinh,
+			String doPhanGiai, int tonKho, double donGia) {
+		super(idSanPham, tenSanPham, trangThai, moTa);
+		this.idManHinh = idManHinh;
 		this.hangManhinh = hangManhinh;
 		this.tanSoQuet = tanSoQuet;
 		this.tamNen = tamNen;
 		this.kichThuoc = kichThuoc;
 		this.kieuManHinh = kieuManHinh;
 		this.doPhanGiai = doPhanGiai;
-	}
-
-	public manhinh(String idNPP, String tenNPP, String diaChi, String email, int sdt, String idSanPham,
-			String tenSanPham, int soLuongTonKho, String hangManhinh, String tanSoQuet, String tamNen, String kichThuoc,
-			String kieuManHinh, String doPhanGiai) {
-		super(idNPP, tenNPP, diaChi, email, sdt, idSanPham, tenSanPham, soLuongTonKho);
-		this.hangManhinh = hangManhinh;
-		this.tanSoQuet = tanSoQuet;
-		this.tamNen = tamNen;
-		this.kichThuoc = kichThuoc;
-		this.kieuManHinh = kieuManHinh;
-		this.doPhanGiai = doPhanGiai;
-	}
-
-	public manhinh(String idSanPham, String tenSanPham, NhaPhanPhoi npp, int soLuongTonKho, String hangManhinh,
-			String tanSoQuet, String tamNen, String kichThuoc, String kieuManHinh, String doPhanGiai) {
-		super(idSanPham, tenSanPham, npp, soLuongTonKho);
-		this.hangManhinh = hangManhinh;
-		this.tanSoQuet = tanSoQuet;
-		this.tamNen = tamNen;
-		this.kichThuoc = kichThuoc;
-		this.kieuManHinh = kieuManHinh;
-		this.doPhanGiai = doPhanGiai;
+		this.tonKho = tonKho;
+		this.donGia = donGia;
 	}
 
 	public double getDonGia() {
@@ -139,29 +116,53 @@ public class manhinh extends Products {
 		this.doPhanGiai = doPhanGiai;
 	}
 
+	public String getIdManHinh() {
+		return idManHinh;
+	}
+
+	public void setIdManHinh(String idManHinh) {
+		this.idManHinh = idManHinh;
+	}
+
+	public int getTonKho() {
+		return tonKho;
+	}
+
+	public void setTonKho(int tonKho) {
+		this.tonKho = tonKho;
+	}
+
 	@Override
 	public String toString() {
-		return "manhinh [hangManhinh=" + hangManhinh + ", tanSoQuet=" + tanSoQuet + ", tamNen=" + tamNen
-				+ ", kichThuoc=" + kichThuoc + ", kieuManHinh=" + kieuManHinh + ", doPhanGiai=" + doPhanGiai + "]";
+		return "manhinh [idManHinh=" + idManHinh + ", hangManhinh=" + hangManhinh + ", tanSoQuet=" + tanSoQuet
+				+ ", tamNen=" + tamNen + ", kichThuoc=" + kichThuoc + ", kieuManHinh=" + kieuManHinh + ", doPhanGiai="
+				+ doPhanGiai + ", tonKho=" + tonKho + ", donGia=" + donGia + ", getIdSanPham()=" + getIdSanPham() + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(doPhanGiai, hangManhinh, kichThuoc, kieuManHinh, tamNen, tanSoQuet);
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(doPhanGiai, donGia, hangManhinh, idManHinh, kichThuoc, kieuManHinh,
+				tamNen, tanSoQuet, tonKho);
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		manhinh other = (manhinh) obj;
-		return Objects.equals(doPhanGiai, other.doPhanGiai) && Objects.equals(hangManhinh, other.hangManhinh)
+		return Objects.equals(doPhanGiai, other.doPhanGiai)
+				&& Double.doubleToLongBits(donGia) == Double.doubleToLongBits(other.donGia)
+				&& Objects.equals(hangManhinh, other.hangManhinh) && Objects.equals(idManHinh, other.idManHinh)
 				&& Objects.equals(kichThuoc, other.kichThuoc) && Objects.equals(kieuManHinh, other.kieuManHinh)
-				&& Objects.equals(tamNen, other.tamNen) && Objects.equals(tanSoQuet, other.tanSoQuet);
+				&& Objects.equals(tamNen, other.tamNen) && Objects.equals(tanSoQuet, other.tanSoQuet)
+				&& tonKho == other.tonKho;
 	}
 
 }

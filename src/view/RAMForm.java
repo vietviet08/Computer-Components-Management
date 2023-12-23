@@ -47,8 +47,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import color.SetColor;
 import controller.FormatToVND;
+import controller.TimKiemRAM;
 import dao.ramDAO;
 import model.ram;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class RAMForm extends JInternalFrame {
 
@@ -58,7 +61,8 @@ public class RAMForm extends JInternalFrame {
 	private static final long serialVersionUID = 1L;
 	private static JTable table;
 	private static DefaultTableModel tableModel;
-	private final String columName[] = { "ID sản phẩm", "Tên Ram", "Loại ram", "Dung lượng", "BUS", "Đơn giá" };
+	private final String columName[] = { "ID sản phẩm", "ID RAM", "Tên Ram", "Loại ram", "Dung lượng", "BUS", "Tồn kho",
+			"Đơn giá" };
 	private JTextField textField;
 	public Font font;
 	public Font font_1;
@@ -91,7 +95,7 @@ public class RAMForm extends JInternalFrame {
 
 				DefaultTableCellRenderer df = new DefaultTableCellRenderer();
 				df.setHorizontalAlignment(SwingConstants.RIGHT);
-				table.getColumnModel().getColumn(5).setCellRenderer(df);
+				table.getColumnModel().getColumn(7).setCellRenderer(df);
 				String gia = FormatToVND.vnd(i.getDonGia());
 
 				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getTenRam(), i.getLoai(), i.getDungLuong(),
@@ -106,12 +110,14 @@ public class RAMForm extends JInternalFrame {
 		tableModel.setColumnIdentifiers(columName);
 		table.setDefaultEditor(Object.class, null);
 		table.setModel(tableModel);
-		table.getColumnModel().getColumn(0).setPreferredWidth(200);
-		table.getColumnModel().getColumn(1).setPreferredWidth(500);
-		table.getColumnModel().getColumn(2).setPreferredWidth(300);
-		table.getColumnModel().getColumn(3).setPreferredWidth(300);
-		table.getColumnModel().getColumn(4).setPreferredWidth(100);
-		table.getColumnModel().getColumn(5).setPreferredWidth(250);
+		table.getColumnModel().getColumn(0).setPreferredWidth(100);
+		table.getColumnModel().getColumn(1).setPreferredWidth(100);
+		table.getColumnModel().getColumn(2).setPreferredWidth(500);
+		table.getColumnModel().getColumn(3).setPreferredWidth(150);
+		table.getColumnModel().getColumn(4).setPreferredWidth(300);
+		table.getColumnModel().getColumn(5).setPreferredWidth(200);
+		table.getColumnModel().getColumn(6).setPreferredWidth(100);
+		table.getColumnModel().getColumn(7).setPreferredWidth(250);
 		loadDataToTable(ramDAO.getInstance().selectAll());
 	}
 
@@ -153,12 +159,13 @@ public class RAMForm extends JInternalFrame {
 		btnNewButton_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(table.getSelectedRow()==-1) {
+				if (table.getSelectedRow() == -1) {
 					JOptionPane.showMessageDialog(null, "Vui lòng chọn RAM để xóa!");
-				}else {
-					int answ = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn xóa sản phẩm này?", "Cảnh báo", JOptionPane.YES_NO_OPTION);
-					if(answ==JOptionPane.YES_OPTION) {
-						ram ram =  getSelectRAM();
+				} else {
+					int answ = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn xóa sản phẩm này?", "Cảnh báo",
+							JOptionPane.YES_NO_OPTION);
+					if (answ == JOptionPane.YES_OPTION) {
+						ram ram = getSelectRAM();
 						ramDAO.getInstance().delete(ram);
 						JOptionPane.showMessageDialog(null, "Xóa thành công!");
 						loadDataToTable(ramDAO.getInstance().selectAll());
@@ -175,7 +182,10 @@ public class RAMForm extends JInternalFrame {
 		btnNewButton_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				CapNhatRAM.main(null);
+				if (table.getSelectedRow() == -1) {
+					JOptionPane.showMessageDialog(null, "Vui lòng chọn RAM đẻ chính sửa!");
+				} else
+					CapNhatRAM.main(null);
 			}
 		});
 		btnNewButton_3.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/icons8-edit-24.png")));
@@ -227,12 +237,14 @@ public class RAMForm extends JInternalFrame {
 						if (answ == JOptionPane.YES_OPTION) {
 							for (int i = rowBanDau; i <= model.getRowCount(); i++) {
 								String id = model.getValueAt(i, 0).toString();
-								String ten = model.getValueAt(i, 1).toString();
-								String loairam = model.getValueAt(i, 2).toString();
-								String dungluong = model.getValueAt(i, 3).toString();
-								String bus = model.getValueAt(i, 4).toString();
-								double dongia = Double.parseDouble(model.getValueAt(i, 5).toString());
-								ram r = new ram(id, ten, loairam, dungluong, bus, dongia);
+								String idram = model.getValueAt(i, 1).toString();
+								String ten = model.getValueAt(i, 2).toString();
+								String loairam = model.getValueAt(i, 3).toString();
+								String dungluong = model.getValueAt(i, 4).toString();
+								String bus = model.getValueAt(i, 5).toString();
+								int tonkho = (int) model.getValueAt(i, 6);
+								double dongia = Double.parseDouble(model.getValueAt(i, 7).toString());
+								ram r = new ram(id, idram, ten, loairam, dungluong, bus, tonkho, dongia);
 								ramDAO.getInstance().insert(r);
 							}
 						}
@@ -346,12 +358,53 @@ public class RAMForm extends JInternalFrame {
 
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setFont(font);
-		comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(
-				new String[] { "ID sản phẩm", "Tên RAM", "Loại RAM", "Dung lượng", "BUS", "Đơn giá" }));
+		comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID sản phẩm", "ID RAM", "Tên RAM",
+				"Loại RAM", "Dung lượng", "BUS", "Tồn kho", "Đơn giá" }));
 		comboBox.setBounds(146, 8, 99, 33);
 		panel_1.add(comboBox);
 
 		textField = new JTextField();
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				ArrayList<ram> list = new ArrayList<ram>();
+				String choose = comboBox.getSelectedItem().toString();
+				String key = textField.getText();
+
+				switch (choose) {
+				case "ID sản phẩm":
+					list = TimKiemRAM.byID(key);
+					break;
+				case "ID RAM":
+					list = TimKiemRAM.byIDRAM(key);
+					break;
+				case "Tên RAM":
+					list = TimKiemRAM.byTen(key);
+					break;
+				case "Loại RAM":
+					list = TimKiemRAM.byLoai(key);
+					break;
+				case "Dung lượng":
+					list = TimKiemRAM.byDungLuong(key);
+					break;
+				case "BUS":
+					list = TimKiemRAM.byBus(key);
+					break;
+				case "Tồn kho":
+					list = TimKiemRAM.byTonKho(key);
+					break;
+				case "Đơn giá":
+					list = TimKiemRAM.byGia(key);
+					break;
+
+				default:
+					break;
+				}
+
+				loadDataToTable(list);
+
+			}
+		});
 		textField.setColumns(10);
 		textField.setBounds(255, 8, 302, 33);
 		panel_1.add(textField);
@@ -365,11 +418,16 @@ public class RAMForm extends JInternalFrame {
 					loadDataToTable(giaTangDan());
 				} else if (comboBox_1.getSelectedItem().toString().equals("Giá giảm dần")) {
 					loadDataToTable(giaGiamDan());
+				} else if (comboBox_1.getSelectedItem().toString().equals("Tồn kho giảm dần")) {
+					loadDataToTable(tonKhoGiam());
+				} else if (comboBox_1.getSelectedItem().toString().equals("Tồn kho tăng dần")) {
+					loadDataToTable(tonKhoTang());
 				}
 			}
 		});
 		comboBox_1.setFont(font);
-		comboBox_1.setModel(new DefaultComboBoxModel<String>(new String[] {"Sắp xếp theo giá", "Giá tăng dần", "Giá giảm dần"}));
+		comboBox_1.setModel(new DefaultComboBoxModel<String>(
+				new String[] { "Sắp xếp", "Giá tăng dần", "Giá giảm dần", "Tồn kho tăng dần", "Tồn kho giảm dần" }));
 		comboBox_1.setBounds(10, 8, 127, 33);
 		panel_1.add(comboBox_1);
 	}
@@ -397,6 +455,36 @@ public class RAMForm extends JInternalFrame {
 				if (o1.getDonGia() < o2.getDonGia())
 					return 1;
 				if (o1.getDonGia() > o2.getDonGia())
+					return -1;
+				return 0;
+			}
+		});
+		return list;
+	}
+
+	private ArrayList<ram> tonKhoTang() {
+		ArrayList<ram> list = ramDAO.getInstance().selectAll();
+		Collections.sort(list, new Comparator<ram>() {
+			@Override
+			public int compare(ram o1, ram o2) {
+				if (o1.getTonkho() > o2.getTonkho())
+					return 1;
+				if (o1.getTonkho() < o2.getTonkho())
+					return -1;
+				return 0;
+			}
+		});
+		return list;
+	}
+
+	private ArrayList<ram> tonKhoGiam() {
+		ArrayList<ram> list = ramDAO.getInstance().selectAll();
+		Collections.sort(list, new Comparator<ram>() {
+			@Override
+			public int compare(ram o1, ram o2) {
+				if (o1.getTonkho() < o2.getTonkho())
+					return 1;
+				if (o1.getTonkho() > o2.getTonkho())
 					return -1;
 				return 0;
 			}

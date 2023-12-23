@@ -3,67 +3,67 @@ package model;
 import java.util.Objects;
 
 public class ram extends Products {
+	private String idRam;
 	private String tenRam;
 	private String loai;
 	private String dungLuong;
 	private String bus;
+	private int tonkho;
 	private double donGia;
 
 	public ram() {
 		super();
 	}
 
-	public ram(String tenRam, String loai, String dungLuong, String bus) {
+	public ram(String idRam, String tenRam, String loai, String dungLuong, String bus, int tonkho, double donGia) {
 		super();
+		this.idRam = idRam;
 		this.tenRam = tenRam;
 		this.loai = loai;
 		this.dungLuong = dungLuong;
 		this.bus = bus;
-	}
-
-	public ram(String idSanPham, String tenRam, String loai, String dungLuong, String bus, double donGia) {
-		super(idSanPham);
-		this.tenRam = tenRam;
-		this.loai = loai;
-		this.dungLuong = dungLuong;
-		this.bus = bus;
+		this.tonkho = tonkho;
 		this.donGia = donGia;
 	}
 
-	public ram(String idSanPham, String tenSanPham, String idNPP, int soLuongTonKho, String tenRam, String loai,
-			String dungLuong, String bus) {
-		super(idSanPham, tenSanPham, idNPP, soLuongTonKho);
+	public ram(String idSanPham, String idRam, String tenRam, String loai, String dungLuong, String bus, int tonkho,
+			double donGia) {
+		super(idSanPham);
+		this.idRam = idRam;
 		this.tenRam = tenRam;
 		this.loai = loai;
 		this.dungLuong = dungLuong;
 		this.bus = bus;
+		this.tonkho = tonkho;
+		this.donGia = donGia;
 	}
 
-	public ram(String idSanPham, String tenSanPham, int soLuongTonKho, String tenRam, String loai, String dungLuong,
-			String bus) {
-		super(idSanPham, tenSanPham, soLuongTonKho);
+	public ram(String idSanPham, String tenSanPham, int trangThai, String moTa, String idRam, String tenRam,
+			String loai, String dungLuong, String bus, int tonkho, double donGia) {
+		super(idSanPham, tenSanPham, trangThai, moTa);
+		this.idRam = idRam;
 		this.tenRam = tenRam;
 		this.loai = loai;
 		this.dungLuong = dungLuong;
 		this.bus = bus;
+		this.tonkho = tonkho;
+		this.donGia = donGia;
 	}
 
-	public ram(String idNPP, String tenNPP, String diaChi, String email, int sdt, String idSanPham, String tenSanPham,
-			int soLuongTonKho, String tenRam, String loai, String dungLuong, String bus) {
-		super(idNPP, tenNPP, diaChi, email, sdt, idSanPham, tenSanPham, soLuongTonKho);
-		this.tenRam = tenRam;
-		this.loai = loai;
-		this.dungLuong = dungLuong;
-		this.bus = bus;
+	public String getIdRam() {
+		return idRam;
 	}
 
-	public ram(String idSanPham, String tenSanPham, NhaPhanPhoi npp, int soLuongTonKho, String tenRam, String loai,
-			String dungLuong, String bus) {
-		super(idSanPham, tenSanPham, npp, soLuongTonKho);
-		this.tenRam = tenRam;
-		this.loai = loai;
-		this.dungLuong = dungLuong;
-		this.bus = bus;
+	public void setIdRam(String idRam) {
+		this.idRam = idRam;
+	}
+
+	public int getTonkho() {
+		return tonkho;
+	}
+
+	public void setTonkho(int tonkho) {
+		this.tonkho = tonkho;
 	}
 
 	public double getDonGia() {
@@ -108,25 +108,31 @@ public class ram extends Products {
 
 	@Override
 	public String toString() {
-		return "ram [tenRam=" + tenRam + ", loai=" + loai + ", dungLuong=" + dungLuong + ", bus=" + bus + "]";
+		return "ram [idRam=" + idRam + ", tenRam=" + tenRam + ", loai=" + loai + ", dungLuong=" + dungLuong + ", bus="
+				+ bus + ", tonkho=" + tonkho + ", donGia=" + donGia + ", getIdSanPham()=" + getIdSanPham() + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(bus, dungLuong, loai, tenRam);
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(bus, donGia, dungLuong, idRam, loai, tenRam, tonkho);
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		ram other = (ram) obj;
-		return Objects.equals(bus, other.bus) && Objects.equals(dungLuong, other.dungLuong)
-				&& Objects.equals(loai, other.loai) && Objects.equals(tenRam, other.tenRam);
+		return Objects.equals(bus, other.bus)
+				&& Double.doubleToLongBits(donGia) == Double.doubleToLongBits(other.donGia)
+				&& Objects.equals(dungLuong, other.dungLuong) && Objects.equals(idRam, other.idRam)
+				&& Objects.equals(loai, other.loai) && Objects.equals(tenRam, other.tenRam) && tonkho == other.tonkho;
 	}
 
 }

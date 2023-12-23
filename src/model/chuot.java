@@ -1,6 +1,10 @@
 package model;
 
+import java.util.Objects;
+
 public class chuot extends Products {
+	private String idChuot;
+
 	private String hangChuot;
 	private int soNut;
 	private String kieuKetNoi;
@@ -9,15 +13,17 @@ public class chuot extends Products {
 	private String doPhanGiai;
 	private String kichCo;
 	private String trongLuong;
+	private int tonKho;
 	private double donGia;
 
 	public chuot() {
 		super();
 	}
 
-	public chuot(String hangChuot, int soNut, String kieuKetNoi, String denLED, String mauSac, String doPhanGiai,
-			String kichCo, String trongLuong) {
+	public chuot(String idChuot, String hangChuot, int soNut, String kieuKetNoi, String denLED, String mauSac,
+			String doPhanGiai, String kichCo, String trongLuong, int tonKho, double donGia) {
 		super();
+		this.idChuot = idChuot;
 		this.hangChuot = hangChuot;
 		this.soNut = soNut;
 		this.kieuKetNoi = kieuKetNoi;
@@ -26,25 +32,14 @@ public class chuot extends Products {
 		this.doPhanGiai = doPhanGiai;
 		this.kichCo = kichCo;
 		this.trongLuong = trongLuong;
-	}
-
-	public chuot(String idSanPham, String hangChuot, int soNut, String kieuKetNoi, String denLED, String mauSac,
-			String doPhanGiai, String kichCo, String trongLuong, double donGia) {
-		super(idSanPham);
-		this.hangChuot = hangChuot;
-		this.soNut = soNut;
-		this.kieuKetNoi = kieuKetNoi;
-		this.denLED = denLED;
-		this.mauSac = mauSac;
-		this.doPhanGiai = doPhanGiai;
-		this.kichCo = kichCo;
-		this.trongLuong = trongLuong;
+		this.tonKho = tonKho;
 		this.donGia = donGia;
 	}
 
-	public chuot(String idSanPham, String tenSanPham, String idNPP, int soLuongTonKho, String hangChuot, int soNut,
-			String kieuKetNoi, String denLED, String mauSac, String doPhanGiai, String kichCo, String trongLuong) {
-		super(idSanPham, tenSanPham, idNPP, soLuongTonKho);
+	public chuot(String idSanPham, String idChuot, String hangChuot, int soNut, String kieuKetNoi, String denLED,
+			String mauSac, String doPhanGiai, String kichCo, String trongLuong, int tonKho, double donGia) {
+		super(idSanPham);
+		this.idChuot = idChuot;
 		this.hangChuot = hangChuot;
 		this.soNut = soNut;
 		this.kieuKetNoi = kieuKetNoi;
@@ -53,11 +48,15 @@ public class chuot extends Products {
 		this.doPhanGiai = doPhanGiai;
 		this.kichCo = kichCo;
 		this.trongLuong = trongLuong;
+		this.tonKho = tonKho;
+		this.donGia = donGia;
 	}
 
-	public chuot(String idSanPham, String tenSanPham, int soLuongTonKho, String hangChuot, int soNut, String kieuKetNoi,
-			String denLED, String mauSac, String doPhanGiai, String kichCo, String trongLuong) {
-		super(idSanPham, tenSanPham, soLuongTonKho);
+	public chuot(String idSanPham, String tenSanPham, int trangThai, String moTa, String idChuot, String hangChuot,
+			int soNut, String kieuKetNoi, String denLED, String mauSac, String doPhanGiai, String kichCo,
+			String trongLuong, int tonKho, double donGia) {
+		super(idSanPham, tenSanPham, trangThai, moTa);
+		this.idChuot = idChuot;
 		this.hangChuot = hangChuot;
 		this.soNut = soNut;
 		this.kieuKetNoi = kieuKetNoi;
@@ -66,33 +65,8 @@ public class chuot extends Products {
 		this.doPhanGiai = doPhanGiai;
 		this.kichCo = kichCo;
 		this.trongLuong = trongLuong;
-	}
-
-	public chuot(String idNPP, String tenNPP, String diaChi, String email, int sdt, String idSanPham, String tenSanPham,
-			int soLuongTonKho, String hangChuot, int soNut, String kieuKetNoi, String denLED, String mauSac,
-			String doPhanGiai, String kichCo, String trongLuong) {
-		super(idNPP, tenNPP, diaChi, email, sdt, idSanPham, tenSanPham, soLuongTonKho);
-		this.hangChuot = hangChuot;
-		this.soNut = soNut;
-		this.kieuKetNoi = kieuKetNoi;
-		this.denLED = denLED;
-		this.mauSac = mauSac;
-		this.doPhanGiai = doPhanGiai;
-		this.kichCo = kichCo;
-		this.trongLuong = trongLuong;
-	}
-
-	public chuot(String idSanPham, String tenSanPham, NhaPhanPhoi npp, int soLuongTonKho, String hangChuot, int soNut,
-			String kieuKetNoi, String denLED, String mauSac, String doPhanGiai, String kichCo, String trongLuong) {
-		super(idSanPham, tenSanPham, npp, soLuongTonKho);
-		this.hangChuot = hangChuot;
-		this.soNut = soNut;
-		this.kieuKetNoi = kieuKetNoi;
-		this.denLED = denLED;
-		this.mauSac = mauSac;
-		this.doPhanGiai = doPhanGiai;
-		this.kichCo = kichCo;
-		this.trongLuong = trongLuong;
+		this.tonKho = tonKho;
+		this.donGia = donGia;
 	}
 
 	public double getDonGia() {
@@ -165,6 +139,56 @@ public class chuot extends Products {
 
 	public void setTrongLuong(String trongLuong) {
 		this.trongLuong = trongLuong;
+	}
+
+	public String getIdChuot() {
+		return idChuot;
+	}
+
+	public void setIdChuot(String idChuot) {
+		this.idChuot = idChuot;
+	}
+
+	public int getTonKho() {
+		return tonKho;
+	}
+
+	public void setTonKho(int tonKho) {
+		this.tonKho = tonKho;
+	}
+
+	@Override
+	public String toString() {
+		return "chuot [idChuot=" + idChuot + ", hangChuot=" + hangChuot + ", soNut=" + soNut + ", kieuKetNoi="
+				+ kieuKetNoi + ", denLED=" + denLED + ", mauSac=" + mauSac + ", doPhanGiai=" + doPhanGiai + ", kichCo="
+				+ kichCo + ", trongLuong=" + trongLuong + ", tonKho=" + tonKho + ", donGia=" + donGia
+				+ ", getIdSanPham()=" + getIdSanPham() + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(denLED, doPhanGiai, donGia, hangChuot, idChuot, kichCo, kieuKetNoi,
+				mauSac, soNut, tonKho, trongLuong);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		chuot other = (chuot) obj;
+		return Objects.equals(denLED, other.denLED) && Objects.equals(doPhanGiai, other.doPhanGiai)
+				&& Double.doubleToLongBits(donGia) == Double.doubleToLongBits(other.donGia)
+				&& Objects.equals(hangChuot, other.hangChuot) && Objects.equals(idChuot, other.idChuot)
+				&& Objects.equals(kichCo, other.kichCo) && Objects.equals(kieuKetNoi, other.kieuKetNoi)
+				&& Objects.equals(mauSac, other.mauSac) && soNut == other.soNut && tonKho == other.tonKho
+				&& Objects.equals(trongLuong, other.trongLuong);
 	}
 
 }

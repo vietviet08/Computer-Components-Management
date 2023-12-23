@@ -2,58 +2,29 @@ package model;
 
 import java.util.Objects;
 
-public class Products extends NhaPhanPhoi {
+public class Products {
 	private String idSanPham;
 	private String tenSanPham;
-//	private String idLoaiSP;
-	private NhaPhanPhoi npp;
-	private int soLuongTonKho;
+	private int trangThai;
+	private String moTa;
 
 	public Products() {
 		super();
 	}
+
 //
 	public Products(String idSanPham) {
 		super();
 		this.idSanPham = idSanPham;
 	}
+
 //
-	public Products(String idSanPham, String tenSanPham, String idNPP, int soLuongTonKho) {
-		super(idNPP);
-		this.idSanPham = idSanPham;
-		this.tenSanPham = tenSanPham;
-		this.soLuongTonKho = soLuongTonKho;
-	}
-
-	public Products(String idSanPham, String tenSanPham, int soLuongTonKho) {
+	public Products(String idSanPham, String tenSanPham, int trangThai, String moTa) {
 		super();
 		this.idSanPham = idSanPham;
 		this.tenSanPham = tenSanPham;
-		this.soLuongTonKho = soLuongTonKho;
-	}
-
-	public Products(String idNPP, String tenNPP, String diaChi, String email, int sdt, String idSanPham,
-			String tenSanPham, int soLuongTonKho) {
-		super(idNPP, tenNPP, diaChi, email, sdt);
-		this.idSanPham = idSanPham;
-		this.tenSanPham = tenSanPham;
-		this.soLuongTonKho = soLuongTonKho;
-	}
-
-	public Products(String idSanPham, String tenSanPham, NhaPhanPhoi npp, int soLuongTonKho) {
-		super();
-		this.idSanPham = idSanPham;
-		this.tenSanPham = tenSanPham;
-		this.npp = npp;
-		this.soLuongTonKho = soLuongTonKho;
-	}
-
-	public NhaPhanPhoi getNpp() {
-		return npp;
-	}
-
-	public void setNpp(NhaPhanPhoi npp) {
-		this.npp = npp;
+		this.trangThai = trangThai;
+		this.moTa = moTa;
 	}
 
 	public String getIdSanPham() {
@@ -72,40 +43,44 @@ public class Products extends NhaPhanPhoi {
 		this.tenSanPham = tenSanPham;
 	}
 
-	public int getSoLuongTonKho() {
-		return soLuongTonKho;
+	public int getTrangThai() {
+		return trangThai;
 	}
 
-	public void setSoLuongTonKho(int soLuongTonKho) {
-		this.soLuongTonKho = soLuongTonKho;
+	public void setTrangThai(int trangThai) {
+		this.trangThai = trangThai;
+	}
+
+	public String getMoTa() {
+		return moTa;
+	}
+
+	public void setMoTa(String moTa) {
+		this.moTa = moTa;
 	}
 
 	@Override
 	public String toString() {
-		return "Products [idSanPham=" + idSanPham + ", tenSanPham=" + tenSanPham + ", soLuongTonKho=" + soLuongTonKho
-				+ ", getIdNPP()=" + getIdNPP() + ", getTenNPP()=" + getTenNPP() + ", getDiaChi()=" + getDiaChi()
-				+ ", getEmail()=" + getEmail() + ", getSdt()=" + getSdt() + "]";
+		return "Products [idSanPham=" + idSanPham + ", tenSanPham=" + tenSanPham + ", trangThai=" + trangThai
+				+ ", moTa=" + moTa + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + Objects.hash(idSanPham, soLuongTonKho, tenSanPham);
-		return result;
+		return Objects.hash(idSanPham, moTa, tenSanPham, trangThai);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Products other = (Products) obj;
-		return Objects.equals(idSanPham, other.idSanPham) && soLuongTonKho == other.soLuongTonKho
-				&& Objects.equals(tenSanPham, other.tenSanPham);
+		return Objects.equals(idSanPham, other.idSanPham) && Objects.equals(moTa, other.moTa)
+				&& Objects.equals(tenSanPham, other.tenSanPham) && trangThai == other.trangThai;
 	}
 
 }

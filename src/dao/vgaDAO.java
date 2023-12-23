@@ -22,15 +22,17 @@ public class vgaDAO implements DAOInterface<vga> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "INSERT INTO vga (idsanpham, tenvga, hangvga, bonho) VALUES (?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO vga (idsanpham, idvga, tenvga, hangvga, bonho, tonkho, dongia) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
 			ps.setString(1, t.getIdSanPham());
-			ps.setString(2, t.getTenVGA());
-			ps.setString(3, t.getHangVGA());
-			ps.setString(4, t.getBoNho());
-			ps.setDouble(5, t.getDonGia());
+			ps.setString(2, t.getIdVga());
+			ps.setString(3, t.getTenVGA());
+			ps.setString(4, t.getHangVGA());
+			ps.setString(5, t.getBoNho());
+			ps.setInt(6, t.getTonKho());
+			ps.setDouble(7, t.getDonGia());
 
 			check = ps.executeUpdate();
 
@@ -50,15 +52,17 @@ public class vgaDAO implements DAOInterface<vga> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "UPDATE vga SET tenvga = ?, hangvga = ?, bonho = ?, dongia = ? WHERE idsanpham = ?;";
+			String sql = "UPDATE vga SET idsanpham = ?, tenvga = ?, hangvga = ?, bonho = ?, tonkho = ?, dongia = ? WHERE idram = ?;";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
-			ps.setString(1, t.getTenVGA());
-			ps.setString(2, t.getHangVGA());
-			ps.setString(3, t.getBoNho());
-			ps.setString(4, t.getIdSanPham());
-			ps.setDouble(5, t.getDonGia());
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getTenVGA());
+			ps.setString(3, t.getHangVGA());
+			ps.setString(4, t.getBoNho());
+			ps.setInt(5, t.getTonKho());
+			ps.setDouble(6, t.getDonGia());
+			ps.setString(7, t.getIdVga());
 
 			check = ps.executeUpdate();
 
@@ -78,7 +82,7 @@ public class vgaDAO implements DAOInterface<vga> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "DELETE FROM vga WHERE idsanpham = ?;";
+			String sql = "DELETE FROM vga WHERE idram = ?;";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -97,7 +101,7 @@ public class vgaDAO implements DAOInterface<vga> {
 
 	@Override
 	public ArrayList<vga> selectAll() {
-		ArrayList<vga> v = new ArrayList<vga>();
+		ArrayList<vga> v = new ArrayList<>();
 
 		try {
 			Connection con = JDBCUntil.getConnection();
@@ -109,17 +113,14 @@ public class vgaDAO implements DAOInterface<vga> {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				vga vga = new vga(rs.getString("idsanpham"), rs.getString("tenvga"), rs.getString("hangvga"),
-						rs.getString("bonho"), rs.getDouble("dongia"));
+				vga vga = new vga(rs.getString("idsanpham"), rs.getString("idvga"), rs.getString("tenvga"),
+						rs.getString("hangvga"), rs.getString("bonho"), rs.getInt("tonkho"), rs.getDouble("dongia"));
 				v.add(vga);
 			}
-
 			JDBCUntil.closeConnection(con);
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return v;
 	}
 
@@ -137,8 +138,8 @@ public class vgaDAO implements DAOInterface<vga> {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				v = new vga(rs.getString("idsanpham"), rs.getString("tenvga"), rs.getString("hangvga"),
-						rs.getString("bonho"), rs.getDouble("dongia"));
+				v = new vga(rs.getString("idsanpham"), rs.getString("idvga"), rs.getString("tenvga"),
+						rs.getString("hangvga"), rs.getString("bonho"), rs.getInt("tonkho"), rs.getDouble("dongia"));
 			}
 
 			JDBCUntil.closeConnection(con);

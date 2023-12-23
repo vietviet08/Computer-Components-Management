@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedInputStream;
@@ -53,7 +55,7 @@ public class ProductForm extends JInternalFrame {
 	public Font font2;
 	private static JTable table;
 	private static DefaultTableModel tableModel;
-	private final String columName[] = { "ID sản phẩm", "Tên sản phẩm", "ID nhà phân phối", "Số lượng tồn kho" };
+	private final String columName[] = { "ID sản phẩm", "Tên sản phẩm", "Trạng thái", "Mô tả" };
 	private JTextField textField;
 
 	/**
@@ -80,8 +82,7 @@ public class ProductForm extends JInternalFrame {
 		try {
 			tableModel.setRowCount(0);
 			for (Products i : pr) {
-				tableModel.addRow(
-						new Object[] { i.getIdSanPham(), i.getTenSanPham(), i.getIdNPP(), i.getSoLuongTonKho() });
+				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getTenSanPham(), i.getTrangThai(), i.getMoTa() });
 			}
 		} catch (Exception e) {
 		}
@@ -92,10 +93,10 @@ public class ProductForm extends JInternalFrame {
 		tableModel.setColumnIdentifiers(columName);
 		table.setDefaultEditor(Object.class, null);
 		table.setModel(tableModel);
-		table.getColumnModel().getColumn(0).setPreferredWidth(200);
-		table.getColumnModel().getColumn(1).setPreferredWidth(500);
-		table.getColumnModel().getColumn(2).setPreferredWidth(200);
-		table.getColumnModel().getColumn(3).setPreferredWidth(200);
+		table.getColumnModel().getColumn(0).setPreferredWidth(150);
+		table.getColumnModel().getColumn(1).setPreferredWidth(150);
+		table.getColumnModel().getColumn(2).setPreferredWidth(100);
+		table.getColumnModel().getColumn(3).setPreferredWidth(500);
 		loadDataToTable(SanPhamDAO.getInstance().selectAll());
 	}
 
@@ -202,7 +203,7 @@ public class ProductForm extends JInternalFrame {
 							XSSFCell idnpp = excelRow.getCell(2);
 							XSSFCell soluongtonkho = excelRow.getCell(3);
 
-							model.addRow(new Object[] { idsp, ten, idnpp, soluongtonkho});
+							model.addRow(new Object[] { idsp, ten, idnpp, soluongtonkho });
 						}
 						JOptionPane.showMessageDialog(null, "Thêm thành công!");
 						int answ = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm vào csdl không", "Thông báo",
@@ -211,10 +212,10 @@ public class ProductForm extends JInternalFrame {
 							for (int i = rowBanDau; i <= model.getRowCount(); i++) {
 								String idsp = model.getValueAt(i, 0).toString();
 								String ten = model.getValueAt(i, 1).toString();
-								String idnpp = model.getValueAt(i, 2).toString();
-								int soluongtonkho = (int) model.getValueAt(i, 3);
+								int trangThai = (int) model.getValueAt(i, 2);
+								String mota = model.getValueAt(i, 3).toString();
 
-								Products p = new Products(idsp, ten, idnpp, soluongtonkho);
+								Products p = new Products(idsp, ten, trangThai, mota);
 								SanPhamDAO.getInstance().insert(p);
 							}
 						}
@@ -244,7 +245,7 @@ public class ProductForm extends JInternalFrame {
 		btnNewButton_4.setBounds(329, 8, 138, 33);
 		panel_1.add(btnNewButton_4);
 
-		JButton btnNewButton_5 = new JButton("Xuât Excel");
+		JButton btnNewButton_5 = new JButton("Xuất Excel");
 		btnNewButton_5.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -295,23 +296,36 @@ public class ProductForm extends JInternalFrame {
 		panel_2.setBounds(639, 1, 549, 49);
 		getContentPane().add(panel_2);
 
-		JButton btnNewButton = new JButton("Tìm kiếm");
-		btnNewButton.setFont(font);
-		btnNewButton.setIcon(new ImageIcon(ProductForm.class.getResource("/icon/icons8-search-24.png")));
-		btnNewButton.setBounds(421, 8, 118, 33);
-		panel_2.add(btnNewButton);
-
 		textField = new JTextField();
 		textField.setColumns(10);
-		textField.setBounds(109, 8, 302, 33);
+		textField.setBounds(247, 8, 302, 33);
 		panel_2.add(textField);
 
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setFont(font);
-		comboBox.setModel(new DefaultComboBoxModel<>(
-				new String[] { "ID Sản phẩm", "ID nhà phân phối", "Tên sản phẩm", "Số lượng tồn kho" }));
-		comboBox.setBounds(10, 8, 89, 33);
+		comboBox.setModel(
+				new DefaultComboBoxModel<>(new String[] { "ID Sản phẩm", "Tên sản phẩm", "Trạng thái", "Mô tả" }));
+		comboBox.setBounds(148, 8, 89, 33);
 		panel_2.add(comboBox);
+
+		JComboBox<String> comboBox_1 = new JComboBox<>();
+		comboBox_1.setModel(
+				new DefaultComboBoxModel<String>(new String[] { "Trạng thái", "Còn kinh doanh", "Ngừng kinh doanh" }));
+		comboBox_1.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (comboBox_1.getSelectedItem().toString().equals("Còn kinh doanh")) {
+					ArrayList<Products> list = ConKinhDoanh();
+					loadDataToTable(list);
+				} else if (comboBox_1.getSelectedItem().toString().equals("Ngừng kinh doanh")) {
+					ArrayList<Products> list = NgungKinhDoanh();
+					loadDataToTable(list);
+				}
+			}
+		});
+		comboBox_1.setBounds(10, 8, 128, 33);
+		panel_2.add(comboBox_1);
 
 		JScrollPane scrollPane = new JScrollPane();
 
@@ -334,8 +348,8 @@ public class ProductForm extends JInternalFrame {
 				return returnComp;
 			}
 		};
-		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "ID Sản phẩm", "Tên sản phẩm",
-				"ID loại sản phẩm", "ID Nhà phân phối", "Số lượng tồn kho" }));
+		table.setModel(new DefaultTableModel(new Object[][] {},
+				new String[] { "ID Sản phẩm", "Tên sản phẩm", "Trạng thái", "Mô tả" }));
 		scrollPane.setViewportView(table);
 		setDefaultTable();
 
@@ -355,4 +369,47 @@ public class ProductForm extends JInternalFrame {
 			System.out.println(e);
 		}
 	}
+
+	private ArrayList<Products> ConKinhDoanh() {
+		ArrayList<Products> list = SanPhamDAO.getInstance().selectAll();
+
+		for (Products products : list) {
+			if (products.getTrangThai() == 1)
+				;
+			list.add(products);
+		}
+
+		return list;
+	}
+
+	private ArrayList<Products> NgungKinhDoanh() {
+		ArrayList<Products> list = SanPhamDAO.getInstance().selectAll();
+
+		for (Products products : list) {
+			if (products.getTrangThai() == 0)
+				;
+			list.add(products);
+		}
+
+		return list;
+	}
+
+//
+//	private ArrayList<Products> sxGiamDan() {
+//		ArrayList<Products> list = SanPhamDAO.getInstance().selectAll();
+//
+//		Collections.sort(list, new Comparator<Products>() {
+//
+//			@Override
+//			public int compare(Products o1, Products o2) {
+//				if (o1.getSoLuongTonKho() < o2.getSoLuongTonKho())
+//					return 1;
+//				if (o1.getSoLuongTonKho() > o2.getSoLuongTonKho())
+//					return -1;
+//				return 0;
+//			}
+//		});
+//
+//		return list;
+//	}
 }

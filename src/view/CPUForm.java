@@ -5,6 +5,10 @@ import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedInputStream;
@@ -29,6 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -44,15 +49,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import color.SetColor;
 import controller.FormatToVND;
+import controller.TimKiemCPU;
 import dao.cpuDAO;
 import model.cpu;
-import javax.swing.border.LineBorder;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import javax.swing.SwingConstants;
 
 public class CPUForm extends JInternalFrame {
 
@@ -62,8 +61,8 @@ public class CPUForm extends JInternalFrame {
 	private static final long serialVersionUID = -4185848334864650430L;
 	private static JTable table;
 	private static DefaultTableModel tableModel;
-	private final String columName[] = { "ID sản phẩm", "Tên CPU", "Xung nhịp", "Số nhân", "Số luồng",
-			"Điện năng tiêu thụ", "Bộ nhớ đệm", "Đơn giá" };
+	private final String columName[] = { "ID sản phẩm", "ID CPU", "Tên CPU", "Xung nhịp", "Số nhân", "Số luồng",
+			"Điện năng tiêu thụ", "Bộ nhớ đệm", "Tồn kho","Đơn giá" };
 	private JTextField textField;
 	public Font font;
 	public Font font_1;
@@ -97,13 +96,19 @@ public class CPUForm extends JInternalFrame {
 			for (cpu i : cpu) {
 				// set text column don gia ben phai
 				DefaultTableCellRenderer renderRight = new DefaultTableCellRenderer();
-
 				renderRight.setHorizontalAlignment(JLabel.RIGHT);
-				table.getColumnModel().getColumn(7).setCellRenderer(renderRight);
+
+				DefaultTableCellRenderer renderCenter = new DefaultTableCellRenderer();
+				renderCenter.setHorizontalAlignment(JLabel.CENTER);
+
+				table.getColumnModel().getColumn(8).setCellRenderer(renderRight);
+				table.getColumnModel().getColumn(4).setCellRenderer(renderCenter);
+				table.getColumnModel().getColumn(5).setCellRenderer(renderCenter);
+				table.getColumnModel().getColumn(7).setCellRenderer(renderCenter);
 
 				String gia = FormatToVND.vnd(i.getDonGia());
-				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getNameCpu(), i.getXungNhip(), i.getSoNhan(),
-						i.getSoLuong(), i.getDienNangTieuThu(), i.getBoNhoDem(), gia });
+				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getIdCpu(), i.getNameCpu(), i.getXungNhip(),
+						i.getSoNhan(), i.getSoLuong(), i.getDienNangTieuThu(), i.getBoNhoDem(), gia });
 			}
 		} catch (Exception e) {
 		}
@@ -115,13 +120,15 @@ public class CPUForm extends JInternalFrame {
 		table.setDefaultEditor(Object.class, null);
 		table.setModel(tableModel);
 		table.getColumnModel().getColumn(0).setPreferredWidth(150);
-		table.getColumnModel().getColumn(1).setPreferredWidth(500);
+		table.getColumnModel().getColumn(1).setPreferredWidth(150);
 		table.getColumnModel().getColumn(2).setPreferredWidth(500);
-		table.getColumnModel().getColumn(3).setPreferredWidth(100);
+		table.getColumnModel().getColumn(3).setPreferredWidth(500);
 		table.getColumnModel().getColumn(4).setPreferredWidth(100);
-		table.getColumnModel().getColumn(5).setPreferredWidth(400);
-		table.getColumnModel().getColumn(6).setPreferredWidth(150);
+		table.getColumnModel().getColumn(5).setPreferredWidth(100);
+		table.getColumnModel().getColumn(6).setPreferredWidth(450);
 		table.getColumnModel().getColumn(7).setPreferredWidth(200);
+		table.getColumnModel().getColumn(8).setPreferredWidth(250);
+		table.getColumnModel().getColumn(9).setPreferredWidth(250);
 		loadDataToTable(cpuDAO.getInstance().selectAll());
 	}
 
@@ -232,32 +239,38 @@ public class CPUForm extends JInternalFrame {
 
 						for (int row = 1; row <= excelSheet.getLastRowNum(); row++) {
 							XSSFRow excelRow = excelSheet.getRow(row);
-							XSSFCell id = excelRow.getCell(0);
-							XSSFCell ten = excelRow.getCell(1);
-							XSSFCell xn = excelRow.getCell(2);
-							XSSFCell sonhan = excelRow.getCell(3);
-							XSSFCell soluong = excelRow.getCell(4);
-							XSSFCell diennang = excelRow.getCell(5);
-							XSSFCell bonho = excelRow.getCell(6);
-							XSSFCell dongia = excelRow.getCell(7);
+							XSSFCell idsp = excelRow.getCell(0);
+							XSSFCell idcpu = excelRow.getCell(1);
+							XSSFCell ten = excelRow.getCell(2);
+							XSSFCell xn = excelRow.getCell(3);
+							XSSFCell sonhan = excelRow.getCell(4);
+							XSSFCell soluong = excelRow.getCell(5);
+							XSSFCell diennang = excelRow.getCell(6);
+							XSSFCell bonho = excelRow.getCell(7);
+							XSSFCell tonkho = excelRow.getCell(8);
+							XSSFCell dongia = excelRow.getCell(9);
 
-							model.addRow(new Object[] { id, ten, xn, sonhan, soluong, diennang, bonho, dongia });
+							model.addRow(
+									new Object[] { idsp, idcpu, ten, xn, sonhan, soluong, diennang, bonho,tonkho, dongia });
 						}
 						JOptionPane.showMessageDialog(null, "Thêm thành công!");
 						int answ = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm vào csdl không", "Thông báo",
 								JOptionPane.YES_NO_OPTION);
 						if (answ == JOptionPane.YES_OPTION) {
 							for (int i = rowBanDau; i <= model.getRowCount(); i++) {
-								String id = model.getValueAt(i, 0).toString();
-								String ten = model.getValueAt(i, 1).toString();
-								String xn = model.getValueAt(i, 2).toString();
-								int sonhan = (int) model.getValueAt(i, 3);
-								int soluong = (int) model.getValueAt(i, 4);
-								String dien = model.getValueAt(i, 5).toString();
-								String bonho = model.getValueAt(i, 6).toString();
-								double dongia = (double) model.getValueAt(i, 7);
 
-								cpu cp = new cpu(id, ten, xn, sonhan, soluong, dien, bonho, dongia);
+								String idsp = model.getValueAt(i, 0).toString();
+								String idcpu = model.getValueAt(i, 1).toString();
+								String ten = model.getValueAt(i, 2).toString();
+								String xn = model.getValueAt(i, 3).toString();
+								int sonhan = (int) model.getValueAt(i, 4);
+								int soluong = (int) model.getValueAt(i, 5);
+								String dien = model.getValueAt(i, 6).toString();
+								String bonho = model.getValueAt(i, 7).toString();
+								int tonkho = (int) model.getValueAt(i, 8);
+								double dongia = (double) model.getValueAt(i, 9);
+
+								cpu cp = new cpu(idsp, idcpu, ten, xn, sonhan, soluong, dien, bonho, tonkho, dongia);
 
 								cpuDAO.getInstance().insert(cp);
 
@@ -335,11 +348,6 @@ public class CPUForm extends JInternalFrame {
 		btnNewButton_5.setFont(font);
 		btnNewButton_5.setBounds(477, 8, 142, 33);
 		panel.add(btnNewButton_5);
-		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-		lblNewLabel_1.setBounds(628, 6, 2, 40);
-		panel.add(lblNewLabel_1);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 53, 1192, 448);
@@ -378,7 +386,7 @@ public class CPUForm extends JInternalFrame {
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
-		
+
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setBorder(null);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -386,32 +394,65 @@ public class CPUForm extends JInternalFrame {
 		lblNewLabel_2.setBounds(499, 15, 48, 22);
 		panel_1.add(lblNewLabel_2);
 		comboBox.setFont(font);
-		comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID sản phẩm", "Tên CPU", "Xung nhịp",
-				"Số nhân", "Số luồng", "Điện năng tiêu thụ", "Bộ nhớ đệm", "Đơn giá" }));
+		comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID sản phẩm", "ID CPU", "Tên CPU",
+				"Xung nhịp", "Số nhân", "Số luồng", "Điện năng tiêu thụ", "Bộ nhớ đệm","Tồn kho", "Đơn giá" }));
 		comboBox.setBounds(146, 8, 89, 33);
 		panel_1.add(comboBox);
 
 		textField = new JTextField();
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				ArrayList<cpu> list = new ArrayList<cpu>();
+
+				String choose = comboBox.getSelectedItem().toString();
+				String key = textField.getText();
+				if (choose.equals("ID sản phẩm")) {
+					list = TimKiemCPU.byID(key);
+				} else if (choose.equals("Tên CPU")) {
+					list = TimKiemCPU.byTen(key);
+				} else if (choose.equals("Xung nhịp")) {
+					list = TimKiemCPU.byXungNhip(key);
+				} else if (choose.equals("Số nhân")) {
+					list = TimKiemCPU.bySoNhan(key);
+				} else if (choose.equals("Số luồng")) {
+					list = TimKiemCPU.bySoLuong(key);
+				} else if (choose.equals("Điện năng tiêu thụ")) {
+					list = TimKiemCPU.byDienNang(key);
+				} else if (choose.equals("Bộ nhớ đệm")) {
+					list = TimKiemCPU.byBoNhoDem(key);
+				} else if (choose.equals("Đơn giá")) {
+					list = TimKiemCPU.byGia(key);
+				}else if (choose.equals("ID CPU")) {
+					list = TimKiemCPU.byIDCPU(key);
+				}else if (choose.equals("Tồn kho")) {
+					list = TimKiemCPU.byTonKho(key);
+				}
+
+				loadDataToTable(list);
+			}
+		});
 		textField.setColumns(10);
 		textField.setBounds(245, 8, 302, 33);
 		panel_1.add(textField);
 
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		lblNewLabel.setBounds(130, 6, 2, 40);
-		panel_1.add(lblNewLabel);
-
 		comboBoxSort = new JComboBox<>();
 		comboBoxSort.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if( comboBoxSort.getSelectedItem().toString().equals("Giá tăng dần")) {
+				if (comboBoxSort.getSelectedItem().toString().equals("Giá tăng dần")) {
 					ArrayList<cpu> tangdan = giaTangDan();
 					loadDataToTable(tangdan);
-				}else if(comboBoxSort.getSelectedItem().toString().equals("Giá giảm dần")){
+				} else if (comboBoxSort.getSelectedItem().toString().equals("Giá giảm dần")) {
 					ArrayList<cpu> giamdan = giaGiamDan();
 					loadDataToTable(giamdan);
+				}else if (comboBoxSort.getSelectedItem().toString().equals("Tồn kho tăng dần")) {
+					ArrayList<cpu> tang = tonKhoTang();
+					loadDataToTable(tang);
+				}else if (comboBoxSort.getSelectedItem().toString().equals("Tồn kho giảm dần")) {
+					ArrayList<cpu> giam = tonKhoGiam();
+					loadDataToTable(giam);
 				}
 			}
 		});
@@ -434,7 +475,8 @@ public class CPUForm extends JInternalFrame {
 
 			}
 		});
-		comboBoxSort.setModel(new DefaultComboBoxModel<String>(new String[] {"Sắp xếp theo giá", "Giá tăng dần", "Giá giảm dần"}));
+		comboBoxSort.setModel(
+				new DefaultComboBoxModel<String>(new String[] { "Sắp xếp", "Giá tăng dần", "Giá giảm dần", "Tồn kho tăng dần", "Tồn kho giảm dần" }));
 		comboBoxSort.setBounds(0, 8, 125, 32);
 		panel_1.add(comboBoxSort);
 
@@ -477,6 +519,36 @@ public class CPUForm extends JInternalFrame {
 				if (o1.getDonGia() < o2.getDonGia())
 					return 1;
 				if (o1.getDonGia() > o2.getDonGia())
+					return -1;
+				return 0;
+			}
+		});
+		return list;
+	}
+	
+	private ArrayList<cpu> tonKhoGiam() {
+		ArrayList<cpu> list = cpuDAO.getInstance().selectAll();
+		Collections.sort(list, new Comparator<cpu>() {
+			@Override
+			public int compare(cpu o1, cpu o2) {
+				if (o1.getTonKho() < o2.getTonKho())
+					return 1;
+				if (o1.getTonKho() > o2.getTonKho())
+					return -1;
+				return 0;
+			}
+		});
+		return list;
+	}
+	
+	private ArrayList<cpu> tonKhoTang() {
+		ArrayList<cpu> list = cpuDAO.getInstance().selectAll();
+		Collections.sort(list, new Comparator<cpu>() {
+			@Override
+			public int compare(cpu o1, cpu o2) {
+				if (o1.getTonKho() > o2.getTonKho())
+					return 1;
+				if (o1.getTonKho() < o2.getTonKho())
 					return -1;
 				return 0;
 			}

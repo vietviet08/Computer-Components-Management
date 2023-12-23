@@ -8,27 +8,46 @@ public class Phieu {
 	private Timestamp thoiGianTao;
 	private String nguoiTao;
 	private double tongTien;
+	private int trangThai;
 	private ChiTietPhieu ctp;
 
 	public Phieu() {
 		super();
 	}
 
-	public Phieu(String idPhieu, Timestamp thoiGianTao, String nguoiTao, double tongTien) {
+	
+
+	public Phieu(String idPhieu, Timestamp thoiGianTao, String nguoiTao, double tongTien, int trangThai,
+			ChiTietPhieu ctp) {
 		super();
 		this.idPhieu = idPhieu;
 		this.thoiGianTao = thoiGianTao;
 		this.nguoiTao = nguoiTao;
 		this.tongTien = tongTien;
+		this.trangThai = trangThai;
+		this.ctp = ctp;
+	}
+	
+	
+
+
+	public Phieu(String idPhieu, Timestamp thoiGianTao, String nguoiTao, double tongTien, int trangThai) {
+		super();
+		this.idPhieu = idPhieu;
+		this.thoiGianTao = thoiGianTao;
+		this.nguoiTao = nguoiTao;
+		this.tongTien = tongTien;
+		this.trangThai = trangThai;
 	}
 
-	public Phieu(String idPhieu, Timestamp thoiGianTao, String nguoiTao, double tongTien, ChiTietPhieu ctp) {
-		super();
-		this.idPhieu = idPhieu;
-		this.thoiGianTao = thoiGianTao;
-		this.nguoiTao = nguoiTao;
-		this.tongTien = tongTien;
-		this.ctp = ctp;
+
+
+	public int getTrangThai() {
+		return trangThai;
+	}
+
+	public void setTrangThai(int trangThai) {
+		this.trangThai = trangThai;
 	}
 
 	public String getIdPhieu() {
