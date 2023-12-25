@@ -272,7 +272,7 @@ public class ThemCPU extends JFrame {
 	}
 
 	private static void setDefaultIDCPU() {
-		String id = "CPU";
+		String id = "cpu";
 		ArrayList<cpu> list = cpuDAO.getInstance().selectAll();
 		int code = 1;
 		for (cpu cpu : list) {

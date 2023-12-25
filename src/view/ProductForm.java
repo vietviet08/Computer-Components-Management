@@ -22,12 +22,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
@@ -41,6 +43,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import color.SetColor;
 import dao.SanPhamDAO;
+import font.SetFont;
 import model.Products;
 
 public class ProductForm extends JInternalFrame {
@@ -56,7 +59,7 @@ public class ProductForm extends JInternalFrame {
 	private static JTable table;
 	private static DefaultTableModel tableModel;
 	private final String columName[] = { "ID sản phẩm", "Tên sản phẩm", "Trạng thái", "Mô tả" };
-	private JTextField textField;
+	private JTextField txtTmKim;
 
 	/**
 	 * Launch the application.
@@ -82,6 +85,9 @@ public class ProductForm extends JInternalFrame {
 		try {
 			tableModel.setRowCount(0);
 			for (Products i : pr) {
+				DefaultTableCellRenderer renderCenter = new DefaultTableCellRenderer();
+				renderCenter.setHorizontalAlignment(JLabel.CENTER);
+				table.getColumnModel().getColumn(2).setCellRenderer(renderCenter);
 				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getTenSanPham(), i.getTrangThai(), i.getMoTa() });
 			}
 		} catch (Exception e) {
@@ -113,7 +119,7 @@ public class ProductForm extends JInternalFrame {
 			System.out.println(e);
 		}
 
-		setBounds(100, 100, 1200, 530);
+		setBounds(100, 100, 1200, 730);
 		getContentPane().setLayout(null);
 
 		JPanel panel_1 = new JPanel();
@@ -296,10 +302,10 @@ public class ProductForm extends JInternalFrame {
 		panel_2.setBounds(639, 1, 549, 49);
 		getContentPane().add(panel_2);
 
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(247, 8, 302, 33);
-		panel_2.add(textField);
+		txtTmKim = new JTextField();
+		txtTmKim.setColumns(10);
+		txtTmKim.setBounds(247, 8, 302, 33);
+		panel_2.add(txtTmKim);
 
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setFont(font);
@@ -309,28 +315,26 @@ public class ProductForm extends JInternalFrame {
 		panel_2.add(comboBox);
 
 		JComboBox<String> comboBox_1 = new JComboBox<>();
-		comboBox_1.setModel(
-				new DefaultComboBoxModel<String>(new String[] { "Trạng thái", "Còn kinh doanh", "Ngừng kinh doanh" }));
 		comboBox_1.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (comboBox_1.getSelectedItem().toString().equals("Còn kinh doanh")) {
-					ArrayList<Products> list = ConKinhDoanh();
-					loadDataToTable(list);
+					loadDataToTable(ConKinhDoanh());
 				} else if (comboBox_1.getSelectedItem().toString().equals("Ngừng kinh doanh")) {
-					ArrayList<Products> list = NgungKinhDoanh();
-					loadDataToTable(list);
+					loadDataToTable(NgungKinhDoanh());
 				}
 			}
 		});
+		comboBox_1.setModel(
+				new DefaultComboBoxModel<String>(new String[] { "Trạng thái", "Còn kinh doanh", "Ngừng kinh doanh" }));
 		comboBox_1.setFont(font);
 		comboBox_1.setBounds(10, 8, 128, 33);
 		panel_2.add(comboBox_1);
 
 		JScrollPane scrollPane = new JScrollPane();
 
-		scrollPane.setBounds(0, 53, 1188, 452);
+		scrollPane.setBounds(0, 53, 1188, 648);
 		getContentPane().add(scrollPane);
 
 		table = new JTable() {
@@ -349,6 +353,7 @@ public class ProductForm extends JInternalFrame {
 				return returnComp;
 			}
 		};
+		table.getTableHeader().setFont(SetFont.fontHeaderTable());
 		table.setModel(new DefaultTableModel(new Object[][] {},
 				new String[] { "ID Sản phẩm", "Tên sản phẩm", "Trạng thái", "Mô tả" }));
 		scrollPane.setViewportView(table);
@@ -373,26 +378,26 @@ public class ProductForm extends JInternalFrame {
 
 	private ArrayList<Products> ConKinhDoanh() {
 		ArrayList<Products> list = SanPhamDAO.getInstance().selectAll();
-
+		ArrayList<Products> pro = new ArrayList<Products>();
+		System.out.println(list.size());
 		for (Products products : list) {
 			if (products.getTrangThai() == 1)
-				;
-			list.add(products);
+				pro.add(products);
 		}
 
-		return list;
+		return pro;
 	}
 
 	private ArrayList<Products> NgungKinhDoanh() {
 		ArrayList<Products> list = SanPhamDAO.getInstance().selectAll();
-
+		ArrayList<Products> pro = new ArrayList<Products>();
+		System.out.println(list.size());
 		for (Products products : list) {
 			if (products.getTrangThai() == 0)
-				;
-			list.add(products);
+				pro.add(products);
 		}
 
-		return list;
+		return pro;
 	}
 
 //

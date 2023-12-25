@@ -255,7 +255,7 @@ public class ThemRAM extends JFrame {
 	}
 
 	private static void setDefaultIDRAM() {
-		String id = "RAM";
+		String id = "r";
 		int code = 1;
 		ArrayList<ram> list = ramDAO.getInstance().selectAll();
 		for (ram ram : list) {

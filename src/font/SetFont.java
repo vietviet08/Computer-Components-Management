@@ -65,4 +65,26 @@ public class SetFont {
 		}
 		return f;
 	}
+	
+	public static Font fontCategory() {
+		Font f = null;
+		try {
+			File fontStyle1 = new File("src/font/Roboto-Regular.ttf");
+			f = Font.createFont(Font.TRUETYPE_FONT, fontStyle1).deriveFont(16f);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return f;
+	}
+	
+	public static Font fontHeaderTable() {
+		Font f = null;
+		try {
+			File fontStyle1 = new File("src/font/Roboto-Bold.ttf");
+			f = Font.createFont(Font.TRUETYPE_FONT, fontStyle1).deriveFont(12f);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return f;
+	}
 }

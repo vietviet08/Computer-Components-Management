@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import db.JDBCUntil;
+import model.ProductNhap;
 import model.vga;
 
 public class vgaDAO implements DAOInterface<vga> {
@@ -52,7 +53,7 @@ public class vgaDAO implements DAOInterface<vga> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "UPDATE vga SET idsanpham = ?, tenvga = ?, hangvga = ?, bonho = ?, tonkho = ?, dongia = ? WHERE idram = ?;";
+			String sql = "UPDATE vga SET idsanpham = ?, tenvga = ?, hangvga = ?, bonho = ?, tonkho = ?, dongia = ? WHERE idvga = ?;";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -75,6 +76,33 @@ public class vgaDAO implements DAOInterface<vga> {
 		return check;
 	}
 
+	public int updateTonKho(ArrayList<ProductNhap> pn) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			for (ProductNhap productNhap : pn) {
+				if (productNhap.getPrivateId().contains("vga")) {
+
+					String sql = "UPDATE vga SET  tonkho = tonkho + ? WHERE idvga = ?;";
+
+					PreparedStatement ps = con.prepareStatement(sql);
+					ps.setInt(1, productNhap.getSoLuong());
+					ps.setString(2, productNhap.getPrivateId());
+					check = ps.executeUpdate();
+				}
+			}
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
 	@Override
 	public int delete(vga t) {
 		int check = 0;
@@ -82,7 +110,7 @@ public class vgaDAO implements DAOInterface<vga> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "DELETE FROM vga WHERE idram = ?;";
+			String sql = "DELETE FROM vga WHERE idvga = ?;";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -115,6 +143,30 @@ public class vgaDAO implements DAOInterface<vga> {
 			while (rs.next()) {
 				vga vga = new vga(rs.getString("idsanpham"), rs.getString("idvga"), rs.getString("tenvga"),
 						rs.getString("hangvga"), rs.getString("bonho"), rs.getInt("tonkho"), rs.getDouble("dongia"));
+				v.add(vga);
+			}
+			JDBCUntil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return v;
+	}
+
+	public ArrayList<vga> selectNhapHang() {
+		ArrayList<vga> v = new ArrayList<>();
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "SELECT * FROM vga;";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				vga vga = new vga(rs.getString("idsanpham"), rs.getString("idvga"), rs.getString("tenvga"),
+						rs.getDouble("dongia"));
 				v.add(vga);
 			}
 			JDBCUntil.closeConnection(con);

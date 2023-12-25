@@ -93,7 +93,7 @@ public class SanPhamDAO implements DAOInterface<Products> {
 
 	@Override
 	public ArrayList<Products> selectAll() {
-		ArrayList<Products> list = new ArrayList<Products>();
+		ArrayList<Products> list = new ArrayList<>();
 
 		try {
 			Connection con = JDBCUntil.getConnection();

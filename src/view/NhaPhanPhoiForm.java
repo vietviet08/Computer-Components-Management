@@ -42,6 +42,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import color.SetColor;
 import controller.TimKiemNPP;
 import dao.NhaPhanPhoiDAO;
+import font.SetFont;
 import model.NhaPhanPhoi;
 
 public class NhaPhanPhoiForm extends JInternalFrame {
@@ -119,11 +120,11 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 			System.out.println(e);
 		}
 
-		setBounds(100, 100, 1200, 530);
+		setBounds(100, 100, 1200, 630);
 		getContentPane().setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 51, 1188, 450);
+		scrollPane.setBounds(0, 51, 1188, 550);
 		getContentPane().add(scrollPane);
 
 		tableNpp = new JTable() {
@@ -142,6 +143,7 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 				return returnComp;
 			}
 		};
+		tableNpp.getTableHeader().setFont(SetFont.fontHeaderTable());
 		tableNpp.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "new", "new", "new", "new", "new" }));
 		scrollPane.setViewportView(tableNpp);
 

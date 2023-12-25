@@ -51,6 +51,7 @@ import color.SetColor;
 import controller.FormatToVND;
 import controller.TimKiemCPU;
 import dao.cpuDAO;
+import font.SetFont;
 import model.cpu;
 
 public class CPUForm extends JInternalFrame {
@@ -147,7 +148,7 @@ public class CPUForm extends JInternalFrame {
 			System.out.println(e);
 		}
 
-		setBounds(100, 100, 1200, 530);
+		setBounds(100, 100, 1200, 730);
 		getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();
@@ -350,7 +351,7 @@ public class CPUForm extends JInternalFrame {
 		panel.add(btnNewButton_5);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 53, 1192, 448);
+		scrollPane.setBounds(0, 53, 1192, 648);
 		getContentPane().add(scrollPane);
 
 		table = new JTable() {
@@ -369,6 +370,7 @@ public class CPUForm extends JInternalFrame {
 				return returnComp;
 			}
 		};
+		table.getTableHeader().setFont(SetFont.fontHeaderTable());
 		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "New column", "New column", "New column",
 				"New column", "New column", "New column", "New column", "New column", "New column", "New column" }));
 		scrollPane.setViewportView(table);

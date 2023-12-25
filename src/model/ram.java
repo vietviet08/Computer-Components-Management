@@ -15,6 +15,16 @@ public class ram extends Products {
 		super();
 	}
 
+	
+	public ram(String idSanPham, String idRam, String tenRam, double donGia) {
+		super(idSanPham);
+		this.idRam = idRam;
+		this.tenRam = tenRam;
+		this.donGia = donGia;
+	}
+
+
+
 	public ram(String idRam, String tenRam, String loai, String dungLuong, String bus, int tonkho, double donGia) {
 		super();
 		this.idRam = idRam;

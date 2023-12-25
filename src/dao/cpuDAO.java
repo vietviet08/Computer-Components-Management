@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import db.JDBCUntil;
+import model.ProductNhap;
 import model.cpu;
 
 public class cpuDAO implements DAOInterface<cpu> {
@@ -79,6 +80,33 @@ public class cpuDAO implements DAOInterface<cpu> {
 	}
 
 //	cần tạo method update số lượng sản phẩm khi được nhập hàng hoặc xuất hàng
+
+	public int updateTonKho(ArrayList<ProductNhap> pn) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			for (ProductNhap productNhap : pn) {
+
+				if (productNhap.getPrivateId().contains("cpu")) {
+					String sql = "UPDATE cpu SET  tonkho = tonkho + ? WHERE idcpu = ?;";
+
+					PreparedStatement ps = con.prepareStatement(sql);
+					ps.setInt(1, productNhap.getSoLuong());
+					ps.setString(2, productNhap.getPrivateId());
+					check = ps.executeUpdate();
+				}
+
+			}
+			JDBCUntil.closeConnection(con);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
 
 	@Override
 	public int delete(cpu t) {

@@ -19,20 +19,22 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import color.SetColor;
+import font.SetFont;
 
 public class MainForm extends JFrame {
 
@@ -50,7 +52,6 @@ public class MainForm extends JFrame {
 	private JButton btnXuatHang;
 	private JButton btnPhieuXuat;
 	private JButton btnThongKe;
-	private JButton btnLoiSnPhm;
 	private JButton btnCpu;
 	private JButton btnBnPhm;
 	private JButton btnChut;
@@ -96,7 +97,7 @@ public class MainForm extends JFrame {
 		Color whiteFont = new Color(254, 254, 254);
 
 		Color green = new Color(130, 224, 170);
-		Color redB = new Color(220, 19, 46);
+//		Color redB = new Color(220, 19, 46);
 		Color blue = new Color(64, 143, 221);
 		Color blueOp = new Color(98, 181, 244);
 //		Color orange = new Color(230, 126, 34);
@@ -118,7 +119,7 @@ public class MainForm extends JFrame {
 		this.setTitle("Quản lý linh kiện máy tính");
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1405, 602);
+		setBounds(100, 100, 1408, 802);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -130,7 +131,7 @@ public class MainForm extends JFrame {
 		navbar.setBackground(blue);
 		navbar.setForeground(whiteFont);
 		navbar.setFont(font_1);
-		navbar.setBounds(189, 0, 648, 37);
+		navbar.setBounds(179, 0, 658, 37);
 		contentPane.add(navbar);
 		navbar.setLayout(null);
 
@@ -161,7 +162,7 @@ public class MainForm extends JFrame {
 		});
 		btnAllProduct.setBackground(blue);
 		btnAllProduct.setFont(font);
-		btnAllProduct.setBounds(0, 11, 89, 15);
+		btnAllProduct.setBounds(10, 11, 92, 15);
 		navbar.add(btnAllProduct);
 		btnAllProduct.setBorder(null);
 
@@ -195,11 +196,6 @@ public class MainForm extends JFrame {
 		btnCpu.setBorder(null);
 		btnCpu.setBounds(99, 7, 49, 22);
 		navbar.add(btnCpu);
-
-		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		lblNewLabel_2.setBounds(89, 11, 2, 20);
-		navbar.add(lblNewLabel_2);
 
 		btnRam = new JButton("RAM");
 		btnRam.addMouseListener(new MouseAdapter() {
@@ -467,30 +463,23 @@ public class MainForm extends JFrame {
 		navbar.add(btnTaiNghe);
 
 		maincontent = new JPanel();
-		maincontent.setBounds(189, 37, 1200, 530);
+		maincontent.setBounds(189, 37, 1200, 730);
 		contentPane.add(maincontent);
 		maincontent.setLayout(new CardLayout(0, 0));
 
 		JPanel panel_welcome = new JPanel();
 		// 40, 180, 99
 
-		panel_welcome.setBackground(redB);
+		panel_welcome.setBackground(SetColor.blue);
 		panel_welcome.setLayout(null);
-		panel_welcome.setBounds(0, 0, 179, 80);
+		panel_welcome.setBounds(0, 0, 179, 63);
 		contentPane.add(panel_welcome);
 
-		JLabel lblHaveAGood = new JLabel("Have a good day!!!");
-		lblHaveAGood.setFont(font);
-		lblHaveAGood.setForeground(whiteFont);
-		lblHaveAGood.setHorizontalAlignment(SwingConstants.CENTER);
-		lblHaveAGood.setBounds(35, 17, 106, 20);
-		panel_welcome.add(lblHaveAGood);
-
-		JLabel lblNewLabel = new JLabel("Welcome back");
+		JLabel lblNewLabel = new JLabel("Welcome back, have a good day!!!");
 		lblNewLabel.setFont(font);
 		lblNewLabel.setForeground(whiteFont);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(35, 0, 106, 14);
+		lblNewLabel.setBounds(0, 0, 179, 14);
 		panel_welcome.add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel(LoginForm.fullN);
@@ -500,8 +489,12 @@ public class MainForm extends JFrame {
 //		lblNewLabel_1.setHorizontalTextPosition(SwingConstants.CENTER);
 //		lblNewLabel_1.setHorizontalTextPosition(SwingConstants.BOTTOM);
 		lblNewLabel_1.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-male-user-32-white.png")));
-		lblNewLabel_1.setBounds(0, 34, 179, 46);
+		lblNewLabel_1.setBounds(0, 20, 179, 32);
 		panel_welcome.add(lblNewLabel_1);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(0, 58, 179, 2);
+		panel_welcome.add(separator);
 
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
@@ -530,12 +523,15 @@ public class MainForm extends JFrame {
 		JPanel panel_1 = new JPanel();
 // blue 64,143,221
 //orig 230, 126, 34
-		panel_1.setBackground(blue);
-		panel_1.setBounds(0, 78, 179, 489);
+		panel_1.setBackground(SetColor.blue);
+		panel_1.setBounds(0, 61, 179, 706);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 
 		btnNhaCungCap = new JButton("Nhà phân phối");
+		btnNhaCungCap.setIconTextGap(8);
+		btnNhaCungCap.setHorizontalAlignment(SwingConstants.LEFT);
+		btnNhaCungCap.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-flyer-distributor-male-32.png")));
 		btnNhaCungCap.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -550,7 +546,6 @@ public class MainForm extends JFrame {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				btnLoiSnPhm.setBackground(blue);
 				btnNhaCungCap.setBackground(blueOp);
 				btnNhapHang.setBackground(blue);
 				btnXuatHang.setBackground(blue);
@@ -560,24 +555,26 @@ public class MainForm extends JFrame {
 			}
 		});
 		btnNhaCungCap.setFont(font1);
-		btnNhaCungCap.setBackground(blue);
+		btnNhaCungCap.setBackground(SetColor.blueOp);
 		btnNhaCungCap.setForeground(whiteFont);
 		btnNhaCungCap.setBorder(null);
-		btnNhaCungCap.setBounds(0, 41, 179, 39);
+		btnNhaCungCap.setBounds(0, 0, 179, 39);
 		panel_1.add(btnNhaCungCap);
 
-		btnNhapHang = new JButton("Nhập hàng");
+		btnNhapHang = new JButton("Nhập Hàng");
+		btnNhapHang.setIconTextGap(8);
+		btnNhapHang.setHorizontalAlignment(SwingConstants.LEFT);
+		btnNhapHang.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-close-garage-door-32.png")));
 		btnNhapHang.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				maincontent.removeAll();
-				PhieuNhapForm pnf = new PhieuNhapForm();
+				NhapHangForm pnf = new NhapHangForm();
 				maincontent.add(pnf).setVisible(true);;
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				btnLoiSnPhm.setBackground(blue);
 				btnNhaCungCap.setBackground(blue);
 				btnNhapHang.setBackground(blueOp);
 				btnXuatHang.setBackground(blue);
@@ -591,10 +588,13 @@ public class MainForm extends JFrame {
 		btnNhapHang.setBackground(blue);
 		btnNhapHang.setForeground(whiteFont);
 		btnNhapHang.setBorder(null);
-		btnNhapHang.setBounds(0, 80, 179, 39);
+		btnNhapHang.setBounds(0, 50, 179, 39);
 		panel_1.add(btnNhapHang);
 
-		btnXuatHang = new JButton("Xuất hàng");
+		btnXuatHang = new JButton("Xuất Hàng");
+		btnXuatHang.setIconTextGap(8);
+		btnXuatHang.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-send-package-32.png")));
+		btnXuatHang.setHorizontalAlignment(SwingConstants.LEFT);
 		btnXuatHang.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -604,7 +604,6 @@ public class MainForm extends JFrame {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				btnLoiSnPhm.setBackground(blue);
 				btnNhaCungCap.setBackground(blue);
 				btnNhapHang.setBackground(blue);
 				btnXuatHang.setBackground(blueOp);
@@ -617,20 +616,25 @@ public class MainForm extends JFrame {
 		btnXuatHang.setBackground(blue);
 		btnXuatHang.setForeground(whiteFont);
 		btnXuatHang.setBorder(null);
-		btnXuatHang.setBounds(0, 159, 179, 39);
+		btnXuatHang.setBounds(0, 150, 179, 39);
 		panel_1.add(btnXuatHang);
 
-		btnPhieuNhap = new JButton("Phiếu nhập");
+		btnPhieuNhap = new JButton("Phiếu Nhập");
+		btnPhieuNhap.setIconTextGap(8);
+		btnPhieuNhap.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-bill-32 (2).png")));
+		btnPhieuNhap.setHorizontalAlignment(SwingConstants.LEFT);
 		btnPhieuNhap.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				maincontent.removeAll();
 //				btnPhieuNhap.setBackground(new Color(211, 84, 0));
+				PhieuNhapForm pnf = new PhieuNhapForm();
+				maincontent.add(pnf).setVisible(true);;
+				
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				btnLoiSnPhm.setBackground(blue);
 				btnNhaCungCap.setBackground(blue);
 				btnNhapHang.setBackground(blue);
 				btnXuatHang.setBackground(blue);
@@ -643,10 +647,10 @@ public class MainForm extends JFrame {
 		btnPhieuNhap.setBackground(blue);
 		btnPhieuNhap.setForeground(whiteFont);
 		btnPhieuNhap.setBorder(null);
-		btnPhieuNhap.setBounds(0, 120, 179, 39);
+		btnPhieuNhap.setBounds(0, 100, 179, 39);
 		panel_1.add(btnPhieuNhap);
 
-		JButton btnDangXuat = new JButton("Đăng xuất");
+		JButton btnDangXuat = new JButton("Đăng Xuất");
 		btnDangXuat.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -657,14 +661,21 @@ public class MainForm extends JFrame {
 			public void mouseExited(MouseEvent e) {
 				btnDangXuat.setBackground(new Color(251, 252, 252));
 			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int answ = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn đăng xuất?", "Cảnh báo", JOptionPane.YES_NO_OPTION);
+				if(answ == JOptionPane.YES_OPTION) {
+					closeFrame();
+				}
+			}
 		});
 		btnDangXuat.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-shutdown-16.png")));
 		btnDangXuat.setBorder(null);
 		btnDangXuat.setFont(font1);
-		btnDangXuat.setBounds(0, 461, 179, 28);
+		btnDangXuat.setBounds(0, 678, 179, 28);
 		panel_1.add(btnDangXuat);
 
-		JButton btnThayDoiTT = new JButton("Thông tin tài khoản");
+		JButton btnThayDoiTT = new JButton("Thông Tin Tài Khoản");
 		btnThayDoiTT.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -675,14 +686,22 @@ public class MainForm extends JFrame {
 			public void mouseExited(MouseEvent e) {
 				btnThayDoiTT.setBackground(new Color(251, 252, 252));
 			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				ThongTinTaiKhoan.main(null);
+			}
 		});
 		btnThayDoiTT.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-info-16.png")));
 		btnThayDoiTT.setBorder(null);
 		btnThayDoiTT.setFont(font1);
-		btnThayDoiTT.setBounds(0, 435, 179, 28);
+		btnThayDoiTT.setBounds(0, 652, 179, 28);
 		panel_1.add(btnThayDoiTT);
 
-		btnThongKe = new JButton("Thống kê");
+		btnThongKe = new JButton("Thống Kê");
+		btnThongKe.setIconTextGap(8);
+		btnThongKe.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-stocks-32.png")));
+		btnThongKe.setHorizontalAlignment(SwingConstants.LEFT);
 		btnThongKe.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -692,7 +711,6 @@ public class MainForm extends JFrame {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				btnLoiSnPhm.setBackground(blue);
 				btnNhaCungCap.setBackground(blue);
 				btnNhapHang.setBackground(blue);
 				btnXuatHang.setBackground(blue);
@@ -705,10 +723,13 @@ public class MainForm extends JFrame {
 		btnThongKe.setBackground(blue);
 		btnThongKe.setForeground(whiteFont);
 		btnThongKe.setBorder(null);
-		btnThongKe.setBounds(0, 235, 179, 39);
+		btnThongKe.setBounds(0, 300, 179, 39);
 		panel_1.add(btnThongKe);
 
-		btnPhieuXuat = new JButton("Phiếu xuất");
+		btnPhieuXuat = new JButton("Phiếu Xuất");
+		btnPhieuXuat.setIconTextGap(8);
+		btnPhieuXuat.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-payment-check-32.png")));
+		btnPhieuXuat.setHorizontalAlignment(SwingConstants.LEFT);
 		btnPhieuXuat.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -718,7 +739,6 @@ public class MainForm extends JFrame {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				btnLoiSnPhm.setBackground(blue);
 				btnNhaCungCap.setBackground(blue);
 				btnNhapHang.setBackground(blue);
 				btnXuatHang.setBackground(blue);
@@ -731,33 +751,8 @@ public class MainForm extends JFrame {
 		btnPhieuXuat.setBackground(blue);
 		btnPhieuXuat.setForeground(whiteFont);
 		btnPhieuXuat.setBorder(null);
-		btnPhieuXuat.setBounds(0, 196, 179, 39);
+		btnPhieuXuat.setBounds(0, 200, 179, 39);
 		panel_1.add(btnPhieuXuat);
-
-		btnLoiSnPhm = new JButton("Loại sản phẩm");
-		btnLoiSnPhm.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				maincontent.removeAll();
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				btnLoiSnPhm.setBackground(blueOp);
-				btnNhaCungCap.setBackground(blue);
-				btnNhapHang.setBackground(blue);
-				btnXuatHang.setBackground(blue);
-				btnPhieuXuat.setBackground(blue);
-				btnPhieuNhap.setBackground(blue);
-				btnThongKe.setBackground(blue);
-			}
-		});
-		btnLoiSnPhm.setFont(font1);
-		btnLoiSnPhm.setBackground(blue);
-		btnLoiSnPhm.setForeground(whiteFont);
-		btnLoiSnPhm.setBorder(null);
-		btnLoiSnPhm.setBounds(0, 0, 179, 39);
-		panel_1.add(btnLoiSnPhm);
 		
 		JPanel panelDateTime = new JPanel();
 		panelDateTime.setBackground(blue);
@@ -765,9 +760,20 @@ public class MainForm extends JFrame {
 		cp.setBackground(blue);
 		panelDateTime.add(cp);
 //		 cp.BOTTOM_ALIGNMENT
-		panelDateTime.setBounds(0, 407, 179, 29);
+		panelDateTime.setBounds(0, 619, 179, 29);
 		panel_1.add(panelDateTime);
 		panelDateTime.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JButton btnKhchHng = new JButton("Khách Hàng");
+		btnKhchHng.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-group-32.png")));
+		btnKhchHng.setIconTextGap(8);
+		btnKhchHng.setHorizontalAlignment(SwingConstants.LEFT);
+		btnKhchHng.setForeground(new Color(254, 254, 254));
+		btnKhchHng.setFont(SetFont.font1());
+		btnKhchHng.setBorder(null);
+		btnKhchHng.setBackground(new Color(64, 143, 221));
+		btnKhchHng.setBounds(0, 250, 179, 39);
+		panel_1.add(btnKhchHng);
 		
 		
 
@@ -853,7 +859,7 @@ public class MainForm extends JFrame {
 			
 			setLayout(new BorderLayout());
 			tickTock();
-//			clock.setForeground(SetColor.whiteFont);
+			clock.setForeground(SetColor.whiteFont);
 			clock.setBackground(SetColor.blue);
 			clock.setFont(font_1);
 			add(clock);
@@ -872,5 +878,12 @@ public class MainForm extends JFrame {
 		public void tickTock() {
 			clock.setText(DateFormat.getDateTimeInstance().format(new Date()));
 		}
+	}
+	
+	
+	@SuppressWarnings("deprecation")
+	private void closeFrame() {
+		this.disable();
+		this.dispose();
 	}
 }

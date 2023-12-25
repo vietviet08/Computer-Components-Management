@@ -14,6 +14,13 @@ public class vga extends Products {
 		super();
 	}
 
+	public vga(String idSanPham, String idVga, String tenVGA, double donGia) {
+		super(idSanPham);
+		this.idVga = idVga;
+		this.tenVGA = tenVGA;
+		this.donGia = donGia;
+	}
+
 	public vga(String idVga, String tenVGA, String hangVGA, String boNho, int tonKho, double donGia) {
 		super();
 		this.idVga = idVga;

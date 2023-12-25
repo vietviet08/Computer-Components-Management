@@ -216,7 +216,7 @@ public class ThemVGA extends JFrame {
 	}
 	
 	private static void setDefaultIDVGA() {
-		String id = "VGA";
+		String id = "vga";
 		int code = 1;
 		
 		ArrayList<vga> list = vgaDAO.getInstance().selectAll();

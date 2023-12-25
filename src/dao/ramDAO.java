@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import db.JDBCUntil;
+import model.ProductNhap;
 import model.ram;
 
 public class ramDAO implements DAOInterface<ram> {
@@ -64,9 +65,33 @@ public class ramDAO implements DAOInterface<ram> {
 			ps.setDouble(6, t.getDonGia());
 			ps.setInt(7, t.getTonkho());
 			ps.setString(8, t.getIdRam());
-			
 
 			check = ps.executeUpdate();
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
+	public int updateTonKho(ArrayList<ProductNhap> pn) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			for (ProductNhap productNhap : pn) {
+				if (productNhap.getPrivateId().contains("r")) {
+					String sql = "UPDATE ram SET tonkho = tonkho + ? WHERE idram = ? ;";
+					PreparedStatement ps = con.prepareStatement(sql);
+					ps.setInt(1, productNhap.getSoLuong());
+					ps.setString(2, productNhap.getPrivateId());
+					check = ps.executeUpdate();
+				}
+			}
 
 			JDBCUntil.closeConnection(con);
 
@@ -115,8 +140,9 @@ public class ramDAO implements DAOInterface<ram> {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				ram ram = new ram(rs.getString("idsanpham"),rs.getString("idram"), rs.getString("tenram"), rs.getString("loairam"),
-						rs.getString("dungluong"), rs.getString("bus"),rs.getInt("tonkho"), rs.getDouble("dongia"));
+				ram ram = new ram(rs.getString("idsanpham"), rs.getString("idram"), rs.getString("tenram"),
+						rs.getString("loairam"), rs.getString("dungluong"), rs.getString("bus"), rs.getInt("tonkho"),
+						rs.getDouble("dongia"));
 				r.add(ram);
 			}
 
@@ -127,6 +153,33 @@ public class ramDAO implements DAOInterface<ram> {
 		}
 
 		return r;
+	}
+
+	public ArrayList<ram> selectNhapHang() {
+		ArrayList<ram> list = new ArrayList<ram>();
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "SELECT * FROM ram;";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				ram ram = new ram(rs.getString("idsanpham"), rs.getString("idram"), rs.getString("tenram"),
+						rs.getDouble("dongia"));
+				list.add(ram);
+			}
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return list;
 	}
 
 	@Override
@@ -145,8 +198,9 @@ public class ramDAO implements DAOInterface<ram> {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				r = new ram(rs.getString("idsanpham"),rs.getString("idram"), rs.getString("tenram"), rs.getString("loairam"),
-						rs.getString("dungluong"), rs.getString("bus"),rs.getInt("tonkho"), rs.getDouble("dongia"));
+				r = new ram(rs.getString("idsanpham"), rs.getString("idram"), rs.getString("tenram"),
+						rs.getString("loairam"), rs.getString("dungluong"), rs.getString("bus"), rs.getInt("tonkho"),
+						rs.getDouble("dongia"));
 			}
 
 			JDBCUntil.closeConnection(con);
