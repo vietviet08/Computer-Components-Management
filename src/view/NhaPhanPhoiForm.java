@@ -120,11 +120,11 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 			System.out.println(e);
 		}
 
-		setBounds(100, 100, 1200, 630);
+		setBounds(100, 100, 1170, 630);
 		getContentPane().setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 51, 1188, 550);
+		scrollPane.setBounds(0, 51, 1152, 550);
 		getContentPane().add(scrollPane);
 
 		tableNpp = new JTable() {
@@ -447,13 +447,13 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 
 		});
 		tfSeach.setColumns(10);
-		tfSeach.setBounds(109, 8, 302, 33);
+		tfSeach.setBounds(109, 8, 283, 33);
 		panel_1.add(tfSeach);
 
 		JButton btnNewButton = new JButton("Tìm kiếm");
 		btnNewButton.setFont(font);
 		btnNewButton.setIcon(new ImageIcon(NhaPhanPhoiForm.class.getResource("/icon/icons8-search-24.png")));
-		btnNewButton.setBounds(421, 8, 118, 33);
+		btnNewButton.setBounds(402, 8, 118, 33);
 		panel_1.add(btnNewButton);
 	}
 

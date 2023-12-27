@@ -102,10 +102,11 @@ public class CPUForm extends JInternalFrame {
 				DefaultTableCellRenderer renderCenter = new DefaultTableCellRenderer();
 				renderCenter.setHorizontalAlignment(JLabel.CENTER);
 
-				table.getColumnModel().getColumn(8).setCellRenderer(renderRight);
 				table.getColumnModel().getColumn(4).setCellRenderer(renderCenter);
 				table.getColumnModel().getColumn(5).setCellRenderer(renderCenter);
 				table.getColumnModel().getColumn(7).setCellRenderer(renderCenter);
+				table.getColumnModel().getColumn(8).setCellRenderer(renderCenter);
+				table.getColumnModel().getColumn(9).setCellRenderer(renderRight);
 
 				String gia = FormatToVND.vnd(i.getDonGia());
 				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getIdCpu(), i.getNameCpu(), i.getXungNhip(),
@@ -148,7 +149,7 @@ public class CPUForm extends JInternalFrame {
 			System.out.println(e);
 		}
 
-		setBounds(100, 100, 1200, 730);
+		setBounds(100, 100, 1200-30, 730);
 		getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();
@@ -351,7 +352,7 @@ public class CPUForm extends JInternalFrame {
 		panel.add(btnNewButton_5);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 53, 1192, 648);
+		scrollPane.setBounds(0, 53, 1162, 648);
 		getContentPane().add(scrollPane);
 
 		table = new JTable() {
@@ -393,7 +394,7 @@ public class CPUForm extends JInternalFrame {
 		lblNewLabel_2.setBorder(null);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblNewLabel_2.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/icons8-search-24.png")));
-		lblNewLabel_2.setBounds(499, 15, 48, 22);
+		lblNewLabel_2.setBounds(471, 15, 48, 22);
 		panel_1.add(lblNewLabel_2);
 		comboBox.setFont(font);
 		comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID sản phẩm", "ID CPU", "Tên CPU",
@@ -435,7 +436,7 @@ public class CPUForm extends JInternalFrame {
 			}
 		});
 		textField.setColumns(10);
-		textField.setBounds(245, 8, 302, 33);
+		textField.setBounds(248, 8, 277, 33);
 		panel_1.add(textField);
 
 		comboBoxSort = new JComboBox<>();

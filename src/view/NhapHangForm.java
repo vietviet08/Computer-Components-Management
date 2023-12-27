@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
@@ -27,12 +28,16 @@ import javax.swing.table.TableCellRenderer;
 import color.SetColor;
 import controller.FormatToVND;
 import controller.LuuTam;
+import dao.ChiTietPhieuNhapDAO;
 import dao.NhaPhanPhoiDAO;
+import dao.PhieuNhapDAO;
 import dao.cpuDAO;
 import dao.ramDAO;
 import dao.vgaDAO;
 import font.SetFont;
+import model.ChiTietPhieu;
 import model.NhaPhanPhoi;
+import model.PhieuNhap;
 import model.ProductNhap;
 import model.cpu;
 import model.ram;
@@ -181,7 +186,7 @@ public class NhapHangForm extends JInternalFrame {
 	}
 
 	public NhapHangForm() {
-		setBounds(100, 100, 1200, 730);
+		setBounds(100, 100, 1170, 730);
 		getContentPane().setLayout(null);
 
 		tfTongTien = new JTextField();
@@ -192,18 +197,18 @@ public class NhapHangForm extends JInternalFrame {
 
 		tfTongTien.setOpaque(false);
 		tfTongTien.setBorder(null);
-		tfTongTien.setBounds(1056, 590, 136, 26);
+		tfTongTien.setBounds(1016, 594, 136, 26);
 		getContentPane().add(tfTongTien);
 		tfTongTien.setColumns(10);
 
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblNewLabel_1.setIcon(new ImageIcon(NhapHangForm.class.getResource("/icon/icons8-search-24.png")));
-		lblNewLabel_1.setBounds(508, 7, 48, 22);
+		lblNewLabel_1.setBounds(460, 6, 48, 22);
 		getContentPane().add(lblNewLabel_1);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 36, 801, 665);
+		scrollPane.setBounds(0, 36, 750, 665);
 		getContentPane().add(scrollPane);
 
 		tableALL = new JTable() {
@@ -229,7 +234,7 @@ public class NhapHangForm extends JInternalFrame {
 		setDefaultTable("cpu");
 
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(811, 0, 381, 585);
+		scrollPane_1.setBounds(760, 1, 402, 585);
 		getContentPane().add(scrollPane_1);
 
 		tableMin = new JTable() {
@@ -248,7 +253,7 @@ public class NhapHangForm extends JInternalFrame {
 				return returnComp;
 			}
 		};
-		;
+		tableMin.getTableHeader().setFont(SetFont.fontHeaderTable());
 		tableMin.setModel(
 				new DefaultTableModel(new Object[][] {}, new String[] { "New column", "New column", "New column" }));
 		scrollPane_1.setViewportView(tableMin);
@@ -280,7 +285,7 @@ public class NhapHangForm extends JInternalFrame {
 			}
 		});
 		btnNewButton.setFont(SetFont.font1_());
-		btnNewButton.setBounds(811, 627, 40, 26);
+		btnNewButton.setBounds(760, 627, 40, 26);
 		getContentPane().add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("Xóa");
@@ -305,7 +310,7 @@ public class NhapHangForm extends JInternalFrame {
 			}
 		});
 		btnNewButton_1.setFont(SetFont.font1_());
-		btnNewButton_1.setBounds(978, 627, 104, 26);
+		btnNewButton_1.setBounds(916, 625, 104, 26);
 		getContentPane().add(btnNewButton_1);
 
 		JButton btnNewButton_3 = new JButton("+");
@@ -315,7 +320,7 @@ public class NhapHangForm extends JInternalFrame {
 			}
 		});
 		btnNewButton_3.setFont(SetFont.font1_());
-		btnNewButton_3.setBounds(904, 627, 40, 26);
+		btnNewButton_3.setBounds(853, 627, 40, 26);
 		getContentPane().add(btnNewButton_3);
 
 		JButton btnNewButton_1_1 = new JButton("Lưu tạm");
@@ -333,7 +338,7 @@ public class NhapHangForm extends JInternalFrame {
 			}
 		});
 		btnNewButton_1_1.setFont(SetFont.font1_());
-		btnNewButton_1_1.setBounds(1092, 627, 100, 26);
+		btnNewButton_1_1.setBounds(1052, 625, 100, 26);
 		getContentPane().add(btnNewButton_1_1);
 
 		JButton btnNewButton_1_2 = new JButton("Nhập hàng");
@@ -348,8 +353,27 @@ public class NhapHangForm extends JInternalFrame {
 					int check = cpuDAO.getInstance().updateTonKho(listNhap);
 					check += ramDAO.getInstance().updateTonKho(listNhap);
 					check += vgaDAO.getInstance().updateTonKho(listNhap);
-					if (check > 0)
-						JOptionPane.showMessageDialog(null, "Đã nhập hàng thành công " + check + " sản phẩm!");
+					if (check > 0) {
+
+						JOptionPane.showMessageDialog(null, "Đã nhập hàng thành công!");
+						System.out.println(tien);
+
+						String idPhieu = createIDPhieuNhap();
+
+						Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+						PhieuNhap pn = new PhieuNhap(idPhieu, comboBox_chooseNPP.getSelectedItem().toString(),
+								timestamp, LoginForm.fullN, tien, 1);
+						PhieuNhapDAO.getInstance().insert(pn);
+
+						for (int i = 0; i < tableMin.getRowCount(); i++) {
+							ChiTietPhieu ctp = new ChiTietPhieu(pn.getIdPhieu(), (String) tableMin.getValueAt(i, 0),
+									(int) tableMin.getValueAt(i, 3), 0);
+//							(double)tableMin.getValueAt(i, 4)
+							ChiTietPhieuNhapDAO.getInstance().insert(ctp);
+						}
+
+					}
 					listNhap.removeAll(listNhap);
 					LuuTam.sanPham.clear();
 					LuuTam.tongTien = 0;
@@ -362,7 +386,7 @@ public class NhapHangForm extends JInternalFrame {
 			}
 		});
 		btnNewButton_1_2.setFont(SetFont.font1_());
-		btnNewButton_1_2.setBounds(978, 664, 104, 26);
+		btnNewButton_1_2.setBounds(916, 662, 104, 26);
 		getContentPane().add(btnNewButton_1_2);
 
 		textField = new JTextField();
@@ -370,7 +394,7 @@ public class NhapHangForm extends JInternalFrame {
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 
 		textField.setBorder(null);
-		textField.setBounds(849, 628, 57, 24);
+		textField.setBounds(798, 628, 57, 24);
 		getContentPane().add(textField);
 		textField.setColumns(10);
 
@@ -392,13 +416,13 @@ public class NhapHangForm extends JInternalFrame {
 			}
 		});
 		btnNewButton_1_2_1.setFont(SetFont.font1_());
-		btnNewButton_1_2_1.setBounds(1092, 663, 100, 26);
+		btnNewButton_1_2_1.setBounds(1052, 662, 100, 26);
 		getContentPane().add(btnNewButton_1_2_1);
 
 		lbTongTien1 = new JLabel("Tổng tiền:");
 		lbTongTien1.setFont(SetFont.font1_());
 		lbTongTien1.setForeground(SetColor.redB);
-		lbTongTien1.setBounds(978, 592, 78, 23);
+		lbTongTien1.setBounds(916, 596, 78, 23);
 		getContentPane().add(lbTongTien1);
 
 		btnNewButton_2 = new JButton("Thêm");
@@ -465,7 +489,7 @@ public class NhapHangForm extends JInternalFrame {
 			}
 		});
 		btnNewButton_2.setFont(SetFont.font1_());
-		btnNewButton_2.setBounds(697, 2, 104, 30);
+		btnNewButton_2.setBounds(648, 3, 104, 30);
 		getContentPane().add(btnNewButton_2);
 
 		ArrayList<NhaPhanPhoi> list = NhaPhanPhoiDAO.getInstance().selectAll();
@@ -477,7 +501,7 @@ public class NhapHangForm extends JInternalFrame {
 
 		comboBox_chooseNPP = new JComboBox<>();
 		comboBox_chooseNPP.setModel(new DefaultComboBoxModel<String>(combo));
-		comboBox_chooseNPP.setBounds(811, 594, 133, 22);
+		comboBox_chooseNPP.setBounds(760, 594, 133, 22);
 		getContentPane().add(comboBox_chooseNPP);
 
 		String[] allProduct = { "CPU", "RAM", "VGA", "Mainboard", "Case", "Nguồn", "Màn hình", "Chuột", "Bàn phím",
@@ -497,13 +521,13 @@ public class NhapHangForm extends JInternalFrame {
 
 			}
 		});
-		comboBox_chooseProduct.setBounds(571, 3, 116, 27);
+		comboBox_chooseProduct.setBounds(522, 3, 116, 30);
 		getContentPane().add(comboBox_chooseProduct);
 
 		textField_1 = new JTextField();
 		textField_1.setName("");
 		textField_1.setToolTipText("");
-		textField_1.setBounds(290, 3, 271, 28);
+		textField_1.setBounds(241, 3, 271, 30);
 		getContentPane().add(textField_1);
 		textField_1.setColumns(10);
 
@@ -546,5 +570,21 @@ public class NhapHangForm extends JInternalFrame {
 			}
 		}
 		return false;
+	}
+
+	private String createIDPhieuNhap() {
+		String id = "pn";
+		int code = 0;
+
+		ArrayList<PhieuNhap> list = PhieuNhapDAO.getInstance().selectAll();
+
+		for (PhieuNhap phieuNhap : list) {
+			if (phieuNhap.getIdPhieu().equals(id + code))
+				code++;
+			else
+				break;
+		}
+
+		return id + code;
 	}
 }

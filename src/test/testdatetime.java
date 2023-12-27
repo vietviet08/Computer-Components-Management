@@ -3,21 +3,37 @@ package test;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-//from   ww w.j  a  v a 2s. c  om
-import javax.swing.JFrame;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import controller.ConvertDate;
+
 public class testdatetime {
-	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(new ClockPane());
-		frame.pack();
-		frame.setVisible(true);
+	public static void main(String[] args) throws InterruptedException {
+//		JFrame frame = new JFrame();
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.add(new ClockPane());
+//		frame.pack();
+//		frame.setVisible(true);
+
+
+		while(true) {
+			
+			Thread.sleep(1000);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			System.out.println(sdf.format(timestamp));
+		}
+		
+		
+
 	}
 }
 
@@ -44,4 +60,5 @@ class ClockPane extends JPanel {
 	public void tickTock() {
 		clock.setText(DateFormat.getDateTimeInstance().format(new Date()));
 	}
+
 }

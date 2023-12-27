@@ -42,9 +42,13 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import color.SetColor;
+import controller.TimKiemSP;
 import dao.SanPhamDAO;
 import font.SetFont;
 import model.Products;
+import javax.swing.SwingConstants;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class ProductForm extends JInternalFrame {
 
@@ -60,6 +64,7 @@ public class ProductForm extends JInternalFrame {
 	private static DefaultTableModel tableModel;
 	private final String columName[] = { "ID sản phẩm", "Tên sản phẩm", "Trạng thái", "Mô tả" };
 	private JTextField txtTmKim;
+	private JComboBox<String> comboBox;
 
 	/**
 	 * Launch the application.
@@ -119,7 +124,7 @@ public class ProductForm extends JInternalFrame {
 			System.out.println(e);
 		}
 
-		setBounds(100, 100, 1200, 730);
+		setBounds(100, 100, 1170, 730);
 		getContentPane().setLayout(null);
 
 		JPanel panel_1 = new JPanel();
@@ -301,17 +306,37 @@ public class ProductForm extends JInternalFrame {
 		panel_2.setLayout(null);
 		panel_2.setBounds(639, 1, 549, 49);
 		getContentPane().add(panel_2);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNewLabel.setIcon(new ImageIcon(ProductForm.class.getResource("/icon/icons8-search-24.png")));
+		lblNewLabel.setBounds(470, 13, 48, 24);
+		panel_2.add(lblNewLabel);
 
 		txtTmKim = new JTextField();
+		txtTmKim.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(comboBox.getSelectedItem().toString().equals("ID Sản phẩm")) {
+					loadDataToTable(TimKiemSP.byID(txtTmKim.getText()));
+				}else if(comboBox.getSelectedItem().toString().equals("Tên sản phẩm")) {
+					loadDataToTable(TimKiemSP.byTen(txtTmKim.getText()));
+				}else if(comboBox.getSelectedItem().toString().equals("Trạng thái")) {
+					loadDataToTable(TimKiemSP.byTrangThai(txtTmKim.getText()));
+				}else if(comboBox.getSelectedItem().toString().equals("Mô tả")) {
+					loadDataToTable(TimKiemSP.byMota(txtTmKim.getText()));
+				}
+			}
+		});
 		txtTmKim.setColumns(10);
-		txtTmKim.setBounds(247, 8, 302, 33);
+		txtTmKim.setBounds(271, 8, 247, 33);
 		panel_2.add(txtTmKim);
 
-		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox = new JComboBox<String>();
 		comboBox.setFont(font);
 		comboBox.setModel(
 				new DefaultComboBoxModel<>(new String[] { "ID Sản phẩm", "Tên sản phẩm", "Trạng thái", "Mô tả" }));
-		comboBox.setBounds(148, 8, 89, 33);
+		comboBox.setBounds(148, 8, 113, 33);
 		panel_2.add(comboBox);
 
 		JComboBox<String> comboBox_1 = new JComboBox<>();
@@ -399,23 +424,4 @@ public class ProductForm extends JInternalFrame {
 
 		return pro;
 	}
-
-//
-//	private ArrayList<Products> sxGiamDan() {
-//		ArrayList<Products> list = SanPhamDAO.getInstance().selectAll();
-//
-//		Collections.sort(list, new Comparator<Products>() {
-//
-//			@Override
-//			public int compare(Products o1, Products o2) {
-//				if (o1.getSoLuongTonKho() < o2.getSoLuongTonKho())
-//					return 1;
-//				if (o1.getSoLuongTonKho() > o2.getSoLuongTonKho())
-//					return -1;
-//				return 0;
-//			}
-//		});
-//
-//		return list;
-//	}
 }

@@ -1,40 +1,38 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Desktop.Action;
-import java.awt.Event;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
-import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 
 import color.SetColor;
 import controller.BCrypt;
 import dao.AccountDAO;
+import decor.ButtonRound;
 import model.Account;
-import java.awt.event.KeyAdapter;
 
 public class LoginForm extends JFrame {
 
@@ -58,7 +56,8 @@ public class LoginForm extends JFrame {
 					LoginForm frame = new LoginForm();
 					frame.setResizable(false);
 					frame.setLocationRelativeTo(null);
-					UIManager.setLookAndFeel(new FlatIntelliJLaf());
+//					UIManager.setLookAndFeel(new FlatIntelliJLaf());
+					UIManager.setLookAndFeel(new FlatLightLaf());
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -85,12 +84,39 @@ public class LoginForm extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 438, 574);
-		contentPane = new JPanel();
+		contentPane = new JPanel() {
+			@Override
+			protected void paintComponent(Graphics grphcs) {
+				super.paintComponent(grphcs);
+				Graphics2D g2d = (Graphics2D) grphcs;
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				GradientPaint gp = new GradientPaint(0, 0,new Color(16,141,199), 240, getHeight(), new Color(239,142,56));
+				g2d.setPaint(gp);
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+
+			}
+		};
 		contentPane.setBackground(SetColor.blueOp);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		JCheckBox chckbxNewCheckBox = new JCheckBox("Hiển thị mật khẩu");
+		chckbxNewCheckBox.setBorder(null);
+		chckbxNewCheckBox.setOpaque(false);
+		chckbxNewCheckBox.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(chckbxNewCheckBox.isSelected()) {
+					jtfpassword.setEchoChar((char)0);
+				}else jtfpassword.setEchoChar('*');
+			}
+		});
+		chckbxNewCheckBox.setFont(font);
+		chckbxNewCheckBox.setForeground(SetColor.whiteFont);
+		chckbxNewCheckBox.setBounds(86, 302, 147, 15);
+		contentPane.add(chckbxNewCheckBox);
 
 		JLabel lblNewLabel = new JLabel("Login");
 		lblNewLabel.setFont(new Font("Stencil", Font.BOLD, 66));
@@ -113,7 +139,11 @@ public class LoginForm extends JFrame {
 		contentPane.add(lblNewLabel_1_2);
 
 		
-		JButton btnNewButton = new JButton("LOGIN");
+		ButtonRound btnNewButton = new ButtonRound();
+		btnNewButton.setBorder(null);
+		btnNewButton.setRadius(25);
+		btnNewButton.setBorderColor(new Color(240, 240, 240));
+		btnNewButton.setText("LOGIN");
 		btnNewButton.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -122,8 +152,6 @@ public class LoginForm extends JFrame {
 				}
 			}
 		});
-		
-		btnNewButton.setBorder(null);
 		btnNewButton.setBorderPainted(false);
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -146,7 +174,7 @@ public class LoginForm extends JFrame {
 		btnNewButton.setBounds(86, 353, 262, 38);
 		contentPane.add(btnNewButton);
 
-		JLabel lblNewLabel_2 = new JLabel("Forgot password?");
+		JLabel lblNewLabel_2 = new JLabel("Forgot password");
 		lblNewLabel_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -171,6 +199,7 @@ public class LoginForm extends JFrame {
 		contentPane.add(lblNewLabel_2);
 
 		jtfuser = new JTextField();
+		jtfuser.setOpaque(false);
 		jtfuser.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -181,12 +210,13 @@ public class LoginForm extends JFrame {
 		});
 		jtfuser.setBackground(SetColor.blueOp);
 		jtfuser.setBorder(null);
-		jtfuser.setFont(font_1);
+		jtfuser.setFont(font1);
 		jtfuser.setBounds(86, 168, 260, 23);
 		contentPane.add(jtfuser);
 		jtfuser.setColumns(10);
 
 		jtfpassword = new JPasswordField();
+		jtfpassword.setOpaque(false);
 		jtfpassword.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -224,22 +254,6 @@ public class LoginForm extends JFrame {
 		lblNewLabel_2_1.setBounds(86, 402, 114, 17);
 		contentPane.add(lblNewLabel_2_1);
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Hiển thị mật khẩu");
-		chckbxNewCheckBox.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(chckbxNewCheckBox.isSelected()) {
-					jtfpassword.setEchoChar((char)0);
-				}else jtfpassword.setEchoChar('*');
-			}
-		});
-		chckbxNewCheckBox.setFont(font);
-		chckbxNewCheckBox.setForeground(SetColor.whiteFont);
-		chckbxNewCheckBox.setBackground(SetColor.blueOp);
-		chckbxNewCheckBox.setBorder(null);
-		chckbxNewCheckBox.setBounds(86, 302, 147, 15);
-		contentPane.add(chckbxNewCheckBox);
-		
 		JLabel lblNewLabel_3 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_3.setFont(font);
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
@@ -248,12 +262,12 @@ public class LoginForm extends JFrame {
 		
 		JLabel lblNewLabel_4 = new JLabel("");
 		lblNewLabel_4.setBorder(new LineBorder(SetColor.whiteFont));
-		lblNewLabel_4.setBounds(86, 195, 260, 2);
+		lblNewLabel_4.setBounds(86, 190, 260, 2);
 		contentPane.add(lblNewLabel_4);
 		
 		JLabel lblNewLabel_4_1 = new JLabel("");
 		lblNewLabel_4_1.setBorder(new LineBorder(SetColor.whiteFont));
-		lblNewLabel_4_1.setBounds(86, 294, 260, 2);
+		lblNewLabel_4_1.setBounds(86, 290, 260, 2);
 		contentPane.add(lblNewLabel_4_1);
 		
 		JLabel lblNewLabel_5 = new JLabel("");

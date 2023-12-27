@@ -3,6 +3,10 @@ package view;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -11,7 +15,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -31,6 +34,7 @@ import color.SetColor;
 import controller.BCrypt;
 import controller.SendEmailSMTP;
 import dao.AccountDAO;
+import decor.ButtonRound;
 import model.Account;
 
 public class CreateAccount extends JFrame {
@@ -79,6 +83,7 @@ public class CreateAccount extends JFrame {
 	}
 
 	public CreateAccount() {
+		setResizable(false);
 		try {
 			File fontStyle = new File("src/font/Roboto-Medium.ttf");
 			font = Font.createFont(Font.TRUETYPE_FONT, fontStyle).deriveFont(11f);
@@ -92,108 +97,86 @@ public class CreateAccount extends JFrame {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 644, 365);
-		contentPane = new JPanel();
-		contentPane.setBackground(SetColor.green);
+		contentPane = new JPanel() {
+			@Override
+			protected void paintComponent(Graphics grphcs) {
+				super.paintComponent(grphcs);
+				Graphics2D g2d = (Graphics2D) grphcs;
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				GradientPaint gp = new GradientPaint(0, 0,new Color(16,141,199), 240, getHeight(), new Color(239,142,56));
+				g2d.setPaint(gp);
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+
+			}
+		};
+		contentPane.setOpaque(false);
+//		contentPane.setBackground(SetColor.green);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JButton btnNewButton_2 = new JButton("");
-		btnNewButton_2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (btnNewButton_2.isSelected())
-					pass2.setEchoChar((char) 0);
-				else
-					pass2.setEchoChar('\u25cf');
-			}
-		});
-		btnNewButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-
-		JButton btnNewButton_2_1 = new JButton("");
-
-		btnNewButton_2_1.setIcon(new ImageIcon(CreateAccount.class.getResource("/icon/icons8-show-password-16.png")));
-		btnNewButton_2_1.setBorder(null);
-		btnNewButton_2_1.setBackground(Color.WHITE);
-		btnNewButton_2_1.setBounds(355, 143, 17, 17);
-		btnNewButton_2_1.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (btnNewButton_2_1.isSelected())
-					pass1.setEchoChar((char) 0);
-				else
-					pass1.setEchoChar('\u25cf');
-			}
-		});
-		contentPane.add(btnNewButton_2_1);
-		btnNewButton_2.setBackground(Color.WHITE);
-		btnNewButton_2.setIcon(new ImageIcon(CreateAccount.class.getResource("/icon/icons8-show-password-16.png")));
-		btnNewButton_2.setBorder(null);
-		btnNewButton_2.setBounds(355, 195, 17, 22);
-		contentPane.add(btnNewButton_2);
-
 		JLabel lblNewLabel = new JLabel("Tên đăng nhập");
 //		lblNewLabel.setForeground(SetColor.whiteFont);
 		lblNewLabel.setFont(font1);
 //		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel.setBounds(28, 62, 154, 34);
+		lblNewLabel.setBounds(28, 70, 154, 30);
 		contentPane.add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel("Mật khẩu");
 //		lblNewLabel_1.setForeground(SetColor.whiteFont);
 		lblNewLabel_1.setFont(font1);
 //		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_1.setBounds(28, 128, 81, 34);
+		lblNewLabel_1.setBounds(28, 131, 81, 30);
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel("Nhập lại mật khẩu");
 //		lblNewLabel_2.setForeground(SetColor.whiteFont);
 		lblNewLabel_2.setFont(font1);
 //		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_2.setBounds(28, 188, 154, 34);
+		lblNewLabel_2.setBounds(28, 191, 135, 30);
 		contentPane.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("Họ và tên");
 //		lblNewLabel_3.setForeground(SetColor.whiteFont);
 		lblNewLabel_3.setFont(font1);
 //		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_3.setBounds(28, 249, 81, 34);
+		lblNewLabel_3.setBounds(28, 255, 81, 30);
 		contentPane.add(lblNewLabel_3);
 
 		tfuser = new JTextField();
-		tfuser.setBounds(166, 72, 213, 26);
+		tfuser.setBorder(null);
+		tfuser.setBounds(166, 72, 195, 26);
 		contentPane.add(tfuser);
 		tfuser.setColumns(10);
 
 		tfname = new JTextField();
+		tfname.setBorder(null);
 		tfname.setColumns(10);
-		tfname.setBounds(166, 257, 213, 26);
+		tfname.setBounds(166, 257, 195, 26);
 		contentPane.add(tfname);
 
 		lblNewLabel_4 = new JLabel("Giới tính");
 //		lblNewLabel_4.setForeground(SetColor.whiteFont);
 		lblNewLabel_4.setFont(font1);
 //		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_4.setBounds(415, 64, 81, 34);
+		lblNewLabel_4.setBounds(371, 70, 81, 30);
 		contentPane.add(lblNewLabel_4);
 
 		JRadioButton rbtnam = new JRadioButton("Nam");
+		rbtnam.setOpaque(false);
 //		rbtnam.setForeground(SetColor.whiteFont);
-		rbtnam.setBackground(SetColor.green);
-		rbtnam.setBounds(502, 72, 61, 23);
+//		rbtnam.setBackground(SetColor.green);
+		rbtnam.setBounds(464, 72, 61, 23);
 		rbtnam.setSelected(true);
 		rbtnam.setActionCommand("nam");
 		contentPane.add(rbtnam);
 
 		JRadioButton rbtnu = new JRadioButton("Nữ");
+		rbtnu.setOpaque(false);
 //		rbtnu.setForeground(SetColor.whiteFont);
-		rbtnu.setBackground(SetColor.green);
-		rbtnu.setBounds(565, 72, 61, 23);
+//		rbtnu.setBackground(SetColor.green);
+		rbtnu.setBounds(561, 74, 61, 23);
 		rbtnu.setActionCommand("nu");
 		contentPane.add(rbtnu);
 
@@ -201,7 +184,10 @@ public class CreateAccount extends JFrame {
 		bg.add(rbtnam);
 		bg.add(rbtnu);
 
-		JButton btnNewButton = new JButton("Đăng kí");
+		ButtonRound btnNewButton = new ButtonRound();
+		btnNewButton.setBorderColor(Color.WHITE);
+		btnNewButton.setRadius(20);
+		btnNewButton.setText("Đăng kí");
 		btnNewButton.setBorder(null);
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -255,24 +241,26 @@ public class CreateAccount extends JFrame {
 		});
 		btnNewButton.setFont(font2);
 //		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 22));
-		btnNewButton.setBounds(441, 251, 161, 50);
+		btnNewButton.setBounds(434, 244, 154, 45);
 		contentPane.add(btnNewButton);
 
 		JLabel lblNewLabel_2_1 = new JLabel("Email");
 //		lblNewLabel_2_1.setForeground(SetColor.whiteFont);
 		lblNewLabel_2_1.setFont(font1);
 //		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_2_1.setBounds(415, 138, 37, 34);
+		lblNewLabel_2_1.setBounds(371, 131, 55, 30);
 		contentPane.add(lblNewLabel_2_1);
 
 		tfmail = new JTextField();
+		tfmail.setBorder(null);
 		tfmail.setColumns(10);
-		tfmail.setBounds(461, 138, 161, 26);
+		tfmail.setBounds(441, 133, 181, 26);
 		contentPane.add(tfmail);
 
 		tfotp = new JTextField();
+		tfotp.setBorder(null);
 		tfotp.setColumns(10);
-		tfotp.setBounds(530, 195, 96, 22);
+		tfotp.setBounds(510, 195, 112, 22);
 		contentPane.add(tfotp);
 
 		JButton btnNewButton_1 = new JButton("Gửi OTP");
@@ -290,23 +278,26 @@ public class CreateAccount extends JFrame {
 		});
 		btnNewButton_1.setFont(font1);
 //		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnNewButton_1.setBounds(415, 195, 100, 22);
+		btnNewButton_1.setBounds(377, 195, 112, 22);
 		contentPane.add(btnNewButton_1);
 
 		pass2 = new JPasswordField();
+		pass2.setBorder(null);
 		pass2.setEchoChar('*');
 		pass2.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		pass2.setBounds(166, 193, 213, 26);
+		pass2.setBounds(166, 193, 195, 26);
 		contentPane.add(pass2);
 
 		pass1 = new JPasswordField();
+		pass1.setBorder(null);
 		pass1.setEchoChar('*');
 		pass1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		pass1.setBounds(166, 139, 213, 26);
+		pass1.setBounds(166, 133, 195, 26);
 		contentPane.add(pass1);
 
 		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("Hiển thị mật khẩu");
-		chckbxNewCheckBox_1.setBackground(SetColor.green);
+		chckbxNewCheckBox_1.setOpaque(false);
+//		chckbxNewCheckBox_1.setBackground(SetColor.green);
 		chckbxNewCheckBox_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

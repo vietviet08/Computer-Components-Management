@@ -21,7 +21,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
@@ -34,7 +33,10 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import color.SetColor;
+import decor.BooleanClick;
+import decor.PanelRound;
 import font.SetFont;
+import javax.swing.JSeparator;
 
 public class MainForm extends JFrame {
 
@@ -46,23 +48,35 @@ public class MainForm extends JFrame {
 	public Font font2;
 	public static JPanel maincontent;
 	private JTextField textField;
-	private JButton btnNhaCungCap;
-	private JButton btnNhapHang;
-	private JButton btnPhieuNhap;
-	private JButton btnXuatHang;
-	private JButton btnPhieuXuat;
-	private JButton btnThongKe;
-	private JButton btnCpu;
-	private JButton btnBnPhm;
-	private JButton btnChut;
-	private JButton btnMnHnh;
-	private JButton btnRam;
-	private JButton btnVga;
-	private JButton btnMainboard;
-	private JButton btnNgun;
-	private static JButton btnAllProduct;
-	private JButton btnCase;
-	private JButton btnTaiNghe;
+	private JLabel btnNhaCungCap;
+	private JLabel btnNhapHang;
+	private JLabel btnPhieuNhap;
+	private JLabel btnXuatHang;
+	private JLabel btnPhieuXuat;
+	private JLabel btnThongKe;
+	private JLabel btnKhchHng;
+	private JLabel btnCpu;
+//	JButton
+	private JLabel btnBnPhm;
+	private JLabel btnChut;
+	private JLabel btnMnHnh;
+	private JLabel btnRam;
+	private JLabel btnVga;
+	private JLabel btnMainboard;
+	private JLabel btnNgun;
+	private static JLabel btnAllProduct;
+	private JLabel btnCase;
+	private JLabel btnTaiNghe;
+	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
+	private JPanel panel_3;
+	private JPanel panel_5;
+	private JPanel panel_6;
+	private JPanel panel_7;
+	private JPanel panel_8;
+	private JPanel panel_9;
+	private JPanel panel_4;
+	private JPanel panel_10;
 
 	/**
 	 * Launch the application.
@@ -119,23 +133,44 @@ public class MainForm extends JFrame {
 		this.setTitle("Quản lý linh kiện máy tính");
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1408, 802);
+		setBounds(100, 100, 1410, 802);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JPanel navbar = new JPanel();
+		PanelRound navbar = new PanelRound() {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+//			@Override
+//			protected void paintComponent(Graphics grphcs) {
+//				super.paintComponent(grphcs);
+//				Graphics2D g2d = (Graphics2D) grphcs;
+//				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//				GradientPaint gp = new GradientPaint(0, 0,new Color(15,18,57), 180, getHeight(), new Color(64, 143, 221));
+//				g2d.setPaint(gp);
+//				g2d.fillRect(0, 0, getWidth(), getHeight());
+//
+//			}
+		};
+		navbar.setRoundTopRight(30);
+		navbar.setRoundTopLeft(30);
+		navbar.setRoundBottomRight(30);
+		navbar.setRoundBottomLeft(30);
 		navbar.setBorder(null);
 		navbar.setBackground(blue);
 		navbar.setForeground(whiteFont);
 		navbar.setFont(font_1);
-		navbar.setBounds(179, 0, 658, 37);
+		navbar.setBounds(220, 0, 642, 37);
 		contentPane.add(navbar);
 		navbar.setLayout(null);
 
-		btnAllProduct = new JButton("Tất cả sản phẩm");
+		btnAllProduct = new JLabel("Tất cả sản phẩm");
+		btnAllProduct.setOpaque(false);
 		btnAllProduct.setForeground(whiteFont);
 		btnAllProduct.addMouseListener(new MouseAdapter() {
 			@Override
@@ -162,11 +197,12 @@ public class MainForm extends JFrame {
 		});
 		btnAllProduct.setBackground(blue);
 		btnAllProduct.setFont(font);
-		btnAllProduct.setBounds(10, 11, 92, 15);
+		btnAllProduct.setBounds(10, 11, 94, 15);
 		navbar.add(btnAllProduct);
 		btnAllProduct.setBorder(null);
 
-		btnCpu = new JButton("CPU");
+		btnCpu = new JLabel("CPU");
+		btnCpu.setHorizontalAlignment(SwingConstants.CENTER);
 		btnCpu.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -194,10 +230,12 @@ public class MainForm extends JFrame {
 		btnCpu.setFont(font);
 		btnCpu.setForeground(whiteFont);
 		btnCpu.setBorder(null);
-		btnCpu.setBounds(99, 7, 49, 22);
+		btnCpu.setBounds(98, 7, 49, 22);
 		navbar.add(btnCpu);
 
-		btnRam = new JButton("RAM");
+		btnRam = new JLabel("RAM");
+		btnRam.setHorizontalAlignment(SwingConstants.CENTER);
+		btnRam.setOpaque(false);
 		btnRam.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -228,7 +266,8 @@ public class MainForm extends JFrame {
 		btnRam.setBounds(146, 7, 49, 22);
 		navbar.add(btnRam);
 
-		btnVga = new JButton("VGA");
+		btnVga = new JLabel("VGA");
+		btnVga.setHorizontalAlignment(SwingConstants.CENTER);
 		btnVga.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -259,7 +298,8 @@ public class MainForm extends JFrame {
 		btnVga.setBounds(194, 7, 49, 22);
 		navbar.add(btnVga);
 
-		btnMainboard = new JButton("Main Board");
+		btnMainboard = new JLabel("Main Board");
+		btnMainboard.setHorizontalAlignment(SwingConstants.CENTER);
 		btnMainboard.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -288,7 +328,8 @@ public class MainForm extends JFrame {
 		btnMainboard.setBounds(242, 7, 64, 22);
 		navbar.add(btnMainboard);
 
-		btnNgun = new JButton("Nguồn");
+		btnNgun = new JLabel("Nguồn");
+		btnNgun.setHorizontalAlignment(SwingConstants.CENTER);
 		btnNgun.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -317,7 +358,8 @@ public class MainForm extends JFrame {
 		btnNgun.setBounds(356, 7, 49, 22);
 		navbar.add(btnNgun);
 
-		btnMnHnh = new JButton("Màn hình");
+		btnMnHnh = new JLabel("Màn hình");
+		btnMnHnh.setHorizontalAlignment(SwingConstants.CENTER);
 		btnMnHnh.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -346,7 +388,8 @@ public class MainForm extends JFrame {
 		btnMnHnh.setBounds(404, 7, 64, 22);
 		navbar.add(btnMnHnh);
 
-		btnChut = new JButton("Chuột");
+		btnChut = new JLabel("Chuột");
+		btnChut.setHorizontalAlignment(SwingConstants.CENTER);
 		btnChut.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -375,7 +418,8 @@ public class MainForm extends JFrame {
 		btnChut.setBounds(468, 7, 49, 22);
 		navbar.add(btnChut);
 
-		btnBnPhm = new JButton("Bàn phím");
+		btnBnPhm = new JLabel("Bàn phím");
+		btnBnPhm.setHorizontalAlignment(SwingConstants.CENTER);
 		btnBnPhm.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -404,7 +448,8 @@ public class MainForm extends JFrame {
 		btnBnPhm.setBounds(518, 7, 61, 22);
 		navbar.add(btnBnPhm);
 
-		btnCase = new JButton("Case");
+		btnCase = new JLabel("Case");
+		btnCase.setHorizontalAlignment(SwingConstants.CENTER);
 		btnCase.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -433,7 +478,8 @@ public class MainForm extends JFrame {
 		btnCase.setBounds(305, 7, 52, 22);
 		navbar.add(btnCase);
 
-		btnTaiNghe = new JButton("Tai nghe");
+		btnTaiNghe = new JLabel("Tai nghe");
+		btnTaiNghe.setHorizontalAlignment(SwingConstants.CENTER);
 		btnTaiNghe.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -463,74 +509,102 @@ public class MainForm extends JFrame {
 		navbar.add(btnTaiNghe);
 
 		maincontent = new JPanel();
-		maincontent.setBounds(189, 37, 1200, 730);
+		maincontent.setBounds(220, 37, 1175, 730);
 		contentPane.add(maincontent);
 		maincontent.setLayout(new CardLayout(0, 0));
-
-		JPanel panel_welcome = new JPanel();
-		// 40, 180, 99
-
-		panel_welcome.setBackground(SetColor.blue);
-		panel_welcome.setLayout(null);
-		panel_welcome.setBounds(0, 0, 179, 63);
-		contentPane.add(panel_welcome);
-
-		JLabel lblNewLabel = new JLabel("Welcome back, have a good day!!!");
-		lblNewLabel.setFont(font);
-		lblNewLabel.setForeground(whiteFont);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(0, 0, 179, 14);
-		panel_welcome.add(lblNewLabel);
-
-		JLabel lblNewLabel_1 = new JLabel(LoginForm.fullN);
-		lblNewLabel_1.setForeground(whiteFont);
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(font_1);
-//		lblNewLabel_1.setHorizontalTextPosition(SwingConstants.CENTER);
-//		lblNewLabel_1.setHorizontalTextPosition(SwingConstants.BOTTOM);
-		lblNewLabel_1.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-male-user-32-white.png")));
-		lblNewLabel_1.setBounds(0, 20, 179, 32);
-		panel_welcome.add(lblNewLabel_1);
-		
-		JSeparator separator = new JSeparator();
-		separator.setBounds(0, 58, 179, 2);
-		panel_welcome.add(separator);
 
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
 				"© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029", TitledBorder.LEFT,
 				TitledBorder.TOP, font, SetColor.redB));
-		panel.setBounds(847, 0, 545, 37);
+		panel.setBounds(872, 0, 523, 37);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
 		JButton btnNewButton_1 = new JButton("Đóng góp");
 		btnNewButton_1.setFont(font_1);
 		btnNewButton_1.setBackground(new Color(74, 176, 63));
-		btnNewButton_1.setBounds(435, 12, 100, 20);
+		btnNewButton_1.setBounds(412, 12, 100, 20);
 		panel.add(btnNewButton_1);
 
 		textField = new JTextField();
-		textField.setBounds(103, 13, 322, 18);
+		textField.setBounds(10, 13, 390, 18);
 		panel.add(textField);
 		textField.setColumns(10);
 
-		JLabel lblNewLabel_3 = new JLabel("Đóng góp ý kiến");
-		lblNewLabel_3.setFont(font);
-		lblNewLabel_3.setBounds(10, 15, 93, 14);
-		panel.add(lblNewLabel_3);
+		PanelRound panel_1 = new PanelRound() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
-		JPanel panel_1 = new JPanel();
+//			@Override
+//			protected void paintComponent(Graphics grphcs) {
+//				super.paintComponent(grphcs);
+//				Graphics2D g2d = (Graphics2D) grphcs;
+//				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//				GradientPaint gp = new GradientPaint(0, 0,new Color(15,18,57), 120, getHeight(), new Color(64, 143, 221));
+//				g2d.setPaint(gp);
+//				g2d.fillRect(0, 0, getWidth(), getHeight());
+//
+//			}
+		};
+		panel_1.setRoundTopRight(50);
 // blue 64,143,221
 //orig 230, 126, 34
 		panel_1.setBackground(SetColor.blue);
-		panel_1.setBounds(0, 61, 179, 706);
+		panel_1.setBounds(0, 0, 210, 767);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
+//		btnNhaCungCap.setRadius(10);
+//		btnNhaCungCap.setBorderColor(new Color(64, 143, 221));
+		BooleanClick.setBtnNhaCungCap(true);
 
-		btnNhaCungCap = new JButton("Nhà phân phối");
-		btnNhaCungCap.setIconTextGap(8);
-		btnNhaCungCap.setHorizontalAlignment(SwingConstants.LEFT);
+		JPanel panelDateTime = new JPanel();
+//		panelDateTime.setBackground(blue);
+		panelDateTime.setOpaque(false);
+		ClockPane cp = new ClockPane();
+		cp.setBackground(blue);
+		cp.setOpaque(false);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBackground(Color.WHITE);
+		separator.setBounds(10, 90, 190, 2);
+		panel_1.add(separator);
+		panelDateTime.add(cp);
+//		 cp.BOTTOM_ALIGNMENT
+		panelDateTime.setBounds(0, 0, 210, 32);
+		panel_1.add(panelDateTime);
+		panelDateTime.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
+		lblNewLabel = new JLabel(LoginForm.fullN);
+		lblNewLabel.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-male-user-32-white.png")));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setForeground(new Color(254, 254, 254));
+		lblNewLabel.setFont(SetFont.font1_());
+		lblNewLabel.setBounds(0, 53, 207, 32);
+		panel_1.add(lblNewLabel);
+
+		lblNewLabel_1 = new JLabel("Welcome back, have a good day!!!");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setForeground(new Color(254, 254, 254));
+		lblNewLabel_1.setFont(null);
+		lblNewLabel_1.setBounds(0, 33, 207, 14);
+		panel_1.add(lblNewLabel_1);
+
+		JPanel panel_2 = new JPanel();
+		panel_2.setOpaque(false);
+		panel_2.setBounds(0, 96, 210, 45);
+		panel_1.add(panel_2);
+		panel_2.setLayout(null);
+
+		btnNhaCungCap = new JLabel();
+		BooleanClick.setBtnNhaCungCap(false);
+		btnNhaCungCap.setBounds(25, 5, 160, 34);
+		panel_2.add(btnNhaCungCap);
+		btnNhaCungCap.setHorizontalAlignment(SwingConstants.LEADING);
+		btnNhaCungCap.setText("Nhà Phân Phối");
+		btnNhaCungCap.setIconTextGap(10);
 		btnNhaCungCap.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-flyer-distributor-male-32.png")));
 		btnNhaCungCap.addMouseListener(new MouseAdapter() {
 			@Override
@@ -546,54 +620,300 @@ public class MainForm extends JFrame {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				btnNhaCungCap.setBackground(blueOp);
-				btnNhapHang.setBackground(blue);
-				btnXuatHang.setBackground(blue);
-				btnPhieuXuat.setBackground(blue);
-				btnPhieuNhap.setBackground(blue);
-				btnThongKe.setBackground(blue);
+//				btnNhaCungCap.setForeground(green);
+//				btnNhaCungCap.setBackground(blueOp);
+//				btnNhapHang.setBackground(blue);
+//				btnXuatHang.setBackground(blue);
+//				btnPhieuXuat.setBackground(blue);
+//				btnPhieuNhap.setBackground(blue);
+//				btnKhchHng.setBackground(blue);
+//				btnThongKe.setBackground(blue);
+				
+				
+				btnNhaCungCap.setForeground(green);
+				btnNhapHang.setForeground(whiteFont);
+				btnXuatHang.setForeground(whiteFont);
+				btnPhieuXuat.setForeground(whiteFont);
+				btnPhieuNhap.setForeground(whiteFont);
+				btnKhchHng.setForeground(whiteFont);
+				btnThongKe.setForeground(whiteFont);
+
+				BooleanClick.setBtnNhaCungCap(true);
+				BooleanClick.setBtnNhapHang(false);
+				BooleanClick.setBtnPhieuNhap(false);
+				BooleanClick.setBtnXuatHang(false);
+				BooleanClick.setBtnPhieuXuat(false);
+				BooleanClick.setBtnKhchHng(false);
+				BooleanClick.setBtnThongKe(false);
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+//				btnNhaCungCap.setBackground(blueOp);
+
+				btnNhaCungCap.setForeground(green);
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				if (BooleanClick.isBtnNhaCungCap()) {
+					btnNhaCungCap.setForeground(green);
+				} else {
+					btnNhaCungCap.setForeground(whiteFont);
+				}
+
 			}
 		});
-		btnNhaCungCap.setFont(font1);
+		// btnNhaCungCap.setFont(font1);
+		btnNhaCungCap.setFont(SetFont.font1());
 		btnNhaCungCap.setBackground(SetColor.blueOp);
 		btnNhaCungCap.setForeground(whiteFont);
 		btnNhaCungCap.setBorder(null);
-		btnNhaCungCap.setBounds(0, 0, 179, 39);
-		panel_1.add(btnNhaCungCap);
 
-		btnNhapHang = new JButton("Nhập Hàng");
-		btnNhapHang.setIconTextGap(8);
+		panel_3 = new JPanel();
+		panel_3.setLayout(null);
+		panel_3.setOpaque(false);
+		panel_3.setBounds(0, 142, 210, 45);
+		panel_1.add(panel_3);
+
+		btnNhapHang = new JLabel();
+		btnNhapHang.setBounds(25, 5, 160, 34);
+		panel_3.add(btnNhapHang);
+		// btnNhapHang.setRadius(10);
+		// btnNhapHang.setBorderColor(new Color(64, 143, 221));
+		btnNhapHang.setText("Nhập Hàng");
+		btnNhapHang.setIconTextGap(10);
 		btnNhapHang.setHorizontalAlignment(SwingConstants.LEFT);
-		btnNhapHang.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-close-garage-door-32.png")));
+		btnNhapHang.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-warehouse-32.png")));
 		btnNhapHang.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				maincontent.removeAll();
 				NhapHangForm pnf = new NhapHangForm();
-				maincontent.add(pnf).setVisible(true);;
+				maincontent.add(pnf).setVisible(true);
+				;
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				btnNhaCungCap.setBackground(blue);
-				btnNhapHang.setBackground(blueOp);
-				btnXuatHang.setBackground(blue);
-				btnPhieuXuat.setBackground(blue);
-				btnPhieuNhap.setBackground(blue);
-				btnThongKe.setBackground(blue);
+//				btnNhaCungCap.setBackground(blue);
+//				btnNhapHang.setBackground(blueOp);
+////				btnNhapHang.setColor(blueOp);
+//				btnXuatHang.setBackground(blue);
+//				btnPhieuXuat.setBackground(blue);
+//				btnPhieuNhap.setBackground(blue);
+//				btnKhchHng.setBackground(blue);
+//				btnThongKe.setBackground(blue);
+				
+				
+				btnNhaCungCap.setForeground(whiteFont);
+				btnNhapHang.setForeground(green);
+				btnXuatHang.setForeground(whiteFont);
+				btnPhieuXuat.setForeground(whiteFont);
+				btnPhieuNhap.setForeground(whiteFont);
+				btnKhchHng.setForeground(whiteFont);
+				btnThongKe.setForeground(whiteFont);
+
+				BooleanClick.setBtnNhaCungCap(false);
+				BooleanClick.setBtnNhapHang(true);
+				BooleanClick.setBtnPhieuNhap(false);
+				BooleanClick.setBtnXuatHang(false);
+				BooleanClick.setBtnPhieuXuat(false);
+				BooleanClick.setBtnKhchHng(false);
+				BooleanClick.setBtnThongKe(false);
 
 			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+//				btnNhapHang.setBackground(blueOp);
+				btnNhapHang.setForeground(green);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				if (BooleanClick.isBtnNhapHang()) {
+//					btnNhapHang.setBackground(blueOp);
+					btnNhapHang.setForeground(green);
+				} else
+					btnNhapHang.setForeground(whiteFont);
+//					btnNhapHang.setBackground(blue);
+			}
 		});
-		btnNhapHang.setFont(font1);
+		btnNhapHang.setFont(SetFont.font1());
 		btnNhapHang.setBackground(blue);
 		btnNhapHang.setForeground(whiteFont);
 		btnNhapHang.setBorder(null);
-		btnNhapHang.setBounds(0, 50, 179, 39);
-		panel_1.add(btnNhapHang);
 
-		btnXuatHang = new JButton("Xuất Hàng");
-		btnXuatHang.setIconTextGap(8);
-		btnXuatHang.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-send-package-32.png")));
+		panel_5 = new JPanel();
+		panel_5.setLayout(null);
+		panel_5.setOpaque(false);
+		panel_5.setBounds(0, 366, 210, 45);
+		panel_1.add(panel_5);
+
+		btnThongKe = new JLabel();
+		btnThongKe.setBounds(20, 5, 160, 34);
+		panel_5.add(btnThongKe);
+		// btnThongKe.setRadius(10);
+		// btnThongKe.setBorderColor(new Color(64, 143, 221));
+		btnThongKe.setText("Thống Kê");
+		btnThongKe.setIconTextGap(10);
+		btnThongKe.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-stocks-32.png")));
+		btnThongKe.setHorizontalAlignment(SwingConstants.LEFT);
+
+		btnThongKe.setBackground(blue);
+		btnThongKe.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				maincontent.removeAll();
+//				btnThongKe.setBackground(new Color(211, 84, 0));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+//				btnNhaCungCap.setBackground(blue);
+//				btnNhapHang.setBackground(blue);
+//				btnXuatHang.setBackground(blue);
+//				btnPhieuXuat.setBackground(blue);
+//				btnPhieuNhap.setBackground(blue);
+//				btnThongKe.setBackground(blueOp);
+//				btnKhchHng.setBackground(blue);
+////				btnThongKe.setColor(blueOp);
+
+				
+				btnNhaCungCap.setForeground(whiteFont);
+				btnNhapHang.setForeground(whiteFont);
+				btnXuatHang.setForeground(whiteFont);
+				btnPhieuXuat.setForeground(whiteFont);
+				btnPhieuNhap.setForeground(whiteFont);
+				btnKhchHng.setForeground(whiteFont);
+				btnThongKe.setForeground(green);
+				
+				
+				BooleanClick.setBtnNhaCungCap(false);
+				BooleanClick.setBtnNhapHang(false);
+				BooleanClick.setBtnPhieuNhap(false);
+				BooleanClick.setBtnXuatHang(false);
+				BooleanClick.setBtnPhieuXuat(false);
+				BooleanClick.setBtnKhchHng(false);
+				BooleanClick.setBtnThongKe(true);
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+//					btnThongKe.setColor(blueOp);
+				btnThongKe.setForeground(green);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				if (BooleanClick.isBtnThongKe()) {
+//					btnThongKe.setColor(blueOp);
+					btnThongKe.setForeground(green);
+				}
+//					else btnThongKe.setColor(blue);
+				else
+					btnThongKe.setForeground(whiteFont);
+			}
+		});
+		btnThongKe.setFont(SetFont.font1());
+
+		btnThongKe.setForeground(whiteFont);
+		btnThongKe.setBorder(null);
+
+		panel_6 = new JPanel();
+		panel_6.setLayout(null);
+		panel_6.setOpaque(false);
+		panel_6.setBounds(0, 187, 210, 45);
+		panel_1.add(panel_6);
+
+		btnPhieuNhap = new JLabel();
+		btnPhieuNhap.setBounds(25, 5, 160, 34);
+		panel_6.add(btnPhieuNhap);
+		// btnPhieuNhap.setRadius(10);
+		// btnPhieuNhap.setBorderColor(new Color(64, 143, 221));
+		btnPhieuNhap.setText("Phiếu Nhập");
+		btnPhieuNhap.setIconTextGap(10);
+		btnPhieuNhap.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-bill-32 (2).png")));
+		btnPhieuNhap.setHorizontalAlignment(SwingConstants.LEFT);
+		btnPhieuNhap.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				maincontent.removeAll();
+//				btnPhieuNhap.setBackground(new Color(211, 84, 0));
+				PhieuNhapForm pnf = new PhieuNhapForm();
+				maincontent.add(pnf).setVisible(true);
+				;
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+//				btnNhaCungCap.setBackground(blue);
+//				btnNhapHang.setBackground(blue);
+//				btnXuatHang.setBackground(blue);
+//				btnPhieuXuat.setBackground(blue);
+////				btnPhieuNhap.setBackground(blueOp);
+//				btnPhieuNhap.setBackground(blueOp);
+//				btnKhchHng.setBackground(blue);
+//				btnThongKe.setBackground(blue);
+				
+				btnNhaCungCap.setForeground(whiteFont);
+				btnNhapHang.setForeground(whiteFont);
+				btnXuatHang.setForeground(whiteFont);
+				btnPhieuXuat.setForeground(whiteFont);
+				btnPhieuNhap.setForeground(green);
+				btnKhchHng.setForeground(whiteFont);
+				btnThongKe.setForeground(whiteFont);
+				
+
+				BooleanClick.setBtnNhaCungCap(false);
+				BooleanClick.setBtnNhapHang(false);
+				BooleanClick.setBtnPhieuNhap(true);
+				BooleanClick.setBtnXuatHang(false);
+				BooleanClick.setBtnPhieuXuat(false);
+				BooleanClick.setBtnKhchHng(false);
+				BooleanClick.setBtnThongKe(false);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+//				btnPhieuNhap.setBackground(blueOp);
+				btnPhieuNhap.setForeground(green);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				if (BooleanClick.isBtnPhieuNhap()) {
+//					btnPhieuNhap.setBackground(blueOp);
+					btnPhieuNhap.setForeground(green);
+				} else
+					btnPhieuNhap.setForeground(whiteFont);
+//					btnPhieuNhap.setBackground(blue);
+			}
+		});
+		btnPhieuNhap.setFont(SetFont.font1());
+		btnPhieuNhap.setBackground(blue);
+		btnPhieuNhap.setForeground(whiteFont);
+		btnPhieuNhap.setBorder(null);
+
+		panel_7 = new JPanel();
+		panel_7.setLayout(null);
+		panel_7.setOpaque(false);
+		panel_7.setBounds(0, 232, 210, 45);
+		panel_1.add(panel_7);
+
+		btnXuatHang = new JLabel();
+		btnXuatHang.setBounds(24, 5, 160, 34);
+		panel_7.add(btnXuatHang);
+		// btnXuatHang.setRadius(10);
+		// btnXuatHang.setBorderColor(new Color(64, 143, 221));
+		btnXuatHang.setText("Xuất Hàng");
+		btnXuatHang.setIconTextGap(10);
+		btnXuatHang.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-delivery-person-32.png")));
 		btnXuatHang.setHorizontalAlignment(SwingConstants.LEFT);
 		btnXuatHang.addMouseListener(new MouseAdapter() {
 			@Override
@@ -604,131 +924,69 @@ public class MainForm extends JFrame {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				btnNhaCungCap.setBackground(blue);
-				btnNhapHang.setBackground(blue);
+//				btnNhaCungCap.setBackground(blue);
+//				btnNhapHang.setBackground(blue);
+////				btnXuatHang.setBackground(blueOp);
+//				btnXuatHang.setBackground(blueOp);
+//				btnPhieuXuat.setBackground(blue);
+//				btnPhieuNhap.setBackground(blue);
+//				btnKhchHng.setBackground(blue);
+//				btnThongKe.setBackground(blue);
+				
+				
+				btnNhaCungCap.setForeground(whiteFont);
+				btnNhapHang.setForeground(whiteFont);
+				btnXuatHang.setForeground(green);
+				btnPhieuXuat.setForeground(whiteFont);
+				btnPhieuNhap.setForeground(whiteFont);
+				btnKhchHng.setForeground(whiteFont);
+				btnThongKe.setForeground(whiteFont);
+
+				BooleanClick.setBtnNhaCungCap(false);
+				BooleanClick.setBtnNhapHang(false);
+				BooleanClick.setBtnPhieuNhap(false);
+				BooleanClick.setBtnXuatHang(true);
+				BooleanClick.setBtnPhieuXuat(false);
+				BooleanClick.setBtnKhchHng(false);
+				BooleanClick.setBtnThongKe(false);
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
 				btnXuatHang.setBackground(blueOp);
-				btnPhieuXuat.setBackground(blue);
-				btnPhieuNhap.setBackground(blue);
-				btnThongKe.setBackground(blue);
+				btnXuatHang.setForeground(green);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				if (BooleanClick.isBtnXuatHang()) {
+//					btnXuatHang.setBackground(blueOp);
+					btnXuatHang.setForeground(green);
+				} else
+					btnXuatHang.setForeground(whiteFont);
+//					btnXuatHang.setBackground(blue);
 			}
 		});
-		btnXuatHang.setFont(font1);
+		btnXuatHang.setFont(SetFont.font1());
 		btnXuatHang.setBackground(blue);
 		btnXuatHang.setForeground(whiteFont);
 		btnXuatHang.setBorder(null);
-		btnXuatHang.setBounds(0, 150, 179, 39);
-		panel_1.add(btnXuatHang);
 
-		btnPhieuNhap = new JButton("Phiếu Nhập");
-		btnPhieuNhap.setIconTextGap(8);
-		btnPhieuNhap.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-bill-32 (2).png")));
-		btnPhieuNhap.setHorizontalAlignment(SwingConstants.LEFT);
-		btnPhieuNhap.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				maincontent.removeAll();
-//				btnPhieuNhap.setBackground(new Color(211, 84, 0));
-				PhieuNhapForm pnf = new PhieuNhapForm();
-				maincontent.add(pnf).setVisible(true);;
-				
-			}
+		panel_8 = new JPanel();
+		panel_8.setLayout(null);
+		panel_8.setOpaque(false);
+		panel_8.setBounds(0, 276, 210, 45);
+		panel_1.add(panel_8);
 
-			@Override
-			public void mousePressed(MouseEvent e) {
-				btnNhaCungCap.setBackground(blue);
-				btnNhapHang.setBackground(blue);
-				btnXuatHang.setBackground(blue);
-				btnPhieuXuat.setBackground(blue);
-				btnPhieuNhap.setBackground(blueOp);
-				btnThongKe.setBackground(blue);
-			}
-		});
-		btnPhieuNhap.setFont(font1);
-		btnPhieuNhap.setBackground(blue);
-		btnPhieuNhap.setForeground(whiteFont);
-		btnPhieuNhap.setBorder(null);
-		btnPhieuNhap.setBounds(0, 100, 179, 39);
-		panel_1.add(btnPhieuNhap);
-
-		JButton btnDangXuat = new JButton("Đăng Xuất");
-		btnDangXuat.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnDangXuat.setBackground(new Color(231, 76, 60));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnDangXuat.setBackground(new Color(251, 252, 252));
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				int answ = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn đăng xuất?", "Cảnh báo", JOptionPane.YES_NO_OPTION);
-				if(answ == JOptionPane.YES_OPTION) {
-					closeFrame();
-				}
-			}
-		});
-		btnDangXuat.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-shutdown-16.png")));
-		btnDangXuat.setBorder(null);
-		btnDangXuat.setFont(font1);
-		btnDangXuat.setBounds(0, 678, 179, 28);
-		panel_1.add(btnDangXuat);
-
-		JButton btnThayDoiTT = new JButton("Thông Tin Tài Khoản");
-		btnThayDoiTT.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnThayDoiTT.setBackground(new Color(46, 134, 193));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnThayDoiTT.setBackground(new Color(251, 252, 252));
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				ThongTinTaiKhoan.main(null);
-			}
-		});
-		btnThayDoiTT.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-info-16.png")));
-		btnThayDoiTT.setBorder(null);
-		btnThayDoiTT.setFont(font1);
-		btnThayDoiTT.setBounds(0, 652, 179, 28);
-		panel_1.add(btnThayDoiTT);
-
-		btnThongKe = new JButton("Thống Kê");
-		btnThongKe.setIconTextGap(8);
-		btnThongKe.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-stocks-32.png")));
-		btnThongKe.setHorizontalAlignment(SwingConstants.LEFT);
-		btnThongKe.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				maincontent.removeAll();
-//				btnThongKe.setBackground(new Color(211, 84, 0));
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				btnNhaCungCap.setBackground(blue);
-				btnNhapHang.setBackground(blue);
-				btnXuatHang.setBackground(blue);
-				btnPhieuXuat.setBackground(blue);
-				btnPhieuNhap.setBackground(blue);
-				btnThongKe.setBackground(blueOp);
-			}
-		});
-		btnThongKe.setFont(font1);
-		btnThongKe.setBackground(blue);
-		btnThongKe.setForeground(whiteFont);
-		btnThongKe.setBorder(null);
-		btnThongKe.setBounds(0, 300, 179, 39);
-		panel_1.add(btnThongKe);
-
-		btnPhieuXuat = new JButton("Phiếu Xuất");
-		btnPhieuXuat.setIconTextGap(8);
-		btnPhieuXuat.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-payment-check-32.png")));
+		btnPhieuXuat = new JLabel();
+		btnPhieuXuat.setBounds(24, 5, 160, 34);
+		panel_8.add(btnPhieuXuat);
+		// btnPhieuXuat.setRadius(10);
+		// btnPhieuXuat.setBorderColor(new Color(64, 143, 221));
+		btnPhieuXuat.setText("Phiếu Xuất");
+		btnPhieuXuat.setIconTextGap(10);
+		btnPhieuXuat.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-bill-32 (4).png")));
 		btnPhieuXuat.setHorizontalAlignment(SwingConstants.LEFT);
 		btnPhieuXuat.addMouseListener(new MouseAdapter() {
 			@Override
@@ -739,43 +997,203 @@ public class MainForm extends JFrame {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				btnNhaCungCap.setBackground(blue);
-				btnNhapHang.setBackground(blue);
-				btnXuatHang.setBackground(blue);
-				btnPhieuXuat.setBackground(blueOp);
-				btnPhieuNhap.setBackground(blue);
-				btnThongKe.setBackground(blue);
+//				btnNhaCungCap.setBackground(blue);
+//				btnNhapHang.setBackground(blue);
+//				btnXuatHang.setBackground(blue);
+////				btnPhieuXuat.setBackground(blueOp);
+//				btnPhieuXuat.setBackground(blueOp);
+//				btnPhieuNhap.setBackground(blue);
+//				btnKhchHng.setBackground(blue);
+//				btnThongKe.setBackground(blue);
+
+				btnNhaCungCap.setForeground(whiteFont);
+				btnNhapHang.setForeground(whiteFont);
+				btnXuatHang.setForeground(whiteFont);
+				btnPhieuXuat.setForeground(green);
+				btnPhieuNhap.setForeground(whiteFont);
+				btnKhchHng.setForeground(whiteFont);
+				btnThongKe.setForeground(whiteFont);
+				
+				
+				BooleanClick.setBtnNhaCungCap(false);
+				BooleanClick.setBtnNhapHang(false);
+				BooleanClick.setBtnPhieuNhap(false);
+				BooleanClick.setBtnXuatHang(false);
+				BooleanClick.setBtnPhieuXuat(true);
+				BooleanClick.setBtnKhchHng(false);
+				BooleanClick.setBtnThongKe(false);
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+//				btnPhieuXuat.setBackground(blueOp);
+				btnPhieuXuat.setForeground(green);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				if (BooleanClick.isBtnPhieuXuat()) {
+//					btnPhieuXuat.setBackground(blueOp);
+					btnPhieuXuat.setForeground(green);
+				} else
+//					btnPhieuXuat.setBackground(blue);
+					btnPhieuXuat.setForeground(whiteFont);
 			}
 		});
-		btnPhieuXuat.setFont(font1);
+		btnPhieuXuat.setFont(SetFont.font1());
 		btnPhieuXuat.setBackground(blue);
 		btnPhieuXuat.setForeground(whiteFont);
 		btnPhieuXuat.setBorder(null);
-		btnPhieuXuat.setBounds(0, 200, 179, 39);
-		panel_1.add(btnPhieuXuat);
-		
-		JPanel panelDateTime = new JPanel();
-		panelDateTime.setBackground(blue);
-		ClockPane cp = new ClockPane();
-		cp.setBackground(blue);
-		panelDateTime.add(cp);
-//		 cp.BOTTOM_ALIGNMENT
-		panelDateTime.setBounds(0, 619, 179, 29);
-		panel_1.add(panelDateTime);
-		panelDateTime.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		JButton btnKhchHng = new JButton("Khách Hàng");
+
+		panel_9 = new JPanel();
+		panel_9.setLayout(null);
+		panel_9.setOpaque(false);
+		panel_9.setBounds(0, 322, 210, 45);
+		panel_1.add(panel_9);
+
+		btnKhchHng = new JLabel();
+		btnKhchHng.setBounds(23, 5, 160, 34);
+		panel_9.add(btnKhchHng);
+		btnKhchHng.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+//				btnKhchHng.setBackground(blueOp);
+				btnKhchHng.setForeground(green);
+			}
+
+			@Override
+
+			public void mouseExited(MouseEvent e) {
+				if (BooleanClick.isBtnKhchHng()) {
+//					btnKhchHng.setBackground(blueOp);
+					btnKhchHng.setForeground(green);
+				} else
+//					btnKhchHng.setBackground(blue);
+					btnKhchHng.setForeground(whiteFont);
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+//				btnNhaCungCap.setBackground(blue);
+//				btnNhapHang.setBackground(blue);
+//				btnXuatHang.setBackground(blue);
+//				btnPhieuXuat.setBackground(blue);
+//				btnPhieuNhap.setBackground(blue);
+//				btnKhchHng.setBackground(blueOp);
+//				btnThongKe.setBackground(blue);
+				
+				btnNhaCungCap.setForeground(whiteFont);
+				btnNhapHang.setForeground(whiteFont);
+				btnXuatHang.setForeground(whiteFont);
+				btnPhieuXuat.setForeground(whiteFont);
+				btnPhieuNhap.setForeground(whiteFont);
+				btnKhchHng.setForeground(green);
+				btnThongKe.setForeground(whiteFont);
+
+				BooleanClick.setBtnNhaCungCap(false);
+				BooleanClick.setBtnNhapHang(false);
+				BooleanClick.setBtnPhieuNhap(false);
+				BooleanClick.setBtnXuatHang(false);
+				BooleanClick.setBtnPhieuXuat(false);
+				BooleanClick.setBtnKhchHng(true);
+				BooleanClick.setBtnThongKe(false);
+			}
+		});
+		// btnKhchHng.setRadius(10);
+		// btnKhchHng.setBorderColor(new Color(64, 143, 221));
+		btnKhchHng.setText("Khách Hàng");
 		btnKhchHng.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-group-32.png")));
-		btnKhchHng.setIconTextGap(8);
+		btnKhchHng.setIconTextGap(10);
 		btnKhchHng.setHorizontalAlignment(SwingConstants.LEFT);
 		btnKhchHng.setForeground(new Color(254, 254, 254));
 		btnKhchHng.setFont(SetFont.font1());
 		btnKhchHng.setBorder(null);
 		btnKhchHng.setBackground(new Color(64, 143, 221));
-		btnKhchHng.setBounds(0, 250, 179, 39);
-		panel_1.add(btnKhchHng);
-		
-		
+
+		panel_4 = new JPanel();
+		panel_4.setLayout(null);
+		panel_4.setOpaque(false);
+		panel_4.setBounds(0, 666, 210, 45);
+		panel_1.add(panel_4);
+
+		JLabel btnThayDoiTT = new JLabel();
+		btnThayDoiTT.setIconTextGap(10);
+		btnThayDoiTT.setBounds(10, 11, 160, 30);
+		panel_4.add(btnThayDoiTT);
+		btnThayDoiTT.setForeground(whiteFont);
+		btnThayDoiTT.setBackground(blue);
+		// btnThayDoiTT.setBorderColor(new Color(64, 143, 221));
+		// btnThayDoiTT.setRadius(10);
+		btnThayDoiTT.setText("About");
+		btnThayDoiTT.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnThayDoiTT.setBackground(new Color(251, 252, 252));
+				btnThayDoiTT.setForeground(Color.BLACK);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnThayDoiTT.setBackground(blue);
+				btnThayDoiTT.setForeground(whiteFont);
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				ThongTinTaiKhoan.main(null);
+			}
+		});
+		btnThayDoiTT.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-info-32.png")));
+		btnThayDoiTT.setBorder(null);
+		btnThayDoiTT.setFont(font1);
+
+		panel_10 = new JPanel();
+		panel_10.setLayout(null);
+		panel_10.setOpaque(false);
+		panel_10.setBounds(0, 722, 210, 45);
+		panel_1.add(panel_10);
+
+		JLabel btnDangXuat = new JLabel();
+		btnDangXuat.setIconTextGap(10);
+		btnDangXuat.setBounds(10, 0, 160, 34);
+		panel_10.add(btnDangXuat);
+		btnDangXuat.setForeground(whiteFont);
+		btnDangXuat.setBackground(blue);
+		// btnDangXuat.setBorderColor(new Color(64, 143, 221));
+		// btnDangXuat.setRadius(10);
+		btnDangXuat.setText("Đăng Xuất");
+		btnDangXuat.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnDangXuat.setBackground(new Color(231, 76, 60));
+				btnDangXuat.setForeground(SetColor.redB);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnDangXuat.setBackground(blue);
+				btnDangXuat.setForeground(whiteFont);
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int answ = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn đăng xuất?", "Cảnh báo",
+						JOptionPane.YES_NO_OPTION);
+				if (answ == JOptionPane.YES_OPTION) {
+					closeFrame();
+					LoginForm.main(null);
+				}
+			}
+		});
+		btnDangXuat.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-shutdown-32.png")));
+		btnDangXuat.setBorder(null);
+		btnDangXuat.setFont(font1);
 
 //		btnNewButton = new JButton("Light");
 //		btnNewButton.addMouseListener(new MouseAdapter() {
@@ -837,31 +1255,29 @@ public class MainForm extends JFrame {
 			e.printStackTrace();
 		}
 	}
-	
+
 //	private static void setDateToLable() {
 //		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 //		LocalDateTime now = LocalDateTime.now();
 //		lbDateTime.setText(dtf.format(now));
 //	}
-	
-	
-	
+
 	class ClockPane extends JPanel {
-		
+
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
 		private JLabel clock = new JLabel();
-		
 
 		public ClockPane() {
-			
+
 			setLayout(new BorderLayout());
 			tickTock();
 			clock.setForeground(SetColor.whiteFont);
-			clock.setBackground(SetColor.blue);
+//			clock.setBackground(SetColor.blue);
 			clock.setFont(font_1);
+			clock.setOpaque(false);
 			add(clock);
 			Timer timer = new Timer(500, new ActionListener() {
 				@Override
@@ -879,8 +1295,7 @@ public class MainForm extends JFrame {
 			clock.setText(DateFormat.getDateTimeInstance().format(new Date()));
 		}
 	}
-	
-	
+
 	@SuppressWarnings("deprecation")
 	private void closeFrame() {
 		this.disable();

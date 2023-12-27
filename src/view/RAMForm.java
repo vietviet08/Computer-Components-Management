@@ -143,7 +143,7 @@ public class RAMForm extends JInternalFrame {
 			System.out.println(e);
 		}
 
-		setBounds(100, 100, 1200, 730);
+		setBounds(100, 100, 1200-30, 730);
 		getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();
@@ -328,7 +328,7 @@ public class RAMForm extends JInternalFrame {
 		panel.add(btnNewButton_5);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 53, 1192, 648);
+		scrollPane.setBounds(0, 53, 1162, 648);
 		getContentPane().add(scrollPane);
 
 		table = new JTable() {
@@ -362,7 +362,7 @@ public class RAMForm extends JInternalFrame {
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblNewLabel.setIcon(new ImageIcon(RAMForm.class.getResource("/icon/icons8-search-24.png")));
-		lblNewLabel.setBounds(505, 14, 48, 22);
+		lblNewLabel.setBounds(475, 14, 48, 22);
 		panel_1.add(lblNewLabel);
 
 		JComboBox<String> comboBox = new JComboBox<String>();
@@ -415,7 +415,7 @@ public class RAMForm extends JInternalFrame {
 			}
 		});
 		textField.setColumns(10);
-		textField.setBounds(255, 8, 302, 33);
+		textField.setBounds(258, 8, 270, 33);
 		panel_1.add(textField);
 
 		JComboBox<String> comboBox_1 = new JComboBox<String>();

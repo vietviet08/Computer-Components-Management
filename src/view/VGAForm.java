@@ -141,7 +141,7 @@ public class VGAForm extends JInternalFrame {
 			System.out.println(e);
 		}
 
-		setBounds(100, 100, 1200, 730);
+		setBounds(100, 100, 1200-30, 730);
 		getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();
@@ -150,7 +150,7 @@ public class VGAForm extends JInternalFrame {
 		panel.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 53, 1192, 648);
+		scrollPane.setBounds(0, 53, 1162, 648);
 		getContentPane().add(scrollPane);
 
 		table = new JTable() {
@@ -405,7 +405,7 @@ public class VGAForm extends JInternalFrame {
 			}
 		});
 		textField.setColumns(10);
-		textField.setBounds(255, 8, 302, 33);
+		textField.setBounds(255, 8, 271, 33);
 		panel_1.add(textField);
 
 		JComboBox<String> comboBox_1 = new JComboBox<>();
