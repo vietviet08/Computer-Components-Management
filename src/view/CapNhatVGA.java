@@ -1,12 +1,19 @@
 package view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,8 +28,6 @@ import dao.vgaDAO;
 import font.SetFont;
 import model.Products;
 import model.vga;
-import java.awt.Color;
-import javax.swing.JComboBox;
 
 public class CapNhatVGA extends JFrame {
 
@@ -63,7 +68,25 @@ public class CapNhatVGA extends JFrame {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 588, 288);
-		contentPane = new JPanel();
+		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
+		contentPane = new JPanel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void paintComponent(Graphics grphcs) {
+				super.paintComponent(grphcs);
+				Graphics2D g2d = (Graphics2D) grphcs;
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				GradientPaint gp = new GradientPaint(0, 0, new Color(102, 125, 182), 0, getHeight(),
+						new Color(0, 130, 200));
+				g2d.setPaint(gp);
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+
+			}
+		};
 		contentPane.setBackground(SetColor.blueOp);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -77,7 +100,7 @@ public class CapNhatVGA extends JFrame {
 		contentPane.add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
-		lblNewLabel_1.setForeground(SetColor.redB);
+		lblNewLabel_1.setForeground(SetColor.copyRight);
 		lblNewLabel_1.setFont(SetFont.font());
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setBounds(32, 268, 507, 14);
@@ -90,7 +113,7 @@ public class CapNhatVGA extends JFrame {
 		contentPane.add(lblTnVga);
 
 		tfTen = new JTextField();
-		tfTen.setFont(SetFont.font());
+		tfTen.setFont(SetFont.fontDetails());
 		tfTen.setBorder(null);
 		tfTen.setBounds(381, 57, 158, 25);
 		contentPane.add(tfTen);
@@ -147,21 +170,21 @@ public class CapNhatVGA extends JFrame {
 		contentPane.add(btnHy);
 
 		tfBoNho = new JTextField();
-		tfBoNho.setFont(SetFont.font());
+		tfBoNho.setFont(SetFont.fontDetails());
 		tfBoNho.setColumns(10);
 		tfBoNho.setBorder(null);
 		tfBoNho.setBounds(381, 117, 158, 25);
 		contentPane.add(tfBoNho);
 
 		tfDonGia = new JTextField();
-		tfDonGia.setFont(SetFont.font());
+		tfDonGia.setFont(SetFont.fontDetails());
 		tfDonGia.setColumns(10);
 		tfDonGia.setBorder(null);
 		tfDonGia.setBounds(381, 176, 158, 25);
 		contentPane.add(tfDonGia);
 
 		tfHang = new JTextField();
-		tfHang.setFont(SetFont.font());
+		tfHang.setFont(SetFont.fontDetails());
 		tfHang.setColumns(10);
 		tfHang.setBorder(null);
 		tfHang.setBounds(101, 117, 158, 25);
@@ -182,7 +205,7 @@ public class CapNhatVGA extends JFrame {
 		}
 
 		comboBox = new JComboBox<>(new DefaultComboBoxModel<String>(combo));
-		comboBox.setFont(SetFont.font());
+		comboBox.setFont(SetFont.fontDetails());
 		comboBox.setBounds(101, 57, 158, 25);
 		contentPane.add(comboBox);
 
@@ -193,7 +216,7 @@ public class CapNhatVGA extends JFrame {
 		contentPane.add(lblNewLabel_2_1_3);
 
 		tfTonKho = new JTextField();
-		tfTonKho.setFont(SetFont.font());
+		tfTonKho.setFont(SetFont.fontDetails());
 		tfTonKho.setColumns(10);
 		tfTonKho.setBorder(null);
 		tfTonKho.setBounds(101, 176, 158, 25);

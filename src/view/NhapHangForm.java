@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
@@ -227,6 +228,7 @@ public class NhapHangForm extends JInternalFrame {
 				return returnComp;
 			}
 		};
+		tableALL.getTableHeader().setBackground(SetColor.blueOp);
 		tableALL.getTableHeader().setFont(SetFont.fontHeaderTable());
 		tableALL.setModel(new DefaultTableModel(new Object[][] {},
 				new String[] { "New column", "New column", "New column", "New column" }));
@@ -253,6 +255,7 @@ public class NhapHangForm extends JInternalFrame {
 				return returnComp;
 			}
 		};
+		tableMin.getTableHeader().setBackground(SetColor.blueOp);
 		tableMin.getTableHeader().setFont(SetFont.fontHeaderTable());
 		tableMin.setModel(
 				new DefaultTableModel(new Object[][] {}, new String[] { "New column", "New column", "New column" }));
@@ -358,17 +361,19 @@ public class NhapHangForm extends JInternalFrame {
 						JOptionPane.showMessageDialog(null, "Đã nhập hàng thành công!");
 						System.out.println(tien);
 
-						String idPhieu = createIDPhieuNhap();
+//						String idPhieu = createIDPhieuNhap();
 
 						Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-						PhieuNhap pn = new PhieuNhap(idPhieu, comboBox_chooseNPP.getSelectedItem().toString(),
-								timestamp, LoginForm.fullN, tien, 1);
+						PhieuNhap pn = new PhieuNhap(createIDPhieuNhap(PhieuNhapDAO.getInstance().selectAll()),
+								comboBox_chooseNPP.getSelectedItem().toString(), timestamp, LoginForm.fullN, tien, 1);
 						PhieuNhapDAO.getInstance().insert(pn);
 
 						for (int i = 0; i < tableMin.getRowCount(); i++) {
-							ChiTietPhieu ctp = new ChiTietPhieu(pn.getIdPhieu(), (String) tableMin.getValueAt(i, 0),
-									(int) tableMin.getValueAt(i, 3), 0);
+//							String money = (String) tableMin.getValueAt(i, 4);
+//							double money1 = Double.parseDouble(money.substring(0, money.length()).trim());
+							ChiTietPhieu ctp = new ChiTietPhieu( pn.getIdPhieu(), (String) tableMin.getValueAt(i, 0),
+									(int) tableMin.getValueAt(i, 3), (double) tableMin.getValueAt(i, 4));
 //							(double)tableMin.getValueAt(i, 4)
 							ChiTietPhieuNhapDAO.getInstance().insert(ctp);
 						}
@@ -534,15 +539,19 @@ public class NhapHangForm extends JInternalFrame {
 	}
 
 	public static void loadDataToTableBill(ArrayList<ProductNhap> pn) {
+		DecimalFormat formatter = new DecimalFormat("###,###,###");
 		try {
 			tableModelBill.setRowCount(0);
 			for (ProductNhap i : pn) {
 				DefaultTableCellRenderer renderRight = new DefaultTableCellRenderer();
+				DefaultTableCellRenderer renderCenter = new DefaultTableCellRenderer();
 				renderRight.setHorizontalAlignment(JLabel.RIGHT);
+				renderCenter.setHorizontalAlignment(JLabel.CENTER);
+				tableMin.getColumnModel().getColumn(3).setCellRenderer(renderCenter);
 				tableMin.getColumnModel().getColumn(4).setCellRenderer(renderRight);
-				String gia = FormatToVND.vnd(i.getGia());
-				tableModelBill
-						.addRow(new Object[] { i.getIdsanpham(), i.getPrivateId(), i.getName(), i.getSoLuong(), gia });
+//				String gia = FormatToVND.vnd(i.getGia());
+				tableModelBill.addRow(new Object[] { i.getIdsanpham(), i.getPrivateId(), i.getName(), i.getSoLuong(),
+						formatter.format(i.getGia()) });
 			}
 		} catch (Exception e) {
 		}
@@ -572,19 +581,54 @@ public class NhapHangForm extends JInternalFrame {
 		return false;
 	}
 
-	private String createIDPhieuNhap() {
-		String id = "pn";
-		int code = 0;
+	private String createIDPhieuNhap(ArrayList<PhieuNhap> arr) {
+//		String id = "pn";
+//		int code = 0;
+//
+//		ArrayList<PhieuNhap> list = PhieuNhapDAO.getInstance().selectAll();
+//
+////		Collections.sort(list, new Comparator<PhieuNhap>() {
+////
+////			@Override
+////			public int compare(PhieuNhap o1, PhieuNhap o2) {
+////
+////				if (Double.parseDouble((String) o1.getIdPhieu().substring(2, o1.getIdPhieu().length())) > Double
+////						.parseDouble((String) o2.getIdPhieu().substring(2, o2.getIdPhieu().length()))) {
+////					return 1;
+////				}else if(Double.parseDouble((String) o1.getIdPhieu().substring(2, o1.getIdPhieu().length())) > Double
+////						.parseDouble((String) o2.getIdPhieu().substring(2, o2.getIdPhieu().length()))) return -1;
+////
+////				return 0;
+////			}
+////		});
+//		for (PhieuNhap phieuNhap : list) {
+//			if (phieuNhap.getIdPhieu().equals(id + code))
+//				code++;
+//			else
+//				break;
+//		}
+//
+//		return id + code;
 
-		ArrayList<PhieuNhap> list = PhieuNhapDAO.getInstance().selectAll();
-
-		for (PhieuNhap phieuNhap : list) {
-			if (phieuNhap.getIdPhieu().equals(id + code))
-				code++;
-			else
-				break;
+		int id = arr.size() + 1;
+		String check = "";
+		for (PhieuNhap phieuNhap : arr) {
+			if (phieuNhap.getIdPhieu().equals("pn" + id)) {
+				check = phieuNhap.getIdPhieu();
+			}
 		}
-
-		return id + code;
+		while (check.length() != 0) {
+			String c = check;
+			id++;
+			for (int i = 0; i < arr.size(); i++) {
+				if (arr.get(i).getIdPhieu().equals("pn" + id)) {
+					check = arr.get(i).getIdPhieu();
+				}
+			}
+			if (check.equals(c)) {
+				check = "";
+			}
+		}
+		return "pn" + id;
 	}
 }

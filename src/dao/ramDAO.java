@@ -62,8 +62,8 @@ public class ramDAO implements DAOInterface<ram> {
 			ps.setString(3, t.getLoai());
 			ps.setString(4, t.getDungLuong());
 			ps.setString(5, t.getBus());
-			ps.setDouble(6, t.getDonGia());
-			ps.setInt(7, t.getTonkho());
+			ps.setInt(6, t.getTonkho());
+			ps.setDouble(7, t.getDonGia());
 			ps.setString(8, t.getIdRam());
 
 			check = ps.executeUpdate();

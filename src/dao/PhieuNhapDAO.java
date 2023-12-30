@@ -9,7 +9,7 @@ import db.JDBCUntil;
 import model.PhieuNhap;
 
 public class PhieuNhapDAO implements DAOInterface<PhieuNhap> {
-	
+
 	public static PhieuNhapDAO getInstance() {
 		return new PhieuNhapDAO();
 	}
@@ -49,7 +49,7 @@ public class PhieuNhapDAO implements DAOInterface<PhieuNhap> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "delete from donnhaphang where iddonnhap = ?)";
+			String sql = "delete from donnhaphang where iddonnhap = ?";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -71,7 +71,7 @@ public class PhieuNhapDAO implements DAOInterface<PhieuNhap> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "update donnhaphang set idnpp = ?, thoigiannhap = ?, nguoitao = ?, tongtien = ?, trangthai = ? where iddonnhap = ?)";
+			String sql = "update donnhaphang set idnpp = ?, thoigiannhap = ?, nguoitao = ?, tongtien = ?, trangthai = ? where iddonnhap = ?";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 

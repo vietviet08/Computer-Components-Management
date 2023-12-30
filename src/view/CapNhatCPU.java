@@ -2,17 +2,26 @@ package view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import color.SetColor;
@@ -21,10 +30,6 @@ import dao.cpuDAO;
 import font.SetFont;
 import model.Products;
 import model.cpu;
-import javax.swing.JComboBox;
-import javax.swing.SwingConstants;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class CapNhatCPU extends JFrame {
 
@@ -67,8 +72,26 @@ public class CapNhatCPU extends JFrame {
 	public CapNhatCPU() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 530, 447);
-		contentPane = new JPanel();
+		setBounds(100, 100, 518, 418);
+		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
+		contentPane = new JPanel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void paintComponent(Graphics grphcs) {
+				super.paintComponent(grphcs);
+				Graphics2D g2d = (Graphics2D) grphcs;
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				 GradientPaint gp = new GradientPaint(0, 0,new Color(102,125,182), 0, getHeight(), new Color(0,130,200));
+				g2d.setPaint(gp);
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+
+			}
+		};
+		
 		contentPane.setBackground(SetColor.blueOp);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -78,17 +101,19 @@ public class CapNhatCPU extends JFrame {
 		JLabel lblSNhn = new JLabel("Số nhân");
 		lblSNhn.setForeground(new Color(254, 254, 254));
 		lblSNhn.setFont(SetFont.font1_());
-		lblSNhn.setBounds(273, 53, 83, 30);
+		lblSNhn.setBounds(289, 53, 83, 30);
 		contentPane.add(lblSNhn);
 
 		tfSoNhan = new JTextField();
+		tfSoNhan.setFont(SetFont.fontDetails());
 		tfSoNhan.setColumns(10);
-		tfSoNhan.setBounds(340, 53, 45, 30);
+		tfSoNhan.setBounds(366, 53, 35, 30);
 		contentPane.add(tfSoNhan);
 
 		tfSoluong = new JTextField();
 		tfSoluong.setColumns(10);
-		tfSoluong.setBounds(436, 53, 45, 30);
+		tfSoluong.setFont(SetFont.fontDetails());
+		tfSoluong.setBounds(473, 53, 35, 30);
 		contentPane.add(tfSoluong);
 
 		JLabel lblTnCpu = new JLabel("Tên cpu");
@@ -98,19 +123,21 @@ public class CapNhatCPU extends JFrame {
 		contentPane.add(lblTnCpu);
 
 		tfTen = new JTextField();
+		tfTen.setFont(SetFont.fontDetails());
 		tfTen.setColumns(10);
-		tfTen.setBounds(122, 117, 141, 30);
+		tfTen.setBounds(128, 117, 141, 30);
 		contentPane.add(tfTen);
 
 		JLabel lblXungNhp = new JLabel("Xung nhịp");
 		lblXungNhp.setForeground(new Color(254, 254, 254));
 		lblXungNhp.setFont(SetFont.font1_());
-		lblXungNhp.setBounds(273, 118, 71, 30);
+		lblXungNhp.setBounds(289, 118, 83, 30);
 		contentPane.add(lblXungNhp);
 
 		tfXungNhip = new JTextField();
 		tfXungNhip.setColumns(10);
-		tfXungNhip.setBounds(340, 122, 141, 30);
+		tfXungNhip.setFont(SetFont.fontDetails());
+		tfXungNhip.setBounds(367, 117, 141, 30);
 		contentPane.add(tfXungNhip);
 
 		JLabel lblinNngTiu = new JLabel("Điện năng tiêu thụ");
@@ -120,19 +147,21 @@ public class CapNhatCPU extends JFrame {
 		contentPane.add(lblinNngTiu);
 
 		tfDienNang = new JTextField();
+		tfDienNang.setFont(SetFont.fontDetails());
 		tfDienNang.setColumns(10);
-		tfDienNang.setBounds(122, 186, 141, 30);
+		tfDienNang.setBounds(128, 186, 141, 30);
 		contentPane.add(tfDienNang);
 
 		JLabel lblNewLabel_1_1_1 = new JLabel("Bộ nhớ đệm");
 		lblNewLabel_1_1_1.setForeground(new Color(254, 254, 254));
 		lblNewLabel_1_1_1.setFont(SetFont.font1_());
-		lblNewLabel_1_1_1.setBounds(273, 188, 71, 30);
+		lblNewLabel_1_1_1.setBounds(289, 188, 83, 30);
 		contentPane.add(lblNewLabel_1_1_1);
 
 		tfBoNhoDem = new JTextField();
+		tfBoNhoDem.setFont(SetFont.fontDetails());
 		tfBoNhoDem.setColumns(10);
-		tfBoNhoDem.setBounds(340, 193, 141, 30);
+		tfBoNhoDem.setBounds(367, 186, 141, 30);
 		contentPane.add(tfBoNhoDem);
 
 		JLabel lblNewLabel_1_2 = new JLabel("Tồn kho");
@@ -142,11 +171,13 @@ public class CapNhatCPU extends JFrame {
 		contentPane.add(lblNewLabel_1_2);
 
 		tfGia = new JTextField();
+		tfGia.setFont(SetFont.fontDetails());
 		tfGia.setColumns(10);
-		tfGia.setBounds(340, 257, 141, 30);
+		tfGia.setBounds(367, 257, 141, 30);
 		contentPane.add(tfGia);
 
 		JButton btnCpNht = new JButton("Cập nhật");
+		btnCpNht.setBorder(null);
 		btnCpNht.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -163,10 +194,11 @@ public class CapNhatCPU extends JFrame {
 			}
 		});
 		btnCpNht.setFont(SetFont.font1());
-		btnCpNht.setBounds(172, 330, 97, 30);
+		btnCpNht.setBounds(176, 330, 97, 30);
 		contentPane.add(btnCpNht);
 
 		JButton btnCancel = new JButton("Hủy");
+		btnCancel.setBorder(null);
 		btnCancel.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -183,19 +215,19 @@ public class CapNhatCPU extends JFrame {
 			}
 		});
 		btnCancel.setFont(SetFont.font1());
-		btnCancel.setBounds(281, 330, 97, 30);
+		btnCancel.setBounds(285, 330, 97, 30);
 		contentPane.add(btnCancel);
 
 		JLabel lblSLung = new JLabel("Số luồng");
 		lblSLung.setForeground(new Color(254, 254, 254));
 		lblSLung.setFont(SetFont.font1_());
-		lblSLung.setBounds(390, 53, 83, 30);
+		lblSLung.setBounds(414, 53, 83, 30);
 		contentPane.add(lblSLung);
 
 		JLabel lblIdSnPhm = new JLabel("ID sản phẩm");
 		lblIdSnPhm.setForeground(new Color(254, 254, 254));
 		lblIdSnPhm.setFont(SetFont.font1_());
-		lblIdSnPhm.setBounds(10, 53, 71, 30);
+		lblIdSnPhm.setBounds(10, 53, 104, 30);
 		contentPane.add(lblIdSnPhm);
 
 		ArrayList<Products> list = SanPhamDAO.getIDSanPham("cpu");
@@ -206,18 +238,20 @@ public class CapNhatCPU extends JFrame {
 			choose[i] = pr.getIdSanPham();
 		}
 		comboBox = new JComboBox<>(new DefaultComboBoxModel<String>(choose));
-		comboBox.setBounds(122, 57, 141, 26);
+		comboBox.setFont(SetFont.fontDetails());
+		comboBox.setBounds(128, 53, 141, 30);
 		contentPane.add(comboBox);
 
 		JLabel label = new JLabel("Đơn giá");
 		label.setForeground(new Color(254, 254, 254));
 		label.setFont(SetFont.font1_());
-		label.setBounds(273, 257, 83, 30);
+		label.setBounds(289, 257, 83, 30);
 		contentPane.add(label);
 
 		tfTonKho = new JTextField();
+		tfTonKho.setFont(SetFont.fontDetails());
 		tfTonKho.setColumns(10);
-		tfTonKho.setBounds(122, 257, 141, 30);
+		tfTonKho.setBounds(128, 257, 141, 30);
 		contentPane.add(tfTonKho);
 
 		JLabel lblNewLabel = new JLabel("CẬP NHẬT CPU");
@@ -228,7 +262,7 @@ public class CapNhatCPU extends JFrame {
 
 		JLabel lblNewLabel_1 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_1.setFont(SetFont.font());
-		lblNewLabel_1.setForeground(SetColor.redB);
+		lblNewLabel_1.setForeground(new Color(224, 255, 255));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setBounds(10, 387, 498, 14);
 		contentPane.add(lblNewLabel_1);

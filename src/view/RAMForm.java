@@ -347,6 +347,7 @@ public class RAMForm extends JInternalFrame {
 				return returnComp;
 			}
 		};
+		table.getTableHeader().setBackground(SetColor.blueOp);
 		table.getTableHeader().setFont(SetFont.fontHeaderTable());
 		table.setModel(new DefaultTableModel(new Object[][] {},
 				new String[] { "New column", "New column", "New column", "New column", "New column" }));

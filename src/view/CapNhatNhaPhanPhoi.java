@@ -1,24 +1,30 @@
 package view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.RoundRectangle2D;
 import java.io.File;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import color.SetColor;
 import dao.NhaPhanPhoiDAO;
+import font.SetFont;
 import model.NhaPhanPhoi;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.SwingConstants;
 
 public class CapNhatNhaPhanPhoi extends JFrame {
 
@@ -75,8 +81,25 @@ public class CapNhatNhaPhanPhoi extends JFrame {
 		}
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 780, 370);
-		contentPane = new JPanel();
+		setBounds(100, 100, 642, 309);
+		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
+		contentPane = new JPanel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void paintComponent(Graphics grphcs) {
+				super.paintComponent(grphcs);
+				Graphics2D g2d = (Graphics2D) grphcs;
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				 GradientPaint gp = new GradientPaint(0, 0,new Color(102,125,182), 0, getHeight(), new Color(0,130,200));
+				g2d.setPaint(gp);
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+
+			}
+		};
 		contentPane.setBackground(SetColor.blueOp);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -86,31 +109,31 @@ public class CapNhatNhaPhanPhoi extends JFrame {
 		JLabel lblNewLabel = new JLabel("CẬP NHẬT NHÀ PHÂN PHỐI");
 		lblNewLabel.setFont(font3);
 		lblNewLabel.setForeground(SetColor.yellow);
-		lblNewLabel.setBounds(0, 0, 339, 63);
+		lblNewLabel.setBounds(29, 11, 257, 40);
 		contentPane.add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel("Tên nhà phân phối");
 		lblNewLabel_1.setFont(font_1);
 		lblNewLabel_1.setForeground(SetColor.whiteFont);
-		lblNewLabel_1.setBounds(80, 40, 264, 37);
+		lblNewLabel_1.setBounds(29, 58, 264, 37);
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_1_1 = new JLabel("Địa chỉ");
 		lblNewLabel_1_1.setFont(font_1);
 		lblNewLabel_1_1.setForeground(SetColor.whiteFont);
-		lblNewLabel_1_1.setBounds(412, 40, 264, 37);
+		lblNewLabel_1_1.setBounds(361, 58, 264, 37);
 		contentPane.add(lblNewLabel_1_1);
 
 		JLabel lblNewLabel_1_2 = new JLabel("Email");
 		lblNewLabel_1_2.setFont(font_1);
 		lblNewLabel_1_2.setForeground(SetColor.whiteFont);
-		lblNewLabel_1_2.setBounds(80, 135, 264, 37);
+		lblNewLabel_1_2.setBounds(29, 122, 264, 37);
 		contentPane.add(lblNewLabel_1_2);
 
 		JLabel lblNewLabel_1_1_1 = new JLabel("Số điện thoại");
 		lblNewLabel_1_1_1.setFont(font_1);
 		lblNewLabel_1_1_1.setForeground(SetColor.whiteFont);
-		lblNewLabel_1_1_1.setBounds(412, 135, 264, 37);
+		lblNewLabel_1_1_1.setBounds(361, 122, 264, 37);
 		contentPane.add(lblNewLabel_1_1_1);
 
 		JButton btnNewButton = new JButton("Cập nhật");
@@ -134,7 +157,7 @@ public class CapNhatNhaPhanPhoi extends JFrame {
 			}
 		});
 		btnNewButton.setFont(font1);
-		btnNewButton.setBounds(220, 263, 143, 46);
+		btnNewButton.setBounds(171, 213, 130, 40);
 		contentPane.add(btnNewButton);
 
 		JButton btnHy = new JButton("Hủy");
@@ -146,37 +169,41 @@ public class CapNhatNhaPhanPhoi extends JFrame {
 			}
 		});
 		btnHy.setFont(font1);
-		btnHy.setBounds(388, 263, 143, 46);
+		btnHy.setBounds(339, 213, 130, 40);
 		contentPane.add(btnHy);
 
 		tfTen = new JTextField();
+		tfTen.setFont(SetFont.fontDetails());
 		tfTen.setBorder(null);
-		tfTen.setBounds(80, 75, 257, 49);
+		tfTen.setBounds(29, 93, 257, 30);
 		contentPane.add(tfTen);
 		tfTen.setColumns(10);
 
 		tfDiaChi = new JTextField();
+		tfDiaChi.setFont(SetFont.fontDetails());
 		tfDiaChi.setBorder(null);
 		tfDiaChi.setColumns(10);
-		tfDiaChi.setBounds(412, 75, 257, 49);
+		tfDiaChi.setBounds(361, 93, 257, 30);
 		contentPane.add(tfDiaChi);
 
 		tfSDT = new JTextField();
+		tfSDT.setFont(SetFont.fontDetails());
 		tfSDT.setBorder(null);
 		tfSDT.setColumns(10);
-		tfSDT.setBounds(412, 166, 257, 49);
+		tfSDT.setBounds(361, 153, 257, 30);
 		contentPane.add(tfSDT);
 
 		tfEmail = new JTextField();
+		tfEmail.setFont(SetFont.fontDetails());
 		tfEmail.setBorder(null);
 		tfEmail.setColumns(10);
-		tfEmail.setBounds(80, 166, 257, 49);
+		tfEmail.setBounds(29, 153, 257, 30);
 		contentPane.add(tfEmail);
 
 		JLabel lblNewLabel_2 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_2.setForeground(SetColor.whiteFont);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setBounds(80, 345, 589, 14);
+		lblNewLabel_2.setBounds(36, 276, 589, 14);
 		contentPane.add(lblNewLabel_2);
 	}
 

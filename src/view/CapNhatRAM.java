@@ -1,9 +1,14 @@
-	package view;
+package view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
@@ -64,7 +69,25 @@ public class CapNhatRAM extends JFrame {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 582, 368);
-		contentPane = new JPanel();
+		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
+		contentPane = new JPanel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void paintComponent(Graphics grphcs) {
+				super.paintComponent(grphcs);
+				Graphics2D g2d = (Graphics2D) grphcs;
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				GradientPaint gp = new GradientPaint(0, 0, new Color(102, 125, 182), 0, getHeight(),
+						new Color(0, 130, 200));
+				g2d.setPaint(gp);
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+
+			}
+		};
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setBackground(SetColor.blueOp);
 
@@ -79,7 +102,7 @@ public class CapNhatRAM extends JFrame {
 
 		JLabel lblNewLabel_1 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_1.setFont(SetFont.font());
-		lblNewLabel_1.setForeground(SetColor.redB);
+		lblNewLabel_1.setForeground(SetColor.copyRight);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setBounds(35, 341, 511, 14);
 		contentPane.add(lblNewLabel_1);
@@ -91,6 +114,7 @@ public class CapNhatRAM extends JFrame {
 		contentPane.add(lblNewLabel_2);
 
 		tfTen = new JTextField();
+		tfTen.setFont(SetFont.fontDetails());
 		tfTen.setBorder(null);
 		tfTen.setBounds(382, 74, 164, 28);
 		contentPane.add(tfTen);
@@ -103,6 +127,7 @@ public class CapNhatRAM extends JFrame {
 		contentPane.add(lblNewLabel_2_1);
 
 		tfLoai = new JTextField();
+		tfLoai.setFont(SetFont.fontDetails());
 		tfLoai.setBorder(null);
 		tfLoai.setColumns(10);
 		tfLoai.setBounds(115, 136, 164, 28);
@@ -115,12 +140,14 @@ public class CapNhatRAM extends JFrame {
 		contentPane.add(lblNewLabel_2_1_1);
 
 		tfBus = new JTextField();
+		tfBus.setFont(SetFont.fontDetails());
 		tfBus.setBorder(null);
 		tfBus.setColumns(10);
 		tfBus.setBounds(115, 205, 164, 28);
 		contentPane.add(tfBus);
 
 		tfDungLuong = new JTextField();
+		tfDungLuong.setFont(SetFont.fontDetails());
 		tfDungLuong.setBorder(null);
 		tfDungLuong.setColumns(10);
 		tfDungLuong.setBounds(382, 136, 164, 28);
@@ -133,6 +160,7 @@ public class CapNhatRAM extends JFrame {
 		contentPane.add(lblNewLabel_2_2);
 
 		tfGia = new JTextField();
+		tfGia.setFont(SetFont.fontDetails());
 		tfGia.setBorder(null);
 		tfGia.setColumns(10);
 		tfGia.setBounds(115, 272, 164, 28);
@@ -196,6 +224,7 @@ public class CapNhatRAM extends JFrame {
 		}
 
 		comboBox = new JComboBox<>(new DefaultComboBoxModel<String>(combo));
+		comboBox.setFont(SetFont.fontDetails());
 		comboBox.setBounds(115, 74, 164, 28);
 		contentPane.add(comboBox);
 
@@ -206,6 +235,7 @@ public class CapNhatRAM extends JFrame {
 		contentPane.add(lblNewLabel_2_3_1);
 
 		tfTonKho = new JTextField();
+		tfTonKho.setFont(SetFont.fontDetails());
 		tfTonKho.setColumns(10);
 		tfTonKho.setBorder(null);
 		tfTonKho.setBounds(382, 205, 164, 28);

@@ -7,7 +7,6 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="src/lib/mysql-connector-java-8.0.30.jar"/>
-	<classpathentry kind="lib" path="src/lib/itextpdf-5.5.9.jar"/>
 	<classpathentry kind="lib" path="src/lib/javax.mail.jar"/>
 	<classpathentry kind="lib" path="src/lib/session-1.2.5.jar"/>
 	<classpathentry kind="lib" path="src/lib/sendmail.jar"/>
@@ -46,5 +45,9 @@
 	<classpathentry kind="lib" path="src/lib/commons-codec-1.16.0.jar"/>
 	<classpathentry kind="lib" path="src/lib/commons-compress-1.25.0.jar"/>
 	<classpathentry kind="lib" path="src/lib/commons-io-2.15.0.jar"/>
+	<classpathentry kind="lib" path="src/lib/lombok.jar"/>
+	<classpathentry kind="lib" path="src/lib/itextpdf-5.5.9.jar"/>
+	<classpathentry kind="lib" path="src/lib/kernel-7.1.19.jar"/>
+	<classpathentry kind="lib" path="src/lib/layout-7.1.19.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

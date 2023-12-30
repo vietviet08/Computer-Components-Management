@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -553,7 +554,7 @@ public class MainForm extends JFrame {
 // blue 64,143,221
 //orig 230, 126, 34
 		panel_1.setBackground(SetColor.blue);
-		panel_1.setBounds(0, 0, 210, 767);
+		panel_1.setBounds(0, 0, 213, 767);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 //		btnNhaCungCap.setRadius(10);
@@ -573,7 +574,7 @@ public class MainForm extends JFrame {
 		panel_1.add(separator);
 		panelDateTime.add(cp);
 //		 cp.BOTTOM_ALIGNMENT
-		panelDateTime.setBounds(0, 0, 210, 32);
+		panelDateTime.setBounds(0, 4, 210, 32);
 		panel_1.add(panelDateTime);
 		panelDateTime.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
@@ -768,6 +769,8 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				maincontent.removeAll();
+				ThongKeForm tkf = new ThongKeForm();
+				maincontent.add(tkf);
 //				btnThongKe.setBackground(new Color(211, 84, 0));
 			}
 
@@ -919,6 +922,8 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				maincontent.removeAll();
+				XuatHangForm xhf = new XuatHangForm();
+				maincontent.add(xhf);
 //				btnXuatHang.setBackground(new Color(211, 84, 0));
 			}
 
@@ -992,6 +997,8 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				maincontent.removeAll();
+				PhieuXuatForm pxf = new PhieuXuatForm();
+				maincontent.add(pxf);
 //				btnPhieuXuat.setBackground(new Color(211, 84, 0));
 			}
 
@@ -1058,6 +1065,9 @@ public class MainForm extends JFrame {
 		btnKhchHng.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				maincontent.removeAll();
+				KhachHangForm khf = new KhachHangForm();
+				maincontent.add(khf);
 			}
 
 			@Override
@@ -1276,7 +1286,7 @@ public class MainForm extends JFrame {
 			tickTock();
 			clock.setForeground(SetColor.whiteFont);
 //			clock.setBackground(SetColor.blue);
-			clock.setFont(font_1);
+			clock.setFont(SetFont.font1());
 			clock.setOpaque(false);
 			add(clock);
 			Timer timer = new Timer(500, new ActionListener() {
@@ -1292,7 +1302,9 @@ public class MainForm extends JFrame {
 		}
 
 		public void tickTock() {
-			clock.setText(DateFormat.getDateTimeInstance().format(new Date()));
+			SimpleDateFormat sdf = new SimpleDateFormat("EEE dd-MM-yyy hh:mm:ss aaa");
+//			clock.setText(DateFormat.getDateTimeInstance().format(new Date()));
+			clock.setText(sdf.format(new Date()));
 		}
 	}
 

@@ -82,6 +82,28 @@ public class ChiTietPhieuNhapDAO implements DAOInterface<ChiTietPhieu> {
 		}
 		return check;
 	}
+	
+	public int deleteByID(String id) {
+
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "delete from chitietdonnhap where iddonnhap = ?";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, id);
+
+			check = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return check;
+	}
+	
+	
 
 	@Override
 	public ArrayList<ChiTietPhieu> selectAll() {
@@ -108,22 +130,24 @@ public class ChiTietPhieuNhapDAO implements DAOInterface<ChiTietPhieu> {
 		}
 		return ttp;
 	}
-
+	
 	@Override
 	public ChiTietPhieu selectById(String t) {
-
+	
 		ChiTietPhieu ttp = null;
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "select * from chitietdonnhap";
+			String sql = "select * from chitietdonnhap where iddonnhap = ?";
 
 			PreparedStatement ps = con.prepareStatement(sql);
-
+			
+			ps.setString(1, t);
+			
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				ttp = new ChiTietPhieu(rs.getString("iddonnhap"), rs.getString("idsanpham"), rs.getInt("soluong"),
+				 ttp = new ChiTietPhieu(rs.getString("iddonnhap"), rs.getString("idsanpham"), rs.getInt("soluong"),
 						rs.getDouble("dongia"));
 
 			}
@@ -132,6 +156,31 @@ public class ChiTietPhieuNhapDAO implements DAOInterface<ChiTietPhieu> {
 		}
 
 		return ttp;
+	}
+	
+	public ArrayList<ChiTietPhieu> selectAllById(String t) {
+		ArrayList<ChiTietPhieu> list = new ArrayList<ChiTietPhieu>();
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "select * from chitietdonnhap where iddonnhap = ?";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+			
+			ps.setString(1, t);
+			
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				ChiTietPhieu ttp = new ChiTietPhieu(rs.getString("iddonnhap"), rs.getString("idsanpham"), rs.getInt("soluong"),
+						rs.getDouble("dongia"));
+				list.add(ttp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return list;
 	}
 
 }

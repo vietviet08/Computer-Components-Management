@@ -1,10 +1,18 @@
 package view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
@@ -15,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import color.SetColor;
@@ -23,10 +32,6 @@ import dao.cpuDAO;
 import font.SetFont;
 import model.Products;
 import model.cpu;
-import javax.swing.SwingConstants;
-import java.awt.Color;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class ThemCPU extends JFrame {
 
@@ -54,7 +59,7 @@ public class ThemCPU extends JFrame {
 			public void run() {
 				try {
 					ThemCPU frame = new ThemCPU();
-					setDefaultIDCPU();
+					setDefaultIDCPU(cpuDAO.getInstance().selectAll());
 					frame.setVisible(true);
 					frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
@@ -71,7 +76,24 @@ public class ThemCPU extends JFrame {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 554, 409);
-		contentPane = new JPanel();
+		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
+		contentPane = new JPanel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void paintComponent(Graphics grphcs) {
+				super.paintComponent(grphcs);
+				Graphics2D g2d = (Graphics2D) grphcs;
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				 GradientPaint gp = new GradientPaint(0, 0,new Color(102,125,182), 0, getHeight(), new Color(0,130,200));
+				g2d.setPaint(gp);
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+
+			}
+		};
 		contentPane.setBackground(SetColor.blueOp);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -93,19 +115,19 @@ public class ThemCPU extends JFrame {
 		JLabel lblNewLabel_1_1 = new JLabel("Số luồng");
 		lblNewLabel_1_1.setForeground(SetColor.whiteFont);
 		lblNewLabel_1_1.setFont(SetFont.font1_());
-		lblNewLabel_1_1.setBounds(401, 57, 61, 30);
+		lblNewLabel_1_1.setBounds(399, 57, 80, 30);
 		contentPane.add(lblNewLabel_1_1);
 
 		JLabel lblXungNhp = new JLabel("Xung nhịp");
 		lblXungNhp.setFont(SetFont.font1_());
 		lblXungNhp.setForeground(SetColor.whiteFont);
-		lblXungNhp.setBounds(284, 122, 71, 30);
+		lblXungNhp.setBounds(299, 122, 71, 30);
 		contentPane.add(lblXungNhp);
 
 		JLabel lblNewLabel_1_2 = new JLabel("Tồn kho");
 		lblNewLabel_1_2.setForeground(SetColor.whiteFont);
 		lblNewLabel_1_2.setFont(SetFont.font1_());
-		lblNewLabel_1_2.setBounds(284, 257, 83, 30);
+		lblNewLabel_1_2.setBounds(299, 257, 83, 30);
 		contentPane.add(lblNewLabel_1_2);
 
 		JLabel lblinNngTiu = new JLabel("Điện năng tiêu thụ");
@@ -115,35 +137,41 @@ public class ThemCPU extends JFrame {
 		contentPane.add(lblinNngTiu);
 
 		tfSoNhan = new JTextField();
+		tfSoNhan.setFont(SetFont.fontDetails());
 		tfSoNhan.setColumns(10);
-		tfSoNhan.setBounds(351, 57, 45, 30);
+		tfSoNhan.setBounds(344, 57, 45, 30);
 		contentPane.add(tfSoNhan);
 
 		tfXungNhip = new JTextField();
 		tfXungNhip.setColumns(10);
-		tfXungNhip.setBounds(351, 122, 141, 30);
+		tfXungNhip.setFont(SetFont.fontDetails());
+		tfXungNhip.setBounds(385, 122, 141, 30);
 		contentPane.add(tfXungNhip);
 
 		tfTonKho = new JTextField();
+		tfTonKho.setFont(SetFont.fontDetails());
 		tfTonKho.setColumns(10);
-		tfTonKho.setBounds(351, 257, 141, 30);
+		tfTonKho.setBounds(385, 257, 141, 30);
 		contentPane.add(tfTonKho);
 
 		tfDienNang = new JTextField();
 		tfDienNang.setColumns(10);
+		tfDienNang.setFont(SetFont.fontDetails());
 		tfDienNang.setBounds(133, 257, 141, 30);
 		contentPane.add(tfDienNang);
 
 		tfSoLuong = new JTextField();
 		tfSoLuong.setColumns(10);
-		tfSoLuong.setBounds(447, 57, 45, 30);
+		tfSoLuong.setFont(SetFont.fontDetails());
+		tfSoLuong.setBounds(481, 57, 45, 30);
 		contentPane.add(tfSoLuong);
 
 		JButton btnAdd = new JButton("Thêm");
+		btnAdd.setBorder(null);
 		btnAdd.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					addCPU();
 				}
 			}
@@ -163,10 +191,11 @@ public class ThemCPU extends JFrame {
 		contentPane.add(btnAdd);
 
 		JButton btnCancel = new JButton("Hủy");
+		btnCancel.setBorder(null);
 		btnCancel.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_ESCAPE) {
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 					closeFrame();
 				}
 			}
@@ -188,12 +217,13 @@ public class ThemCPU extends JFrame {
 		JLabel lblNewLabel_1_1_1 = new JLabel("Bộ nhớ đệm");
 		lblNewLabel_1_1_1.setForeground(SetColor.whiteFont);
 		lblNewLabel_1_1_1.setFont(SetFont.font1_());
-		lblNewLabel_1_1_1.setBounds(284, 192, 71, 30);
+		lblNewLabel_1_1_1.setBounds(299, 192, 71, 30);
 		contentPane.add(lblNewLabel_1_1_1);
 
 		tfBoNhoDem = new JTextField();
+		tfBoNhoDem.setFont(SetFont.fontDetails());
 		tfBoNhoDem.setColumns(10);
-		tfBoNhoDem.setBounds(351, 191, 141, 30);
+		tfBoNhoDem.setBounds(385, 191, 141, 30);
 		contentPane.add(tfBoNhoDem);
 
 		ArrayList<Products> list = SanPhamDAO.getIDSanPham("cpu");
@@ -204,7 +234,7 @@ public class ThemCPU extends JFrame {
 			choose[i] = pr.getIdSanPham();
 		}
 		comboBox = new JComboBox<String>();
-
+		comboBox.setFont(SetFont.fontDetails());
 		comboBox.setModel(new DefaultComboBoxModel<String>(choose));
 		comboBox.setBounds(133, 57, 141, 30);
 		contentPane.add(comboBox);
@@ -217,11 +247,12 @@ public class ThemCPU extends JFrame {
 
 		tfTenCPU = new JTextField();
 		tfTenCPU.setColumns(10);
+		tfTenCPU.setFont(SetFont.fontDetails());
 		tfTenCPU.setBounds(133, 188, 141, 30);
 		contentPane.add(tfTenCPU);
 
 		JLabel lblNewLabel_1 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
-		lblNewLabel_1.setForeground(SetColor.redB);
+		lblNewLabel_1.setForeground(SetColor.copyRight);
 		lblNewLabel_1.setFont(SetFont.font());
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setBounds(101, 381, 389, 14);
@@ -240,18 +271,20 @@ public class ThemCPU extends JFrame {
 		contentPane.add(lblIdCpu);
 
 		tfIDCPU = new JTextField();
+		tfIDCPU.setFont(SetFont.fontDetails());
 		tfIDCPU.setColumns(10);
 		tfIDCPU.setBounds(133, 122, 141, 30);
 		contentPane.add(tfIDCPU);
-		
+
 		JLabel lblNewLabel_1_2_1 = new JLabel("Đơn giá");
 		lblNewLabel_1_2_1.setForeground(new Color(254, 254, 254));
 		lblNewLabel_1_2_1.setFont(SetFont.font1_());
 		lblNewLabel_1_2_1.setBounds(19, 319, 83, 30);
 		contentPane.add(lblNewLabel_1_2_1);
-		
+
 		tfDonGia = new JTextField();
 		tfDonGia.setColumns(10);
+		tfDonGia.setFont(SetFont.fontDetails());
 		tfDonGia.setBounds(133, 319, 141, 30);
 		contentPane.add(tfDonGia);
 	}
@@ -271,18 +304,29 @@ public class ThemCPU extends JFrame {
 		return false;
 	}
 
-	private static void setDefaultIDCPU() {
-		String id = "cpu";
-		ArrayList<cpu> list = cpuDAO.getInstance().selectAll();
-		int code = 1;
-		for (cpu cpu : list) {
-			if (cpu.getIdCpu().equals(id + code)) {
-				code++;
-			}else break;
+	private static void setDefaultIDCPU(ArrayList<cpu> arr) {
+		int id = arr.size() + 1;
+		String check = "";
+		for (cpu cpu : arr) {
+			if (cpu.getIdCpu().equals("cpu" + id)) {
+				check = cpu.getIdCpu();
+			}
 		}
-		tfIDCPU.setText(id+code);
+		while (check.length() != 0) {
+			String c = check;
+			id++;
+			for (int i = 0; i < arr.size(); i++) {
+				if (arr.get(i).getIdCpu().equals("cpu" + id)) {
+					check = arr.get(i).getIdCpu();
+				}
+			}
+			if (check.equals(c)) {
+				check = "";
+			}
+		}
+		tfIDCPU.setText("cpu" + id);
 	}
-	
+
 	private void addCPU() {
 		if (kiemTraIDCPU()) {
 			JOptionPane.showMessageDialog(null, "ID CPU đã tồn tại");
@@ -295,7 +339,7 @@ public class ThemCPU extends JFrame {
 			int soLuong = Integer.parseInt(tfSoLuong.getText());
 			String dienNang = tfDienNang.getText();
 			String boNho = tfBoNhoDem.getText();
-			double gia = Double.parseDouble(tfTonKho.getText());
+			double gia = Double.parseDouble(tfDonGia.getText());
 
 			cpu c = new cpu();
 			c.setIdSanPham(id);

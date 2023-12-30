@@ -1,8 +1,14 @@
 package view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
@@ -22,7 +28,6 @@ import dao.vgaDAO;
 import font.SetFont;
 import model.Products;
 import model.vga;
-import java.awt.Color;
 
 public class ThemVGA extends JFrame {
 
@@ -47,7 +52,7 @@ public class ThemVGA extends JFrame {
 			public void run() {
 				try {
 					ThemVGA frame = new ThemVGA();
-					setDefaultIDVGA();
+					setDefaultIDVGA(vgaDAO.getInstance().selectAll());
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -63,8 +68,26 @@ public class ThemVGA extends JFrame {
 	public ThemVGA() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 592, 307);
-		contentPane = new JPanel();
+		setBounds(100, 100, 566, 307);
+		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
+		contentPane = new JPanel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void paintComponent(Graphics grphcs) {
+				super.paintComponent(grphcs);
+				Graphics2D g2d = (Graphics2D) grphcs;
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				GradientPaint gp = new GradientPaint(0, 0, new Color(102, 125, 182), 0, getHeight(),
+						new Color(0, 130, 200));
+				g2d.setPaint(gp);
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+
+			}
+		};
 		contentPane.setBackground(SetColor.blueOp);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -78,7 +101,8 @@ public class ThemVGA extends JFrame {
 		contentPane.add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
-		lblNewLabel_1.setForeground(SetColor.redB);
+		lblNewLabel_1.setForeground(SetColor.copyRight);
+		lblNewLabel_1.setFont(SetFont.font());
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setBounds(30, 282, 497, 14);
 		contentPane.add(lblNewLabel_1);
@@ -90,6 +114,7 @@ public class ThemVGA extends JFrame {
 		contentPane.add(lblNewLabel_2);
 
 		tfTen = new JTextField();
+		tfTen.setFont(SetFont.fontDetails());
 		tfTen.setColumns(10);
 		tfTen.setBorder(null);
 		tfTen.setBounds(116, 123, 149, 25);
@@ -102,6 +127,7 @@ public class ThemVGA extends JFrame {
 		contentPane.add(lblNewLabel_2_1);
 
 		tfBoNho = new JTextField();
+		tfBoNho.setFont(SetFont.fontDetails());
 		tfBoNho.setColumns(10);
 		tfBoNho.setBorder(null);
 		tfBoNho.setBounds(116, 183, 149, 25);
@@ -114,6 +140,7 @@ public class ThemVGA extends JFrame {
 		contentPane.add(lblNewLabel_2_1_1);
 
 		tfHang = new JTextField();
+		tfHang.setFont(SetFont.fontDetails());
 		tfHang.setColumns(10);
 		tfHang.setBorder(null);
 		tfHang.setBounds(378, 123, 149, 25);
@@ -126,6 +153,7 @@ public class ThemVGA extends JFrame {
 		contentPane.add(lblNewLabel_2_2);
 
 		tfDonGia = new JTextField();
+		tfDonGia.setFont(SetFont.fontDetails());
 		tfDonGia.setColumns(10);
 		tfDonGia.setBorder(null);
 		tfDonGia.setBounds(378, 183, 149, 25);
@@ -144,6 +172,7 @@ public class ThemVGA extends JFrame {
 			combo[i] = p.getIdSanPham();
 		}
 		comboBox = new JComboBox<>(new DefaultComboBoxModel<String>(combo));
+		comboBox.setFont(SetFont.fontDetails());	
 		comboBox.setBounds(116, 64, 149, 25);
 		contentPane.add(comboBox);
 
@@ -193,6 +222,7 @@ public class ThemVGA extends JFrame {
 		contentPane.add(lblNewLabel_2_1_2);
 
 		tfIDVGA = new JTextField();
+		tfIDVGA.setFont(SetFont.fontDetails());
 		tfIDVGA.setColumns(10);
 		tfIDVGA.setBorder(null);
 		tfIDVGA.setBounds(378, 63, 149, 25);
@@ -205,6 +235,7 @@ public class ThemVGA extends JFrame {
 		contentPane.add(lblNewLabel_2_1_3);
 
 		tfTonKho = new JTextField();
+		tfTonKho.setFont(SetFont.fontDetails());
 		tfTonKho.setColumns(10);
 		tfTonKho.setBorder(null);
 		tfTonKho.setBounds(116, 241, 149, 25);
@@ -214,19 +245,28 @@ public class ThemVGA extends JFrame {
 	private void closeFrame() {
 		this.dispose();
 	}
-	
-	private static void setDefaultIDVGA() {
-		String id = "vga";
-		int code = 1;
-		
-		ArrayList<vga> list = vgaDAO.getInstance().selectAll();
-		
-		for (vga vga : list) {
-			if(vga.getIdVga().equals(id+code)) code++;
-			else break;
+
+	private static void setDefaultIDVGA(ArrayList<vga> arr) {
+		int id = arr.size() + 1;
+		String check = "";
+		for (vga vga : arr) {
+			if (vga.getIdVga().equals("vga" + id)) {
+				check = vga.getIdVga();
+			}
 		}
-		
-		tfIDVGA.setText(id+code);
+		while (check.length() != 0) {
+			String c = check;
+			id++;
+			for (int i = 0; i < arr.size(); i++) {
+				if (arr.get(i).getIdVga().equals("vga" + id)) {
+					check = arr.get(i).getIdVga();
+				}
+			}
+			if (check.equals(c)) {
+				check = "";
+			}
+		}
+		tfIDVGA.setText("vga" + id);
 	}
 
 }

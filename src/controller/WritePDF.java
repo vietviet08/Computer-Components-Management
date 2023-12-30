@@ -31,9 +31,11 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 
 import dao.AccountDAO;
+import dao.ChiTietPhieuNhapDAO;
 import dao.NhaPhanPhoiDAO;
 import dao.PhieuNhapDAO;
 import dao.PhieuXuatDAO;
+import model.ChiTietPhieu;
 import model.PhieuNhap;
 import model.PhieuXuat;
 
@@ -167,7 +169,7 @@ public class WritePDF {
 			}
 
 			// Truyen thong tin tung chi tiet vao table
-//			for (ChiTietPhieu ctpn : ChiTietPhieuNhapDAO.getInstance().selectAll(mapn)) {
+//			for (ChiTietPhieu ctpn : ChiTietPhieuNhapDAO.getInstance().selectAllById(mapn)) {
 //				MayTinh mt = MayTinhDAO.getInstance().selectById(ctpn.getMaMay());
 //				pdfTable.addCell(new PdfPCell(new Phrase(ctpn.getMaMay(), fontData)));
 //				pdfTable.addCell(new PdfPCell(new Phrase(mt.getTenMay(), fontData)));

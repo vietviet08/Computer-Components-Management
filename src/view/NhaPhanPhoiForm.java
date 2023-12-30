@@ -143,6 +143,7 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 				return returnComp;
 			}
 		};
+		tableNpp.getTableHeader().setBackground(SetColor.blueOp);
 		tableNpp.getTableHeader().setFont(SetFont.fontHeaderTable());
 		tableNpp.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "new", "new", "new", "new", "new" }));
 		scrollPane.setViewportView(tableNpp);

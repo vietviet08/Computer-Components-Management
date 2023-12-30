@@ -172,6 +172,8 @@ public class ProductForm extends JInternalFrame {
 		btnNewButton_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if(table.getSelectedRow()==-1) JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm để sửa!");
+				else
 				CapNhatProduct.main(null);
 			}
 		});
@@ -378,6 +380,7 @@ public class ProductForm extends JInternalFrame {
 				return returnComp;
 			}
 		};
+		table.getTableHeader().setBackground(SetColor.blueOp);
 		table.getTableHeader().setFont(SetFont.fontHeaderTable());
 		table.setModel(new DefaultTableModel(new Object[][] {},
 				new String[] { "ID Sản phẩm", "Tên sản phẩm", "Trạng thái", "Mô tả" }));

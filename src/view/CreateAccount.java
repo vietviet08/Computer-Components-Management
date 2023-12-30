@@ -64,6 +64,7 @@ public class CreateAccount extends JFrame {
 				try {
 					UIManager.setLookAndFeel(new FlatLightLaf());
 					CreateAccount frame = new CreateAccount();
+					frame.setTitle("Tạo tài khoản");
 					frame.setLocationRelativeTo(null);
 					frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					frame.setVisible(true);

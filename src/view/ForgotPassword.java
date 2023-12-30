@@ -61,6 +61,7 @@ public class ForgotPassword extends JFrame {
 				try {
 					ForgotPassword frame = new ForgotPassword();
 					frame.setLocationRelativeTo(null);
+					frame.setTitle("Quên mật khẩu");
 					UIManager.setLookAndFeel(new FlatIntelliJLaf());
 					frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					frame.setVisible(true);

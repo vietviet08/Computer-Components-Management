@@ -45,6 +45,7 @@ public class LoginForm extends JFrame {
 	public Font font2;
 	public Font font_1;
 	public static String fullN;
+
 	/**
 	 * Launch the application.
 	 */
@@ -55,6 +56,7 @@ public class LoginForm extends JFrame {
 				try {
 					LoginForm frame = new LoginForm();
 					frame.setResizable(false);
+					frame.setTitle("Đăng nhập");
 					frame.setLocationRelativeTo(null);
 //					UIManager.setLookAndFeel(new FlatIntelliJLaf());
 					UIManager.setLookAndFeel(new FlatLightLaf());
@@ -70,7 +72,7 @@ public class LoginForm extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginForm() {
-		
+
 		try {
 			File fontStyle = new File("src/font/Roboto-Medium.ttf");
 			font = Font.createFont(Font.TRUETYPE_FONT, fontStyle).deriveFont(11f);
@@ -81,16 +83,23 @@ public class LoginForm extends JFrame {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 438, 574);
 		contentPane = new JPanel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void paintComponent(Graphics grphcs) {
 				super.paintComponent(grphcs);
 				Graphics2D g2d = (Graphics2D) grphcs;
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				GradientPaint gp = new GradientPaint(0, 0,new Color(16,141,199), 240, getHeight(), new Color(239,142,56));
+//				GradientPaint gp = new GradientPaint(0, 0, new Color(186,20,20), 300, getHeight(),
+//						new Color(51, 51, 51));
 				g2d.setPaint(gp);
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 
@@ -101,16 +110,17 @@ public class LoginForm extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Hiển thị mật khẩu");
+
+		JCheckBox chckbxNewCheckBox = new JCheckBox("Show password");
 		chckbxNewCheckBox.setBorder(null);
 		chckbxNewCheckBox.setOpaque(false);
 		chckbxNewCheckBox.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(chckbxNewCheckBox.isSelected()) {
-					jtfpassword.setEchoChar((char)0);
-				}else jtfpassword.setEchoChar('*');
+				if (chckbxNewCheckBox.isSelected()) {
+					jtfpassword.setEchoChar((char) 0);
+				} else
+					jtfpassword.setEchoChar('*');
 			}
 		});
 		chckbxNewCheckBox.setFont(font);
@@ -119,7 +129,8 @@ public class LoginForm extends JFrame {
 		contentPane.add(chckbxNewCheckBox);
 
 		JLabel lblNewLabel = new JLabel("Login");
-		lblNewLabel.setFont(new Font("Stencil", Font.BOLD, 66));
+		lblNewLabel.setForeground(Color.black);
+		lblNewLabel.setFont(new Font("Stencil", Font.BOLD, 65));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(86, 23, 199, 77);
 		contentPane.add(lblNewLabel);
@@ -138,7 +149,6 @@ public class LoginForm extends JFrame {
 		lblNewLabel_1_2.setBounds(86, 226, 260, 23);
 		contentPane.add(lblNewLabel_1_2);
 
-		
 		ButtonRound btnNewButton = new ButtonRound();
 		btnNewButton.setBorder(null);
 		btnNewButton.setRadius(25);
@@ -147,7 +157,7 @@ public class LoginForm extends JFrame {
 		btnNewButton.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					checkLogin();
 				}
 			}
@@ -158,11 +168,13 @@ public class LoginForm extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				checkLogin();
 			}
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				btnNewButton.setBackground(SetColor.green);
 				btnNewButton.setForeground(SetColor.whiteFont);
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				btnNewButton.setBackground(Color.WHITE);
@@ -181,17 +193,20 @@ public class LoginForm extends JFrame {
 //				ForgotPassword fp = new ForgotPassword();
 //				fp.setVisible(true);
 				ForgotPassword.main(null);
-				
+
 			}
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				lblNewLabel_2.setForeground(Color.BLUE);
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				lblNewLabel_2.setForeground(Color.BLACK);
 			}
 		});
+		lblNewLabel_2.setForeground(Color.BLACK);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_2.setFont(font_1);
 //		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -199,11 +214,12 @@ public class LoginForm extends JFrame {
 		contentPane.add(lblNewLabel_2);
 
 		jtfuser = new JTextField();
+		jtfuser.setForeground(Color.BLACK);
 		jtfuser.setOpaque(false);
 		jtfuser.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					checkLogin();
 				}
 			}
@@ -216,11 +232,12 @@ public class LoginForm extends JFrame {
 		jtfuser.setColumns(10);
 
 		jtfpassword = new JPasswordField();
+		jtfpassword.setForeground(Color.BLACK);
 		jtfpassword.setOpaque(false);
 		jtfpassword.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					checkLogin();
 				}
 			}
@@ -239,37 +256,44 @@ public class LoginForm extends JFrame {
 //				CreateAccount ca = new CreateAccount();
 				CreateAccount.main(null);
 			}
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				lblNewLabel_2_1.setForeground(Color.BLUE);
+//				lblNewLabel_2_1.setForeground(Color.white);
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				lblNewLabel_2_1.setForeground(Color.BLACK);
+//				lblNewLabel_2_1.setForeground(new Color(131, 145, 146));
 			}
 		});
+//		lblNewLabel_2_1.setForeground(new Color(131, 145, 146));
+		lblNewLabel_2_1.setForeground(Color.BLACK);
 		lblNewLabel_2_1.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_2_1.setFont(font_1);
 //		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel_2_1.setBounds(86, 402, 114, 17);
 		contentPane.add(lblNewLabel_2_1);
-		
+
 		JLabel lblNewLabel_3 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_3.setFont(font);
+		lblNewLabel_3.setForeground(Color.BLACK);
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3.setBounds(10, 485, 406, 31);
 		contentPane.add(lblNewLabel_3);
-		
+
 		JLabel lblNewLabel_4 = new JLabel("");
 		lblNewLabel_4.setBorder(new LineBorder(SetColor.whiteFont));
 		lblNewLabel_4.setBounds(86, 190, 260, 2);
 		contentPane.add(lblNewLabel_4);
-		
+
 		JLabel lblNewLabel_4_1 = new JLabel("");
 		lblNewLabel_4_1.setBorder(new LineBorder(SetColor.whiteFont));
 		lblNewLabel_4_1.setBounds(86, 290, 260, 2);
 		contentPane.add(lblNewLabel_4_1);
-		
+
 		JLabel lblNewLabel_5 = new JLabel("");
 		lblNewLabel_5.setIcon(new ImageIcon(LoginForm.class.getResource("/icon/icons8-admin-64.png")));
 		lblNewLabel_5.setBounds(284, 24, 73, 59);
@@ -313,12 +337,11 @@ public class LoginForm extends JFrame {
 			}
 		}
 	}
-	
+
 	public String checkFullName(Account ac) {
 		String name = ac.getFullName();
-		
-		
+
 		return name;
-		
+
 	}
 }

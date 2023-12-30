@@ -3,6 +3,7 @@ package model;
 import java.util.Objects;
 
 public class ChiTietPhieu {
+//	private int stt;
 	private String idPhieu;
 	private String idSanPham;
 	private int soLuong;
@@ -12,13 +13,22 @@ public class ChiTietPhieu {
 		super();
 	}
 
-	public ChiTietPhieu(String idPhieu, String idSanPham, int soLuong, double donGia) {
+	public ChiTietPhieu( String idPhieu, String idSanPham, int soLuong, double donGia) {
 		super();
+//		this.stt = stt;
 		this.idPhieu = idPhieu;
 		this.idSanPham = idSanPham;
 		this.soLuong = soLuong;
 		this.donGia = donGia;
 	}
+
+//	public int getStt() {
+//		return stt;
+//	}
+//
+//	public void setStt(int stt) {
+//		this.stt = stt;
+//	}
 
 	public String getIdPhieu() {
 		return idPhieu;

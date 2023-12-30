@@ -1,14 +1,23 @@
 package view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -17,8 +26,6 @@ import color.SetColor;
 import dao.SanPhamDAO;
 import font.SetFont;
 import model.Products;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class CapNhatProduct extends JFrame {
 
@@ -56,14 +63,47 @@ public class CapNhatProduct extends JFrame {
 	public CapNhatProduct() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 533, 286);
-		contentPane = new JPanel();
+		setBounds(100, 100, 533, 310);
+		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
+		contentPane = new JPanel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void paintComponent(Graphics grphcs) {
+				super.paintComponent(grphcs);
+				Graphics2D g2d = (Graphics2D) grphcs;
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				 GradientPaint gp = new GradientPaint(0, 0,new Color(102,125,182), 0, getHeight(), new Color(0,130,200));
+				g2d.setPaint(gp);
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+
+			}
+		};
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 533, 286);
+		JPanel panel = new JPanel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void paintComponent(Graphics grphcs) {
+				super.paintComponent(grphcs);
+				Graphics2D g2d = (Graphics2D) grphcs;
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				 GradientPaint gp = new GradientPaint(0, 0,new Color(102,125,182), 0, getHeight(), new Color(0,130,200));
+				g2d.setPaint(gp);
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+
+			}
+		};
+		panel.setBounds(0, 0, 533, 310);
 		panel.setBackground(SetColor.blueOp);
 		getContentPane().add(panel);
 		panel.setLayout(null);
@@ -71,12 +111,13 @@ public class CapNhatProduct extends JFrame {
 		JLabel lblNewLabel = new JLabel("Tên sản phẩm");
 		lblNewLabel.setFont(SetFont.font1_());
 		lblNewLabel.setForeground(SetColor.whiteFont);
-		lblNewLabel.setBounds(66, 56, 173, 28);
+		lblNewLabel.setBounds(36, 56, 173, 28);
 		panel.add(lblNewLabel);
 
 		tfTen = new JTextField();
+		tfTen.setFont(SetFont.fontDetails());
 		tfTen.setBorder(null);
-		tfTen.setBounds(67, 78, 172, 28);
+		tfTen.setBounds(37, 78, 210, 28);
 		panel.add(tfTen);
 		tfTen.setColumns(10);
 
@@ -89,7 +130,7 @@ public class CapNhatProduct extends JFrame {
 		JLabel lblNewLabel_1_1 = new JLabel("Mô tả");
 		lblNewLabel_1_1.setForeground(SetColor.whiteFont);
 		lblNewLabel_1_1.setFont(SetFont.font1_());
-		lblNewLabel_1_1.setBounds(66, 117, 173, 28);
+		lblNewLabel_1_1.setBounds(37, 129, 173, 19);
 		panel.add(lblNewLabel_1_1);
 
 		JButton btnNewButton = new JButton("Cập nhật");
@@ -109,7 +150,7 @@ public class CapNhatProduct extends JFrame {
 			}
 		});
 		btnNewButton.setFont(SetFont.font1());
-		btnNewButton.setBounds(277, 176, 89, 34);
+		btnNewButton.setBounds(290, 192, 89, 34);
 		panel.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("Hủy");
@@ -129,7 +170,7 @@ public class CapNhatProduct extends JFrame {
 			}
 		});
 		btnNewButton_1.setFont(SetFont.font1());
-		btnNewButton_1.setBounds(389, 176, 89, 34);
+		btnNewButton_1.setBounds(411, 192, 89, 34);
 		panel.add(btnNewButton_1);
 
 		JLabel lblNewLabel_1 = new JLabel("CẬP NHẬT SẢN PHẨM");
@@ -140,20 +181,27 @@ public class CapNhatProduct extends JFrame {
 
 		JLabel lblNewLabel_2 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_2.setFont(SetFont.font());
-		lblNewLabel_2.setForeground(SetColor.redB);
+		lblNewLabel_2.setForeground(SetColor.copyRight);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setBounds(66, 263, 397, 19);
+		lblNewLabel_2.setBounds(66, 279, 397, 19);
 		panel.add(lblNewLabel_2);
 
 		tfTrangThai = new JTextField();
 		tfTrangThai.setColumns(10);
+		tfTrangThai.setFont(SetFont.fontDetails());
 		tfTrangThai.setBorder(null);
-		tfTrangThai.setBounds(290, 78, 172, 28);
+		tfTrangThai.setBounds(290, 78, 210, 28);
 		panel.add(tfTrangThai);
-
-		txtMoTa = new JTextArea();
-		txtMoTa.setBounds(66, 140, 173, 112);
-		panel.add(txtMoTa);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(37, 150, 210, 118);
+		panel.add(scrollPane);
+		
+				txtMoTa = new JTextArea();
+				scrollPane.setViewportView(txtMoTa);
+				txtMoTa.setLineWrap(true);
+				txtMoTa.setFont(SetFont.fontDetails());
+				txtMoTa.setWrapStyleWord(true);
 		contentPane.setLayout(null);
 	}
 
