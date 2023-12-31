@@ -6,6 +6,9 @@ import java.awt.FileDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controller.WritePDF;
+
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -46,6 +49,8 @@ public class testPdfNhapHang extends JFrame {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				WritePDF wpdf = new WritePDF();
+				wpdf.writePhieuNhap("pn14");
 			}
 		});
 		btnNewButton.setBounds(152, 187, 114, 49);
