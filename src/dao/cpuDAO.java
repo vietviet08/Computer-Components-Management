@@ -208,6 +208,7 @@ public class cpuDAO implements DAOInterface<cpu> {
 
 		return c;
 	}
+	
 
 	public ArrayList<cpu> selectByIdSanPham(String t) {
 		ArrayList<cpu> list = new ArrayList<cpu>();

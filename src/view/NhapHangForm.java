@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Timestamp;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
@@ -29,6 +28,7 @@ import javax.swing.table.TableCellRenderer;
 import color.SetColor;
 import controller.FormatToVND;
 import controller.LuuTam;
+import controller.XuatPDF;
 import dao.ChiTietPhieuNhapDAO;
 import dao.NhaPhanPhoiDAO;
 import dao.PhieuNhapDAO;
@@ -50,12 +50,11 @@ public class NhapHangForm extends JInternalFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
 	private static JTable tableALL;
 	private static JTable tableMin;
 	private static DefaultTableModel tableModel;
 	private static DefaultTableModel tableModelBill;
-	private final String columName[] = { "ID mặt hàng", "Tên sản phẩm", "Đơn giá" };
+	private final String columName[] = { "ID sản phẩm hàng", "Tên sản phẩm", "Đơn giá" };
 	private final String columNameBill[] = { "ID mặt hàng", "ID sản phẩm", "Tên sản phẩm", "Số lượng", "Đơn giá" };
 	private JTextField textField_1;
 	private JComboBox<String> comboBox_chooseProduct;
@@ -85,15 +84,6 @@ public class NhapHangForm extends JInternalFrame {
 	 * Create the frame.
 	 */
 
-//	public static void loadDataToTable(ArrayList<Products> pr) {
-//		try {
-//			tableModel.setRowCount(0);
-//			for (Products i : pr) {
-//				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getTenSanPham() });
-//			}
-//		} catch (Exception e) {
-//		}
-//	}
 	public static void loadDataToTableCPU(ArrayList<cpu> cpu) {
 
 		try {
@@ -205,7 +195,7 @@ public class NhapHangForm extends JInternalFrame {
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblNewLabel_1.setIcon(new ImageIcon(NhapHangForm.class.getResource("/icon/icons8-search-24.png")));
-		lblNewLabel_1.setBounds(460, 6, 48, 22);
+		lblNewLabel_1.setBounds(345, 6, 48, 22);
 		getContentPane().add(lblNewLabel_1);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -281,16 +271,6 @@ public class NhapHangForm extends JInternalFrame {
 			setDefaultTableBill(listNhap);
 		}
 
-		JButton btnNewButton = new JButton("-");
-		btnNewButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
-		btnNewButton.setFont(SetFont.font1_());
-		btnNewButton.setBounds(760, 627, 40, 26);
-		getContentPane().add(btnNewButton);
-
 		JButton btnNewButton_1 = new JButton("Xóa");
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -315,16 +295,6 @@ public class NhapHangForm extends JInternalFrame {
 		btnNewButton_1.setFont(SetFont.font1_());
 		btnNewButton_1.setBounds(916, 625, 104, 26);
 		getContentPane().add(btnNewButton_1);
-
-		JButton btnNewButton_3 = new JButton("+");
-		btnNewButton_3.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
-		btnNewButton_3.setFont(SetFont.font1_());
-		btnNewButton_3.setBounds(853, 627, 40, 26);
-		getContentPane().add(btnNewButton_3);
 
 		JButton btnNewButton_1_1 = new JButton("Lưu tạm");
 		btnNewButton_1_1.addMouseListener(new MouseAdapter() {
@@ -358,7 +328,7 @@ public class NhapHangForm extends JInternalFrame {
 					check += vgaDAO.getInstance().updateTonKho(listNhap);
 					if (check > 0) {
 
-						JOptionPane.showMessageDialog(null, "Đã nhập hàng thành công!");
+						JOptionPane.showMessageDialog(null, "Nhập hàng thành công!");
 						System.out.println(tien);
 
 //						String idPhieu = createIDPhieuNhap();
@@ -372,11 +342,14 @@ public class NhapHangForm extends JInternalFrame {
 						for (int i = 0; i < tableMin.getRowCount(); i++) {
 //							String money = (String) tableMin.getValueAt(i, 4);
 //							double money1 = Double.parseDouble(money.substring(0, money.length()).trim());
-							ChiTietPhieu ctp = new ChiTietPhieu( pn.getIdPhieu(), (String) tableMin.getValueAt(i, 0),
+							ChiTietPhieu ctp = new ChiTietPhieu(pn.getIdPhieu(), (String) tableMin.getValueAt(i, 0),
+									(String) tableMin.getValueAt(i, 1), (String) tableMin.getValueAt(i, 2),
 									(int) tableMin.getValueAt(i, 3), (double) tableMin.getValueAt(i, 4));
-//							(double)tableMin.getValueAt(i, 4)
 							ChiTietPhieuNhapDAO.getInstance().insert(ctp);
 						}
+
+						XuatPDF wPDF = new XuatPDF();
+						wPDF.taoPhieuNhap(pn.getIdPhieu());
 
 					}
 					listNhap.removeAll(listNhap);
@@ -393,15 +366,6 @@ public class NhapHangForm extends JInternalFrame {
 		btnNewButton_1_2.setFont(SetFont.font1_());
 		btnNewButton_1_2.setBounds(916, 662, 104, 26);
 		getContentPane().add(btnNewButton_1_2);
-
-		textField = new JTextField();
-		textField.setFont(SetFont.font1_());
-		textField.setHorizontalAlignment(SwingConstants.CENTER);
-
-		textField.setBorder(null);
-		textField.setBounds(798, 628, 57, 24);
-		getContentPane().add(textField);
-		textField.setColumns(10);
 
 		JButton btnNewButton_1_2_1 = new JButton("Hủy");
 		btnNewButton_1_2_1.addMouseListener(new MouseAdapter() {
@@ -454,9 +418,9 @@ public class NhapHangForm extends JInternalFrame {
 						tfTongTien.setText(FormatToVND.vnd(tien));
 
 						loadDataToTableBill(listNhap);
-						for (ProductNhap productNhap : listNhap) {
-							System.out.println(productNhap.getSoLuong());
-						}
+//						for (ProductNhap productNhap : listNhap) {
+//							System.out.println(productNhap.getSoLuong());
+//						}
 //						tạo constructor gồm 4 thông số idsp, idcpu, tencpu, dongia -> done
 //						thêm vào arraylist kiểu productNhapHang -> done
 //						sd loadDataToTable vào bảng tableMin -> done
@@ -493,7 +457,7 @@ public class NhapHangForm extends JInternalFrame {
 				}
 			}
 		});
-		btnNewButton_2.setFont(SetFont.font1_());
+		btnNewButton_2.setFont(SetFont.font());
 		btnNewButton_2.setBounds(648, 3, 104, 30);
 		getContentPane().add(btnNewButton_2);
 
@@ -506,7 +470,8 @@ public class NhapHangForm extends JInternalFrame {
 
 		comboBox_chooseNPP = new JComboBox<>();
 		comboBox_chooseNPP.setModel(new DefaultComboBoxModel<String>(combo));
-		comboBox_chooseNPP.setBounds(760, 594, 133, 22);
+		comboBox_chooseNPP.setFont(SetFont.font1_());
+		comboBox_chooseNPP.setBounds(760, 625, 133, 26);
 		getContentPane().add(comboBox_chooseNPP);
 
 		String[] allProduct = { "CPU", "RAM", "VGA", "Mainboard", "Case", "Nguồn", "Màn hình", "Chuột", "Bàn phím",
@@ -526,20 +491,114 @@ public class NhapHangForm extends JInternalFrame {
 
 			}
 		});
-		comboBox_chooseProduct.setBounds(522, 3, 116, 30);
+		comboBox_chooseProduct.setFont(SetFont.font());
+		comboBox_chooseProduct.setBounds(405, 3, 116, 30);
 		getContentPane().add(comboBox_chooseProduct);
 
 		textField_1 = new JTextField();
 		textField_1.setName("");
 		textField_1.setToolTipText("");
-		textField_1.setBounds(241, 3, 271, 30);
+		textField_1.setBounds(179, 3, 215, 30);
 		getContentPane().add(textField_1);
 		textField_1.setColumns(10);
 
+		JButton btnNewButton_2_1 = new JButton("Chi tiết sản phẩm");
+		btnNewButton_2_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				if (tableALL.getSelectedRow() == -1)
+					JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm để xem!");
+				else {
+//					"CPU", "RAM", "VGA", "Mainboard", "Case", "Nguồn", "Màn hình", "Chuột", "Bàn phím",
+//					"Tai nghe"
+
+					String products = comboBox_chooseProduct.getSelectedItem().toString();
+					if (products.equals("CPU")) {
+						cpu cpu = cpuDAO.getInstance().selectAll().get(tableALL.getSelectedRow());
+						ChiTietSP.setId(cpu.getIdCpu());
+						ChiTietSP.main(null);
+					} else if (products.equals("RAM")) {
+						ram ram = ramDAO.getInstance().selectAll().get(tableALL.getSelectedRow());
+						ChiTietSP.setId(ram.getIdRam());
+						ChiTietSP.main(null);
+					} else if (products.equals("VGA")) {
+						vga vga = vgaDAO.getInstance().selectAll().get(tableALL.getSelectedRow());
+						ChiTietSP.setId(vga.getIdVga());
+						ChiTietSP.main(null);
+					} else if (products.equals("Mainboard")) {
+
+					} else if (products.equals("Case")) {
+
+					} else if (products.equals("Nguồn")) {
+
+					} else if (products.equals("Màn hình")) {
+
+					} else if (products.equals("Chuột")) {
+
+					} else if (products.equals("Bàn phím")) {
+
+					}
+
+				}
+
+			}
+		});
+		btnNewButton_2_1.setIcon(new ImageIcon(NhapHangForm.class.getResource("/icon/icons8-details-24.png")));
+		btnNewButton_2_1.setFont(SetFont.font());
+		btnNewButton_2_1.setBounds(5, 3, 164, 30);
+		getContentPane().add(btnNewButton_2_1);
+
+		JLabel lblNewLabel = new JLabel("Chọn nhà phân phối");
+		lblNewLabel.setFont(SetFont.font1_());
+		lblNewLabel.setBounds(760, 594, 136, 26);
+		getContentPane().add(lblNewLabel);
+
+		JButton btnNewButton_2_2 = new JButton("Giảm");
+		btnNewButton_2_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (tableMin.getSelectedRow() == -1)
+					JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm để giảm số lượng!");
+				else {
+					String id = tableMin.getValueAt(tableMin.getSelectedRow(), 1).toString();
+
+					if (id.contains("cpu")) {
+						cpu cpu = cpuDAO.getInstance().selectById(id);
+						tien -= cpu.getDonGia();
+						tfTongTien.setText(FormatToVND.vnd(tien));
+					} else if (id.contains("r")) {
+						ram ram = ramDAO.getInstance().selectById(id);
+						tien -= ram.getDonGia();
+						tfTongTien.setText(FormatToVND.vnd(tien));
+					} else if (id.contains("vga")) {
+						vga vga = vgaDAO.getInstance().selectById(id);
+						tien -= vga.getDonGia();
+						tfTongTien.setText(FormatToVND.vnd(tien));
+					} else if (id.contains("key")) {
+
+					} else if (id.contains("main")) {
+
+					} else if (id.contains("mou")) {
+
+					} else if (id.contains("scr")) {
+
+					}
+
+					kiemTraSoLuongNhap1(id, listNhap);
+					loadDataToTableBill(listNhap);
+				}
+			}
+		});
+		btnNewButton_2_2.setIcon(new ImageIcon(NhapHangForm.class.getResource("/icon/icons8-minus-24.png")));
+		btnNewButton_2_2.setFont(SetFont.font());
+		btnNewButton_2_2.setBounds(534, 3, 104, 30);
+		getContentPane().add(btnNewButton_2_2);
+
 	}
 
+//	static DecimalFormat formatter = new DecimalFormat("###,###,###");
 	public static void loadDataToTableBill(ArrayList<ProductNhap> pn) {
-		DecimalFormat formatter = new DecimalFormat("###,###,###");
 		try {
 			tableModelBill.setRowCount(0);
 			for (ProductNhap i : pn) {
@@ -550,8 +609,8 @@ public class NhapHangForm extends JInternalFrame {
 				tableMin.getColumnModel().getColumn(3).setCellRenderer(renderCenter);
 				tableMin.getColumnModel().getColumn(4).setCellRenderer(renderRight);
 //				String gia = FormatToVND.vnd(i.getGia());
-				tableModelBill.addRow(new Object[] { i.getIdsanpham(), i.getPrivateId(), i.getName(), i.getSoLuong(),
-						formatter.format(i.getGia()) });
+				tableModelBill.addRow(
+						new Object[] { i.getIdsanpham(), i.getPrivateId(), i.getName(), i.getSoLuong(), i.getGia() });
 			}
 		} catch (Exception e) {
 		}
@@ -576,6 +635,20 @@ public class NhapHangForm extends JInternalFrame {
 			if (productNhap.getPrivateId().equals(id)) {
 				productNhap.setSoLuong(productNhap.getSoLuong() + 1);
 				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean kiemTraSoLuongNhap1(String id, ArrayList<ProductNhap> list) {
+		for (ProductNhap productNhap : list) {
+			if (productNhap.getPrivateId().equals(id)) {
+				if (productNhap.getSoLuong() == 1) {
+					list.remove(tableMin.getSelectedRow());
+				} else {
+					productNhap.setSoLuong(productNhap.getSoLuong() - 1);
+					return true;
+				}
 			}
 		}
 		return false;

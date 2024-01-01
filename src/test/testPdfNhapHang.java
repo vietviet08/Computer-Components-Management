@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import controller.WritePDF;
+import controller.XuatPDF;
 
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
@@ -36,6 +36,9 @@ public class testPdfNhapHang extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	/**
+	 * 
+	 */
 	public testPdfNhapHang() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 625, 509);
@@ -49,8 +52,8 @@ public class testPdfNhapHang extends JFrame {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				WritePDF wpdf = new WritePDF();
-				wpdf.writePhieuNhap("pn14");
+				XuatPDF wpdf = new XuatPDF();
+				wpdf.taoPhieuNhap("pn30");
 			}
 		});
 		btnNewButton.setBounds(152, 187, 114, 49);

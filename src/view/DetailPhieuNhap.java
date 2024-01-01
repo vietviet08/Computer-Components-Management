@@ -2,16 +2,21 @@ package view;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.SystemColor;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -23,11 +28,26 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import color.SetColor;
 import controller.FormatToVND;
 import dao.ChiTietPhieuNhapDAO;
 import font.SetFont;
 import model.ChiTietPhieu;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class DetailPhieuNhap extends JFrame {
 
@@ -36,7 +56,7 @@ public class DetailPhieuNhap extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private String[] columName = { "ID đơn nhập", "ID sản phẩm", "Số lượng ", "Đơn giá" };
+	private String[] columName = { "ID đơn nhập", "ID sản phẩm", "Tên sản phẩm", "Số lượng ", "Đơn giá" };
 	private static JTable table;
 	private static DefaultTableModel tableModel;
 	private JTextField textField;
@@ -69,7 +89,6 @@ public class DetailPhieuNhap extends JFrame {
 		try {
 			tableModel.setRowCount(0);
 			for (ChiTietPhieu i : phieu) {
-				// set text column don gia ben phai
 				DefaultTableCellRenderer renderRight = new DefaultTableCellRenderer();
 				renderRight.setHorizontalAlignment(JLabel.RIGHT);
 
@@ -77,12 +96,13 @@ public class DetailPhieuNhap extends JFrame {
 				renderCenter.setHorizontalAlignment(JLabel.CENTER);
 
 //				table.getColumnModel().getColumn(2).setCellRenderer(renderCenter);
-				table.getColumnModel().getColumn(2).setCellRenderer(renderCenter);
-				table.getColumnModel().getColumn(3).setCellRenderer(renderRight);
+				table.getColumnModel().getColumn(3).setCellRenderer(renderCenter);
+				table.getColumnModel().getColumn(4).setCellRenderer(renderRight);
 
 				String gia = FormatToVND.vnd(i.getDonGia());
 
-				tableModel.addRow(new Object[] { i.getIdPhieu(), i.getIdSanPham(), i.getSoLuong(), gia });
+				tableModel.addRow(
+						new Object[] { i.getIdPhieu(), i.getIdSanPham(), i.getTenSanPham(), i.getSoLuong(), gia });
 			}
 		} catch (Exception e) {
 		}
@@ -94,9 +114,10 @@ public class DetailPhieuNhap extends JFrame {
 		table.setDefaultEditor(Object.class, null);
 		table.setModel(tableModel);
 		table.getColumnModel().getColumn(0).setPreferredWidth(100);
-		table.getColumnModel().getColumn(1).setPreferredWidth(500);
-		table.getColumnModel().getColumn(2).setPreferredWidth(100);
-		table.getColumnModel().getColumn(3).setPreferredWidth(200);
+		table.getColumnModel().getColumn(1).setPreferredWidth(150);
+		table.getColumnModel().getColumn(2).setPreferredWidth(500);
+		table.getColumnModel().getColumn(3).setPreferredWidth(100);
+		table.getColumnModel().getColumn(4).setPreferredWidth(200);
 		loadDataToTable(
 				ChiTietPhieuNhapDAO.getInstance().selectAllById(PhieuNhapForm.getPhieuNhapSelect().getIdPhieu()));
 	}
@@ -153,11 +174,62 @@ public class DetailPhieuNhap extends JFrame {
 		setDefaultTable();
 
 		JButton btnNewButton = new JButton("Chi tiết sản phẩm");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (table.getSelectedRow() == -1)
+					JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm để xem chi tiết!");
+				else {
+					ChiTietSP.setId(getChiTietPhieuSelect().getIdRieng());
+					ChiTietSP.main(null);
+				}
+			}
+		});
 		btnNewButton.setIcon(new ImageIcon(DetailPhieuNhap.class.getResource("/icon/icons8-details-24.png")));
 		btnNewButton.setBounds(10, 11, 180, 33);
 		panel.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("Xuất excel");
+		btnNewButton_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					JFileChooser jFileChooser = new JFileChooser();
+					jFileChooser.showSaveDialog(null);
+					File saveFile = jFileChooser.getSelectedFile();
+					if (saveFile != null) {
+						saveFile = new File(saveFile.toString() + ".xlsx");
+						Workbook wb = new XSSFWorkbook();
+						Sheet sheet = wb.createSheet("Phiếu nhập");
+
+						Row rowCol = sheet.createRow(0);
+						for (int i = 0; i < table.getColumnCount(); i++) {
+							org.apache.poi.ss.usermodel.Cell cell = rowCol.createCell(i);
+							cell.setCellValue(table.getColumnName(i));
+						}
+
+						for (int j = 0; j < table.getRowCount(); j++) {
+							Row row = sheet.createRow(j + 1);
+							for (int k = 0; k < table.getColumnCount(); k++) {
+								org.apache.poi.ss.usermodel.Cell ce = row.createCell(k);
+								if (table.getValueAt(j, k) != null) {
+									ce.setCellValue(table.getValueAt(j, k).toString());
+								}
+
+							}
+						}
+						FileOutputStream out = new FileOutputStream(new File(saveFile.toString()));
+						wb.write(out);
+						wb.close();
+						out.close();
+						openFile(saveFile.toString());
+					}
+				} catch (Exception ex) {
+					System.out.println(ex);
+				}
+
+			}
+		});
 		btnNewButton_1.setIcon(new ImageIcon(DetailPhieuNhap.class.getResource("/icon/icons8-export-excel-24.png")));
 		btnNewButton_1.setBounds(200, 11, 124, 33);
 		panel.add(btnNewButton_1);
@@ -165,9 +237,31 @@ public class DetailPhieuNhap extends JFrame {
 		comboBox = new JComboBox<>(new DefaultComboBoxModel<String>(
 				new String[] { "Sắp xếp", "Số lượng tăng", "Số lượng giảm", "Đơn giá tăng", "Đơn giá giảm" }));
 		comboBox.setBounds(334, 11, 145, 33);
+		comboBox.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String src = comboBox.getSelectedItem().toString();
+				if (src.equals("Số lượng tăng"))
+					loadDataToTable(soLuongTang());
+				else if (src.equals("Số lượng giảm"))
+					loadDataToTable(soLuongGiam());
+				else if (src.equals("Đơn giá tăng"))
+					loadDataToTable(donGiaTang());
+				else if (src.equals("Đơn giá giảm"))
+					loadDataToTable(donGiaGiam());
+
+			}
+		});
 		panel.add(comboBox);
 
 		textField = new JTextField();
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				loadDataToTable(search(textField.getText()));
+			}
+		});
 		textField.setBounds(489, 11, 179, 33);
 		panel.add(textField);
 		textField.setColumns(10);
@@ -186,5 +280,128 @@ public class DetailPhieuNhap extends JFrame {
 		JButton btnNewButton_3 = new JButton("In PDF");
 		btnNewButton_3.setBounds(22, 11, 89, 23);
 		panel_1.add(btnNewButton_3);
+	}
+
+	private void openFile(String file) {
+		try {
+			File path = new File(file);
+			Desktop.getDesktop().open(path);
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+	}
+
+	private ArrayList<ChiTietPhieu> soLuongTang() {
+		ArrayList<ChiTietPhieu> list = ChiTietPhieuNhapDAO.getInstance()
+				.selectAllById(PhieuNhapForm.getPhieuNhapSelect().getIdPhieu());
+		ArrayList<ChiTietPhieu> ctp = new ArrayList<ChiTietPhieu>();
+
+		for (ChiTietPhieu chiTietPhieu : list) {
+			ctp.add(chiTietPhieu);
+		}
+
+		Collections.sort(list, new Comparator<ChiTietPhieu>() {
+
+			@Override
+			public int compare(ChiTietPhieu o1, ChiTietPhieu o2) {
+				if (o1.getSoLuong() > o2.getSoLuong())
+					return 1;
+				if (o1.getSoLuong() < o2.getSoLuong())
+					return -1;
+				return 0;
+			}
+		});
+		return ctp;
+	}
+
+	private ArrayList<ChiTietPhieu> soLuongGiam() {
+		ArrayList<ChiTietPhieu> list = ChiTietPhieuNhapDAO.getInstance()
+				.selectAllById(PhieuNhapForm.getPhieuNhapSelect().getIdPhieu());
+		ArrayList<ChiTietPhieu> ctp = new ArrayList<ChiTietPhieu>();
+
+		for (ChiTietPhieu chiTietPhieu : list) {
+			ctp.add(chiTietPhieu);
+		}
+
+		Collections.sort(list, new Comparator<ChiTietPhieu>() {
+
+			@Override
+			public int compare(ChiTietPhieu o1, ChiTietPhieu o2) {
+				if (o1.getSoLuong() > o2.getSoLuong())
+					return -1;
+				if (o1.getSoLuong() < o2.getSoLuong())
+					return 1;
+				return 0;
+			}
+		});
+		return ctp;
+	}
+
+	private ArrayList<ChiTietPhieu> donGiaTang() {
+		ArrayList<ChiTietPhieu> list = ChiTietPhieuNhapDAO.getInstance()
+				.selectAllById(PhieuNhapForm.getPhieuNhapSelect().getIdPhieu());
+		ArrayList<ChiTietPhieu> ctp = new ArrayList<ChiTietPhieu>();
+
+		for (ChiTietPhieu chiTietPhieu : list) {
+			ctp.add(chiTietPhieu);
+		}
+
+		Collections.sort(list, new Comparator<ChiTietPhieu>() {
+
+			@Override
+			public int compare(ChiTietPhieu o1, ChiTietPhieu o2) {
+				if (o1.getDonGia() > o2.getDonGia())
+					return 1;
+				if (o1.getDonGia() < o2.getDonGia())
+					return -1;
+				return 0;
+			}
+		});
+		return ctp;
+	}
+
+	private ArrayList<ChiTietPhieu> donGiaGiam() {
+		ArrayList<ChiTietPhieu> list = ChiTietPhieuNhapDAO.getInstance()
+				.selectAllById(PhieuNhapForm.getPhieuNhapSelect().getIdPhieu());
+		ArrayList<ChiTietPhieu> ctp = new ArrayList<ChiTietPhieu>();
+
+		for (ChiTietPhieu chiTietPhieu : list) {
+			ctp.add(chiTietPhieu);
+		}
+
+		Collections.sort(list, new Comparator<ChiTietPhieu>() {
+
+			@Override
+			public int compare(ChiTietPhieu o1, ChiTietPhieu o2) {
+				if (o1.getDonGia() > o2.getDonGia())
+					return -1;
+				if (o1.getDonGia() < o2.getDonGia())
+					return 1;
+				return 0;
+			}
+		});
+		return ctp;
+	}
+
+	private ArrayList<ChiTietPhieu> search(String key) {
+		ArrayList<ChiTietPhieu> list = ChiTietPhieuNhapDAO.getInstance()
+				.selectAllById(PhieuNhapForm.getPhieuNhapSelect().getIdPhieu());
+		System.out.println(list.size());
+		ArrayList<ChiTietPhieu> ctp = new ArrayList<ChiTietPhieu>();
+
+		for (ChiTietPhieu chiTietPhieu : list) {
+			if (chiTietPhieu.getIdPhieu().toLowerCase().contains(key.toLowerCase())
+					|| chiTietPhieu.getIdSanPham().toLowerCase().contains(key.toLowerCase())
+					|| chiTietPhieu.getTenSanPham().toLowerCase().contains(key.toLowerCase())
+					|| String.valueOf(chiTietPhieu.getSoLuong()).contains(key.toLowerCase())
+					|| String.valueOf(chiTietPhieu.getDonGia()).contains(key.toLowerCase()))
+				ctp.add(chiTietPhieu);
+		}
+		return ctp;
+	}
+
+	private ChiTietPhieu getChiTietPhieuSelect() {
+		return ChiTietPhieuNhapDAO.getInstance().selectAllById(PhieuNhapForm.getPhieuNhapSelect().getIdPhieu())
+				.get(table.getSelectedRow());
 	}
 }

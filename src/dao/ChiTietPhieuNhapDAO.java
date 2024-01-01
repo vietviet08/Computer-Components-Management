@@ -10,7 +10,7 @@ import db.JDBCUntil;
 import model.ChiTietPhieu;
 
 public class ChiTietPhieuNhapDAO implements DAOInterface<ChiTietPhieu> {
-	
+
 	public static ChiTietPhieuNhapDAO getInstance() {
 		return new ChiTietPhieuNhapDAO();
 	}
@@ -22,14 +22,16 @@ public class ChiTietPhieuNhapDAO implements DAOInterface<ChiTietPhieu> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "insert into chitietdonnhap (iddonnhap, idsanpham, soluong, dongia) values (?, ?, ?, ?)";
+			String sql = "insert into chitietdonnhap (iddonnhap, idsanpham, idrieng, tensanpham, soluong, dongia) values (?, ?, ?, ?, ?, ?)";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
 			ps.setString(1, t.getIdPhieu());
 			ps.setString(2, t.getIdSanPham());
-			ps.setInt(3, t.getSoLuong());
-			ps.setDouble(4, t.getDonGia());
+			ps.setString(3, t.getIdRieng());
+			ps.setString(4, t.getTenSanPham());
+			ps.setInt(5, t.getSoLuong());
+			ps.setDouble(6, t.getDonGia());
 
 			check = ps.executeUpdate();
 		} catch (SQLException e) {
@@ -46,14 +48,16 @@ public class ChiTietPhieuNhapDAO implements DAOInterface<ChiTietPhieu> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "update chitietdonnhap set  idsanpham = ?, soluong = ?, dongia = ? where iddonnhap = ?";
+			String sql = "update chitietdonnhap set  idsanpham = ?, idrieng = ?, tensanpham = ?,  soluong = ?, dongia = ? where iddonnhap = ?";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
 			ps.setString(1, t.getIdSanPham());
-			ps.setInt(2, t.getSoLuong());
-			ps.setDouble(3, t.getDonGia());
-			ps.setString(4, t.getIdPhieu());
+			ps.setString(2, t.getTenSanPham());
+			ps.setString(3, t.getIdRieng());
+			ps.setInt(3, t.getSoLuong());
+			ps.setDouble(5, t.getDonGia());
+			ps.setString(6, t.getIdPhieu());
 
 			check = ps.executeUpdate();
 		} catch (SQLException e) {
@@ -82,7 +86,7 @@ public class ChiTietPhieuNhapDAO implements DAOInterface<ChiTietPhieu> {
 		}
 		return check;
 	}
-	
+
 	public int deleteByID(String id) {
 
 		int check = 0;
@@ -102,8 +106,6 @@ public class ChiTietPhieuNhapDAO implements DAOInterface<ChiTietPhieu> {
 		}
 		return check;
 	}
-	
-	
 
 	@Override
 	public ArrayList<ChiTietPhieu> selectAll() {
@@ -120,7 +122,8 @@ public class ChiTietPhieuNhapDAO implements DAOInterface<ChiTietPhieu> {
 
 			while (rs.next()) {
 				ChiTietPhieu ct = new ChiTietPhieu(rs.getString("iddonnhap"), rs.getString("idsanpham"),
-						rs.getInt("soluong"), rs.getDouble("dongia"));
+						rs.getString("idrieng"), rs.getString("tensanpham"), rs.getInt("soluong"),
+						rs.getDouble("dongia"));
 
 				ttp.add(ct);
 
@@ -130,10 +133,10 @@ public class ChiTietPhieuNhapDAO implements DAOInterface<ChiTietPhieu> {
 		}
 		return ttp;
 	}
-	
+
 	@Override
 	public ChiTietPhieu selectById(String t) {
-	
+
 		ChiTietPhieu ttp = null;
 		try {
 			Connection con = JDBCUntil.getConnection();
@@ -141,14 +144,14 @@ public class ChiTietPhieuNhapDAO implements DAOInterface<ChiTietPhieu> {
 			String sql = "select * from chitietdonnhap where iddonnhap = ?";
 
 			PreparedStatement ps = con.prepareStatement(sql);
-			
+
 			ps.setString(1, t);
-			
+
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				 ttp = new ChiTietPhieu(rs.getString("iddonnhap"), rs.getString("idsanpham"), rs.getInt("soluong"),
-						rs.getDouble("dongia"));
+				ttp = new ChiTietPhieu(rs.getString("iddonnhap"), rs.getString("idsanpham"), rs.getString("idrieng"),
+						rs.getString("tensanpham"), rs.getInt("soluong"), rs.getDouble("dongia"));
 
 			}
 		} catch (SQLException e) {
@@ -157,7 +160,7 @@ public class ChiTietPhieuNhapDAO implements DAOInterface<ChiTietPhieu> {
 
 		return ttp;
 	}
-	
+
 	public ArrayList<ChiTietPhieu> selectAllById(String t) {
 		ArrayList<ChiTietPhieu> list = new ArrayList<ChiTietPhieu>();
 		try {
@@ -166,13 +169,14 @@ public class ChiTietPhieuNhapDAO implements DAOInterface<ChiTietPhieu> {
 			String sql = "select * from chitietdonnhap where iddonnhap = ?";
 
 			PreparedStatement ps = con.prepareStatement(sql);
-			
+
 			ps.setString(1, t);
-			
+
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				ChiTietPhieu ttp = new ChiTietPhieu(rs.getString("iddonnhap"), rs.getString("idsanpham"), rs.getInt("soluong"),
+				ChiTietPhieu ttp = new ChiTietPhieu(rs.getString("iddonnhap"), rs.getString("idsanpham"),
+						rs.getString("idrieng"), rs.getString("tensanpham"), rs.getInt("soluong"),
 						rs.getDouble("dongia"));
 				list.add(ttp);
 			}

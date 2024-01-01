@@ -22,6 +22,17 @@ public class SetFont {
 		}
 		return f1;
 	}
+	
+	public static Font fontDetails1() {
+		Font f1 = null;
+		try {
+			File fontStyle = new File("src/font/Roboto-Light.ttf");
+			f1 = Font.createFont(Font.TRUETYPE_FONT, fontStyle).deriveFont(16f);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return f1;
+	}
 
 	public static Font font() {
 		Font f1 = null;
@@ -122,6 +133,17 @@ public class SetFont {
 		}
 		return f;
 	}
+	
+	public static com.itextpdf.text.Font fontTNRBoldNameCompany() {
+		com.itextpdf.text.Font f = null;
+		try {
+			f = new com.itextpdf.text.Font(
+					BaseFont.createFont("src/font/SVN-Times-New-Roman-Bold.ttf", BaseFont.IDENTITY_H, true), 20);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return f;
+	}
 
 	public static com.itextpdf.text.Font fontTNRBold() {
 		com.itextpdf.text.Font f = null;
@@ -138,7 +160,7 @@ public class SetFont {
 		com.itextpdf.text.Font f = null;
 		try {
 			f = new com.itextpdf.text.Font(
-					BaseFont.createFont("src/font/SVN-Times-New-Roman-Italic.ttf", BaseFont.IDENTITY_H, true), 12);
+					BaseFont.createFont("src/font/SVN-Times-New-Roman-Italic.ttf", BaseFont.IDENTITY_H, true), 10);
 		} catch (Exception e) {
 			System.out.println(e);
 		}

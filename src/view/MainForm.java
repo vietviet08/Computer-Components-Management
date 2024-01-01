@@ -574,7 +574,7 @@ public class MainForm extends JFrame {
 		panel_1.add(separator);
 		panelDateTime.add(cp);
 //		 cp.BOTTOM_ALIGNMENT
-		panelDateTime.setBounds(0, 4, 210, 32);
+		panelDateTime.setBounds(5, 5, 200, 32);
 		panel_1.add(panelDateTime);
 		panelDateTime.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
@@ -1286,7 +1286,7 @@ public class MainForm extends JFrame {
 			tickTock();
 			clock.setForeground(SetColor.whiteFont);
 //			clock.setBackground(SetColor.blue);
-			clock.setFont(SetFont.font1());
+			clock.setFont(SetFont.font1_());
 			clock.setOpaque(false);
 			add(clock);
 			Timer timer = new Timer(500, new ActionListener() {

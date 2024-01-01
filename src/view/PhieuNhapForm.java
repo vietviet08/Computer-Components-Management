@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import javax.swing.DefaultComboBoxModel;
@@ -53,6 +55,7 @@ import com.toedter.calendar.JDateChooser;
 import color.SetColor;
 import controller.ConvertDate;
 import controller.FormatToVND;
+import controller.TimKiemPhieuNhap;
 import dao.ChiTietPhieuNhapDAO;
 import dao.PhieuNhapDAO;
 import font.SetFont;
@@ -359,12 +362,27 @@ public class PhieuNhapForm extends JInternalFrame {
 
 		comboBoxSort = new JComboBox<String>(new DefaultComboBoxModel<String>(new String[] { "Sắp xếp", "Đã thanh toán",
 				"Chưa thanh toán", "Tổng tiền tăng dần", "Tổng tiền giảm dần" }));
+		comboBoxSort.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String scr = comboBoxSort.getSelectedItem().toString();
+				if (scr.equals("Đã thanh toán"))
+					loadDataToTable(sortDaThanhToan());
+				else if (scr.equals("Chưa thanh toán"))
+					loadDataToTable(sortChuaThanhToan());
+				else if (scr.equals("Tổng tiền tăng dần"))
+					loadDataToTable(sortTongTienTang());
+				else if (scr.equals("Tổng tiền giảm dần"))
+					loadDataToTable(sortTongTienGiam());
+			}
+		});
 		comboBoxSort.setFont(SetFont.font());
 		comboBoxSort.setBounds(848, 5, 77, 32);
 		getContentPane().add(comboBoxSort);
 
-		comboBox = new JComboBox<String>(new DefaultComboBoxModel<String>(new String[] { "ID đơn nhập",
-				"ID nhà phân phối", "Thời gian nhập", "Người tạo", "Tổng tiền", "Trạng thái" }));
+		comboBox = new JComboBox<String>(new DefaultComboBoxModel<String>(
+				new String[] { "ID đơn nhập", "ID nhà phân phối", "Người tạo", "Tổng tiền" }));
 		comboBox.setFont(SetFont.font());
 		comboBox.setBounds(932, 5, 99, 33);
 		getContentPane().add(comboBox);
@@ -373,6 +391,16 @@ public class PhieuNhapForm extends JInternalFrame {
 		textField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
+				String src = comboBox.getSelectedItem().toString();
+				if (src.equals("ID đơn nhập"))
+					loadDataToTable(TimKiemPhieuNhap.byIDDonNhap(textField.getText()));
+				else if (src.equals("ID nhà phân phối"))
+					loadDataToTable(TimKiemPhieuNhap.byIDNPP(textField.getText()));
+				else if (src.equals("Người tạo"))
+					loadDataToTable(TimKiemPhieuNhap.byNguoiTao(textField.getText()));
+				else if (src.equals("Tổng tiển"))
+					loadDataToTable(TimKiemPhieuNhap.byTongTien(textField.getText()));
+
 			}
 		});
 		textField.setColumns(10);
@@ -494,6 +522,64 @@ public class PhieuNhapForm extends JInternalFrame {
 
 	public static PhieuNhap getPhieuNhapSelect() {
 		PhieuNhap pn = PhieuNhapDAO.getInstance().selectAll().get(table.getSelectedRow());
+		return pn;
+	}
+
+	private ArrayList<PhieuNhap> sortDaThanhToan() {
+		ArrayList<PhieuNhap> list = PhieuNhapDAO.getInstance().selectAll();
+		ArrayList<PhieuNhap> pn = new ArrayList<PhieuNhap>();
+		for (PhieuNhap phieuNhap : list)
+			if (phieuNhap.getTrangThai() == 1)
+				pn.add(phieuNhap);
+		return pn;
+	}
+
+	private ArrayList<PhieuNhap> sortChuaThanhToan() {
+		ArrayList<PhieuNhap> list = PhieuNhapDAO.getInstance().selectAll();
+		ArrayList<PhieuNhap> pn = new ArrayList<PhieuNhap>();
+		for (PhieuNhap phieuNhap : list)
+			if (phieuNhap.getTrangThai() == 0)
+				pn.add(phieuNhap);
+		return pn;
+	}
+
+	private ArrayList<PhieuNhap> sortTongTienTang() {
+		ArrayList<PhieuNhap> list = PhieuNhapDAO.getInstance().selectAll();
+		ArrayList<PhieuNhap> pn = new ArrayList<PhieuNhap>();
+		for (PhieuNhap phieuNhap : list)
+			pn.add(phieuNhap);
+
+		Collections.sort(pn, new Comparator<PhieuNhap>() {
+
+			@Override
+			public int compare(PhieuNhap o1, PhieuNhap o2) {
+				if (o1.getTongTien() > o2.getTongTien())
+					return 1;
+				if (o1.getTongTien() < o2.getTongTien())
+					return -1;
+				return 0;
+			}
+		});
+		return pn;
+	}
+
+	private ArrayList<PhieuNhap> sortTongTienGiam() {
+		ArrayList<PhieuNhap> list = PhieuNhapDAO.getInstance().selectAll();
+		ArrayList<PhieuNhap> pn = new ArrayList<PhieuNhap>();
+		for (PhieuNhap phieuNhap : list)
+			pn.add(phieuNhap);
+
+		Collections.sort(pn, new Comparator<PhieuNhap>() {
+
+			@Override
+			public int compare(PhieuNhap o1, PhieuNhap o2) {
+				if (o1.getTongTien() < o2.getTongTien())
+					return 1;
+				if (o1.getTongTien() > o2.getTongTien())
+					return -1;
+				return 0;
+			}
+		});
 		return pn;
 	}
 }

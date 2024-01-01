@@ -193,7 +193,7 @@ public class ramDAO implements DAOInterface<ram> {
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
-			ps.setString(0, t);
+			ps.setString(1, t);
 
 			ResultSet rs = ps.executeQuery();
 
