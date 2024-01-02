@@ -300,8 +300,10 @@ public class NhapHangForm extends JInternalFrame {
 		btnNewButton_1_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+				
 				ArrayList<ProductNhap> list = LuuTam.sanPham;
+				list.removeAll(list);
+				
 				for (ProductNhap productNhap : listNhap) {
 					list.add(productNhap);
 				}
@@ -585,8 +587,8 @@ public class NhapHangForm extends JInternalFrame {
 
 					}
 
-					kiemTraSoLuongNhap1(id, listNhap);
-					loadDataToTableBill(listNhap);
+					ArrayList<ProductNhap> list = kiemTraSoLuongNhap1(id, listNhap);
+					loadDataToTableBill(list);
 				}
 			}
 		});
@@ -640,18 +642,19 @@ public class NhapHangForm extends JInternalFrame {
 		return false;
 	}
 
-	private boolean kiemTraSoLuongNhap1(String id, ArrayList<ProductNhap> list) {
+	private ArrayList<ProductNhap> kiemTraSoLuongNhap1(String id, ArrayList<ProductNhap> list) {
 		for (ProductNhap productNhap : list) {
 			if (productNhap.getPrivateId().equals(id)) {
 				if (productNhap.getSoLuong() == 1) {
 					list.remove(tableMin.getSelectedRow());
+					break;
 				} else {
 					productNhap.setSoLuong(productNhap.getSoLuong() - 1);
-					return true;
+					break;
 				}
 			}
 		}
-		return false;
+		return list;
 	}
 
 	private String createIDPhieuNhap(ArrayList<PhieuNhap> arr) {
