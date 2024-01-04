@@ -54,8 +54,9 @@ public class NhapHangForm extends JInternalFrame {
 	private static JTable tableMin;
 	private static DefaultTableModel tableModel;
 	private static DefaultTableModel tableModelBill;
-	private final String columName[] = { "ID sản phẩm hàng", "Tên sản phẩm", "Đơn giá" };
-	private final String columNameBill[] = { "ID mặt hàng", "ID sản phẩm", "Tên sản phẩm", "Số lượng", "Đơn giá" };
+	private final String columName[] = { "ID sản phẩm hàng", "Tên sản phẩm", "Bảo hành", "Đơn giá" };
+	private final String columNameBill[] = { "ID mặt hàng", "ID sản phẩm", "Tên sản phẩm", "Bảo hành", "Số lượng",
+			"Đơn giá" };
 	private JTextField textField_1;
 	private JComboBox<String> comboBox_chooseProduct;
 	private JButton btnNewButton_2;
@@ -91,9 +92,9 @@ public class NhapHangForm extends JInternalFrame {
 			for (cpu i : cpu) {
 				DefaultTableCellRenderer renderRight = new DefaultTableCellRenderer();
 				renderRight.setHorizontalAlignment(JLabel.RIGHT);
-				tableALL.getColumnModel().getColumn(2).setCellRenderer(renderRight);
+				tableALL.getColumnModel().getColumn(3).setCellRenderer(renderRight);
 				String gia = FormatToVND.vnd(i.getDonGia());
-				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getNameCpu(), gia });
+				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getNameCpu(), i.getBaoHanh(), gia });
 			}
 		} catch (Exception e) {
 		}
@@ -106,9 +107,9 @@ public class NhapHangForm extends JInternalFrame {
 			for (ram i : ram) {
 				DefaultTableCellRenderer renderRight = new DefaultTableCellRenderer();
 				renderRight.setHorizontalAlignment(JLabel.RIGHT);
-				tableALL.getColumnModel().getColumn(2).setCellRenderer(renderRight);
+				tableALL.getColumnModel().getColumn(3).setCellRenderer(renderRight);
 				String gia = FormatToVND.vnd(i.getDonGia());
-				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getTenRam(), gia });
+				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getTenRam(), i.getBaoHanh(), gia });
 			}
 		} catch (Exception e) {
 		}
@@ -120,9 +121,9 @@ public class NhapHangForm extends JInternalFrame {
 			for (vga i : vga) {
 				DefaultTableCellRenderer renderRight = new DefaultTableCellRenderer();
 				renderRight.setHorizontalAlignment(JLabel.RIGHT);
-				tableALL.getColumnModel().getColumn(2).setCellRenderer(renderRight);
+				tableALL.getColumnModel().getColumn(3).setCellRenderer(renderRight);
 				String gia = FormatToVND.vnd(i.getDonGia());
-				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getTenVGA(), gia });
+				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getTenVGA(), i.getBaoHanh(), gia });
 			}
 		} catch (Exception e) {
 		}
@@ -136,6 +137,7 @@ public class NhapHangForm extends JInternalFrame {
 		tableALL.getColumnModel().getColumn(0).setPreferredWidth(200);
 		tableALL.getColumnModel().getColumn(1).setPreferredWidth(500);
 		tableALL.getColumnModel().getColumn(2).setPreferredWidth(200);
+		tableALL.getColumnModel().getColumn(3).setPreferredWidth(200);
 
 		switch (isSelect) {
 		case "cpu":
@@ -302,10 +304,10 @@ public class NhapHangForm extends JInternalFrame {
 		btnNewButton_1_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+
 				ArrayList<ProductNhap> list = LuuTam.sanPham;
 				list.removeAll(list);
-				
+
 				for (ProductNhap productNhap : listNhap) {
 					list.add(productNhap);
 				}
@@ -347,9 +349,12 @@ public class NhapHangForm extends JInternalFrame {
 						for (int i = 0; i < tableMin.getRowCount(); i++) {
 //							String money = (String) tableMin.getValueAt(i, 4);
 //							double money1 = Double.parseDouble(money.substring(0, money.length()).trim());
+
+//							i.getIdsanpham(), i.getPrivateId(), i.getName(),i.getBaohanh(), i.getSoLuong(), i.getGia()
 							ChiTietPhieu ctp = new ChiTietPhieu(pn.getIdPhieu(), (String) tableMin.getValueAt(i, 0),
 									(String) tableMin.getValueAt(i, 1), (String) tableMin.getValueAt(i, 2),
-									(int) tableMin.getValueAt(i, 3), (double) tableMin.getValueAt(i, 4));
+									(int) tableMin.getValueAt(i, 4), (double) tableMin.getValueAt(i, 5),
+									(String) tableMin.getValueAt(i, 3));
 							ChiTietPhieuNhapDAO.getInstance().insert(ctp);
 						}
 
@@ -415,7 +420,7 @@ public class NhapHangForm extends JInternalFrame {
 //						kiểm tra số lượng
 						if (kiemTraSoLuongNhap(cpu.getIdCpu(), listNhap) == false) {
 							ProductNhap pn = new ProductNhap(cpu.getIdSanPham(), cpu.getIdCpu(), cpu.getNameCpu(), 1,
-									cpu.getDonGia());
+									cpu.getDonGia(), cpu.getBaoHanh());
 							listNhap.add(pn);
 						}
 						tien += cpu.getDonGia();
@@ -435,7 +440,7 @@ public class NhapHangForm extends JInternalFrame {
 
 						if (kiemTraSoLuongNhap(ram.getIdRam(), listNhap) == false) {
 							ProductNhap pn = new ProductNhap(ram.getIdSanPham(), ram.getIdRam(), ram.getTenRam(), 1,
-									ram.getDonGia());
+									ram.getDonGia(), ram.getBaoHanh());
 							listNhap.add(pn);
 						}
 						tien += ram.getDonGia();
@@ -449,7 +454,7 @@ public class NhapHangForm extends JInternalFrame {
 
 						if (kiemTraSoLuongNhap(vga.getIdVga(), listNhap) == false) {
 							ProductNhap pn = new ProductNhap(vga.getIdSanPham(), vga.getIdVga(), vga.getTenVGA(), 1,
-									vga.getDonGia());
+									vga.getDonGia(), vga.getBaoHanh());
 							listNhap.add(pn);
 						}
 						tien += vga.getDonGia();
@@ -612,11 +617,11 @@ public class NhapHangForm extends JInternalFrame {
 				DefaultTableCellRenderer renderCenter = new DefaultTableCellRenderer();
 				renderRight.setHorizontalAlignment(JLabel.RIGHT);
 				renderCenter.setHorizontalAlignment(JLabel.CENTER);
-				tableMin.getColumnModel().getColumn(3).setCellRenderer(renderCenter);
-				tableMin.getColumnModel().getColumn(4).setCellRenderer(renderRight);
+				tableMin.getColumnModel().getColumn(4).setCellRenderer(renderCenter);
+				tableMin.getColumnModel().getColumn(5).setCellRenderer(renderRight);
 //				String gia = FormatToVND.vnd(i.getGia());
-				tableModelBill.addRow(
-						new Object[] { i.getIdsanpham(), i.getPrivateId(), i.getName(), i.getSoLuong(), i.getGia() });
+				tableModelBill.addRow(new Object[] { i.getIdsanpham(), i.getPrivateId(), i.getName(), i.getBaohanh(),
+						i.getSoLuong(), i.getGia() });
 			}
 		} catch (Exception e) {
 		}
@@ -630,8 +635,9 @@ public class NhapHangForm extends JInternalFrame {
 		tableMin.getColumnModel().getColumn(0).setPreferredWidth(200);
 		tableMin.getColumnModel().getColumn(1).setPreferredWidth(150);
 		tableMin.getColumnModel().getColumn(2).setPreferredWidth(300);
-		tableMin.getColumnModel().getColumn(3).setPreferredWidth(100);
-		tableMin.getColumnModel().getColumn(4).setPreferredWidth(200);
+		tableMin.getColumnModel().getColumn(3).setPreferredWidth(150);
+		tableMin.getColumnModel().getColumn(4).setPreferredWidth(100);
+		tableMin.getColumnModel().getColumn(5).setPreferredWidth(200);
 
 		loadDataToTableBill(pn);
 	}

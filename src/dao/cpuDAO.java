@@ -1,5 +1,9 @@
 package dao;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +13,8 @@ import java.util.ArrayList;
 import db.JDBCUntil;
 import model.ProductNhap;
 import model.cpu;
+import view.CapNhatCPU;
+import view.ThemCPU;
 
 public class cpuDAO implements DAOInterface<cpu> {
 
@@ -23,7 +29,7 @@ public class cpuDAO implements DAOInterface<cpu> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "INSERT INTO cpu (idsanpham, idcpu, tencpu, xungnhip, sonhan, soluong, diennangtieuthu, bonhodem, tonkho, dongia) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO cpu (idsanpham, idcpu, tencpu, xungnhip, sonhan, soluong, diennangtieuthu, bonhodem, tonkho, dongia, baohanh, img) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -37,6 +43,48 @@ public class cpuDAO implements DAOInterface<cpu> {
 			ps.setString(8, t.getBoNhoDem());
 			ps.setInt(9, t.getTonKho());
 			ps.setDouble(10, t.getDonGia());
+			ps.setString(11, t.getBaoHanh());
+
+			try {
+				InputStream is = new FileInputStream(new File(ThemCPU.getInsert()));
+				ps.setBlob(12, is);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+
+			check = ps.executeUpdate();
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
+	public int insertNotIMG(cpu t) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "INSERT INTO cpu (idsanpham, idcpu, tencpu, xungnhip, sonhan, soluong, diennangtieuthu, bonhodem, tonkho, dongia, baohanh) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getIdCpu());
+			ps.setString(3, t.getNameCpu());
+			ps.setString(4, t.getXungNhip());
+			ps.setInt(5, t.getSoNhan());
+			ps.setInt(6, t.getSoLuong());
+			ps.setString(7, t.getDienNangTieuThu());
+			ps.setString(8, t.getBoNhoDem());
+			ps.setInt(9, t.getTonKho());
+			ps.setDouble(10, t.getDonGia());
+			ps.setString(11, t.getBaoHanh());
+
 			check = ps.executeUpdate();
 
 			JDBCUntil.closeConnection(con);
@@ -55,7 +103,7 @@ public class cpuDAO implements DAOInterface<cpu> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "UPDATE cpu SET idsanpham = ?, tencpu = ?, xungnhip = ?, sonhan = ?, soluong = ?, diennangtieuthu = ?, bonhodem = ?, tonkho = ?, dongia = ? WHERE idcpu = ?;";
+			String sql = "UPDATE cpu SET idsanpham = ?, tencpu = ?, xungnhip = ?, sonhan = ?, soluong = ?, diennangtieuthu = ?, bonhodem = ?, tonkho = ?, dongia = ?, baohanh = ?, img = ? WHERE idcpu = ?;";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, t.getIdSanPham());
@@ -67,7 +115,46 @@ public class cpuDAO implements DAOInterface<cpu> {
 			ps.setString(7, t.getBoNhoDem());
 			ps.setInt(8, t.getTonKho());
 			ps.setDouble(9, t.getDonGia());
-			ps.setString(10, t.getIdCpu());
+			ps.setString(10, t.getBaoHanh());
+			
+			try {
+				InputStream is = new FileInputStream(new File(CapNhatCPU.getInsert()));
+				ps.setBlob(11, is);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			ps.setString(12, t.getIdCpu());
+			check = ps.executeUpdate();
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+	
+	public int updateNotIMG(cpu t) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "UPDATE cpu SET idsanpham = ?, tencpu = ?, xungnhip = ?, sonhan = ?, soluong = ?, diennangtieuthu = ?, bonhodem = ?, tonkho = ?, dongia = ?, baohanh = ? WHERE idcpu = ?;";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getNameCpu());
+			ps.setString(3, t.getXungNhip());
+			ps.setInt(4, t.getSoNhan());
+			ps.setInt(5, t.getSoLuong());
+			ps.setString(6, t.getDienNangTieuThu());
+			ps.setString(7, t.getBoNhoDem());
+			ps.setInt(8, t.getTonKho());
+			ps.setDouble(9, t.getDonGia());
+			ps.setString(10, t.getBaoHanh());
+			ps.setString(11, t.getIdCpu());
 			check = ps.executeUpdate();
 
 			JDBCUntil.closeConnection(con);
@@ -147,7 +234,7 @@ public class cpuDAO implements DAOInterface<cpu> {
 				cpu chip = new cpu(rs.getString("idsanpham"), rs.getString("idcpu"), rs.getString("tencpu"),
 						rs.getString("xungnhip"), rs.getInt("sonhan"), rs.getInt("soluong"),
 						rs.getString("diennangtieuthu"), rs.getString("bonhodem"), rs.getInt("tonkho"),
-						rs.getDouble("dongia"));
+						rs.getDouble("dongia"), rs.getString("baohanh"), rs.getBlob("img"));
 				c.add(chip);
 			}
 			JDBCUntil.closeConnection(con);
@@ -170,7 +257,7 @@ public class cpuDAO implements DAOInterface<cpu> {
 
 			while (rs.next()) {
 				cpu chip = new cpu(rs.getString("idsanpham"), rs.getString("idcpu"), rs.getString("tencpu"),
-						rs.getDouble("dongia"));
+						rs.getDouble("dongia"), rs.getString("baohanh"));
 				c.add(chip);
 			}
 			JDBCUntil.closeConnection(con);
@@ -199,7 +286,7 @@ public class cpuDAO implements DAOInterface<cpu> {
 				c = new cpu(rs.getString("idsanpham"), rs.getString("idcpu"), rs.getString("tencpu"),
 						rs.getString("xungnhip"), rs.getInt("sonhan"), rs.getInt("soluong"),
 						rs.getString("diennangtieuthu"), rs.getString("bonhodem"), rs.getInt("tonkho"),
-						rs.getDouble("dongia"));
+						rs.getDouble("dongia"), rs.getString("baohanh"), rs.getBlob("img"));
 			}
 			JDBCUntil.closeConnection(con);
 		} catch (SQLException e) {
@@ -208,7 +295,6 @@ public class cpuDAO implements DAOInterface<cpu> {
 
 		return c;
 	}
-	
 
 	public ArrayList<cpu> selectByIdSanPham(String t) {
 		ArrayList<cpu> list = new ArrayList<cpu>();
@@ -227,7 +313,7 @@ public class cpuDAO implements DAOInterface<cpu> {
 				cpu c = new cpu(rs.getString("idsanpham"), rs.getString("idcpu"), rs.getString("tencpu"),
 						rs.getString("xungnhip"), rs.getInt("sonhan"), rs.getInt("soluong"),
 						rs.getString("diennangtieuthu"), rs.getString("bonhodem"), rs.getInt("tonkho"),
-						rs.getDouble("dongia"));
+						rs.getDouble("dongia"), rs.getString("baohanh"), rs.getBlob("img"));
 				list.add(c);
 			}
 			JDBCUntil.closeConnection(con);

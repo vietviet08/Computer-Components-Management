@@ -5,15 +5,19 @@ import java.awt.EventQueue;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,6 +25,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import color.SetColor;
 import dao.SanPhamDAO;
@@ -43,6 +49,10 @@ public class ThemVGA extends JFrame {
 	private JComboBox<String> comboBox;
 	private static JTextField tfIDVGA;
 	private JTextField tfTonKho;
+	public static String insert = "";
+	private JTextField tfBaoHanh;
+	private JButton btnUpload;
+	private JLabel labelIMG;
 
 	/**
 	 * Launch the application.
@@ -68,7 +78,7 @@ public class ThemVGA extends JFrame {
 	public ThemVGA() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 566, 307);
+		setBounds(100, 100, 783, 367);
 		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
 		contentPane = new JPanel() {
 			/**
@@ -104,7 +114,7 @@ public class ThemVGA extends JFrame {
 		lblNewLabel_1.setForeground(SetColor.copyRight);
 		lblNewLabel_1.setFont(SetFont.font());
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(30, 282, 497, 14);
+		lblNewLabel_1.setBounds(10, 342, 714, 14);
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel("ID Sản phẩm");
@@ -172,7 +182,7 @@ public class ThemVGA extends JFrame {
 			combo[i] = p.getIdSanPham();
 		}
 		comboBox = new JComboBox<>(new DefaultComboBoxModel<String>(combo));
-		comboBox.setFont(SetFont.fontDetails());	
+		comboBox.setFont(SetFont.fontDetails());
 		comboBox.setBounds(116, 64, 149, 25);
 		contentPane.add(comboBox);
 
@@ -187,12 +197,27 @@ public class ThemVGA extends JFrame {
 				String bonho = tfBoNho.getText();
 				int tonkho = Integer.parseInt(tfTonKho.getText());
 				double gia = Double.parseDouble(tfDonGia.getText());
+				String baohanh = tfBaoHanh.getText();
 
 				if (ten.equals("") || hang.equals("") || bonho.equals("") || tfDonGia.equals("")) {
 					JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!");
 				} else {
-					vga v = new vga(idsp, idvga, ten, hang, bonho, tonkho, gia);
-					vgaDAO.getInstance().insert(v);
+					vga v = new vga(idsp, idvga, ten, hang, bonho, tonkho, gia, baohanh, null);
+
+					if (insert.equals("")) {
+						int check = vgaDAO.getInstance().insertNotIMG(v);
+						if (check > 0)
+							JOptionPane.showMessageDialog(null, "Thêm thành công");
+						else
+							JOptionPane.showMessageDialog(null, "Thêm không thành công");
+					} else {
+						int check = vgaDAO.getInstance().insert(v);
+						if (check > 0)
+							JOptionPane.showMessageDialog(null, "Thêm thành công");
+						else
+							JOptionPane.showMessageDialog(null, "Thêm không thành công");
+
+					}
 					VGAForm.loadDataToTable(vgaDAO.getInstance().selectAll());
 					closeFrame();
 				}
@@ -200,7 +225,7 @@ public class ThemVGA extends JFrame {
 		});
 		btnNewButton.setFont(SetFont.font1());
 		btnNewButton.setBorder(null);
-		btnNewButton.setBounds(290, 241, 89, 30);
+		btnNewButton.setBounds(270, 301, 89, 30);
 		contentPane.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("Hủy");
@@ -212,7 +237,7 @@ public class ThemVGA extends JFrame {
 		});
 		btnNewButton_1.setFont(SetFont.font1());
 		btnNewButton_1.setBorder(null);
-		btnNewButton_1.setBounds(438, 241, 89, 30);
+		btnNewButton_1.setBounds(394, 301, 89, 30);
 		contentPane.add(btnNewButton_1);
 
 		JLabel lblNewLabel_2_1_2 = new JLabel("ID VGA");
@@ -240,6 +265,51 @@ public class ThemVGA extends JFrame {
 		tfTonKho.setBorder(null);
 		tfTonKho.setBounds(116, 241, 149, 25);
 		contentPane.add(tfTonKho);
+
+		tfBaoHanh = new JTextField();
+		tfBaoHanh.setFont(SetFont.fontDetails());
+		tfBaoHanh.setColumns(10);
+		tfBaoHanh.setBorder(null);
+		tfBaoHanh.setBounds(378, 241, 149, 25);
+		contentPane.add(tfBaoHanh);
+
+		JLabel lblNewLabel_2_1_3_1 = new JLabel("Bảo hành");
+		lblNewLabel_2_1_3_1.setForeground(new Color(254, 254, 254));
+		lblNewLabel_2_1_3_1.setFont(SetFont.font1_());
+		lblNewLabel_2_1_3_1.setBounds(292, 241, 87, 25);
+		contentPane.add(lblNewLabel_2_1_3_1);
+
+		labelIMG = new JLabel("Ảnh CPU");
+		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
+		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
+		labelIMG.setBounds(550, 53, 223, 230);
+		contentPane.add(labelIMG);
+
+		btnUpload = new JButton("Upload");
+		btnUpload.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+				fileChooser.addChoosableFileFilter(
+						new FileNameExtensionFilter("*.IMAGE", "webp", "jpg", "jpeg", "gif", "png"));
+				int result = fileChooser.showSaveDialog(null);
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectFile = fileChooser.getSelectedFile();
+					ImageIcon ii = new ImageIcon(selectFile.getAbsolutePath());
+					Image i = ii.getImage();
+					i = i.getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(), Image.SCALE_SMOOTH);
+					labelIMG.setText("");
+					labelIMG.setIcon(new ImageIcon(i));
+					insert = selectFile.getAbsolutePath();
+				} else
+					JOptionPane.showMessageDialog(null, "Lỗi file!");
+			}
+		});
+		btnUpload.setFont(SetFont.font());
+		btnUpload.setBorder(null);
+		btnUpload.setBounds(702, 294, 71, 21);
+		contentPane.add(btnUpload);
 	}
 
 	private void closeFrame() {
@@ -267,6 +337,14 @@ public class ThemVGA extends JFrame {
 			}
 		}
 		tfIDVGA.setText("vga" + id);
+	}
+
+	public static String getInsert() {
+		return insert;
+	}
+
+	public static void setInsert(String insert) {
+		ThemVGA.insert = insert;
 	}
 
 }

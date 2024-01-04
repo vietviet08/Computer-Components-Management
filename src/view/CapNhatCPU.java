@@ -5,17 +5,23 @@ import java.awt.EventQueue;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.io.File;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -23,6 +29,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import color.SetColor;
 import dao.SanPhamDAO;
@@ -47,6 +55,10 @@ public class CapNhatCPU extends JFrame {
 	private static JTextField tfGia;
 	private static JComboBox<String> comboBox;
 	private static JTextField tfTonKho;
+	private static JTextField tfBaoHanh;
+
+	public static String insert = "";
+	private static JLabel labelIMG;
 
 	/**
 	 * Launch the application.
@@ -72,7 +84,7 @@ public class CapNhatCPU extends JFrame {
 	public CapNhatCPU() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 518, 418);
+		setBounds(100, 100, 763, 410);
 		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
 		contentPane = new JPanel() {
 			/**
@@ -85,13 +97,14 @@ public class CapNhatCPU extends JFrame {
 				super.paintComponent(grphcs);
 				Graphics2D g2d = (Graphics2D) grphcs;
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				 GradientPaint gp = new GradientPaint(0, 0,new Color(102,125,182), 0, getHeight(), new Color(0,130,200));
+				GradientPaint gp = new GradientPaint(0, 0, new Color(102, 125, 182), 0, getHeight(),
+						new Color(0, 130, 200));
 				g2d.setPaint(gp);
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 
 			}
 		};
-		
+
 		contentPane.setBackground(SetColor.blueOp);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -194,7 +207,7 @@ public class CapNhatCPU extends JFrame {
 			}
 		});
 		btnCpNht.setFont(SetFont.font1());
-		btnCpNht.setBounds(176, 330, 97, 30);
+		btnCpNht.setBounds(308, 322, 97, 30);
 		contentPane.add(btnCpNht);
 
 		JButton btnCancel = new JButton("Hủy");
@@ -215,7 +228,7 @@ public class CapNhatCPU extends JFrame {
 			}
 		});
 		btnCancel.setFont(SetFont.font1());
-		btnCancel.setBounds(285, 330, 97, 30);
+		btnCancel.setBounds(417, 322, 97, 30);
 		contentPane.add(btnCancel);
 
 		JLabel lblSLung = new JLabel("Số luồng");
@@ -264,8 +277,51 @@ public class CapNhatCPU extends JFrame {
 		lblNewLabel_1.setFont(SetFont.font());
 		lblNewLabel_1.setForeground(new Color(224, 255, 255));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(10, 387, 498, 14);
+		lblNewLabel_1.setBounds(10, 387, 754, 14);
 		contentPane.add(lblNewLabel_1);
+
+		labelIMG = new JLabel("Ảnh CPU");
+		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
+		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
+		labelIMG.setBounds(529, 53, 223, 230);
+		contentPane.add(labelIMG);
+
+		JButton btnUpload = new JButton("Upload");
+		btnUpload.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+				fileChooser.addChoosableFileFilter(
+						new FileNameExtensionFilter("*.IMAGE", "webp", "jpg", "jpeg", "gif", "png"));
+				int result = fileChooser.showSaveDialog(null);
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectFile = fileChooser.getSelectedFile();
+					ImageIcon ii = new ImageIcon(selectFile.getAbsolutePath());
+					Image i = ii.getImage();
+					i = i.getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(), Image.SCALE_SMOOTH);
+					labelIMG.setText("");
+					labelIMG.setIcon(new ImageIcon(i));
+					insert = selectFile.getAbsolutePath();
+				} else
+					JOptionPane.showMessageDialog(null, "Lỗi file!");
+			}
+		});
+		btnUpload.setBorder(null);
+		btnUpload.setBounds(663, 291, 89, 23);
+		contentPane.add(btnUpload);
+
+		JLabel lblNewLabel_1_2_1 = new JLabel("Bảo hành");
+		lblNewLabel_1_2_1.setForeground(new Color(254, 254, 254));
+		lblNewLabel_1_2_1.setFont(SetFont.font1_());
+		lblNewLabel_1_2_1.setBounds(10, 322, 83, 30);
+		contentPane.add(lblNewLabel_1_2_1);
+
+		tfBaoHanh = new JTextField();
+		tfBaoHanh.setFont(SetFont.fontDetails());
+		tfBaoHanh.setColumns(10);
+		tfBaoHanh.setBounds(128, 322, 141, 30);
+		contentPane.add(tfBaoHanh);
 	}
 
 	private void closeFrame() {
@@ -283,6 +339,25 @@ public class CapNhatCPU extends JFrame {
 		tfDienNang.setText(c.getDienNangTieuThu());
 		tfSoluong.setText(String.valueOf(c.getSoLuong()));
 		tfSoNhan.setText(String.valueOf(c.getSoNhan()));
+		tfBaoHanh.setText(c.getBaoHanh());
+
+		if (c.getImg() == null)
+			labelIMG.setText("Sản phẩm hiện chưa có ảnh mẫu!");
+		else {
+			Blob blob = c.getImg();
+			byte[] by;
+			try {
+				by = blob.getBytes(1, (int) blob.length());
+				ImageIcon ii = new ImageIcon(by);
+				Image i = ii.getImage().getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(),
+						Image.SCALE_SMOOTH);
+				ii = new ImageIcon(i);
+				labelIMG.setText("");
+				labelIMG.setIcon(ii);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void updateCPU() {
@@ -295,19 +370,35 @@ public class CapNhatCPU extends JFrame {
 		String bonho = tfBoNhoDem.getText();
 		int tonkho = Integer.parseInt(tfTonKho.getText());
 		double gia = Double.parseDouble(tfGia.getText());
-
-//		Can them kiem tra idcpu de khong bi trung trong database
+		String baoHanh = tfBaoHanh.getText();
 
 		String id = comboBox.getSelectedItem().toString();
-		cpu cc = new cpu(id, idcpu, ten, xn, sonhan, soluong, dien, bonho, tonkho, gia);
-//		System.out.println(c.getIdSanPham());
 
-		cpuDAO.getInstance().update(cc);
+		cpu cc = new cpu(id, idcpu, ten, xn, sonhan, soluong, dien, bonho, tonkho, gia, baoHanh, null);
 
-		JOptionPane.showMessageDialog(null, "Cập nhật thành công");
-
+		if (insert.equals("")) {
+			int check = cpuDAO.getInstance().updateNotIMG(cc);
+			if (check > 0)
+				JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+			else
+				JOptionPane.showMessageDialog(null, "Cập nhật không thành công!");
+		} else {
+			int check = cpuDAO.getInstance().update(cc);
+			if (check > 0) {
+				JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+			} else
+				JOptionPane.showMessageDialog(null, "Cập nhật không thành công!!!");
+		}
 		CPUForm.loadDataToTable(cpuDAO.getInstance().selectAll());
-
 		closeFrame();
 	}
+
+	public static String getInsert() {
+		return insert;
+	}
+
+	public static void setInsert(String insert) {
+		CapNhatCPU.insert = insert;
+	}
+
 }

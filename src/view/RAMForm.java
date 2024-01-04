@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -14,6 +15,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -48,11 +51,14 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import color.SetColor;
 import controller.FormatToVND;
 import controller.TimKiemRAM;
+import dao.SanPhamDAO;
 import dao.ramDAO;
 import font.SetFont;
 import model.ram;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.border.LineBorder;
+import javax.swing.JTextArea;
 
 public class RAMForm extends JInternalFrame {
 
@@ -69,6 +75,11 @@ public class RAMForm extends JInternalFrame {
 	public Font font_1;
 	public Font font1;
 	public Font font2;
+	private JLabel labelIMG;
+	private JLabel labelTen;
+	private JLabel labelTien;
+	private JLabel labelBaoHanh;
+	private JTextArea textArea;
 
 	/**
 	 * Launch the application.
@@ -96,14 +107,14 @@ public class RAMForm extends JInternalFrame {
 
 				DefaultTableCellRenderer df = new DefaultTableCellRenderer();
 				df.setHorizontalAlignment(SwingConstants.RIGHT);
-				
+
 				DefaultTableCellRenderer center = new DefaultTableCellRenderer();
 				center.setHorizontalAlignment(SwingConstants.CENTER);
-				
+
 				table.getColumnModel().getColumn(7).setCellRenderer(df);
 				table.getColumnModel().getColumn(6).setCellRenderer(center);
 				table.getColumnModel().getColumn(3).setCellRenderer(center);
-				
+
 				String gia = FormatToVND.vnd(i.getDonGia());
 
 				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getIdRam(), i.getTenRam(), i.getLoai(),
@@ -143,7 +154,7 @@ public class RAMForm extends JInternalFrame {
 			System.out.println(e);
 		}
 
-		setBounds(100, 100, 1200-30, 730);
+		setBounds(100, 100, 1200 - 30, 730);
 		getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();
@@ -252,8 +263,10 @@ public class RAMForm extends JInternalFrame {
 								String bus = model.getValueAt(i, 5).toString();
 								int tonkho = (int) model.getValueAt(i, 6);
 								double dongia = Double.parseDouble(model.getValueAt(i, 7).toString());
-								ram r = new ram(id, idram, ten, loairam, dungluong, bus, tonkho, dongia);
-								ramDAO.getInstance().insert(r);
+								String baohanh = model.getValueAt(i, 8).toString();
+
+								ram r = new ram(id, idram, ten, loairam, dungluong, bus, tonkho, dongia, baohanh, null);
+								ramDAO.getInstance().insertNotIMG(r);
 							}
 						}
 					} catch (IOException iOException) {
@@ -328,7 +341,7 @@ public class RAMForm extends JInternalFrame {
 		panel.add(btnNewButton_5);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 53, 1162, 648);
+		scrollPane.setBounds(0, 53, 785, 648);
 		getContentPane().add(scrollPane);
 
 		table = new JTable() {
@@ -347,6 +360,38 @@ public class RAMForm extends JInternalFrame {
 				return returnComp;
 			}
 		};
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ram r = getSelectRAM();
+
+				labelTen.setText(r.getTenRam());
+				labelTien.setText(FormatToVND.vnd(r.getDonGia()));
+				labelBaoHanh.setText("Bảo hành: " + r.getBaoHanh());
+				textArea.setText(SanPhamDAO.getInstance().selectById(r.getIdSanPham()).getMoTa());
+			
+				
+				if (r.getImg() == null) {
+					labelIMG.setIcon(null);
+					labelIMG.setText("Sản phẩm hiện chưa có ảnh mẫu!");
+				} else {
+					labelIMG.setBorder(null);
+					Blob blob = r.getImg();
+					try {
+						byte[] by = blob.getBytes(1, (int) blob.length());
+						ImageIcon ii = new ImageIcon(by);
+						Image i = ii.getImage().getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(),
+								Image.SCALE_SMOOTH);
+						ii = new ImageIcon(i);
+						labelIMG.setText("");
+						labelIMG.setIcon(ii);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+				}
+
+			}
+		});
 		table.getTableHeader().setBackground(SetColor.blueOp);
 		table.getTableHeader().setFont(SetFont.fontHeaderTable());
 		table.setModel(new DefaultTableModel(new Object[][] {},
@@ -440,6 +485,43 @@ public class RAMForm extends JInternalFrame {
 				new String[] { "Sắp xếp", "Giá tăng dần", "Giá giảm dần", "Tồn kho tăng dần", "Tồn kho giảm dần" }));
 		comboBox_1.setBounds(10, 8, 127, 33);
 		panel_1.add(comboBox_1);
+
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(Color.WHITE);
+		panel_2.setBounds(795, 53, 367, 648);
+		getContentPane().add(panel_2);
+		panel_2.setLayout(null);
+
+		labelTen = new JLabel("Tên RAM");
+		labelTen.setFont(SetFont.fontCategory());
+		labelTen.setBounds(45, 22, 323, 31);
+		panel_2.add(labelTen);
+
+		labelIMG = new JLabel("Ảnh sản phẩm");
+		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
+		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
+		labelIMG.setBounds(43, 65, 300, 350);
+		panel_2.add(labelIMG);
+
+		labelTien = new JLabel("0 đ");
+		labelTien.setForeground(new Color(190, 14, 30));
+		labelTien.setFont(SetFont.font1());
+		labelTien.setBounds(43, 417, 187, 23);
+		panel_2.add(labelTien);
+
+		labelBaoHanh = new JLabel("Bảo hành");
+		labelBaoHanh.setFont(SetFont.font1());
+		labelBaoHanh.setBounds(43, 451, 143, 23);
+		panel_2.add(labelBaoHanh);
+
+		textArea = new JTextArea();
+		textArea.setFont(SetFont.fontDetails_1());
+		textArea.setEditable(false);
+		textArea.setOpaque(false);
+		textArea.setWrapStyleWord(true);
+		textArea.setLineWrap(true);
+		textArea.setBounds(35, 485, 312, 152);
+		panel_2.add(textArea);
 	}
 
 	private ArrayList<ram> giaTangDan() {

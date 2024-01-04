@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Blob;
 import java.util.Objects;
 
 public class ram extends Products {
@@ -10,20 +11,20 @@ public class ram extends Products {
 	private String bus;
 	private int tonkho;
 	private double donGia;
+	private String baoHanh;
+	private Blob img;
 
 	public ram() {
 		super();
 	}
 
-	
-	public ram(String idSanPham, String idRam, String tenRam, double donGia) {
+	public ram(String idSanPham, String idRam, String tenRam, double donGia, String baoHanh) {
 		super(idSanPham);
 		this.idRam = idRam;
 		this.tenRam = tenRam;
 		this.donGia = donGia;
+		this.baoHanh = baoHanh;
 	}
-
-
 
 	public ram(String idRam, String tenRam, String loai, String dungLuong, String bus, int tonkho, double donGia) {
 		super();
@@ -37,7 +38,7 @@ public class ram extends Products {
 	}
 
 	public ram(String idSanPham, String idRam, String tenRam, String loai, String dungLuong, String bus, int tonkho,
-			double donGia) {
+			double donGia, String baoHanh, Blob img) {
 		super(idSanPham);
 		this.idRam = idRam;
 		this.tenRam = tenRam;
@@ -46,6 +47,8 @@ public class ram extends Products {
 		this.bus = bus;
 		this.tonkho = tonkho;
 		this.donGia = donGia;
+		this.baoHanh = baoHanh;
+		this.img = img;
 	}
 
 	public ram(String idSanPham, String tenSanPham, int trangThai, String moTa, String idRam, String tenRam,
@@ -116,17 +119,34 @@ public class ram extends Products {
 		this.bus = bus;
 	}
 
+	public String getBaoHanh() {
+		return baoHanh;
+	}
+
+	public void setBaoHanh(String baoHanh) {
+		this.baoHanh = baoHanh;
+	}
+
+	public Blob getImg() {
+		return img;
+	}
+
+	public void setImg(Blob img) {
+		this.img = img;
+	}
+
 	@Override
 	public String toString() {
 		return "ram [idRam=" + idRam + ", tenRam=" + tenRam + ", loai=" + loai + ", dungLuong=" + dungLuong + ", bus="
-				+ bus + ", tonkho=" + tonkho + ", donGia=" + donGia + ", getIdSanPham()=" + getIdSanPham() + "]";
+				+ bus + ", tonkho=" + tonkho + ", donGia=" + donGia + ", baoHanh=" + baoHanh + ", img=" + img
+				+ ", getIdSanPham()=" + getIdSanPham() + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(bus, donGia, dungLuong, idRam, loai, tenRam, tonkho);
+		result = prime * result + Objects.hash(baoHanh, bus, donGia, dungLuong, idRam, img, loai, tenRam, tonkho);
 		return result;
 	}
 
@@ -139,10 +159,11 @@ public class ram extends Products {
 		if (getClass() != obj.getClass())
 			return false;
 		ram other = (ram) obj;
-		return Objects.equals(bus, other.bus)
+		return Objects.equals(baoHanh, other.baoHanh) && Objects.equals(bus, other.bus)
 				&& Double.doubleToLongBits(donGia) == Double.doubleToLongBits(other.donGia)
 				&& Objects.equals(dungLuong, other.dungLuong) && Objects.equals(idRam, other.idRam)
-				&& Objects.equals(loai, other.loai) && Objects.equals(tenRam, other.tenRam) && tonkho == other.tonkho;
+				&& Objects.equals(img, other.img) && Objects.equals(loai, other.loai)
+				&& Objects.equals(tenRam, other.tenRam) && tonkho == other.tonkho;
 	}
 
 }

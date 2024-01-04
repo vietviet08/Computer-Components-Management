@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Blob;
 import java.util.Objects;
 
 public class vga extends Products {
@@ -9,16 +10,19 @@ public class vga extends Products {
 	private String boNho;
 	private int tonKho;
 	private double donGia;
+	private String baoHanh;
+	private Blob img;
 
 	public vga() {
 		super();
 	}
 
-	public vga(String idSanPham, String idVga, String tenVGA, double donGia) {
+	public vga(String idSanPham, String idVga, String tenVGA, double donGia, String baoHanh) {
 		super(idSanPham);
 		this.idVga = idVga;
 		this.tenVGA = tenVGA;
 		this.donGia = donGia;
+		this.baoHanh = baoHanh;
 	}
 
 	public vga(String idVga, String tenVGA, String hangVGA, String boNho, int tonKho, double donGia) {
@@ -31,7 +35,8 @@ public class vga extends Products {
 		this.donGia = donGia;
 	}
 
-	public vga(String idSanPham, String idVga, String tenVGA, String hangVGA, String boNho, int tonKho, double donGia) {
+	public vga(String idSanPham, String idVga, String tenVGA, String hangVGA, String boNho, int tonKho, double donGia,
+			String baoHanh, Blob img) {
 		super(idSanPham);
 		this.idVga = idVga;
 		this.tenVGA = tenVGA;
@@ -39,6 +44,8 @@ public class vga extends Products {
 		this.boNho = boNho;
 		this.tonKho = tonKho;
 		this.donGia = donGia;
+		this.baoHanh = baoHanh;
+		this.img = img;
 	}
 
 	public vga(String idSanPham, String tenSanPham, int trangThai, String moTa, String idVga, String tenVGA,
@@ -100,17 +107,34 @@ public class vga extends Products {
 		this.boNho = boNho;
 	}
 
+	public String getBaoHanh() {
+		return baoHanh;
+	}
+
+	public void setBaoHanh(String baoHanh) {
+		this.baoHanh = baoHanh;
+	}
+
+	public Blob getImg() {
+		return img;
+	}
+
+	public void setImg(Blob img) {
+		this.img = img;
+	}
+
 	@Override
 	public String toString() {
 		return "vga [idVga=" + idVga + ", tenVGA=" + tenVGA + ", hangVGA=" + hangVGA + ", boNho=" + boNho + ", tonKho="
-				+ tonKho + ", donGia=" + donGia + ", getIdSanPham()=" + getIdSanPham() + "]";
+				+ tonKho + ", donGia=" + donGia + ", baoHanh=" + baoHanh + ", img=" + img + ", getIdSanPham()="
+				+ getIdSanPham() + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(boNho, donGia, hangVGA, idVga, tenVGA, tonKho);
+		result = prime * result + Objects.hash(baoHanh, boNho, donGia, hangVGA, idVga, img, tenVGA, tonKho);
 		return result;
 	}
 
@@ -123,10 +147,10 @@ public class vga extends Products {
 		if (getClass() != obj.getClass())
 			return false;
 		vga other = (vga) obj;
-		return Objects.equals(boNho, other.boNho)
+		return Objects.equals(baoHanh, other.baoHanh) && Objects.equals(boNho, other.boNho)
 				&& Double.doubleToLongBits(donGia) == Double.doubleToLongBits(other.donGia)
 				&& Objects.equals(hangVGA, other.hangVGA) && Objects.equals(idVga, other.idVga)
-				&& Objects.equals(tenVGA, other.tenVGA) && tonKho == other.tonKho;
+				&& Objects.equals(img, other.img) && Objects.equals(tenVGA, other.tenVGA) && tonKho == other.tonKho;
 	}
 
 }

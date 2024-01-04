@@ -12,6 +12,18 @@ public class SetFont {
 //	public static Font font1;
 //	public static Font font2;
 
+	
+	public static Font fontDetails_1() {
+		Font f1 = null;
+		try {
+			File fontStyle = new File("src/font/Roboto-Light.ttf");
+			f1 = Font.createFont(Font.TRUETYPE_FONT, fontStyle).deriveFont(13f);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return f1;
+	}
+	
 	public static Font fontDetails() {
 		Font f1 = null;
 		try {

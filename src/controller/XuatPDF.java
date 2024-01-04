@@ -163,8 +163,8 @@ public class XuatPDF {
 			document.add(info);
 			document.add(Chunk.NEWLINE);
 
-			PdfPTable pdfTable = new PdfPTable(5);
-			pdfTable.setWidths(new float[] { 10f, 35f, 15f, 15f, 15f });
+			PdfPTable pdfTable = new PdfPTable(6);
+			pdfTable.setWidths(new float[] { 10f, 35f, 15f, 15f, 20f, 20f });
 
 			PdfPCell cell1 = new PdfPCell(new Phrase("STT", SetFont.fontTNRBold()));
 			cell1.setBackgroundColor(new BaseColor(98, 181, 244));
@@ -175,6 +175,11 @@ public class XuatPDF {
 			cell2.setBackgroundColor(new BaseColor(98, 181, 244));
 			cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
 			pdfTable.addCell(cell2);
+
+			PdfPCell cell6 = new PdfPCell(new Phrase("Bảo hành", SetFont.fontTNRBold()));
+			cell6.setBackgroundColor(new BaseColor(98, 181, 244));
+			cell6.setHorizontalAlignment(Element.ALIGN_CENTER);
+			pdfTable.addCell(cell6);
 
 			PdfPCell cell3 = new PdfPCell(new Phrase("Số Lượng", SetFont.fontTNRBold()));
 			cell3.setBackgroundColor(new BaseColor(98, 181, 244));
@@ -196,6 +201,7 @@ public class XuatPDF {
 			PdfPCell cellTenSP;
 			PdfPCell cellSL;
 			PdfPCell cellDonGia;
+			PdfPCell cellBaoHanh;
 			PdfPCell cellTongTien;
 
 			for (ChiTietPhieu ctpn : ChiTietPhieuNhapDAO.getInstance().selectAllById(idDonNhap)) {
@@ -205,6 +211,9 @@ public class XuatPDF {
 
 				cellTenSP = new PdfPCell(new Phrase(ctpn.getTenSanPham(), SetFont.fontTNR()));
 				pdfTable.addCell(cellTenSP);
+
+				cellBaoHanh = new PdfPCell(new Phrase(ctpn.getBaoHanh(), SetFont.fontTNR()));
+				pdfTable.addCell(cellBaoHanh);
 
 				cellSL = new PdfPCell(new Phrase(ctpn.getSoLuong() + "", SetFont.fontTNR()));
 				cellSL.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -223,7 +232,7 @@ public class XuatPDF {
 			}
 
 			PdfPTable tableTotal = new PdfPTable(2);
-			tableTotal.setWidths(new float[] { 75f, 15f });
+			tableTotal.setWidths(new float[] { 95f, 20f });
 
 			PdfPCell cellTongCong = new PdfPCell(new Phrase("Tổng cộng:", SetFont.fontTNRBold()));
 			cellTongCong.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -389,7 +398,7 @@ public class XuatPDF {
 			document.add(Chunk.NEWLINE);
 
 			PdfPTable pdfTable = new PdfPTable(5);
-			pdfTable.setWidths(new float[] { 10f, 35f, 15f, 15f, 15f });
+			pdfTable.setWidths(new float[] { 10f, 35f, 15f, 15f, 15f, 15f });
 
 			PdfPCell cell1 = new PdfPCell(new Phrase("STT", SetFont.fontTNRBold()));
 			cell1.setBackgroundColor(new BaseColor(98, 181, 244));

@@ -195,6 +195,7 @@ public class KhachHangForm extends JInternalFrame {
 					tfNgayThamGia.setText(sdf.format(kh.getNgayThamGia()));
 
 					if (kh.getImg() == null) {
+						labelIMG.setIcon(null);
 						labelIMG.setText("Khách hàng chưa có ảnh!");
 					} else {
 

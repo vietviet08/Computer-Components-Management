@@ -56,7 +56,7 @@ public class DetailPhieuNhap extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private String[] columName = { "ID đơn nhập", "ID sản phẩm", "Tên sản phẩm", "Số lượng ", "Đơn giá" };
+	private String[] columName = { "ID đơn nhập", "ID sản phẩm", "Tên sản phẩm", "Bảo hành", "Số lượng ", "Đơn giá" };
 	private static JTable table;
 	private static DefaultTableModel tableModel;
 	private JTextField textField;
@@ -96,13 +96,13 @@ public class DetailPhieuNhap extends JFrame {
 				renderCenter.setHorizontalAlignment(JLabel.CENTER);
 
 //				table.getColumnModel().getColumn(2).setCellRenderer(renderCenter);
-				table.getColumnModel().getColumn(3).setCellRenderer(renderCenter);
-				table.getColumnModel().getColumn(4).setCellRenderer(renderRight);
+				table.getColumnModel().getColumn(4).setCellRenderer(renderCenter);
+				table.getColumnModel().getColumn(5).setCellRenderer(renderRight);
 
 				String gia = FormatToVND.vnd(i.getDonGia());
 
-				tableModel.addRow(
-						new Object[] { i.getIdPhieu(), i.getIdSanPham(), i.getTenSanPham(), i.getSoLuong(), gia });
+				tableModel.addRow(new Object[] { i.getIdPhieu(), i.getIdSanPham(), i.getTenSanPham(), i.getBaoHanh(),
+						i.getSoLuong(), gia });
 			}
 		} catch (Exception e) {
 		}
@@ -116,8 +116,9 @@ public class DetailPhieuNhap extends JFrame {
 		table.getColumnModel().getColumn(0).setPreferredWidth(100);
 		table.getColumnModel().getColumn(1).setPreferredWidth(150);
 		table.getColumnModel().getColumn(2).setPreferredWidth(500);
-		table.getColumnModel().getColumn(3).setPreferredWidth(100);
-		table.getColumnModel().getColumn(4).setPreferredWidth(200);
+		table.getColumnModel().getColumn(3).setPreferredWidth(150);
+		table.getColumnModel().getColumn(4).setPreferredWidth(100);
+		table.getColumnModel().getColumn(5).setPreferredWidth(200);
 		loadDataToTable(
 				ChiTietPhieuNhapDAO.getInstance().selectAllById(PhieuNhapForm.getPhieuNhapSelect().getIdPhieu()));
 	}

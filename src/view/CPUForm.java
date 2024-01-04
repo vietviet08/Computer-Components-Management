@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -16,6 +17,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -50,9 +53,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import color.SetColor;
 import controller.FormatToVND;
 import controller.TimKiemCPU;
+import dao.SanPhamDAO;
 import dao.cpuDAO;
 import font.SetFont;
 import model.cpu;
+import javax.swing.border.LineBorder;
+import javax.swing.JTextArea;
 
 public class CPUForm extends JInternalFrame {
 
@@ -70,6 +76,11 @@ public class CPUForm extends JInternalFrame {
 	public Font font1;
 	public Font font2;
 	private JComboBox<String> comboBoxSort;
+	private JLabel labelTen;
+	private JLabel labelIMG;
+	private JLabel labelTien;
+	private JLabel labelBaoHanh;
+	private JTextArea txtrAbc;
 
 	/**
 	 * Launch the application.
@@ -149,7 +160,7 @@ public class CPUForm extends JInternalFrame {
 			System.out.println(e);
 		}
 
-		setBounds(100, 100, 1200-30, 730);
+		setBounds(100, 100, 1200 - 30, 730);
 		getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();
@@ -251,9 +262,10 @@ public class CPUForm extends JInternalFrame {
 							XSSFCell bonho = excelRow.getCell(7);
 							XSSFCell tonkho = excelRow.getCell(8);
 							XSSFCell dongia = excelRow.getCell(9);
+							XSSFCell baohanh = excelRow.getCell(10);
 
 							model.addRow(new Object[] { idsp, idcpu, ten, xn, sonhan, soluong, diennang, bonho, tonkho,
-									dongia });
+									dongia, baohanh });
 						}
 						JOptionPane.showMessageDialog(null, "Thêm thành công!");
 						int answ = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm vào csdl không", "Thông báo",
@@ -271,10 +283,12 @@ public class CPUForm extends JInternalFrame {
 								String bonho = model.getValueAt(i, 7).toString();
 								int tonkho = (int) model.getValueAt(i, 8);
 								double dongia = (double) model.getValueAt(i, 9);
+								String baohanh = model.getValueAt(i, 10).toString();
 
-								cpu cp = new cpu(idsp, idcpu, ten, xn, sonhan, soluong, dien, bonho, tonkho, dongia);
+								cpu cp = new cpu(idsp, idcpu, ten, xn, sonhan, soluong, dien, bonho, tonkho, dongia,
+										baohanh, null);
 
-								cpuDAO.getInstance().insert(cp);
+								cpuDAO.getInstance().insertNotIMG(cp);
 
 							}
 						}
@@ -352,7 +366,7 @@ public class CPUForm extends JInternalFrame {
 		panel.add(btnNewButton_5);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 53, 1162, 648);
+		scrollPane.setBounds(0, 53, 780, 648);
 		getContentPane().add(scrollPane);
 
 		table = new JTable() {
@@ -371,6 +385,36 @@ public class CPUForm extends JInternalFrame {
 				return returnComp;
 			}
 		};
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cpu c = getSelectCPU();
+				labelTen.setText(c.getNameCpu());
+				labelBaoHanh.setText("Bảo hành: " + c.getBaoHanh());
+				labelTien.setText(FormatToVND.vnd(c.getDonGia()));
+
+				txtrAbc.setText(SanPhamDAO.getInstance().selectById(c.getIdSanPham()).getMoTa());
+
+				if (c.getImg() == null) {
+					labelIMG.setIcon(null);
+					labelIMG.setText("Sản phẩm hiện chưa có ảnh mẫu!");
+				} else {
+					Blob blob = c.getImg();
+					try {
+						byte[] by = blob.getBytes(1, (int) blob.length());
+						ImageIcon ii = new ImageIcon(by);
+						Image i = ii.getImage().getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(),
+								Image.SCALE_SMOOTH);
+						ii = new ImageIcon(i);
+						labelIMG.setText("");
+						labelIMG.setBorder(null);
+						labelIMG.setIcon(ii);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
 		table.getTableHeader().setBackground(SetColor.blueOp);
 		table.getTableHeader().setFont(SetFont.fontHeaderTable());
 		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "New column", "New column", "New column",
@@ -483,6 +527,43 @@ public class CPUForm extends JInternalFrame {
 				new String[] { "Sắp xếp", "Giá tăng dần", "Giá giảm dần", "Tồn kho tăng dần", "Tồn kho giảm dần" }));
 		comboBoxSort.setBounds(0, 8, 125, 32);
 		panel_1.add(comboBoxSort);
+
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(Color.WHITE);
+		panel_2.setBounds(790, 53, 372, 648);
+		getContentPane().add(panel_2);
+		panel_2.setLayout(null);
+
+		labelIMG = new JLabel("Ảnh sản phẩm");
+		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
+		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
+		labelIMG.setBounds(41, 50, 300, 350);
+		panel_2.add(labelIMG);
+
+		labelTien = new JLabel("0 đ");
+		labelTien.setForeground(new Color(190, 14, 30));
+		labelTien.setFont(SetFont.font1());
+		labelTien.setBounds(41, 402, 187, 23);
+		panel_2.add(labelTien);
+
+		labelBaoHanh = new JLabel("Bảo hành");
+		labelBaoHanh.setFont(SetFont.font1());
+		labelBaoHanh.setBounds(41, 436, 143, 23);
+		panel_2.add(labelBaoHanh);
+
+		labelTen = new JLabel("Tên CPU");
+		labelTen.setFont(SetFont.fontCategory());
+		labelTen.setBounds(41, 8, 300, 31);
+		panel_2.add(labelTen);
+
+		txtrAbc = new JTextArea();
+		txtrAbc.setOpaque(false);
+		txtrAbc.setFont(SetFont.fontDetails_1());
+		txtrAbc.setWrapStyleWord(true);
+		txtrAbc.setLineWrap(true);
+		txtrAbc.setEditable(false);
+		txtrAbc.setBounds(33, 470, 310, 167);
+		panel_2.add(txtrAbc);
 
 	}
 

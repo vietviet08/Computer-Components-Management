@@ -5,15 +5,21 @@ import java.awt.EventQueue;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.io.File;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,6 +34,8 @@ import dao.ramDAO;
 import font.SetFont;
 import model.Products;
 import model.ram;
+import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class CapNhatRAM extends JFrame {
 
@@ -43,6 +51,11 @@ public class CapNhatRAM extends JFrame {
 	private static JTextField tfGia;
 	private static JTextField tfTonKho;
 	private static JComboBox<String> comboBox;
+	private JButton btnUpload;
+	private static JLabel labelIMG;
+	private static JTextField tfBaoHanh;
+
+	public static String insert;
 
 	/**
 	 * Launch the application.
@@ -68,7 +81,7 @@ public class CapNhatRAM extends JFrame {
 	public CapNhatRAM() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 582, 368);
+		setBounds(100, 100, 790, 406);
 		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
 		contentPane = new JPanel() {
 			/**
@@ -104,7 +117,7 @@ public class CapNhatRAM extends JFrame {
 		lblNewLabel_1.setFont(SetFont.font());
 		lblNewLabel_1.setForeground(SetColor.copyRight);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(35, 341, 511, 14);
+		lblNewLabel_1.setBounds(35, 378, 740, 14);
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel("Tên RAM");
@@ -182,19 +195,31 @@ public class CapNhatRAM extends JFrame {
 				String idsp = comboBox.getSelectedItem().toString();
 
 				String idram = old.getIdRam();
-
 				ram r = new ram(idsp, idram, tfTen.getText(), tfLoai.getText(), tfDungLuong.getText(), tfBus.getText(),
-						Integer.parseInt(tfTonKho.getText()), Double.parseDouble(tfGia.getText()));
+						Integer.parseInt(tfTonKho.getText()), Double.parseDouble(tfGia.getText()), tfBaoHanh.getText(),
+						null);
+				if (insert.equals("")) {
+					int check = ramDAO.getInstance().updateNotIMG(r);
+					if (check > 0)
+						JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+					else
+						JOptionPane.showMessageDialog(null, "Cập nhật không thành công");
 
-				ramDAO.getInstance().update(r);
-				JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+				} else {
+					int check = ramDAO.getInstance().update(r);
+					if (check > 0)
+						JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+					else
+						JOptionPane.showMessageDialog(null, "Cập nhật không thành công");
+				}
+
 				RAMForm.loadDataToTable(ramDAO.getInstance().selectAll());
 				closeFrame();
 			}
 		});
 		btnNewButton.setFont(SetFont.font1());
 		btnNewButton.setBorder(null);
-		btnNewButton.setBounds(301, 265, 112, 35);
+		btnNewButton.setBounds(281, 332, 112, 28);
 		contentPane.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("Hủy");
@@ -206,7 +231,7 @@ public class CapNhatRAM extends JFrame {
 		});
 		btnNewButton_1.setFont(SetFont.font1());
 		btnNewButton_1.setBorder(null);
-		btnNewButton_1.setBounds(434, 265, 112, 35);
+		btnNewButton_1.setBounds(414, 332, 112, 28);
 		contentPane.add(btnNewButton_1);
 
 		JLabel lblNewLabel_2_1_2 = new JLabel("ID sản phẩm");
@@ -240,6 +265,51 @@ public class CapNhatRAM extends JFrame {
 		tfTonKho.setBorder(null);
 		tfTonKho.setBounds(382, 205, 164, 28);
 		contentPane.add(tfTonKho);
+
+		labelIMG = new JLabel("Ảnh CPU");
+		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
+		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
+		labelIMG.setBounds(557, 74, 223, 230);
+		contentPane.add(labelIMG);
+
+		btnUpload = new JButton("Upload");
+		btnUpload.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+				fileChooser.addChoosableFileFilter(
+						new FileNameExtensionFilter("*.IMAGE", "webp", "jpg", "jpeg", "gif", "png"));
+				int result = fileChooser.showSaveDialog(null);
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectFile = fileChooser.getSelectedFile();
+					ImageIcon ii = new ImageIcon(selectFile.getAbsolutePath());
+					Image i = ii.getImage();
+					i = i.getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(), Image.SCALE_SMOOTH);
+					labelIMG.setText("");
+					labelIMG.setIcon(new ImageIcon(i));
+					insert = selectFile.getAbsolutePath();
+				} else
+					JOptionPane.showMessageDialog(null, "Lỗi file!");
+			}
+		});
+		btnUpload.setFont(null);
+		btnUpload.setBorder(null);
+		btnUpload.setBounds(709, 310, 71, 21);
+		contentPane.add(btnUpload);
+
+		tfBaoHanh = new JTextField();
+		tfBaoHanh.setFont(SetFont.fontDetails());
+		tfBaoHanh.setColumns(10);
+		tfBaoHanh.setBorder(null);
+		tfBaoHanh.setBounds(382, 272, 164, 28);
+		contentPane.add(tfBaoHanh);
+
+		JLabel lblBaoHanh = new JLabel("Bảo hành");
+		lblBaoHanh.setForeground(new Color(254, 254, 254));
+		lblBaoHanh.setFont(SetFont.font1_());
+		lblBaoHanh.setBounds(302, 272, 84, 28);
+		contentPane.add(lblBaoHanh);
 	}
 
 	private void closeFrame() {
@@ -255,5 +325,34 @@ public class CapNhatRAM extends JFrame {
 		tfGia.setText(String.valueOf(r.getDonGia()));
 		tfTonKho.setText(String.valueOf(r.getTonkho()));
 		tfDungLuong.setText(r.getDungLuong());
+		tfBaoHanh.setText(r.getBaoHanh());
+
+		if (r.getImg() == null)
+			labelIMG.setText("Sản phẩm hiện chưa có ảnh mẫu!");
+		else {
+			Blob blob = r.getImg();
+			byte[] by;
+			try {
+				by = blob.getBytes(1, (int) blob.length());
+				ImageIcon ii = new ImageIcon(by);
+				Image i = ii.getImage().getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(),
+						Image.SCALE_SMOOTH);
+				ii = new ImageIcon(i);
+				labelIMG.setText("");
+				labelIMG.setIcon(ii);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
+
+	public static String getInsert() {
+		return insert;
+	}
+
+	public static void setInsert(String insert) {
+		CapNhatRAM.insert = insert;
+	}
+
 }

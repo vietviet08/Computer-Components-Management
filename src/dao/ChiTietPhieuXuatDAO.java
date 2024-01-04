@@ -22,7 +22,7 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "insert into chitietdonnhap (iddonxuat, idsanpham, idrieng = ?, tensanpham, soluong, dongia) values (?, ?, ?, ?, ?, ?)";
+			String sql = "insert into chitietdonnhap (iddonxuat, idsanpham, idrieng = ?, tensanpham, soluong, dongia, baohanh) values (?, ?, ?, ?, ?, ?, ?)";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -32,6 +32,7 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 			ps.setString(4, t.getTenSanPham());
 			ps.setInt(5, t.getSoLuong());
 			ps.setDouble(6, t.getDonGia());
+			ps.setString(7, t.getBaoHanh());
 
 			check = ps.executeUpdate();
 		} catch (SQLException e) {
@@ -48,7 +49,7 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "update chitietdonnhap set  idsanpham = ?, idrieng = ?, tensanpham = ?, soluong = ?, dongia = ? where iddonxuat = ?";
+			String sql = "update chitietdonnhap set  idsanpham = ?, idrieng = ?, tensanpham = ?, soluong = ?, dongia = ?, baohanh = ? where iddonxuat = ?";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -57,7 +58,8 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 			ps.setString(3, t.getTenSanPham());
 			ps.setInt(4, t.getSoLuong());
 			ps.setDouble(5, t.getDonGia());
-			ps.setString(6, t.getIdPhieu());
+			ps.setString(6, t.getBaoHanh());
+			ps.setString(7, t.getIdPhieu());
 
 			check = ps.executeUpdate();
 		} catch (SQLException e) {
@@ -103,7 +105,7 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 			while (rs.next()) {
 				ChiTietPhieu ct = new ChiTietPhieu(rs.getString("iddonxuat"), rs.getString("idsanpham"),
 						rs.getString("idrieng"), rs.getString("tensanpham"), rs.getInt("soluong"),
-						rs.getDouble("dongia"));
+						rs.getDouble("dongia"), rs.getString("baohanh"));
 
 				ttp.add(ct);
 
@@ -113,7 +115,7 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 		}
 		return ttp;
 	}
-	
+
 	public ArrayList<ChiTietPhieu> selectAllByID(String t) {
 		ArrayList<ChiTietPhieu> ttp = new ArrayList<ChiTietPhieu>();
 
@@ -125,13 +127,13 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 			PreparedStatement ps = con.prepareStatement(sql);
 
 			ps.setString(1, t);
-			
+
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
 				ChiTietPhieu ct = new ChiTietPhieu(rs.getString("iddonxuat"), rs.getString("idsanpham"),
 						rs.getString("idrieng"), rs.getString("tensanpham"), rs.getInt("soluong"),
-						rs.getDouble("dongia"));
+						rs.getDouble("dongia"), rs.getString("baohanh"));
 
 				ttp.add(ct);
 
@@ -157,7 +159,7 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 
 			while (rs.next()) {
 				ttp = new ChiTietPhieu(rs.getString("iddonxuat"), rs.getString("idsanpham"), rs.getString("tensanpham"),
-						rs.getString("idrieng"), rs.getInt("soluong"), rs.getDouble("dongia"));
+						rs.getString("idrieng"), rs.getInt("soluong"), rs.getDouble("dongia"), rs.getString("baohanh"));
 
 			}
 		} catch (SQLException e) {

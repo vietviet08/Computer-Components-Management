@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -14,6 +15,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -47,12 +50,15 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import color.SetColor;
 import controller.FormatToVND;
 import controller.TimKiemVGA;
+import dao.SanPhamDAO;
 import dao.vgaDAO;
 import font.SetFont;
 import model.vga;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JLabel;
+import javax.swing.border.LineBorder;
+import javax.swing.JTextArea;
 
 public class VGAForm extends JInternalFrame {
 
@@ -69,6 +75,11 @@ public class VGAForm extends JInternalFrame {
 	public Font font_1;
 	public Font font1;
 	public Font font2;
+	private JTextArea txtrAbc;
+	private JLabel labelBaoHanh;
+	private JLabel labelTien;
+	private JLabel lblTnVga;
+	private JLabel labelIMG;
 
 	/**
 	 * Launch the application.
@@ -96,13 +107,13 @@ public class VGAForm extends JInternalFrame {
 			for (vga i : v) {
 				DefaultTableCellRenderer right = new DefaultTableCellRenderer();
 				right.setHorizontalAlignment(SwingConstants.RIGHT);
-				
+
 				DefaultTableCellRenderer center = new DefaultTableCellRenderer();
 				center.setHorizontalAlignment(SwingConstants.CENTER);
-				
+
 				table.getColumnModel().getColumn(6).setCellRenderer(right);
 				table.getColumnModel().getColumn(5).setCellRenderer(center);
-				
+
 				String gia = FormatToVND.vnd(i.getDonGia());
 
 				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getIdVga(), i.getTenVGA(), i.getHangVGA(),
@@ -142,7 +153,7 @@ public class VGAForm extends JInternalFrame {
 			System.out.println(e);
 		}
 
-		setBounds(100, 100, 1200-30, 730);
+		setBounds(100, 100, 1200 - 30, 730);
 		getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();
@@ -151,7 +162,7 @@ public class VGAForm extends JInternalFrame {
 		panel.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 53, 1162, 648);
+		scrollPane.setBounds(0, 53, 781, 648);
 		getContentPane().add(scrollPane);
 
 		table = new JTable() {
@@ -170,6 +181,37 @@ public class VGAForm extends JInternalFrame {
 				return returnComp;
 			}
 		};
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				vga v = getVGASelect();
+				lblTnVga.setText(v.getTenVGA());
+				labelTien.setText(FormatToVND.vnd(v.getDonGia()));
+				labelBaoHanh.setText("Bảo hành: " + v.getBaoHanh());
+				txtrAbc.setText(SanPhamDAO.getInstance().selectById(v.getIdSanPham()).getMoTa());
+
+				if (v.getImg() == null) {
+					labelIMG.setIcon(null);
+					labelIMG.setText("Sản phẩm hiện chưa có ảnh mẫu");
+				} else {
+					labelIMG.setBorder(null);
+					Blob blob = v.getImg();
+					try {
+						byte[] by = blob.getBytes(1, (int) blob.length());
+
+						ImageIcon ii = new ImageIcon(by);
+						Image i = ii.getImage().getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(),
+								Image.SCALE_SMOOTH);
+						ii = new ImageIcon(i);
+						labelIMG.setIcon(ii);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+
+				}
+
+			}
+		});
 		table.getTableHeader().setBackground(SetColor.blueOp);
 		table.getTableHeader().setFont(SetFont.fontHeaderTable());
 		table.setModel(new DefaultTableModel(new Object[][] {},
@@ -277,11 +319,12 @@ public class VGAForm extends JInternalFrame {
 								String hang = model.getValueAt(i, 3).toString();
 								String bonho = model.getValueAt(i, 4).toString();
 								int tonkho = (int) model.getValueAt(i, 5);
-								double dongia = (double) model.getValueAt(i, 4);
+								double dongia = (double) model.getValueAt(i, 6);
+								String baohanh = model.getValueAt(i, 7).toString();
 
-								vga vga = new vga(id, idram, ten, hang, bonho, tonkho, dongia);
+								vga vga = new vga(id, idram, ten, hang, bonho, tonkho, dongia, baohanh, null);
 
-								vgaDAO.getInstance().insert(vga);
+								vgaDAO.getInstance().insertNotIMG(vga);
 							}
 						}
 					} catch (IOException iOException) {
@@ -358,7 +401,7 @@ public class VGAForm extends JInternalFrame {
 		panel_1.setBounds(635, 0, 557, 49);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
-		
+
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(VGAForm.class.getResource("/icon/search-24.png")));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -437,6 +480,44 @@ public class VGAForm extends JInternalFrame {
 		comboBox_1.setFont(SetFont.font());
 		comboBox_1.setBounds(10, 8, 126, 33);
 		panel_1.add(comboBox_1);
+
+		JPanel panel_2 = new JPanel();
+		panel_2.setLayout(null);
+		panel_2.setBackground(Color.WHITE);
+		panel_2.setBounds(790, 53, 372, 648);
+		getContentPane().add(panel_2);
+
+		labelIMG = new JLabel("Ảnh sản phẩm");
+		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
+		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
+		labelIMG.setBounds(41, 50, 300, 350);
+		panel_2.add(labelIMG);
+
+		labelTien = new JLabel("0 đ");
+		labelTien.setForeground(new Color(190, 14, 30));
+		labelTien.setFont(SetFont.font1());
+		labelTien.setBounds(41, 402, 187, 23);
+		panel_2.add(labelTien);
+
+		labelBaoHanh = new JLabel("Bảo hành");
+		labelBaoHanh.setFont(SetFont.font1());
+		labelBaoHanh.setBounds(41, 436, 143, 23);
+		panel_2.add(labelBaoHanh);
+
+		lblTnVga = new JLabel("Tên VGA");
+		lblTnVga.setFont(SetFont.fontCategory());
+		lblTnVga.setBounds(41, 8, 331, 31);
+		panel_2.add(lblTnVga);
+
+		txtrAbc = new JTextArea();
+		txtrAbc.setBounds(38, 459, 300, 178);
+		panel_2.add(txtrAbc);
+		txtrAbc.setBorder(null);
+		txtrAbc.setWrapStyleWord(true);
+		txtrAbc.setOpaque(false);
+		txtrAbc.setLineWrap(true);
+		txtrAbc.setFont(SetFont.fontDetails_1());
+		txtrAbc.setEditable(false);
 	}
 
 	public static vga getVGASelect() {
@@ -516,5 +597,4 @@ public class VGAForm extends JInternalFrame {
 			System.out.println(e);
 		}
 	}
-
 }

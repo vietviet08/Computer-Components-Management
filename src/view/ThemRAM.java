@@ -5,17 +5,21 @@ import java.awt.EventQueue;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -30,6 +34,8 @@ import dao.ramDAO;
 import font.SetFont;
 import model.Products;
 import model.ram;
+import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ThemRAM extends JFrame {
 
@@ -46,6 +52,9 @@ public class ThemRAM extends JFrame {
 	private JComboBox<String> comboBox;
 	private static JTextField tfIDRAM;
 	private JTextField tfTonKho;
+	private JTextField tfBaoHanh;
+
+	public static String insert = "";
 
 	/**
 	 * Launch the application.
@@ -71,7 +80,7 @@ public class ThemRAM extends JFrame {
 	public ThemRAM() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 520, 315);
+		setBounds(100, 100, 735, 315);
 		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
 		contentPane = new JPanel() {
 			/**
@@ -160,14 +169,27 @@ public class ThemRAM extends JFrame {
 					String bus = tfBus.getText();
 					int tonkho = Integer.parseInt(tfTonKho.getText());
 					double gia = Double.parseDouble(tfGia.getText());
+					String baoHanh = tfBaoHanh.getText();
 
 					if (tfTen.getText().equals("") || tfLoai.getText().equals("") || tfDungLuong.getText().equals("")
 							|| tfBus.getText().equals("") || tfGia.getText().equals("")) {
 						JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!");
 					} else {
-						ram r = new ram(id, idram, ten, loai, dungluong, bus, tonkho, gia);
-						ramDAO.getInstance().insert(r);
-						JOptionPane.showMessageDialog(null, "Thêm thành công");
+						ram r = new ram(id, idram, ten, loai, dungluong, bus, tonkho, gia, baoHanh, null);
+
+						if (insert.equals("")) {
+							int check = ramDAO.getInstance().insertNotIMG(r);
+							if (check > 0)
+								JOptionPane.showMessageDialog(null, "Thêm thành công");
+							else
+								JOptionPane.showMessageDialog(null, "Thêm không thành công");
+						} else {
+							int check = ramDAO.getInstance().insert(r);
+							if (check > 0)
+								JOptionPane.showMessageDialog(null, "Thêm thành công");
+							else
+								JOptionPane.showMessageDialog(null, "Thêm không thành công");
+						}
 						RAMForm.loadDataToTable(ramDAO.getInstance().selectAll());
 						closeFrame();
 					}
@@ -176,7 +198,7 @@ public class ThemRAM extends JFrame {
 		});
 		btnNewButton.setBorder(null);
 		btnNewButton.setFont(SetFont.font1());
-		btnNewButton.setBounds(142, 243, 89, 35);
+		btnNewButton.setBounds(281, 242, 89, 27);
 		contentPane.add(btnNewButton);
 
 		JButton btnHy = new JButton("Hủy");
@@ -188,7 +210,7 @@ public class ThemRAM extends JFrame {
 		});
 		btnHy.setBorder(null);
 		btnHy.setFont(SetFont.font1());
-		btnHy.setBounds(284, 243, 89, 35);
+		btnHy.setBounds(392, 242, 89, 27);
 		contentPane.add(btnHy);
 
 		tfLoai = new JTextField();
@@ -222,7 +244,7 @@ public class ThemRAM extends JFrame {
 		JLabel lblNewLabel_2 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_2.setForeground(SetColor.copyRight);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setBounds(10, 289, 482, 14);
+		lblNewLabel_2.setBounds(10, 289, 715, 14);
 		contentPane.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_1_4 = new JLabel("ID sản phẩm");
@@ -267,6 +289,51 @@ public class ThemRAM extends JFrame {
 		lblNewLabel_1_5_1.setFont(SetFont.font1_());
 		lblNewLabel_1_5_1.setBounds(10, 198, 83, 23);
 		contentPane.add(lblNewLabel_1_5_1);
+
+		JLabel labelIMG = new JLabel("Ảnh CPU");
+		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
+		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
+		labelIMG.setBounds(502, 41, 223, 225);
+		contentPane.add(labelIMG);
+
+		JButton btnUpload = new JButton("Upload");
+		btnUpload.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+				fileChooser.addChoosableFileFilter(
+						new FileNameExtensionFilter("*.IMAGE", "webp", "jpg", "jpeg", "gif", "png"));
+				int result = fileChooser.showSaveDialog(null);
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectFile = fileChooser.getSelectedFile();
+					ImageIcon ii = new ImageIcon(selectFile.getAbsolutePath());
+					Image i = ii.getImage();
+					i = i.getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(), Image.SCALE_SMOOTH);
+					labelIMG.setText("");
+					labelIMG.setIcon(new ImageIcon(i));
+					insert = selectFile.getAbsolutePath();
+				} else
+					JOptionPane.showMessageDialog(null, "Lỗi file!");
+			}
+		});
+		btnUpload.setFont(SetFont.font());
+		btnUpload.setBorder(null);
+		btnUpload.setBounds(654, 272, 71, 21);
+		contentPane.add(btnUpload);
+
+		tfBaoHanh = new JTextField();
+		tfBaoHanh.setFont(SetFont.fontDetails());
+		tfBaoHanh.setColumns(10);
+		tfBaoHanh.setBorder(null);
+		tfBaoHanh.setBounds(99, 243, 144, 26);
+		contentPane.add(tfBaoHanh);
+
+		JLabel lblNewLabel_1_5_1_1 = new JLabel("Bảo hành");
+		lblNewLabel_1_5_1_1.setForeground(new Color(254, 254, 254));
+		lblNewLabel_1_5_1_1.setFont(SetFont.font1_());
+		lblNewLabel_1_5_1_1.setBounds(10, 243, 83, 23);
+		contentPane.add(lblNewLabel_1_5_1_1);
 	}
 
 	private void closeFrame() {
@@ -304,6 +371,14 @@ public class ThemRAM extends JFrame {
 			}
 		}
 		tfIDRAM.setText("ram" + id);
+	}
+
+	public static String getInsert() {
+		return insert;
+	}
+
+	public static void setInsert(String insert) {
+		ThemRAM.insert = insert;
 	}
 
 }

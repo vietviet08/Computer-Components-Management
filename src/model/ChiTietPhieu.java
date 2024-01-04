@@ -10,13 +10,14 @@ public class ChiTietPhieu {
 	private String tenSanPham;
 	private int soLuong;
 	private double donGia;
+	private String baoHanh;
 
 	public ChiTietPhieu() {
 		super();
 	}
 
-	public ChiTietPhieu(String idPhieu, String idSanPham, String idRieng, String tenSanPham, int soLuong,
-			double donGia) {
+	public ChiTietPhieu(String idPhieu, String idSanPham, String idRieng, String tenSanPham, int soLuong, double donGia,
+			String baoHanh) {
 		super();
 //		this.stt = stt;
 		this.idPhieu = idPhieu;
@@ -25,6 +26,7 @@ public class ChiTietPhieu {
 		this.tenSanPham = tenSanPham;
 		this.soLuong = soLuong;
 		this.donGia = donGia;
+		this.baoHanh = baoHanh;
 	}
 
 //	public int getStt() {
@@ -34,7 +36,6 @@ public class ChiTietPhieu {
 //	public void setStt(int stt) {
 //		this.stt = stt;
 //	}
-
 
 	public String getIdRieng() {
 		return idRieng;
@@ -84,15 +85,24 @@ public class ChiTietPhieu {
 		this.donGia = donGia;
 	}
 
+	public String getBaoHanh() {
+		return baoHanh;
+	}
+
+	public void setBaoHanh(String baoHanh) {
+		this.baoHanh = baoHanh;
+	}
+
 	@Override
 	public String toString() {
-		return "ChiTietPhieu [idPhieu=" + idPhieu + ", idSanPham=" + idSanPham + ", tenSanPham=" + tenSanPham
-				+ ", soLuong=" + soLuong + ", donGia=" + donGia + "]";
+		return "ChiTietPhieu [idPhieu=" + idPhieu + ", idSanPham=" + idSanPham + ", idRieng=" + idRieng
+				+ ", tenSanPham=" + tenSanPham + ", soLuong=" + soLuong + ", donGia=" + donGia + ", baoHanh=" + baoHanh
+				+ "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(donGia, idPhieu, idSanPham, soLuong, tenSanPham);
+		return Objects.hash(baoHanh, donGia, idPhieu, idRieng, idSanPham, soLuong, tenSanPham);
 	}
 
 	@Override
@@ -104,9 +114,11 @@ public class ChiTietPhieu {
 		if (getClass() != obj.getClass())
 			return false;
 		ChiTietPhieu other = (ChiTietPhieu) obj;
-		return Double.doubleToLongBits(donGia) == Double.doubleToLongBits(other.donGia)
-				&& Objects.equals(idPhieu, other.idPhieu) && Objects.equals(idSanPham, other.idSanPham)
-				&& soLuong == other.soLuong && Objects.equals(tenSanPham, other.tenSanPham);
+		return Objects.equals(baoHanh, other.baoHanh)
+				&& Double.doubleToLongBits(donGia) == Double.doubleToLongBits(other.donGia)
+				&& Objects.equals(idPhieu, other.idPhieu) && Objects.equals(idRieng, other.idRieng)
+				&& Objects.equals(idSanPham, other.idSanPham) && soLuong == other.soLuong
+				&& Objects.equals(tenSanPham, other.tenSanPham);
 	}
 
 }

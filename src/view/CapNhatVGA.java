@@ -5,15 +5,21 @@ import java.awt.EventQueue;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.io.File;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,6 +34,8 @@ import dao.vgaDAO;
 import font.SetFont;
 import model.Products;
 import model.vga;
+import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class CapNhatVGA extends JFrame {
 
@@ -42,6 +50,11 @@ public class CapNhatVGA extends JFrame {
 	private static JTextField tfHang;
 	private static JTextField tfTonKho;
 	private static JComboBox<String> comboBox;
+	private static JTextField tfBaoHanh;
+	private static JLabel labelIMG;
+	private JButton btnUpload;
+
+	public static String insert = "";
 
 	/**
 	 * Launch the application.
@@ -67,7 +80,7 @@ public class CapNhatVGA extends JFrame {
 	public CapNhatVGA() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 588, 288);
+		setBounds(100, 100, 781, 322);
 		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
 		contentPane = new JPanel() {
 			/**
@@ -103,7 +116,7 @@ public class CapNhatVGA extends JFrame {
 		lblNewLabel_1.setForeground(SetColor.copyRight);
 		lblNewLabel_1.setFont(SetFont.font());
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(32, 268, 507, 14);
+		lblNewLabel_1.setBounds(10, 299, 762, 14);
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblTnVga = new JLabel("Tên VGA");
@@ -143,18 +156,34 @@ public class CapNhatVGA extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				vga v = VGAForm.getVGASelect();
 
-				vga vvga = new vga(v.getIdVga(), comboBox.getSelectedItem().toString(), tfTen.getText(),
+				vga vvga = new vga(comboBox.getSelectedItem().toString(), v
+						.getIdVga(), tfTen.getText(),
 						tfHang.getText(), tfBoNho.getText(), Integer.parseInt(tfTonKho.getText()),
-						Double.parseDouble(tfDonGia.getText()));
-				vgaDAO.getInstance().update(vvga);
-				JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
+						Double.parseDouble(tfDonGia.getText()), tfBaoHanh.getText(), null);
+
+				if (insert.equals("")) {
+					int check = vgaDAO.getInstance().updateNotIMG(vvga);
+					if (check > 0)
+						JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
+					else
+						JOptionPane.showMessageDialog(null, "Cập nhật không thành công!");
+
+				} else {
+					int check = vgaDAO.getInstance().update(vvga);
+					if (check > 0)
+						JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
+					else
+						JOptionPane.showMessageDialog(null, "Cập nhật không thành công!");
+
+				}
+
 				VGAForm.loadDataToTable(vgaDAO.getInstance().selectAll());
 				closeFrame();
 			}
 		});
 		btnNewButton.setFont(SetFont.font1());
 		btnNewButton.setBorder(null);
-		btnNewButton.setBounds(170, 227, 89, 30);
+		btnNewButton.setBounds(310, 239, 89, 30);
 		contentPane.add(btnNewButton);
 
 		JButton btnHy = new JButton("Hủy");
@@ -166,7 +195,7 @@ public class CapNhatVGA extends JFrame {
 		});
 		btnHy.setFont(SetFont.font1());
 		btnHy.setBorder(null);
-		btnHy.setBounds(298, 227, 89, 30);
+		btnHy.setBounds(438, 239, 89, 30);
 		contentPane.add(btnHy);
 
 		tfBoNho = new JTextField();
@@ -221,6 +250,51 @@ public class CapNhatVGA extends JFrame {
 		tfTonKho.setBorder(null);
 		tfTonKho.setBounds(101, 176, 158, 25);
 		contentPane.add(tfTonKho);
+
+		btnUpload = new JButton("Upload");
+		btnUpload.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+				fileChooser.addChoosableFileFilter(
+						new FileNameExtensionFilter("*.IMAGE", "webp", "jpg", "jpeg", "gif", "png"));
+				int result = fileChooser.showSaveDialog(null);
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectFile = fileChooser.getSelectedFile();
+					ImageIcon ii = new ImageIcon(selectFile.getAbsolutePath());
+					Image i = ii.getImage();
+					i = i.getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(), Image.SCALE_SMOOTH);
+					labelIMG.setText("");
+					labelIMG.setIcon(new ImageIcon(i));
+					insert = selectFile.getAbsolutePath();
+				} else
+					JOptionPane.showMessageDialog(null, "Lỗi file!");
+			}
+		});
+		btnUpload.setFont(SetFont.font());
+		btnUpload.setBorder(null);
+		btnUpload.setBounds(701, 267, 71, 21);
+		contentPane.add(btnUpload);
+
+		labelIMG = new JLabel("Ảnh CPU");
+		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
+		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
+		labelIMG.setBounds(549, 26, 223, 230);
+		contentPane.add(labelIMG);
+
+		JLabel lblNewLabel_2_1_3_1 = new JLabel("Bảo hành");
+		lblNewLabel_2_1_3_1.setForeground(new Color(254, 254, 254));
+		lblNewLabel_2_1_3_1.setFont(SetFont.font1_());
+		lblNewLabel_2_1_3_1.setBounds(20, 231, 78, 25);
+		contentPane.add(lblNewLabel_2_1_3_1);
+
+		tfBaoHanh = new JTextField();
+		tfBaoHanh.setFont(SetFont.fontDetails());
+		tfBaoHanh.setColumns(10);
+		tfBaoHanh.setBorder(null);
+		tfBaoHanh.setBounds(101, 231, 158, 25);
+		contentPane.add(tfBaoHanh);
 	}
 
 	private void closeFrame() {
@@ -235,6 +309,34 @@ public class CapNhatVGA extends JFrame {
 		tfDonGia.setText(String.valueOf(v.getDonGia()));
 		tfTonKho.setText(String.valueOf(v.getTonKho()));
 		tfHang.setText(v.getHangVGA());
+		tfBaoHanh.setText(v.getBaoHanh());
+
+		if (v.getImg() == null)
+			labelIMG.setText("Sản phẩm hiện chưa có ảnh mẫu!");
+		else {
+			Blob blob = v.getImg();
+			byte[] by;
+			try {
+				by = blob.getBytes(1, (int) blob.length());
+				ImageIcon ii = new ImageIcon(by);
+				Image i = ii.getImage().getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(),
+						Image.SCALE_SMOOTH);
+				ii = new ImageIcon(i);
+				labelIMG.setText("");
+				labelIMG.setIcon(ii);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public static String getInsert() {
+		return insert;
+	}
+
+	public static void setInsert(String insert) {
+		CapNhatVGA.insert = insert;
 	}
 
 }

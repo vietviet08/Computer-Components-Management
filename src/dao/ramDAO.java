@@ -1,5 +1,9 @@
 package dao;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +13,8 @@ import java.util.ArrayList;
 import db.JDBCUntil;
 import model.ProductNhap;
 import model.ram;
+import view.CapNhatRAM;
+import view.ThemRAM;
 
 public class ramDAO implements DAOInterface<ram> {
 
@@ -23,7 +29,7 @@ public class ramDAO implements DAOInterface<ram> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "INSERT INTO ram (idsanpham, idram, tenram, loairam, dungluong, bus, tonkho, dongia) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO ram (idsanpham, idram, tenram, loairam, dungluong, bus, tonkho, dongia, baohanh, img) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -35,6 +41,46 @@ public class ramDAO implements DAOInterface<ram> {
 			ps.setString(6, t.getBus());
 			ps.setInt(7, t.getTonkho());
 			ps.setDouble(8, t.getDonGia());
+			ps.setString(9, t.getBaoHanh());
+
+			try {
+				InputStream is = new FileInputStream(new File(ThemRAM.getInsert()));
+				ps.setBlob(10, is);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+
+			check = ps.executeUpdate();
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
+	public int insertNotIMG(ram t) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "INSERT INTO ram (idsanpham, idram, tenram, loairam, dungluong, bus, tonkho, dongia, baohanh) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getIdRam());
+			ps.setString(3, t.getTenRam());
+			ps.setString(4, t.getLoai());
+			ps.setString(5, t.getDungLuong());
+			ps.setString(6, t.getBus());
+			ps.setInt(7, t.getTonkho());
+			ps.setDouble(8, t.getDonGia());
+			ps.setString(9, t.getBaoHanh());
+
 			check = ps.executeUpdate();
 
 			JDBCUntil.closeConnection(con);
@@ -48,6 +94,45 @@ public class ramDAO implements DAOInterface<ram> {
 
 	@Override
 	public int update(ram t) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "UPDATE ram SET idsanpham = ?, tenram = ?, loairam = ?, dungluong = ?, bus = ?, tonkho = ?, dongia = ?, baohanh = ?, img = ? WHERE idram = ?;";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getTenRam());
+			ps.setString(3, t.getLoai());
+			ps.setString(4, t.getDungLuong());
+			ps.setString(5, t.getBus());
+			ps.setInt(6, t.getTonkho());
+			ps.setDouble(7, t.getDonGia());
+			ps.setString(8, t.getBaoHanh());
+
+			try {
+				InputStream is = new FileInputStream(new File(CapNhatRAM.getInsert()));
+				ps.setBlob(9, is);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+
+			ps.setString(10, t.getIdRam());
+
+			check = ps.executeUpdate();
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
+	public int updateNotIMG(ram t) {
 		int check = 0;
 
 		try {
@@ -142,7 +227,7 @@ public class ramDAO implements DAOInterface<ram> {
 			while (rs.next()) {
 				ram ram = new ram(rs.getString("idsanpham"), rs.getString("idram"), rs.getString("tenram"),
 						rs.getString("loairam"), rs.getString("dungluong"), rs.getString("bus"), rs.getInt("tonkho"),
-						rs.getDouble("dongia"));
+						rs.getDouble("dongia"), rs.getString("baohanh"), rs.getBlob("img"));
 				r.add(ram);
 			}
 
@@ -169,7 +254,7 @@ public class ramDAO implements DAOInterface<ram> {
 
 			while (rs.next()) {
 				ram ram = new ram(rs.getString("idsanpham"), rs.getString("idram"), rs.getString("tenram"),
-						rs.getDouble("dongia"));
+						rs.getDouble("dongia"), rs.getString("baohanh"));
 				list.add(ram);
 			}
 
@@ -200,7 +285,7 @@ public class ramDAO implements DAOInterface<ram> {
 			while (rs.next()) {
 				r = new ram(rs.getString("idsanpham"), rs.getString("idram"), rs.getString("tenram"),
 						rs.getString("loairam"), rs.getString("dungluong"), rs.getString("bus"), rs.getInt("tonkho"),
-						rs.getDouble("dongia"));
+						rs.getDouble("dongia"), rs.getString("baohanh"), rs.getBlob("img"));
 			}
 
 			JDBCUntil.closeConnection(con);

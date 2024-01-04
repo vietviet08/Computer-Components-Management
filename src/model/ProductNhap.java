@@ -8,14 +8,16 @@ public class ProductNhap {
 	private String name;
 	private int soLuong;
 	private double gia;
+	private String baohanh;
 
-	public ProductNhap(String idsanpham, String privateId, String name, int soLuong, double gia) {
+	public ProductNhap(String idsanpham, String privateId, String name, int soLuong, double gia, String baohanh) {
 		super();
 		this.idsanpham = idsanpham;
 		this.privateId = privateId;
 		this.name = name;
 		this.soLuong = soLuong;
 		this.gia = gia;
+		this.baohanh = baohanh;
 	}
 
 	public ProductNhap() {
@@ -62,15 +64,23 @@ public class ProductNhap {
 		this.soLuong = soLuong;
 	}
 
+	public String getBaohanh() {
+		return baohanh;
+	}
+
+	public void setBaohanh(String baohanh) {
+		this.baohanh = baohanh;
+	}
+
 	@Override
 	public String toString() {
 		return "ProductNhap [idsanpham=" + idsanpham + ", privateId=" + privateId + ", name=" + name + ", soLuong="
-				+ soLuong + ", gia=" + gia + "]";
+				+ soLuong + ", gia=" + gia + ", baohanh=" + baohanh + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(gia, idsanpham, name, privateId, soLuong);
+		return Objects.hash(baohanh, gia, idsanpham, name, privateId, soLuong);
 	}
 
 	@Override
@@ -82,7 +92,8 @@ public class ProductNhap {
 		if (getClass() != obj.getClass())
 			return false;
 		ProductNhap other = (ProductNhap) obj;
-		return Double.doubleToLongBits(gia) == Double.doubleToLongBits(other.gia)
+		return Objects.equals(baohanh, other.baohanh)
+				&& Double.doubleToLongBits(gia) == Double.doubleToLongBits(other.gia)
 				&& Objects.equals(idsanpham, other.idsanpham) && Objects.equals(name, other.name)
 				&& Objects.equals(privateId, other.privateId) && soLuong == other.soLuong;
 	}
