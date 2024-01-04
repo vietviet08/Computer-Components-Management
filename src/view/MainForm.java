@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -48,7 +49,6 @@ public class MainForm extends JFrame {
 	public Font font1;
 	public Font font2;
 	public static JPanel maincontent;
-	private JTextField textField;
 	private JLabel btnNhaCungCap;
 	private JLabel btnNhapHang;
 	private JLabel btnPhieuNhap;
@@ -69,7 +69,6 @@ public class MainForm extends JFrame {
 	private JLabel btnCase;
 	private JLabel btnTaiNghe;
 	private JLabel lblNewLabel;
-	private JLabel lblNewLabel_1;
 	private JPanel panel_3;
 	private JPanel panel_5;
 	private JPanel panel_6;
@@ -78,6 +77,7 @@ public class MainForm extends JFrame {
 	private JPanel panel_9;
 	private JPanel panel_4;
 	private JPanel panel_10;
+	private JLabel lblNewLabel_2;
 
 	/**
 	 * Launch the application.
@@ -166,7 +166,7 @@ public class MainForm extends JFrame {
 		navbar.setBackground(blue);
 		navbar.setForeground(whiteFont);
 		navbar.setFont(font_1);
-		navbar.setBounds(220, 0, 642, 37);
+		navbar.setBounds(220, 0, 1175, 37);
 		contentPane.add(navbar);
 		navbar.setLayout(null);
 
@@ -197,12 +197,13 @@ public class MainForm extends JFrame {
 			}
 		});
 		btnAllProduct.setBackground(blue);
-		btnAllProduct.setFont(font);
+		btnAllProduct.setFont(SetFont.fontCategoryPr());
 		btnAllProduct.setBounds(10, 11, 94, 15);
 		navbar.add(btnAllProduct);
 		btnAllProduct.setBorder(null);
 
 		btnCpu = new JLabel("CPU");
+		btnCpu.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-cpu-20.png")));
 		btnCpu.setHorizontalAlignment(SwingConstants.CENTER);
 		btnCpu.addMouseListener(new MouseAdapter() {
 			@Override
@@ -228,13 +229,14 @@ public class MainForm extends JFrame {
 			}
 		});
 		btnCpu.setBackground(blue);
-		btnCpu.setFont(font);
+		btnCpu.setFont(SetFont.fontCategoryPr());
 		btnCpu.setForeground(whiteFont);
 		btnCpu.setBorder(null);
-		btnCpu.setBounds(98, 7, 49, 22);
+		btnCpu.setBounds(110, 7, 65, 22);
 		navbar.add(btnCpu);
 
 		btnRam = new JLabel("RAM");
+		btnRam.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-memory-slot-20.png")));
 		btnRam.setHorizontalAlignment(SwingConstants.CENTER);
 		btnRam.setOpaque(false);
 		btnRam.addMouseListener(new MouseAdapter() {
@@ -262,12 +264,13 @@ public class MainForm extends JFrame {
 		});
 		btnRam.setBackground(blue);
 		btnRam.setForeground(whiteFont);
-		btnRam.setFont(font);
+		btnRam.setFont(SetFont.fontCategoryPr());
 		btnRam.setBorder(null);
-		btnRam.setBounds(146, 7, 49, 22);
+		btnRam.setBounds(187, 7, 65, 22);
 		navbar.add(btnRam);
 
 		btnVga = new JLabel("VGA");
+		btnVga.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-video-card-20.png")));
 		btnVga.setHorizontalAlignment(SwingConstants.CENTER);
 		btnVga.addMouseListener(new MouseAdapter() {
 			@Override
@@ -294,12 +297,13 @@ public class MainForm extends JFrame {
 		});
 		btnVga.setBackground(blue);
 		btnVga.setForeground(whiteFont);
-		btnVga.setFont(font);
+		btnVga.setFont(SetFont.fontCategoryPr());
 		btnVga.setBorder(null);
-		btnVga.setBounds(194, 7, 49, 22);
+		btnVga.setBounds(262, 7, 65, 22);
 		navbar.add(btnVga);
 
 		btnMainboard = new JLabel("Main Board");
+		btnMainboard.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-motherboard-20.png")));
 		btnMainboard.setHorizontalAlignment(SwingConstants.CENTER);
 		btnMainboard.addMouseListener(new MouseAdapter() {
 			@Override
@@ -324,12 +328,13 @@ public class MainForm extends JFrame {
 		});
 		btnMainboard.setBackground(blue);
 		btnMainboard.setForeground(whiteFont);
-		btnMainboard.setFont(font);
+		btnMainboard.setFont(SetFont.fontCategoryPr());
 		btnMainboard.setBorder(null);
-		btnMainboard.setBounds(242, 7, 64, 22);
+		btnMainboard.setBounds(337, 7, 95, 22);
 		navbar.add(btnMainboard);
 
 		btnNgun = new JLabel("Nguồn");
+		btnNgun.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-electrical-20.png")));
 		btnNgun.setHorizontalAlignment(SwingConstants.CENTER);
 		btnNgun.addMouseListener(new MouseAdapter() {
 			@Override
@@ -353,13 +358,14 @@ public class MainForm extends JFrame {
 			}
 		});
 		btnNgun.setForeground(whiteFont);
-		btnNgun.setFont(font);
+		btnNgun.setFont(SetFont.fontCategoryPr());
 		btnNgun.setBackground(blue);
 		btnNgun.setBorder(null);
-		btnNgun.setBounds(356, 7, 49, 22);
+		btnNgun.setBounds(517, 7, 75, 22);
 		navbar.add(btnNgun);
 
 		btnMnHnh = new JLabel("Màn hình");
+		btnMnHnh.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-screen-20.png")));
 		btnMnHnh.setHorizontalAlignment(SwingConstants.CENTER);
 		btnMnHnh.addMouseListener(new MouseAdapter() {
 			@Override
@@ -383,13 +389,14 @@ public class MainForm extends JFrame {
 			}
 		});
 		btnMnHnh.setForeground(whiteFont);
-		btnMnHnh.setFont(font);
+		btnMnHnh.setFont(SetFont.fontCategoryPr());
 		btnMnHnh.setBackground(blue);
 		btnMnHnh.setBorder(null);
-		btnMnHnh.setBounds(404, 7, 64, 22);
+		btnMnHnh.setBounds(602, 7, 95, 22);
 		navbar.add(btnMnHnh);
 
 		btnChut = new JLabel("Chuột");
+		btnChut.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-mouse-20.png")));
 		btnChut.setHorizontalAlignment(SwingConstants.CENTER);
 		btnChut.addMouseListener(new MouseAdapter() {
 			@Override
@@ -413,13 +420,14 @@ public class MainForm extends JFrame {
 			}
 		});
 		btnChut.setForeground(whiteFont);
-		btnChut.setFont(font);
+		btnChut.setFont(SetFont.fontCategoryPr());
 		btnChut.setBackground(blue);
 		btnChut.setBorder(null);
-		btnChut.setBounds(468, 7, 49, 22);
+		btnChut.setBounds(705, 7, 75, 22);
 		navbar.add(btnChut);
 
 		btnBnPhm = new JLabel("Bàn phím");
+		btnBnPhm.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-keyboard-20.png")));
 		btnBnPhm.setHorizontalAlignment(SwingConstants.CENTER);
 		btnBnPhm.addMouseListener(new MouseAdapter() {
 			@Override
@@ -443,13 +451,14 @@ public class MainForm extends JFrame {
 			}
 		});
 		btnBnPhm.setForeground(whiteFont);
-		btnBnPhm.setFont(font);
+		btnBnPhm.setFont(SetFont.fontCategoryPr());
 		btnBnPhm.setBackground(blue);
 		btnBnPhm.setBorder(null);
-		btnBnPhm.setBounds(518, 7, 61, 22);
+		btnBnPhm.setBounds(790, 7, 95, 22);
 		navbar.add(btnBnPhm);
 
 		btnCase = new JLabel("Case");
+		btnCase.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-workstation-20 (1).png")));
 		btnCase.setHorizontalAlignment(SwingConstants.CENTER);
 		btnCase.addMouseListener(new MouseAdapter() {
 			@Override
@@ -473,13 +482,14 @@ public class MainForm extends JFrame {
 			}
 		});
 		btnCase.setForeground(whiteFont);
-		btnCase.setFont(font);
+		btnCase.setFont(SetFont.fontCategoryPr());
 		btnCase.setBorder(null);
 		btnCase.setBackground(blue);
-		btnCase.setBounds(305, 7, 52, 22);
+		btnCase.setBounds(442, 7, 65, 22);
 		navbar.add(btnCase);
 
 		btnTaiNghe = new JLabel("Tai nghe");
+		btnTaiNghe.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-headphone-20.png")));
 		btnTaiNghe.setHorizontalAlignment(SwingConstants.CENTER);
 		btnTaiNghe.addMouseListener(new MouseAdapter() {
 			@Override
@@ -503,35 +513,26 @@ public class MainForm extends JFrame {
 			}
 		});
 		btnTaiNghe.setForeground(whiteFont);
-		btnTaiNghe.setFont(font);
+		btnTaiNghe.setFont(SetFont.fontCategoryPr());
 		btnTaiNghe.setBorder(null);
 		btnTaiNghe.setBackground(blue);
-		btnTaiNghe.setBounds(574, 7, 64, 22);
+		btnTaiNghe.setBounds(888, 7, 95, 22);
 		navbar.add(btnTaiNghe);
+		
+		JLabel lblCng = new JLabel("Ổ cứng");
+		lblCng.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-ssd-20.png")));
+		lblCng.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCng.setForeground(new Color(254, 254, 254));
+		lblCng.setFont(SetFont.fontCategoryPr());
+		lblCng.setBorder(null);
+		lblCng.setBackground(new Color(64, 143, 221));
+		lblCng.setBounds(985, 7, 95, 22);
+		navbar.add(lblCng);
 
 		maincontent = new JPanel();
 		maincontent.setBounds(220, 37, 1175, 730);
 		contentPane.add(maincontent);
 		maincontent.setLayout(new CardLayout(0, 0));
-
-		JPanel panel = new JPanel();
-		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-				"© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029", TitledBorder.LEFT,
-				TitledBorder.TOP, font, SetColor.redB));
-		panel.setBounds(872, 0, 523, 37);
-		contentPane.add(panel);
-		panel.setLayout(null);
-
-		JButton btnNewButton_1 = new JButton("Đóng góp");
-		btnNewButton_1.setFont(font_1);
-		btnNewButton_1.setBackground(new Color(74, 176, 63));
-		btnNewButton_1.setBounds(412, 12, 100, 20);
-		panel.add(btnNewButton_1);
-
-		textField = new JTextField();
-		textField.setBounds(10, 13, 390, 18);
-		panel.add(textField);
-		textField.setColumns(10);
 
 		PanelRound panel_1 = new PanelRound() {
 			/**
@@ -567,10 +568,10 @@ public class MainForm extends JFrame {
 		ClockPane cp = new ClockPane();
 		cp.setBackground(blue);
 		cp.setOpaque(false);
-		
+
 		JSeparator separator = new JSeparator();
 		separator.setBackground(Color.WHITE);
-		separator.setBounds(10, 90, 190, 2);
+		separator.setBounds(7, 135, 200, 2);
 		panel_1.add(separator);
 		panelDateTime.add(cp);
 //		 cp.BOTTOM_ALIGNMENT
@@ -583,19 +584,12 @@ public class MainForm extends JFrame {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setForeground(new Color(254, 254, 254));
 		lblNewLabel.setFont(SetFont.font1_());
-		lblNewLabel.setBounds(0, 53, 207, 32);
+		lblNewLabel.setBounds(0, 95, 207, 32);
 		panel_1.add(lblNewLabel);
-
-		lblNewLabel_1 = new JLabel("Welcome back, have a good day!!!");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setForeground(new Color(254, 254, 254));
-		lblNewLabel_1.setFont(null);
-		lblNewLabel_1.setBounds(0, 33, 207, 14);
-		panel_1.add(lblNewLabel_1);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setOpaque(false);
-		panel_2.setBounds(0, 96, 210, 45);
+		panel_2.setBounds(0, 189, 210, 45);
 		panel_1.add(panel_2);
 		panel_2.setLayout(null);
 
@@ -604,8 +598,8 @@ public class MainForm extends JFrame {
 		btnNhaCungCap.setBounds(25, 5, 160, 34);
 		panel_2.add(btnNhaCungCap);
 		btnNhaCungCap.setHorizontalAlignment(SwingConstants.LEADING);
-		btnNhaCungCap.setText("Nhà Phân Phối");
-		btnNhaCungCap.setIconTextGap(10);
+		btnNhaCungCap.setText("Nhà phân phối");
+		btnNhaCungCap.setIconTextGap(15);
 		btnNhaCungCap.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-flyer-distributor-male-32.png")));
 		btnNhaCungCap.addMouseListener(new MouseAdapter() {
 			@Override
@@ -629,8 +623,7 @@ public class MainForm extends JFrame {
 //				btnPhieuNhap.setBackground(blue);
 //				btnKhchHng.setBackground(blue);
 //				btnThongKe.setBackground(blue);
-				
-				
+
 				btnNhaCungCap.setForeground(green);
 				btnNhapHang.setForeground(whiteFont);
 				btnXuatHang.setForeground(whiteFont);
@@ -668,7 +661,7 @@ public class MainForm extends JFrame {
 			}
 		});
 		// btnNhaCungCap.setFont(font1);
-		btnNhaCungCap.setFont(SetFont.font1());
+		btnNhaCungCap.setFont(SetFont.fontCategory());
 		btnNhaCungCap.setBackground(SetColor.blueOp);
 		btnNhaCungCap.setForeground(whiteFont);
 		btnNhaCungCap.setBorder(null);
@@ -676,7 +669,7 @@ public class MainForm extends JFrame {
 		panel_3 = new JPanel();
 		panel_3.setLayout(null);
 		panel_3.setOpaque(false);
-		panel_3.setBounds(0, 142, 210, 45);
+		panel_3.setBounds(0, 235, 210, 45);
 		panel_1.add(panel_3);
 
 		btnNhapHang = new JLabel();
@@ -684,10 +677,10 @@ public class MainForm extends JFrame {
 		panel_3.add(btnNhapHang);
 		// btnNhapHang.setRadius(10);
 		// btnNhapHang.setBorderColor(new Color(64, 143, 221));
-		btnNhapHang.setText("Nhập Hàng");
-		btnNhapHang.setIconTextGap(10);
+		btnNhapHang.setText("Nhập hàng");
+		btnNhapHang.setIconTextGap(15);
 		btnNhapHang.setHorizontalAlignment(SwingConstants.LEFT);
-		btnNhapHang.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-warehouse-32.png")));
+		btnNhapHang.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-load-cargo-32.png")));
 		btnNhapHang.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -707,8 +700,7 @@ public class MainForm extends JFrame {
 //				btnPhieuNhap.setBackground(blue);
 //				btnKhchHng.setBackground(blue);
 //				btnThongKe.setBackground(blue);
-				
-				
+
 				btnNhaCungCap.setForeground(whiteFont);
 				btnNhapHang.setForeground(green);
 				btnXuatHang.setForeground(whiteFont);
@@ -743,7 +735,7 @@ public class MainForm extends JFrame {
 //					btnNhapHang.setBackground(blue);
 			}
 		});
-		btnNhapHang.setFont(SetFont.font1());
+		btnNhapHang.setFont(SetFont.fontCategory());
 		btnNhapHang.setBackground(blue);
 		btnNhapHang.setForeground(whiteFont);
 		btnNhapHang.setBorder(null);
@@ -751,7 +743,7 @@ public class MainForm extends JFrame {
 		panel_5 = new JPanel();
 		panel_5.setLayout(null);
 		panel_5.setOpaque(false);
-		panel_5.setBounds(0, 366, 210, 45);
+		panel_5.setBounds(0, 459, 210, 45);
 		panel_1.add(panel_5);
 
 		btnThongKe = new JLabel();
@@ -759,8 +751,8 @@ public class MainForm extends JFrame {
 		panel_5.add(btnThongKe);
 		// btnThongKe.setRadius(10);
 		// btnThongKe.setBorderColor(new Color(64, 143, 221));
-		btnThongKe.setText("Thống Kê");
-		btnThongKe.setIconTextGap(10);
+		btnThongKe.setText("Thống kê");
+		btnThongKe.setIconTextGap(15);
 		btnThongKe.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-stocks-32.png")));
 		btnThongKe.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -785,7 +777,6 @@ public class MainForm extends JFrame {
 //				btnKhchHng.setBackground(blue);
 ////				btnThongKe.setColor(blueOp);
 
-				
 				btnNhaCungCap.setForeground(whiteFont);
 				btnNhapHang.setForeground(whiteFont);
 				btnXuatHang.setForeground(whiteFont);
@@ -793,8 +784,7 @@ public class MainForm extends JFrame {
 				btnPhieuNhap.setForeground(whiteFont);
 				btnKhchHng.setForeground(whiteFont);
 				btnThongKe.setForeground(green);
-				
-				
+
 				BooleanClick.setBtnNhaCungCap(false);
 				BooleanClick.setBtnNhapHang(false);
 				BooleanClick.setBtnPhieuNhap(false);
@@ -822,7 +812,7 @@ public class MainForm extends JFrame {
 					btnThongKe.setForeground(whiteFont);
 			}
 		});
-		btnThongKe.setFont(SetFont.font1());
+		btnThongKe.setFont(SetFont.fontCategory());
 
 		btnThongKe.setForeground(whiteFont);
 		btnThongKe.setBorder(null);
@@ -830,7 +820,7 @@ public class MainForm extends JFrame {
 		panel_6 = new JPanel();
 		panel_6.setLayout(null);
 		panel_6.setOpaque(false);
-		panel_6.setBounds(0, 187, 210, 45);
+		panel_6.setBounds(0, 280, 210, 45);
 		panel_1.add(panel_6);
 
 		btnPhieuNhap = new JLabel();
@@ -838,9 +828,9 @@ public class MainForm extends JFrame {
 		panel_6.add(btnPhieuNhap);
 		// btnPhieuNhap.setRadius(10);
 		// btnPhieuNhap.setBorderColor(new Color(64, 143, 221));
-		btnPhieuNhap.setText("Phiếu Nhập");
-		btnPhieuNhap.setIconTextGap(10);
-		btnPhieuNhap.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-bill-32 (2).png")));
+		btnPhieuNhap.setText("Phiếu nhập");
+		btnPhieuNhap.setIconTextGap(15);
+		btnPhieuNhap.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-parchment-32.png")));
 		btnPhieuNhap.setHorizontalAlignment(SwingConstants.LEFT);
 		btnPhieuNhap.addMouseListener(new MouseAdapter() {
 			@Override
@@ -863,7 +853,7 @@ public class MainForm extends JFrame {
 //				btnPhieuNhap.setBackground(blueOp);
 //				btnKhchHng.setBackground(blue);
 //				btnThongKe.setBackground(blue);
-				
+
 				btnNhaCungCap.setForeground(whiteFont);
 				btnNhapHang.setForeground(whiteFont);
 				btnXuatHang.setForeground(whiteFont);
@@ -871,7 +861,6 @@ public class MainForm extends JFrame {
 				btnPhieuNhap.setForeground(green);
 				btnKhchHng.setForeground(whiteFont);
 				btnThongKe.setForeground(whiteFont);
-				
 
 				BooleanClick.setBtnNhaCungCap(false);
 				BooleanClick.setBtnNhapHang(false);
@@ -898,7 +887,7 @@ public class MainForm extends JFrame {
 //					btnPhieuNhap.setBackground(blue);
 			}
 		});
-		btnPhieuNhap.setFont(SetFont.font1());
+		btnPhieuNhap.setFont(SetFont.fontCategory());
 		btnPhieuNhap.setBackground(blue);
 		btnPhieuNhap.setForeground(whiteFont);
 		btnPhieuNhap.setBorder(null);
@@ -906,7 +895,7 @@ public class MainForm extends JFrame {
 		panel_7 = new JPanel();
 		panel_7.setLayout(null);
 		panel_7.setOpaque(false);
-		panel_7.setBounds(0, 232, 210, 45);
+		panel_7.setBounds(0, 325, 210, 45);
 		panel_1.add(panel_7);
 
 		btnXuatHang = new JLabel();
@@ -914,9 +903,9 @@ public class MainForm extends JFrame {
 		panel_7.add(btnXuatHang);
 		// btnXuatHang.setRadius(10);
 		// btnXuatHang.setBorderColor(new Color(64, 143, 221));
-		btnXuatHang.setText("Xuất Hàng");
-		btnXuatHang.setIconTextGap(10);
-		btnXuatHang.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-delivery-person-32.png")));
+		btnXuatHang.setText("Xuất hàng");
+		btnXuatHang.setIconTextGap(15);
+		btnXuatHang.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-successful-delivery-32.png")));
 		btnXuatHang.setHorizontalAlignment(SwingConstants.LEFT);
 		btnXuatHang.addMouseListener(new MouseAdapter() {
 			@Override
@@ -937,8 +926,7 @@ public class MainForm extends JFrame {
 //				btnPhieuNhap.setBackground(blue);
 //				btnKhchHng.setBackground(blue);
 //				btnThongKe.setBackground(blue);
-				
-				
+
 				btnNhaCungCap.setForeground(whiteFont);
 				btnNhapHang.setForeground(whiteFont);
 				btnXuatHang.setForeground(green);
@@ -973,7 +961,7 @@ public class MainForm extends JFrame {
 //					btnXuatHang.setBackground(blue);
 			}
 		});
-		btnXuatHang.setFont(SetFont.font1());
+		btnXuatHang.setFont(SetFont.fontCategory());
 		btnXuatHang.setBackground(blue);
 		btnXuatHang.setForeground(whiteFont);
 		btnXuatHang.setBorder(null);
@@ -981,7 +969,7 @@ public class MainForm extends JFrame {
 		panel_8 = new JPanel();
 		panel_8.setLayout(null);
 		panel_8.setOpaque(false);
-		panel_8.setBounds(0, 276, 210, 45);
+		panel_8.setBounds(0, 369, 210, 45);
 		panel_1.add(panel_8);
 
 		btnPhieuXuat = new JLabel();
@@ -989,9 +977,9 @@ public class MainForm extends JFrame {
 		panel_8.add(btnPhieuXuat);
 		// btnPhieuXuat.setRadius(10);
 		// btnPhieuXuat.setBorderColor(new Color(64, 143, 221));
-		btnPhieuXuat.setText("Phiếu Xuất");
-		btnPhieuXuat.setIconTextGap(10);
-		btnPhieuXuat.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-bill-32 (4).png")));
+		btnPhieuXuat.setText("Phiếu xuất");
+		btnPhieuXuat.setIconTextGap(15);
+		btnPhieuXuat.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-scroll-32.png")));
 		btnPhieuXuat.setHorizontalAlignment(SwingConstants.LEFT);
 		btnPhieuXuat.addMouseListener(new MouseAdapter() {
 			@Override
@@ -1020,8 +1008,7 @@ public class MainForm extends JFrame {
 				btnPhieuNhap.setForeground(whiteFont);
 				btnKhchHng.setForeground(whiteFont);
 				btnThongKe.setForeground(whiteFont);
-				
-				
+
 				BooleanClick.setBtnNhaCungCap(false);
 				BooleanClick.setBtnNhapHang(false);
 				BooleanClick.setBtnPhieuNhap(false);
@@ -1048,7 +1035,7 @@ public class MainForm extends JFrame {
 					btnPhieuXuat.setForeground(whiteFont);
 			}
 		});
-		btnPhieuXuat.setFont(SetFont.font1());
+		btnPhieuXuat.setFont(SetFont.fontCategory());
 		btnPhieuXuat.setBackground(blue);
 		btnPhieuXuat.setForeground(whiteFont);
 		btnPhieuXuat.setBorder(null);
@@ -1056,7 +1043,7 @@ public class MainForm extends JFrame {
 		panel_9 = new JPanel();
 		panel_9.setLayout(null);
 		panel_9.setOpaque(false);
-		panel_9.setBounds(0, 322, 210, 45);
+		panel_9.setBounds(0, 415, 210, 45);
 		panel_1.add(panel_9);
 
 		btnKhchHng = new JLabel();
@@ -1096,7 +1083,7 @@ public class MainForm extends JFrame {
 //				btnPhieuNhap.setBackground(blue);
 //				btnKhchHng.setBackground(blueOp);
 //				btnThongKe.setBackground(blue);
-				
+
 				btnNhaCungCap.setForeground(whiteFont);
 				btnNhapHang.setForeground(whiteFont);
 				btnXuatHang.setForeground(whiteFont);
@@ -1116,12 +1103,12 @@ public class MainForm extends JFrame {
 		});
 		// btnKhchHng.setRadius(10);
 		// btnKhchHng.setBorderColor(new Color(64, 143, 221));
-		btnKhchHng.setText("Khách Hàng");
-		btnKhchHng.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-group-32.png")));
-		btnKhchHng.setIconTextGap(10);
+		btnKhchHng.setText("Khách hàng");
+		btnKhchHng.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-myspace-32.png")));
+		btnKhchHng.setIconTextGap(15);
 		btnKhchHng.setHorizontalAlignment(SwingConstants.LEFT);
 		btnKhchHng.setForeground(new Color(254, 254, 254));
-		btnKhchHng.setFont(SetFont.font1());
+		btnKhchHng.setFont(SetFont.fontCategory());
 		btnKhchHng.setBorder(null);
 		btnKhchHng.setBackground(new Color(64, 143, 221));
 
@@ -1132,7 +1119,7 @@ public class MainForm extends JFrame {
 		panel_1.add(panel_4);
 
 		JLabel btnThayDoiTT = new JLabel();
-		btnThayDoiTT.setIconTextGap(10);
+		btnThayDoiTT.setIconTextGap(15);
 		btnThayDoiTT.setBounds(10, 11, 160, 30);
 		panel_4.add(btnThayDoiTT);
 		btnThayDoiTT.setForeground(whiteFont);
@@ -1161,7 +1148,7 @@ public class MainForm extends JFrame {
 		});
 		btnThayDoiTT.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-info-32.png")));
 		btnThayDoiTT.setBorder(null);
-		btnThayDoiTT.setFont(font1);
+		btnThayDoiTT.setFont(SetFont.fontCategory());
 
 		panel_10 = new JPanel();
 		panel_10.setLayout(null);
@@ -1170,14 +1157,14 @@ public class MainForm extends JFrame {
 		panel_1.add(panel_10);
 
 		JLabel btnDangXuat = new JLabel();
-		btnDangXuat.setIconTextGap(10);
+		btnDangXuat.setIconTextGap(15);
 		btnDangXuat.setBounds(10, 0, 160, 34);
 		panel_10.add(btnDangXuat);
 		btnDangXuat.setForeground(whiteFont);
 		btnDangXuat.setBackground(blue);
 		// btnDangXuat.setBorderColor(new Color(64, 143, 221));
 		// btnDangXuat.setRadius(10);
-		btnDangXuat.setText("Đăng Xuất");
+		btnDangXuat.setText("Đăng xuất");
 		btnDangXuat.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -1203,7 +1190,35 @@ public class MainForm extends JFrame {
 		});
 		btnDangXuat.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-shutdown-32.png")));
 		btnDangXuat.setBorder(null);
-		btnDangXuat.setFont(font1);
+		btnDangXuat.setFont(SetFont.fontCategory());
+
+		lblNewLabel_2 = new JLabel("New label");
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_2.setBounds(35, -15, 150, 150);
+		ImageIcon ii = new ImageIcon(new File("src/icon/viequoc-computer-re.png").getAbsolutePath());
+		Image i = ii.getImage();
+		i = i.getScaledInstance(lblNewLabel_2.getWidth(), lblNewLabel_2.getHeight(), Image.SCALE_SMOOTH);
+		lblNewLabel_2.setIcon(new ImageIcon(i));
+
+		panel_1.add(lblNewLabel_2);
+		
+		JPanel panel_2_1 = new JPanel();
+		panel_2_1.setLayout(null);
+		panel_2_1.setOpaque(false);
+		panel_2_1.setBounds(0, 143, 210, 45);
+		panel_1.add(panel_2_1);
+		
+		JLabel lblTrangCh = new JLabel();
+		lblTrangCh.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-home-address-32.png")));
+		lblTrangCh.setText("Trang chủ");
+		lblTrangCh.setIconTextGap(15);
+		lblTrangCh.setHorizontalAlignment(SwingConstants.LEADING);
+		lblTrangCh.setForeground(new Color(254, 254, 254));
+		lblTrangCh.setFont(SetFont.fontCategory());
+		lblTrangCh.setBorder(null);
+		lblTrangCh.setBackground(new Color(98, 181, 244));
+		lblTrangCh.setBounds(25, 5, 160, 34);
+		panel_2_1.add(lblTrangCh);
 
 //		btnNewButton = new JButton("Light");
 //		btnNewButton.addMouseListener(new MouseAdapter() {

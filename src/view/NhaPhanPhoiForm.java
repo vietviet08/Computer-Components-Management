@@ -453,7 +453,7 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 
 		JButton btnNewButton = new JButton("Tìm kiếm");
 		btnNewButton.setFont(font);
-		btnNewButton.setIcon(new ImageIcon(NhaPhanPhoiForm.class.getResource("/icon/icons8-search-24.png")));
+		btnNewButton.setIcon(new ImageIcon(NhaPhanPhoiForm.class.getResource("/icon/search-24.png")));
 		btnNewButton.setBounds(402, 8, 118, 33);
 		panel_1.add(btnNewButton);
 	}

@@ -394,7 +394,7 @@ public class CPUForm extends JInternalFrame {
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setBorder(null);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_2.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/icons8-search-24.png")));
+		lblNewLabel_2.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/search-24.png")));
 		lblNewLabel_2.setBounds(471, 15, 48, 22);
 		panel_1.add(lblNewLabel_2);
 		comboBox.setFont(font);

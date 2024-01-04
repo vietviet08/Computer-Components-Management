@@ -245,7 +245,7 @@ public class LoginForm extends JFrame {
 		jtfpassword.setBackground(SetColor.blueOp);
 		jtfpassword.setEchoChar('*');
 		jtfpassword.setBorder(null);
-		jtfpassword.setFont(font_1);
+		jtfpassword.setFont(font1);
 		jtfpassword.setBounds(86, 268, 260, 23);
 		contentPane.add(jtfpassword);
 

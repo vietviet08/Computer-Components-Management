@@ -93,8 +93,19 @@ public class SetFont {
 	public static Font fontCategory() {
 		Font f = null;
 		try {
-			File fontStyle1 = new File("src/font/Roboto-Regular.ttf");
+			File fontStyle1 = new File("src/font/Roboto-Light.ttf");
 			f = Font.createFont(Font.TRUETYPE_FONT, fontStyle1).deriveFont(16f);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return f;
+	}
+	
+	public static Font fontCategoryPr() {
+		Font f = null;
+		try {
+			File fontStyle1 = new File("src/font/Roboto-Light.ttf");
+			f = Font.createFont(Font.TRUETYPE_FONT, fontStyle1).deriveFont(12.5f);
 		} catch (Exception e) {
 			System.out.println(e);
 		}

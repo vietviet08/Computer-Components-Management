@@ -194,7 +194,7 @@ public class NhapHangForm extends JInternalFrame {
 
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_1.setIcon(new ImageIcon(NhapHangForm.class.getResource("/icon/icons8-search-24.png")));
+		lblNewLabel_1.setIcon(new ImageIcon(NhapHangForm.class.getResource("/icon/search-24.png")));
 		lblNewLabel_1.setBounds(345, 6, 48, 22);
 		getContentPane().add(lblNewLabel_1);
 
@@ -272,6 +272,7 @@ public class NhapHangForm extends JInternalFrame {
 		}
 
 		JButton btnNewButton_1 = new JButton("Xóa");
+		btnNewButton_1.setIcon(new ImageIcon(NhapHangForm.class.getResource("/icon/delete-24.png")));
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -292,11 +293,12 @@ public class NhapHangForm extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnNewButton_1.setFont(SetFont.font1_());
-		btnNewButton_1.setBounds(916, 625, 104, 26);
+		btnNewButton_1.setFont(SetFont.font());
+		btnNewButton_1.setBounds(885, 625, 125, 26);
 		getContentPane().add(btnNewButton_1);
 
 		JButton btnNewButton_1_1 = new JButton("Lưu tạm");
+		btnNewButton_1_1.setIcon(new ImageIcon(NhapHangForm.class.getResource("/icon/icons8-add-bookmark-24.png")));
 		btnNewButton_1_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -312,11 +314,12 @@ public class NhapHangForm extends JInternalFrame {
 
 			}
 		});
-		btnNewButton_1_1.setFont(SetFont.font1_());
-		btnNewButton_1_1.setBounds(1052, 625, 100, 26);
+		btnNewButton_1_1.setFont(SetFont.font());
+		btnNewButton_1_1.setBounds(1026, 625, 126, 26);
 		getContentPane().add(btnNewButton_1_1);
 
 		JButton btnNewButton_1_2 = new JButton("Nhập hàng");
+		btnNewButton_1_2.setIcon(new ImageIcon(NhapHangForm.class.getResource("/icon/icons8-done-24.png")));
 		btnNewButton_1_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -365,11 +368,12 @@ public class NhapHangForm extends JInternalFrame {
 				}
 			}
 		});
-		btnNewButton_1_2.setFont(SetFont.font1_());
-		btnNewButton_1_2.setBounds(916, 662, 104, 26);
+		btnNewButton_1_2.setFont(SetFont.font());
+		btnNewButton_1_2.setBounds(885, 662, 125, 26);
 		getContentPane().add(btnNewButton_1_2);
 
 		JButton btnNewButton_1_2_1 = new JButton("Hủy");
+		btnNewButton_1_2_1.setIcon(new ImageIcon(NhapHangForm.class.getResource("/icon/close-24.png")));
 		btnNewButton_1_2_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -386,14 +390,14 @@ public class NhapHangForm extends JInternalFrame {
 				}
 			}
 		});
-		btnNewButton_1_2_1.setFont(SetFont.font1_());
-		btnNewButton_1_2_1.setBounds(1052, 662, 100, 26);
+		btnNewButton_1_2_1.setFont(SetFont.font());
+		btnNewButton_1_2_1.setBounds(1026, 662, 126, 26);
 		getContentPane().add(btnNewButton_1_2_1);
 
 		lbTongTien1 = new JLabel("Tổng tiền:");
 		lbTongTien1.setFont(SetFont.font1_());
 		lbTongTien1.setForeground(SetColor.redB);
-		lbTongTien1.setBounds(916, 596, 78, 23);
+		lbTongTien1.setBounds(885, 596, 78, 23);
 		getContentPane().add(lbTongTien1);
 
 		btnNewButton_2 = new JButton("Thêm");
@@ -472,8 +476,8 @@ public class NhapHangForm extends JInternalFrame {
 
 		comboBox_chooseNPP = new JComboBox<>();
 		comboBox_chooseNPP.setModel(new DefaultComboBoxModel<String>(combo));
-		comboBox_chooseNPP.setFont(SetFont.font1_());
-		comboBox_chooseNPP.setBounds(760, 625, 133, 26);
+		comboBox_chooseNPP.setFont(SetFont.font());
+		comboBox_chooseNPP.setBounds(760, 625, 115, 26);
 		getContentPane().add(comboBox_chooseNPP);
 
 		String[] allProduct = { "CPU", "RAM", "VGA", "Mainboard", "Case", "Nguồn", "Màn hình", "Chuột", "Bàn phím",
@@ -552,7 +556,7 @@ public class NhapHangForm extends JInternalFrame {
 		getContentPane().add(btnNewButton_2_1);
 
 		JLabel lblNewLabel = new JLabel("Chọn nhà phân phối");
-		lblNewLabel.setFont(SetFont.font1_());
+		lblNewLabel.setFont(SetFont.font());
 		lblNewLabel.setBounds(760, 594, 136, 26);
 		getContentPane().add(lblNewLabel);
 

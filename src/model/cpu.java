@@ -11,6 +11,7 @@ public class cpu extends Products {
 	private String dienNangTieuThu;
 	private String boNhoDem;
 	private int tonKho;
+	private String baoHang;
 	private double donGia;
 
 	public cpu() {
@@ -54,6 +55,7 @@ public class cpu extends Products {
 		this.dienNangTieuThu = dienNangTieuThu;
 		this.boNhoDem = boNhoDem;
 		this.tonKho = tonKho;
+//		this.baoHang = baoHang;
 		this.donGia = donGia;
 	}
 

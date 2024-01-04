@@ -105,8 +105,8 @@ public class SanPhamDAO implements DAOInterface<Products> {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				Products p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"),
-						rs.getInt("trangthai"), rs.getString("motasanpham"));
+				Products p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"), rs.getInt("trangthai"),
+						rs.getString("motasanpham"));
 
 				list.add(p);
 			}
@@ -136,8 +136,8 @@ public class SanPhamDAO implements DAOInterface<Products> {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"),
-						rs.getInt("trangthai"), rs.getString("motasanpham"));
+				p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"), rs.getInt("trangthai"),
+						rs.getString("motasanpham"));
 
 			}
 
@@ -183,6 +183,12 @@ public class SanPhamDAO implements DAOInterface<Products> {
 				sql = "select * from sanpham where idsanpham like 'scr%';";
 				break;
 
+			case "disk":
+				sql = "select * from sanpham where idsanpham like 'disk%';";
+				break;
+			case "headphone":
+				sql = "select * from sanpham where idsanpham like 'hp%';";
+				break;
 			default:
 				break;
 			}
@@ -192,8 +198,8 @@ public class SanPhamDAO implements DAOInterface<Products> {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				Products p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"),
-						rs.getInt("trangthai"), rs.getString("motasanpham"));
+				Products p = new Products(rs.getString("idsanpham"), rs.getString("tensanpham"), rs.getInt("trangthai"),
+						rs.getString("motasanpham"));
 
 				list.add(p);
 			}

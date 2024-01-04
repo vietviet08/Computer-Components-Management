@@ -52,6 +52,7 @@ import font.SetFont;
 import model.vga;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JLabel;
 
 public class VGAForm extends JInternalFrame {
 
@@ -357,6 +358,12 @@ public class VGAForm extends JInternalFrame {
 		panel_1.setBounds(635, 0, 557, 49);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon(VGAForm.class.getResource("/icon/search-24.png")));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNewLabel.setBounds(471, 13, 48, 25);
+		panel_1.add(lblNewLabel);
 
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setFont(font);

@@ -362,7 +362,7 @@ public class RAMForm extends JInternalFrame {
 
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel.setIcon(new ImageIcon(RAMForm.class.getResource("/icon/icons8-search-24.png")));
+		lblNewLabel.setIcon(new ImageIcon(RAMForm.class.getResource("/icon/search-24.png")));
 		lblNewLabel.setBounds(475, 14, 48, 22);
 		panel_1.add(lblNewLabel);
 

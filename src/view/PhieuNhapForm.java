@@ -145,7 +145,7 @@ public class PhieuNhapForm extends JInternalFrame {
 		getContentPane().setLayout(null);
 
 		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon(PhieuNhapForm.class.getResource("/icon/icons8-search-24.png")));
+		lblNewLabel_2.setIcon(new ImageIcon(PhieuNhapForm.class.getResource("/icon/search-24.png")));
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblNewLabel_2.setBorder(null);
 		lblNewLabel_2.setBounds(1104, 12, 48, 22);
@@ -190,7 +190,7 @@ public class PhieuNhapForm extends JInternalFrame {
 		});
 		btnNewButton_1.setIcon(new ImageIcon(PhieuNhapForm.class.getResource("/icon/icons8-details-24.png")));
 		btnNewButton_1.setFont(SetFont.font());
-		btnNewButton_1.setBounds(0, 5, 99, 33);
+		btnNewButton_1.setBounds(0, 7, 99, 30);
 		getContentPane().add(btnNewButton_1);
 
 		JButton btnNewButton_2 = new JButton("Xóa");
@@ -214,7 +214,7 @@ public class PhieuNhapForm extends JInternalFrame {
 		});
 		btnNewButton_2.setIcon(new ImageIcon(PhieuNhapForm.class.getResource("/icon/icons8-delete-24.png")));
 		btnNewButton_2.setFont(SetFont.font());
-		btnNewButton_2.setBounds(106, 5, 99, 33);
+		btnNewButton_2.setBounds(106, 7, 99, 30);
 		getContentPane().add(btnNewButton_2);
 
 		JButton btnNewButton_3 = new JButton("Sửa");
@@ -229,7 +229,7 @@ public class PhieuNhapForm extends JInternalFrame {
 		});
 		btnNewButton_3.setIcon(new ImageIcon(PhieuNhapForm.class.getResource("/icon/icons8-edit-24.png")));
 		btnNewButton_3.setFont(SetFont.font());
-		btnNewButton_3.setBounds(213, 5, 87, 33);
+		btnNewButton_3.setBounds(213, 7, 87, 30);
 		getContentPane().add(btnNewButton_3);
 
 		JButton btnNewButton_4 = new JButton("Nhập Excel");
@@ -311,7 +311,7 @@ public class PhieuNhapForm extends JInternalFrame {
 		});
 		btnNewButton_4.setIcon(new ImageIcon(PhieuNhapForm.class.getResource("/icon/icons8-import-csv-24.png")));
 		btnNewButton_4.setFont(SetFont.font());
-		btnNewButton_4.setBounds(308, 5, 123, 33);
+		btnNewButton_4.setBounds(308, 7, 123, 30);
 		getContentPane().add(btnNewButton_4);
 
 		JButton btnNewButton_5 = new JButton("Xuất Excel");
@@ -357,7 +357,7 @@ public class PhieuNhapForm extends JInternalFrame {
 		});
 		btnNewButton_5.setIcon(new ImageIcon(PhieuNhapForm.class.getResource("/icon/icons8-export-excel-24.png")));
 		btnNewButton_5.setFont(SetFont.font());
-		btnNewButton_5.setBounds(440, 5, 123, 33);
+		btnNewButton_5.setBounds(440, 7, 123, 30);
 		getContentPane().add(btnNewButton_5);
 
 		comboBoxSort = new JComboBox<String>(new DefaultComboBoxModel<String>(new String[] { "Sắp xếp", "Đã thanh toán",
@@ -378,13 +378,13 @@ public class PhieuNhapForm extends JInternalFrame {
 			}
 		});
 		comboBoxSort.setFont(SetFont.font());
-		comboBoxSort.setBounds(848, 5, 77, 32);
+		comboBoxSort.setBounds(848, 7, 77, 30);
 		getContentPane().add(comboBoxSort);
 
 		comboBox = new JComboBox<String>(new DefaultComboBoxModel<String>(
 				new String[] { "ID đơn nhập", "ID nhà phân phối", "Người tạo", "Tổng tiền" }));
 		comboBox.setFont(SetFont.font());
-		comboBox.setBounds(932, 5, 99, 33);
+		comboBox.setBounds(932, 7, 99, 30);
 		getContentPane().add(comboBox);
 
 		textField = new JTextField();
@@ -404,7 +404,7 @@ public class PhieuNhapForm extends JInternalFrame {
 			}
 		});
 		textField.setColumns(10);
-		textField.setBounds(1037, 5, 123, 33);
+		textField.setBounds(1037, 7, 123, 30);
 		getContentPane().add(textField);
 
 		chooseFrom = new JDateChooser();
@@ -422,7 +422,7 @@ public class PhieuNhapForm extends JInternalFrame {
 				loadDataToTable(timKiemTheoLich());
 			}
 		});
-		chooseFrom.setBounds(570, 5, 105, 33);
+		chooseFrom.setBounds(570, 7, 105, 30);
 		getContentPane().add(chooseFrom);
 
 		chooseTo = new JDateChooser();
@@ -440,7 +440,7 @@ public class PhieuNhapForm extends JInternalFrame {
 			}
 		});
 
-		chooseTo.setBounds(685, 5, 105, 33);
+		chooseTo.setBounds(685, 7, 105, 30);
 		getContentPane().add(chooseTo);
 
 		JButton btnNewButton = new JButton("");
@@ -452,8 +452,8 @@ public class PhieuNhapForm extends JInternalFrame {
 				loadDataToTable(PhieuNhapDAO.getInstance().selectAll());
 			}
 		});
-		btnNewButton.setIcon(new ImageIcon(PhieuNhapForm.class.getResource("/icon/icons8-reset-24.png")));
-		btnNewButton.setBounds(800, 5, 40, 33);
+		btnNewButton.setIcon(new ImageIcon(PhieuNhapForm.class.getResource("/icon/refresh-24.png")));
+		btnNewButton.setBounds(800, 7, 40, 30);
 		getContentPane().add(btnNewButton);
 
 	}

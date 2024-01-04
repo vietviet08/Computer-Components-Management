@@ -158,6 +158,7 @@ public class ProductForm extends JInternalFrame {
 					if (answ == JOptionPane.YES_OPTION) {
 						Products pr = SanPhamDAO.getInstance().selectAll().get(table.getSelectedRow());
 						SanPhamDAO.getInstance().delete(pr);
+						loadDataToTable(SanPhamDAO.getInstance().selectAll());
 						JOptionPane.showMessageDialog(null, "Xóa thành công!");
 					}
 				}
@@ -311,7 +312,7 @@ public class ProductForm extends JInternalFrame {
 		
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel.setIcon(new ImageIcon(ProductForm.class.getResource("/icon/icons8-search-24.png")));
+		lblNewLabel.setIcon(new ImageIcon(ProductForm.class.getResource("/icon/search-24.png")));
 		lblNewLabel.setBounds(470, 13, 48, 24);
 		panel_2.add(lblNewLabel);
 
@@ -361,7 +362,7 @@ public class ProductForm extends JInternalFrame {
 
 		JScrollPane scrollPane = new JScrollPane();
 
-		scrollPane.setBounds(0, 53, 1188, 648);
+		scrollPane.setBounds(0, 53, 1160, 648);
 		getContentPane().add(scrollPane);
 
 		table = new JTable() {
