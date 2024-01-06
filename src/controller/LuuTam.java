@@ -2,7 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 
-import model.ProductNhap;
+import model.ChiTietPhieu;
 
 public class LuuTam {
 	
@@ -10,9 +10,9 @@ public class LuuTam {
 		return new LuuTam();
 	}
 	
-	public static ArrayList<ProductNhap> sanPham = new ArrayList<ProductNhap>();
+	public static ArrayList<ChiTietPhieu> sanPham = new ArrayList<ChiTietPhieu>();
 	
-	public ArrayList<ProductNhap> sanPham(){
+	public ArrayList<ChiTietPhieu> sanPham(){
 		return sanPham;
 	}
 	

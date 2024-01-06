@@ -33,14 +33,15 @@ import dao.ChiTietPhieuNhapDAO;
 import dao.NhaPhanPhoiDAO;
 import dao.PhieuNhapDAO;
 import dao.cpuDAO;
+import dao.mainDAO;
 import dao.ramDAO;
 import dao.vgaDAO;
 import font.SetFont;
 import model.ChiTietPhieu;
 import model.NhaPhanPhoi;
 import model.PhieuNhap;
-import model.ProductNhap;
 import model.cpu;
+import model.mainboard;
 import model.ram;
 import model.vga;
 
@@ -54,7 +55,7 @@ public class NhapHangForm extends JInternalFrame {
 	private static JTable tableMin;
 	private static DefaultTableModel tableModel;
 	private static DefaultTableModel tableModelBill;
-	private final String columName[] = { "ID sản phẩm hàng", "Tên sản phẩm", "Bảo hành", "Đơn giá" };
+	private final String columName[] = { "ID sản phẩm", "ID", "Tên sản phẩm", "Bảo hành", "Tồn kho", "Đơn giá" };
 	private final String columNameBill[] = { "ID mặt hàng", "ID sản phẩm", "Tên sản phẩm", "Bảo hành", "Số lượng",
 			"Đơn giá" };
 	private JTextField textField_1;
@@ -92,9 +93,15 @@ public class NhapHangForm extends JInternalFrame {
 			for (cpu i : cpu) {
 				DefaultTableCellRenderer renderRight = new DefaultTableCellRenderer();
 				renderRight.setHorizontalAlignment(JLabel.RIGHT);
-				tableALL.getColumnModel().getColumn(3).setCellRenderer(renderRight);
+
+				DefaultTableCellRenderer renderCenter = new DefaultTableCellRenderer();
+				renderCenter.setHorizontalAlignment(JLabel.CENTER);
+				tableALL.getColumnModel().getColumn(4).setCellRenderer(renderCenter);
+
+				tableALL.getColumnModel().getColumn(5).setCellRenderer(renderRight);
 				String gia = FormatToVND.vnd(i.getDonGia());
-				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getNameCpu(), i.getBaoHanh(), gia });
+				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getIdCpu(), i.getNameCpu(), i.getBaoHanh(),
+						i.getTonKho(), gia });
 			}
 		} catch (Exception e) {
 		}
@@ -107,9 +114,14 @@ public class NhapHangForm extends JInternalFrame {
 			for (ram i : ram) {
 				DefaultTableCellRenderer renderRight = new DefaultTableCellRenderer();
 				renderRight.setHorizontalAlignment(JLabel.RIGHT);
-				tableALL.getColumnModel().getColumn(3).setCellRenderer(renderRight);
+				DefaultTableCellRenderer renderCenter = new DefaultTableCellRenderer();
+				renderCenter.setHorizontalAlignment(JLabel.CENTER);
+				tableALL.getColumnModel().getColumn(4).setCellRenderer(renderCenter);
+
+				tableALL.getColumnModel().getColumn(5).setCellRenderer(renderRight);
 				String gia = FormatToVND.vnd(i.getDonGia());
-				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getTenRam(), i.getBaoHanh(), gia });
+				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getIdRam(), i.getTenRam(), i.getBaoHanh(),
+						i.getTonkho(), gia });
 			}
 		} catch (Exception e) {
 		}
@@ -121,9 +133,33 @@ public class NhapHangForm extends JInternalFrame {
 			for (vga i : vga) {
 				DefaultTableCellRenderer renderRight = new DefaultTableCellRenderer();
 				renderRight.setHorizontalAlignment(JLabel.RIGHT);
-				tableALL.getColumnModel().getColumn(3).setCellRenderer(renderRight);
+				DefaultTableCellRenderer renderCenter = new DefaultTableCellRenderer();
+				renderCenter.setHorizontalAlignment(JLabel.CENTER);
+				tableALL.getColumnModel().getColumn(4).setCellRenderer(renderCenter);
+
+				tableALL.getColumnModel().getColumn(5).setCellRenderer(renderRight);
 				String gia = FormatToVND.vnd(i.getDonGia());
-				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getTenVGA(), i.getBaoHanh(), gia });
+				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getIdVga(), i.getTenVGA(), i.getBaoHanh(),
+						i.getTonKho(), gia });
+			}
+		} catch (Exception e) {
+		}
+	}
+
+	public static void loadDataToTableMainBoard(ArrayList<mainboard> mainboard) {
+		try {
+			tableModel.setRowCount(0);
+			for (mainboard i : mainboard) {
+				DefaultTableCellRenderer renderRight = new DefaultTableCellRenderer();
+				renderRight.setHorizontalAlignment(JLabel.RIGHT);
+				DefaultTableCellRenderer renderCenter = new DefaultTableCellRenderer();
+				renderCenter.setHorizontalAlignment(JLabel.CENTER);
+				tableALL.getColumnModel().getColumn(4).setCellRenderer(renderCenter);
+
+				tableALL.getColumnModel().getColumn(5).setCellRenderer(renderRight);
+				String gia = FormatToVND.vnd(i.getDonGia());
+				tableModel.addRow(new Object[] { i.getIdSanPham(), i.getIdMainboard(), i.getTenMain(), i.getBaoHanh(),
+						i.getTonKho(), gia });
 			}
 		} catch (Exception e) {
 		}
@@ -135,9 +171,11 @@ public class NhapHangForm extends JInternalFrame {
 		tableALL.setDefaultEditor(Object.class, null);
 		tableALL.setModel(tableModel);
 		tableALL.getColumnModel().getColumn(0).setPreferredWidth(200);
-		tableALL.getColumnModel().getColumn(1).setPreferredWidth(500);
-		tableALL.getColumnModel().getColumn(2).setPreferredWidth(200);
+		tableALL.getColumnModel().getColumn(1).setPreferredWidth(200);
+		tableALL.getColumnModel().getColumn(2).setPreferredWidth(500);
 		tableALL.getColumnModel().getColumn(3).setPreferredWidth(200);
+		tableALL.getColumnModel().getColumn(4).setPreferredWidth(100);
+		tableALL.getColumnModel().getColumn(5).setPreferredWidth(200);
 
 		switch (isSelect) {
 		case "cpu":
@@ -149,9 +187,9 @@ public class NhapHangForm extends JInternalFrame {
 		case "vga":
 			loadDataToTableVGA(vgaDAO.getInstance().selectAll());
 			break;
-//		case "mainboard":
-//			loadDataToTable(null);
-//			break;
+		case "mainboard":
+			loadDataToTableMainBoard(mainDAO.getInstance().selectAll());
+			break;
 //		case "case":
 //			loadDataToTable(null);
 //			break;
@@ -254,9 +292,9 @@ public class NhapHangForm extends JInternalFrame {
 		scrollPane_1.setViewportView(tableMin);
 
 //		list bill
-		ArrayList<ProductNhap> listNhap = new ArrayList<ProductNhap>();
+		ArrayList<ChiTietPhieu> listNhap = new ArrayList<ChiTietPhieu>();
 
-		ArrayList<ProductNhap> sanPham = LuuTam.sanPham;
+		ArrayList<ChiTietPhieu> sanPham = LuuTam.sanPham;
 
 		if (sanPham.size() == 0) {
 			LuuTam.tongTien = 0;
@@ -265,8 +303,8 @@ public class NhapHangForm extends JInternalFrame {
 			setDefaultTableBill(listNhap);
 		} else {
 
-			for (ProductNhap productNhap : sanPham) {
-				listNhap.add(productNhap);
+			for (ChiTietPhieu ChiTietPhieu : sanPham) {
+				listNhap.add(ChiTietPhieu);
 			}
 			tien = LuuTam.tongTien;
 			tfTongTien.setText(FormatToVND.vnd(tien));
@@ -305,11 +343,11 @@ public class NhapHangForm extends JInternalFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				ArrayList<ProductNhap> list = LuuTam.sanPham;
+				ArrayList<ChiTietPhieu> list = LuuTam.sanPham;
 				list.removeAll(list);
 
-				for (ProductNhap productNhap : listNhap) {
-					list.add(productNhap);
+				for (ChiTietPhieu ChiTietPhieu : listNhap) {
+					list.add(ChiTietPhieu);
 				}
 
 				LuuTam.tongTien = tien;
@@ -333,6 +371,7 @@ public class NhapHangForm extends JInternalFrame {
 					int check = cpuDAO.getInstance().updateTonKho(listNhap);
 					check += ramDAO.getInstance().updateTonKho(listNhap);
 					check += vgaDAO.getInstance().updateTonKho(listNhap);
+					check += mainDAO.getInstance().updateTonKho(listNhap);
 					if (check > 0) {
 
 						JOptionPane.showMessageDialog(null, "Nhập hàng thành công!");
@@ -350,7 +389,7 @@ public class NhapHangForm extends JInternalFrame {
 //							String money = (String) tableMin.getValueAt(i, 4);
 //							double money1 = Double.parseDouble(money.substring(0, money.length()).trim());
 
-//							i.getIdsanpham(), i.getPrivateId(), i.getName(),i.getBaohanh(), i.getSoLuong(), i.getGia()
+//							i.getIdsanpham(), i.getIdRieng(), i.getName(),i.getBaohanh(), i.getSoLuong(), i.getGia()
 							ChiTietPhieu ctp = new ChiTietPhieu(pn.getIdPhieu(), (String) tableMin.getValueAt(i, 0),
 									(String) tableMin.getValueAt(i, 1), (String) tableMin.getValueAt(i, 2),
 									(int) tableMin.getValueAt(i, 4), (double) tableMin.getValueAt(i, 5),
@@ -415,11 +454,12 @@ public class NhapHangForm extends JInternalFrame {
 					JOptionPane.showMessageDialog(null, "Chọn sản phẩm để thêm!");
 				} else {
 					if (comboBox_chooseProduct.getSelectedItem().toString().equals("CPU")) {
-						cpu cpu = cpuDAO.getInstance().selectNhapHang().get(tableALL.getSelectedRow());
-
+//						cpu cpu = cpuDAO.getInstance().selectNhapHang().get(tableALL.getSelectedRow());
+						cpu cpu = cpuDAO.getInstance()
+								.selectById(String.valueOf(tableALL.getValueAt(tableALL.getSelectedRow(), 1)));
 //						kiểm tra số lượng
 						if (kiemTraSoLuongNhap(cpu.getIdCpu(), listNhap) == false) {
-							ProductNhap pn = new ProductNhap(cpu.getIdSanPham(), cpu.getIdCpu(), cpu.getNameCpu(), 1,
+							ChiTietPhieu pn = new ChiTietPhieu(cpu.getIdSanPham(), cpu.getIdCpu(), cpu.getNameCpu(), 1,
 									cpu.getDonGia(), cpu.getBaoHanh());
 							listNhap.add(pn);
 						}
@@ -429,17 +469,16 @@ public class NhapHangForm extends JInternalFrame {
 						tfTongTien.setText(FormatToVND.vnd(tien));
 
 						loadDataToTableBill(listNhap);
-//						for (ProductNhap productNhap : listNhap) {
-//							System.out.println(productNhap.getSoLuong());
-//						}
 //						tạo constructor gồm 4 thông số idsp, idcpu, tencpu, dongia -> done
-//						thêm vào arraylist kiểu productNhapHang -> done
+//						thêm vào arraylist kiểu ChiTietPhieuHang -> done
 //						sd loadDataToTable vào bảng tableMin -> done
 					} else if (comboBox_chooseProduct.getSelectedItem().toString().equals("RAM")) {
-						ram ram = ramDAO.getInstance().selectNhapHang().get(tableALL.getSelectedRow());
+//						ram ram = ramDAO.getInstance().selectNhapHang().get(tableALL.getSelectedRow());
+						ram ram = ramDAO.getInstance()
+								.selectById(String.valueOf(tableALL.getValueAt(tableALL.getSelectedRow(), 1)));
 
 						if (kiemTraSoLuongNhap(ram.getIdRam(), listNhap) == false) {
-							ProductNhap pn = new ProductNhap(ram.getIdSanPham(), ram.getIdRam(), ram.getTenRam(), 1,
+							ChiTietPhieu pn = new ChiTietPhieu(ram.getIdSanPham(), ram.getIdRam(), ram.getTenRam(), 1,
 									ram.getDonGia(), ram.getBaoHanh());
 							listNhap.add(pn);
 						}
@@ -450,14 +489,31 @@ public class NhapHangForm extends JInternalFrame {
 
 						loadDataToTableBill(listNhap);
 					} else if (comboBox_chooseProduct.getSelectedItem().toString().equals("VGA")) {
-						vga vga = vgaDAO.getInstance().selectNhapHang().get(tableALL.getSelectedRow());
+//						vga vga = vgaDAO.getInstance().selectNhapHang().get(tableALL.getSelectedRow());
+						vga vga = vgaDAO.getInstance()
+								.selectById(String.valueOf(tableALL.getValueAt(tableALL.getSelectedRow(), 1)));
 
 						if (kiemTraSoLuongNhap(vga.getIdVga(), listNhap) == false) {
-							ProductNhap pn = new ProductNhap(vga.getIdSanPham(), vga.getIdVga(), vga.getTenVGA(), 1,
+							ChiTietPhieu pn = new ChiTietPhieu(vga.getIdSanPham(), vga.getIdVga(), vga.getTenVGA(), 1,
 									vga.getDonGia(), vga.getBaoHanh());
 							listNhap.add(pn);
 						}
 						tien += vga.getDonGia();
+						if (listNhap.size() == 0)
+							tien = 0;
+						tfTongTien.setText(FormatToVND.vnd(tien));
+
+						loadDataToTableBill(listNhap);
+					} else if (comboBox_chooseProduct.getSelectedItem().toString().equals("Mainboard")) {
+						mainboard mb = mainDAO.getInstance()
+								.selectById(String.valueOf(tableALL.getValueAt(tableALL.getSelectedRow(), 1)));
+
+						if (kiemTraSoLuongNhap(mb.getIdMainboard(), listNhap) == false) {
+							ChiTietPhieu pn = new ChiTietPhieu(mb.getIdSanPham(), mb.getIdMainboard(), mb.getTenMain(),
+									1, mb.getDonGia(), mb.getBaoHanh());
+							listNhap.add(pn);
+						}
+						tien += mb.getDonGia();
 						if (listNhap.size() == 0)
 							tien = 0;
 						tfTongTien.setText(FormatToVND.vnd(tien));
@@ -486,7 +542,7 @@ public class NhapHangForm extends JInternalFrame {
 		getContentPane().add(comboBox_chooseNPP);
 
 		String[] allProduct = { "CPU", "RAM", "VGA", "Mainboard", "Case", "Nguồn", "Màn hình", "Chuột", "Bàn phím",
-				"Tai nghe" };
+				"Tai nghe", "Ổ cứng" };
 		comboBox_chooseProduct = new JComboBox<>(allProduct);
 		comboBox_chooseProduct.addActionListener(new ActionListener() {
 
@@ -498,6 +554,8 @@ public class NhapHangForm extends JInternalFrame {
 					setDefaultTable("ram");
 				} else if (comboBox_chooseProduct.getSelectedItem().toString().equals("VGA")) {
 					setDefaultTable("vga");
+				} else if (comboBox_chooseProduct.getSelectedItem().toString().equals("Mainboard")) {
+					setDefaultTable("mainboard");
 				}
 
 			}
@@ -526,19 +584,25 @@ public class NhapHangForm extends JInternalFrame {
 
 					String products = comboBox_chooseProduct.getSelectedItem().toString();
 					if (products.equals("CPU")) {
-						cpu cpu = cpuDAO.getInstance().selectAll().get(tableALL.getSelectedRow());
+						cpu cpu = cpuDAO.getInstance()
+								.selectById(String.valueOf(tableALL.getValueAt(tableALL.getSelectedRow(), 1)));
 						ChiTietSP.setId(cpu.getIdCpu());
 						ChiTietSP.main(null);
 					} else if (products.equals("RAM")) {
-						ram ram = ramDAO.getInstance().selectAll().get(tableALL.getSelectedRow());
+						ram ram = ramDAO.getInstance()
+								.selectById(String.valueOf(tableALL.getValueAt(tableALL.getSelectedRow(), 1)));
 						ChiTietSP.setId(ram.getIdRam());
 						ChiTietSP.main(null);
 					} else if (products.equals("VGA")) {
-						vga vga = vgaDAO.getInstance().selectAll().get(tableALL.getSelectedRow());
+						vga vga = vgaDAO.getInstance()
+								.selectById(String.valueOf(tableALL.getValueAt(tableALL.getSelectedRow(), 1)));
 						ChiTietSP.setId(vga.getIdVga());
 						ChiTietSP.main(null);
 					} else if (products.equals("Mainboard")) {
-
+						mainboard mb = mainDAO.getInstance()
+								.selectById(String.valueOf(tableALL.getValueAt(tableALL.getSelectedRow(), 1)));
+						ChiTietSP.setId(mb.getIdMainboard());
+						ChiTietSP.main(null);
 					} else if (products.equals("Case")) {
 
 					} else if (products.equals("Nguồn")) {
@@ -589,14 +653,16 @@ public class NhapHangForm extends JInternalFrame {
 					} else if (id.contains("key")) {
 
 					} else if (id.contains("main")) {
-
+						mainboard mb = mainDAO.getInstance().selectById(id);
+						tien -= mb.getDonGia();
+						tfTongTien.setText(FormatToVND.vnd(tien));
 					} else if (id.contains("mou")) {
 
 					} else if (id.contains("scr")) {
 
 					}
 
-					ArrayList<ProductNhap> list = kiemTraSoLuongNhap1(id, listNhap);
+					ArrayList<ChiTietPhieu> list = kiemTraSoLuongNhap1(id, listNhap);
 					loadDataToTableBill(list);
 				}
 			}
@@ -609,10 +675,10 @@ public class NhapHangForm extends JInternalFrame {
 	}
 
 //	static DecimalFormat formatter = new DecimalFormat("###,###,###");
-	public static void loadDataToTableBill(ArrayList<ProductNhap> pn) {
+	public static void loadDataToTableBill(ArrayList<ChiTietPhieu> pn) {
 		try {
 			tableModelBill.setRowCount(0);
-			for (ProductNhap i : pn) {
+			for (ChiTietPhieu i : pn) {
 				DefaultTableCellRenderer renderRight = new DefaultTableCellRenderer();
 				DefaultTableCellRenderer renderCenter = new DefaultTableCellRenderer();
 				renderRight.setHorizontalAlignment(JLabel.RIGHT);
@@ -620,14 +686,14 @@ public class NhapHangForm extends JInternalFrame {
 				tableMin.getColumnModel().getColumn(4).setCellRenderer(renderCenter);
 				tableMin.getColumnModel().getColumn(5).setCellRenderer(renderRight);
 //				String gia = FormatToVND.vnd(i.getGia());
-				tableModelBill.addRow(new Object[] { i.getIdsanpham(), i.getPrivateId(), i.getName(), i.getBaohanh(),
-						i.getSoLuong(), i.getGia() });
+				tableModelBill.addRow(new Object[] { i.getIdSanPham(), i.getIdRieng(), i.getTenSanPham(),
+						i.getBaoHanh(), i.getSoLuong(), i.getDonGia() });
 			}
 		} catch (Exception e) {
 		}
 	}
 
-	public void setDefaultTableBill(ArrayList<ProductNhap> pn) {
+	public void setDefaultTableBill(ArrayList<ChiTietPhieu> pn) {
 		tableModelBill = new DefaultTableModel();
 		tableModelBill.setColumnIdentifiers(columNameBill);
 		tableMin.setDefaultEditor(Object.class, null);
@@ -642,24 +708,24 @@ public class NhapHangForm extends JInternalFrame {
 		loadDataToTableBill(pn);
 	}
 
-	private boolean kiemTraSoLuongNhap(String id, ArrayList<ProductNhap> list) {
-		for (ProductNhap productNhap : list) {
-			if (productNhap.getPrivateId().equals(id)) {
-				productNhap.setSoLuong(productNhap.getSoLuong() + 1);
+	private boolean kiemTraSoLuongNhap(String id, ArrayList<ChiTietPhieu> list) {
+		for (ChiTietPhieu ChiTietPhieu : list) {
+			if (ChiTietPhieu.getIdRieng().equals(id)) {
+				ChiTietPhieu.setSoLuong(ChiTietPhieu.getSoLuong() + 1);
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private ArrayList<ProductNhap> kiemTraSoLuongNhap1(String id, ArrayList<ProductNhap> list) {
-		for (ProductNhap productNhap : list) {
-			if (productNhap.getPrivateId().equals(id)) {
-				if (productNhap.getSoLuong() == 1) {
+	private ArrayList<ChiTietPhieu> kiemTraSoLuongNhap1(String id, ArrayList<ChiTietPhieu> list) {
+		for (ChiTietPhieu ChiTietPhieu : list) {
+			if (ChiTietPhieu.getIdRieng().equals(id)) {
+				if (ChiTietPhieu.getSoLuong() == 1) {
 					list.remove(tableMin.getSelectedRow());
 					break;
 				} else {
-					productNhap.setSoLuong(productNhap.getSoLuong() - 1);
+					ChiTietPhieu.setSoLuong(ChiTietPhieu.getSoLuong() - 1);
 					break;
 				}
 			}

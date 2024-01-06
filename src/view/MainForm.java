@@ -309,6 +309,8 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				maincontent.removeAll();
+				MainboardForm mf = new MainboardForm();
+				maincontent.add(mf);
 			}
 
 			@Override
@@ -340,6 +342,7 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				maincontent.removeAll();
+				maincontent.add(new PSUForm());
 			}
 
 			@Override
@@ -479,6 +482,7 @@ public class MainForm extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				maincontent.removeAll();
+				maincontent.add(new CaseForm());
 			}
 		});
 		btnCase.setForeground(whiteFont);

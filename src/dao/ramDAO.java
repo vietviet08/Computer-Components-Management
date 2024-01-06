@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import db.JDBCUntil;
-import model.ProductNhap;
+import model.ChiTietPhieu;
 import model.ram;
 import view.CapNhatRAM;
 import view.ThemRAM;
@@ -162,18 +162,18 @@ public class ramDAO implements DAOInterface<ram> {
 		return check;
 	}
 
-	public int updateTonKho(ArrayList<ProductNhap> pn) {
+	public int updateTonKho(ArrayList<ChiTietPhieu> pn) {
 		int check = 0;
 
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			for (ProductNhap productNhap : pn) {
-				if (productNhap.getPrivateId().contains("r")) {
+			for (ChiTietPhieu productNhap : pn) {
+				if (productNhap.getIdRieng().contains("r")) {
 					String sql = "UPDATE ram SET tonkho = tonkho + ? WHERE idram = ? ;";
 					PreparedStatement ps = con.prepareStatement(sql);
 					ps.setInt(1, productNhap.getSoLuong());
-					ps.setString(2, productNhap.getPrivateId());
+					ps.setString(2, productNhap.getIdRieng());
 					check = ps.executeUpdate();
 				}
 			}

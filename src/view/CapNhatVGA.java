@@ -48,7 +48,6 @@ public class CapNhatVGA extends JFrame {
 	private static JTextField tfBoNho;
 	private static JTextField tfDonGia;
 	private static JTextField tfHang;
-	private static JTextField tfTonKho;
 	private static JComboBox<String> comboBox;
 	private static JTextField tfBaoHanh;
 	private static JLabel labelIMG;
@@ -156,24 +155,29 @@ public class CapNhatVGA extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				vga v = VGAForm.getVGASelect();
 
-				vga vvga = new vga(comboBox.getSelectedItem().toString(), v
-						.getIdVga(), tfTen.getText(),
-						tfHang.getText(), tfBoNho.getText(), Integer.parseInt(tfTonKho.getText()),
-						Double.parseDouble(tfDonGia.getText()), tfBaoHanh.getText(), null);
+				vga vvga = new vga(comboBox.getSelectedItem().toString(), v.getIdVga(), tfTen.getText(),
+						tfHang.getText(), tfBoNho.getText(), v.getTonKho(), Double.parseDouble(tfDonGia.getText()),
+						tfBaoHanh.getText(), null);
 
 				if (insert.equals("")) {
 					int check = vgaDAO.getInstance().updateNotIMG(vvga);
-					if (check > 0)
+					if (check > 0) {
 						JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
-					else
+						setInsert("");
+					} else {
 						JOptionPane.showMessageDialog(null, "Cập nhật không thành công!");
+						setInsert("");
+					}
 
 				} else {
 					int check = vgaDAO.getInstance().update(vvga);
-					if (check > 0)
+					if (check > 0) {
 						JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
-					else
+						setInsert("");
+					} else {
 						JOptionPane.showMessageDialog(null, "Cập nhật không thành công!");
+						setInsert("");
+					}
 
 				}
 
@@ -183,7 +187,7 @@ public class CapNhatVGA extends JFrame {
 		});
 		btnNewButton.setFont(SetFont.font1());
 		btnNewButton.setBorder(null);
-		btnNewButton.setBounds(310, 239, 89, 30);
+		btnNewButton.setBounds(201, 229, 89, 30);
 		contentPane.add(btnNewButton);
 
 		JButton btnHy = new JButton("Hủy");
@@ -195,7 +199,7 @@ public class CapNhatVGA extends JFrame {
 		});
 		btnHy.setFont(SetFont.font1());
 		btnHy.setBorder(null);
-		btnHy.setBounds(438, 239, 89, 30);
+		btnHy.setBounds(329, 229, 89, 30);
 		contentPane.add(btnHy);
 
 		tfBoNho = new JTextField();
@@ -238,19 +242,6 @@ public class CapNhatVGA extends JFrame {
 		comboBox.setBounds(101, 57, 158, 25);
 		contentPane.add(comboBox);
 
-		JLabel lblNewLabel_2_1_3 = new JLabel("Tồn kho");
-		lblNewLabel_2_1_3.setForeground(new Color(254, 254, 254));
-		lblNewLabel_2_1_3.setFont(SetFont.font1_());
-		lblNewLabel_2_1_3.setBounds(20, 176, 78, 25);
-		contentPane.add(lblNewLabel_2_1_3);
-
-		tfTonKho = new JTextField();
-		tfTonKho.setFont(SetFont.fontDetails());
-		tfTonKho.setColumns(10);
-		tfTonKho.setBorder(null);
-		tfTonKho.setBounds(101, 176, 158, 25);
-		contentPane.add(tfTonKho);
-
 		btnUpload = new JButton("Upload");
 		btnUpload.addMouseListener(new MouseAdapter() {
 			@Override
@@ -277,7 +268,7 @@ public class CapNhatVGA extends JFrame {
 		btnUpload.setBounds(701, 267, 71, 21);
 		contentPane.add(btnUpload);
 
-		labelIMG = new JLabel("Ảnh CPU");
+		labelIMG = new JLabel("Ảnh VGA");
 		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
 		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
 		labelIMG.setBounds(549, 26, 223, 230);
@@ -286,14 +277,14 @@ public class CapNhatVGA extends JFrame {
 		JLabel lblNewLabel_2_1_3_1 = new JLabel("Bảo hành");
 		lblNewLabel_2_1_3_1.setForeground(new Color(254, 254, 254));
 		lblNewLabel_2_1_3_1.setFont(SetFont.font1_());
-		lblNewLabel_2_1_3_1.setBounds(20, 231, 78, 25);
+		lblNewLabel_2_1_3_1.setBounds(20, 176, 78, 25);
 		contentPane.add(lblNewLabel_2_1_3_1);
 
 		tfBaoHanh = new JTextField();
 		tfBaoHanh.setFont(SetFont.fontDetails());
 		tfBaoHanh.setColumns(10);
 		tfBaoHanh.setBorder(null);
-		tfBaoHanh.setBounds(101, 231, 158, 25);
+		tfBaoHanh.setBounds(101, 176, 158, 25);
 		contentPane.add(tfBaoHanh);
 	}
 
@@ -307,7 +298,6 @@ public class CapNhatVGA extends JFrame {
 		tfTen.setText(v.getTenVGA());
 		tfBoNho.setText(v.getBoNho());
 		tfDonGia.setText(String.valueOf(v.getDonGia()));
-		tfTonKho.setText(String.valueOf(v.getTonKho()));
 		tfHang.setText(v.getHangVGA());
 		tfBaoHanh.setText(v.getBaoHanh());
 

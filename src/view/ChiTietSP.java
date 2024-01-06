@@ -19,10 +19,12 @@ import javax.swing.border.EmptyBorder;
 
 import color.SetColor;
 import dao.cpuDAO;
+import dao.mainDAO;
 import dao.ramDAO;
 import dao.vgaDAO;
 import font.SetFont;
 import model.cpu;
+import model.mainboard;
 import model.ram;
 import model.vga;
 
@@ -53,6 +55,8 @@ public class ChiTietSP extends JFrame {
 						setDetailToRAM();
 					else if (id.contains("vga"))
 						setDetailToVGA();
+					else if (id.contains("mba"))
+						setDetailToMainboard();
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -162,5 +166,10 @@ public class ChiTietSP extends JFrame {
 		vga vga = vgaDAO.getInstance().selectById(id);
 		textArea.setText("-- ID sản phẩm: " + vga.getIdSanPham() + "\n-- ID VGA: " + vga.getIdVga() + "\n-- Tên VGA: "
 				+ vga.getTenVGA() + "\n-- Hãng VGA: " + vga.getHangVGA() + "\n-- Bộ nhớ: " + vga.getBoNho());
+	}
+	
+	private static void setDetailToMainboard() {
+		mainboard mb = mainDAO.getInstance().selectById(id);
+		textArea.setText("ok mainboard!!!!!! \nquocviet");
 	}
 }

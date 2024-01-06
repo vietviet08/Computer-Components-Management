@@ -42,8 +42,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import color.SetColor;
 import controller.TimKiemNPP;
 import dao.NhaPhanPhoiDAO;
+import dao.ramDAO;
 import font.SetFont;
 import model.NhaPhanPhoi;
+import model.ram;
 
 public class NhaPhanPhoiForm extends JInternalFrame {
 	/**
@@ -464,8 +466,9 @@ public class NhaPhanPhoiForm extends JInternalFrame {
 	}
 
 	public static NhaPhanPhoi getNppSelect() {
-		NhaPhanPhoi npp = NhaPhanPhoiDAO.getInstance().selectAll().get(tableNpp.getSelectedRow());
-		return npp;
+//		NhaPhanPhoi npp = NhaPhanPhoiDAO.getInstance().selectAll().get(tableNpp.getSelectedRow());
+//		return npp;
+		return NhaPhanPhoiDAO.getInstance().selectById(String.valueOf(tableNpp.getValueAt(tableNpp.getSelectedRow(), 0)));
 	}
 
 	private void openFile(String file) {

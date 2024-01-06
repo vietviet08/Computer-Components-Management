@@ -2,10 +2,10 @@ package model;
 
 import java.util.Objects;
 
-public class ChiTietPhieu {
+public class ChiTietPhieu extends Products {
 //	private int stt;
 	private String idPhieu;
-	private String idSanPham;
+//	private String idSanPham;
 	private String idRieng;
 	private String tenSanPham;
 	private int soLuong;
@@ -18,10 +18,9 @@ public class ChiTietPhieu {
 
 	public ChiTietPhieu(String idPhieu, String idSanPham, String idRieng, String tenSanPham, int soLuong, double donGia,
 			String baoHanh) {
-		super();
-//		this.stt = stt;
+		super(idSanPham);
 		this.idPhieu = idPhieu;
-		this.idSanPham = idSanPham;
+//		this.idSanPham = idSanPham;
 		this.idRieng = idRieng;
 		this.tenSanPham = tenSanPham;
 		this.soLuong = soLuong;
@@ -29,13 +28,16 @@ public class ChiTietPhieu {
 		this.baoHanh = baoHanh;
 	}
 
-//	public int getStt() {
-//		return stt;
-//	}
-//
-//	public void setStt(int stt) {
-//		this.stt = stt;
-//	}
+	public ChiTietPhieu(String idSanPham, String idRieng, String tenSanPham, int soLuong, double donGia,
+			String baoHanh) {
+		super(idSanPham);
+//		this.idSanPham = idSanPham;
+		this.idRieng = idRieng;
+		this.tenSanPham = tenSanPham;
+		this.soLuong = soLuong;
+		this.donGia = donGia;
+		this.baoHanh = baoHanh;
+	}
 
 	public String getIdRieng() {
 		return idRieng;
@@ -61,13 +63,13 @@ public class ChiTietPhieu {
 		this.idPhieu = idPhieu;
 	}
 
-	public String getIdSanPham() {
-		return idSanPham;
-	}
-
-	public void setIdSanPham(String idSanPham) {
-		this.idSanPham = idSanPham;
-	}
+//	public String getIdSanPham() {
+//		return idSanPham;
+//	}
+//
+//	public void setIdSanPham(String idSanPham) {
+//		this.idSanPham = idSanPham;
+//	}
 
 	public int getSoLuong() {
 		return soLuong;
@@ -95,21 +97,23 @@ public class ChiTietPhieu {
 
 	@Override
 	public String toString() {
-		return "ChiTietPhieu [idPhieu=" + idPhieu + ", idSanPham=" + idSanPham + ", idRieng=" + idRieng
-				+ ", tenSanPham=" + tenSanPham + ", soLuong=" + soLuong + ", donGia=" + donGia + ", baoHanh=" + baoHanh
-				+ "]";
+		return "ChiTietPhieu [idPhieu=" + idPhieu + ", idRieng=" + idRieng + ", tenSanPham=" + tenSanPham + ", soLuong="
+				+ soLuong + ", donGia=" + donGia + ", baoHanh=" + baoHanh + ", getIdSanPham()=" + getIdSanPham() + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(baoHanh, donGia, idPhieu, idRieng, idSanPham, soLuong, tenSanPham);
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(baoHanh, donGia, idPhieu, idRieng, soLuong, tenSanPham);
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -117,8 +121,35 @@ public class ChiTietPhieu {
 		return Objects.equals(baoHanh, other.baoHanh)
 				&& Double.doubleToLongBits(donGia) == Double.doubleToLongBits(other.donGia)
 				&& Objects.equals(idPhieu, other.idPhieu) && Objects.equals(idRieng, other.idRieng)
-				&& Objects.equals(idSanPham, other.idSanPham) && soLuong == other.soLuong
-				&& Objects.equals(tenSanPham, other.tenSanPham);
+				&& soLuong == other.soLuong && Objects.equals(tenSanPham, other.tenSanPham);
 	}
+
+//	@Override
+//	public String toString() {
+//		return "ChiTietPhieu [idPhieu=" + idPhieu + ", idSanPham=" + idSanPham + ", idRieng=" + idRieng
+//				+ ", tenSanPham=" + tenSanPham + ", soLuong=" + soLuong + ", donGia=" + donGia + ", baoHanh=" + baoHanh
+//				+ "]";
+//	}
+//
+//	@Override
+//	public int hashCode() {
+//		return Objects.hash(baoHanh, donGia, idPhieu, idRieng, idSanPham, soLuong, tenSanPham);
+//	}
+//
+//	@Override
+//	public boolean equals(Object obj) {
+//		if (this == obj)
+//			return true;
+//		if (obj == null)
+//			return false;
+//		if (getClass() != obj.getClass())
+//			return false;
+//		ChiTietPhieu other = (ChiTietPhieu) obj;
+//		return Objects.equals(baoHanh, other.baoHanh)
+//				&& Double.doubleToLongBits(donGia) == Double.doubleToLongBits(other.donGia)
+//				&& Objects.equals(idPhieu, other.idPhieu) && Objects.equals(idRieng, other.idRieng)
+//				&& Objects.equals(idSanPham, other.idSanPham) && soLuong == other.soLuong
+//				&& Objects.equals(tenSanPham, other.tenSanPham);
+//	}
 
 }

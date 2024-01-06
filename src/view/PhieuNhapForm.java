@@ -521,8 +521,9 @@ public class PhieuNhapForm extends JInternalFrame {
 	}
 
 	public static PhieuNhap getPhieuNhapSelect() {
-		PhieuNhap pn = PhieuNhapDAO.getInstance().selectAll().get(table.getSelectedRow());
-		return pn;
+//		PhieuNhap pn = PhieuNhapDAO.getInstance().selectAll().get(table.getSelectedRow());
+
+		return PhieuNhapDAO.getInstance().selectById(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
 	}
 
 	private ArrayList<PhieuNhap> sortDaThanhToan() {

@@ -44,8 +44,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import color.SetColor;
 import controller.TimKiemSP;
 import dao.SanPhamDAO;
+import dao.ramDAO;
 import font.SetFont;
 import model.Products;
+import model.ram;
+
 import javax.swing.SwingConstants;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -173,9 +176,10 @@ public class ProductForm extends JInternalFrame {
 		btnNewButton_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(table.getSelectedRow()==-1) JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm để sửa!");
+				if (table.getSelectedRow() == -1)
+					JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm để sửa!");
 				else
-				CapNhatProduct.main(null);
+					CapNhatProduct.main(null);
 			}
 		});
 		btnNewButton_3.setFont(font);
@@ -309,7 +313,7 @@ public class ProductForm extends JInternalFrame {
 		panel_2.setLayout(null);
 		panel_2.setBounds(639, 1, 549, 49);
 		getContentPane().add(panel_2);
-		
+
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblNewLabel.setIcon(new ImageIcon(ProductForm.class.getResource("/icon/search-24.png")));
@@ -320,13 +324,13 @@ public class ProductForm extends JInternalFrame {
 		txtTmKim.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if(comboBox.getSelectedItem().toString().equals("ID Sản phẩm")) {
+				if (comboBox.getSelectedItem().toString().equals("ID Sản phẩm")) {
 					loadDataToTable(TimKiemSP.byID(txtTmKim.getText()));
-				}else if(comboBox.getSelectedItem().toString().equals("Tên sản phẩm")) {
+				} else if (comboBox.getSelectedItem().toString().equals("Tên sản phẩm")) {
 					loadDataToTable(TimKiemSP.byTen(txtTmKim.getText()));
-				}else if(comboBox.getSelectedItem().toString().equals("Trạng thái")) {
+				} else if (comboBox.getSelectedItem().toString().equals("Trạng thái")) {
 					loadDataToTable(TimKiemSP.byTrangThai(txtTmKim.getText()));
-				}else if(comboBox.getSelectedItem().toString().equals("Mô tả")) {
+				} else if (comboBox.getSelectedItem().toString().equals("Mô tả")) {
 					loadDataToTable(TimKiemSP.byMota(txtTmKim.getText()));
 				}
 			}
@@ -391,9 +395,10 @@ public class ProductForm extends JInternalFrame {
 	}
 
 	public static Products getProSelect() {
-		Products p = SanPhamDAO.getInstance().selectAll().get(table.getSelectedRow());
+//		Products p = SanPhamDAO.getInstance().selectAll().get(table.getSelectedRow());
+		return SanPhamDAO.getInstance().selectById(String.valueOf(table.getValueAt(table.getSelectedRow(), 0)));
 
-		return p;
+//		return p;
 	}
 
 	private void openFile(String file) {

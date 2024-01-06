@@ -49,13 +49,12 @@ public class CapNhatRAM extends JFrame {
 	private static JTextField tfBus;
 	private static JTextField tfDungLuong;
 	private static JTextField tfGia;
-	private static JTextField tfTonKho;
 	private static JComboBox<String> comboBox;
 	private JButton btnUpload;
 	private static JLabel labelIMG;
 	private static JTextField tfBaoHanh;
 
-	public static String insert;
+	public static String insert = "";
 
 	/**
 	 * Launch the application.
@@ -81,7 +80,7 @@ public class CapNhatRAM extends JFrame {
 	public CapNhatRAM() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 790, 406);
+		setBounds(100, 100, 790, 374);
 		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
 		contentPane = new JPanel() {
 			/**
@@ -117,7 +116,7 @@ public class CapNhatRAM extends JFrame {
 		lblNewLabel_1.setFont(SetFont.font());
 		lblNewLabel_1.setForeground(SetColor.copyRight);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(35, 378, 740, 14);
+		lblNewLabel_1.setBounds(40, 342, 740, 14);
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel("Tên RAM");
@@ -196,21 +195,26 @@ public class CapNhatRAM extends JFrame {
 
 				String idram = old.getIdRam();
 				ram r = new ram(idsp, idram, tfTen.getText(), tfLoai.getText(), tfDungLuong.getText(), tfBus.getText(),
-						Integer.parseInt(tfTonKho.getText()), Double.parseDouble(tfGia.getText()), tfBaoHanh.getText(),
-						null);
+						old.getTonkho(), Double.parseDouble(tfGia.getText()), tfBaoHanh.getText(), null);
 				if (insert.equals("")) {
 					int check = ramDAO.getInstance().updateNotIMG(r);
-					if (check > 0)
-						JOptionPane.showMessageDialog(null, "Cập nhật thành công");
-					else
-						JOptionPane.showMessageDialog(null, "Cập nhật không thành công");
+					if (check > 0) {
+						JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
+						setInsert("");
+					} else {
+						JOptionPane.showMessageDialog(null, "Cập nhật không thành công!");
+						setInsert("");
+					}
 
 				} else {
 					int check = ramDAO.getInstance().update(r);
-					if (check > 0)
-						JOptionPane.showMessageDialog(null, "Cập nhật thành công");
-					else
-						JOptionPane.showMessageDialog(null, "Cập nhật không thành công");
+					if (check > 0) {
+						JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
+						setInsert("");
+					} else {
+						JOptionPane.showMessageDialog(null, "Cập nhật không thành công!");
+						setInsert("");
+					}
 				}
 
 				RAMForm.loadDataToTable(ramDAO.getInstance().selectAll());
@@ -219,7 +223,7 @@ public class CapNhatRAM extends JFrame {
 		});
 		btnNewButton.setFont(SetFont.font1());
 		btnNewButton.setBorder(null);
-		btnNewButton.setBounds(281, 332, 112, 28);
+		btnNewButton.setBounds(301, 272, 112, 28);
 		contentPane.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("Hủy");
@@ -231,7 +235,7 @@ public class CapNhatRAM extends JFrame {
 		});
 		btnNewButton_1.setFont(SetFont.font1());
 		btnNewButton_1.setBorder(null);
-		btnNewButton_1.setBounds(414, 332, 112, 28);
+		btnNewButton_1.setBounds(434, 272, 112, 28);
 		contentPane.add(btnNewButton_1);
 
 		JLabel lblNewLabel_2_1_2 = new JLabel("ID sản phẩm");
@@ -252,19 +256,6 @@ public class CapNhatRAM extends JFrame {
 		comboBox.setFont(SetFont.fontDetails());
 		comboBox.setBounds(115, 74, 164, 28);
 		contentPane.add(comboBox);
-
-		JLabel lblNewLabel_2_3_1 = new JLabel("Tồn kho");
-		lblNewLabel_2_3_1.setForeground(new Color(254, 254, 254));
-		lblNewLabel_2_3_1.setFont(SetFont.font1_());
-		lblNewLabel_2_3_1.setBounds(302, 205, 84, 28);
-		contentPane.add(lblNewLabel_2_3_1);
-
-		tfTonKho = new JTextField();
-		tfTonKho.setFont(SetFont.fontDetails());
-		tfTonKho.setColumns(10);
-		tfTonKho.setBorder(null);
-		tfTonKho.setBounds(382, 205, 164, 28);
-		contentPane.add(tfTonKho);
 
 		labelIMG = new JLabel("Ảnh CPU");
 		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
@@ -302,13 +293,13 @@ public class CapNhatRAM extends JFrame {
 		tfBaoHanh.setFont(SetFont.fontDetails());
 		tfBaoHanh.setColumns(10);
 		tfBaoHanh.setBorder(null);
-		tfBaoHanh.setBounds(382, 272, 164, 28);
+		tfBaoHanh.setBounds(382, 205, 164, 28);
 		contentPane.add(tfBaoHanh);
 
 		JLabel lblBaoHanh = new JLabel("Bảo hành");
 		lblBaoHanh.setForeground(new Color(254, 254, 254));
 		lblBaoHanh.setFont(SetFont.font1_());
-		lblBaoHanh.setBounds(302, 272, 84, 28);
+		lblBaoHanh.setBounds(302, 205, 84, 28);
 		contentPane.add(lblBaoHanh);
 	}
 
@@ -323,7 +314,6 @@ public class CapNhatRAM extends JFrame {
 		tfLoai.setText(r.getLoai());
 		tfBus.setText(r.getBus());
 		tfGia.setText(String.valueOf(r.getDonGia()));
-		tfTonKho.setText(String.valueOf(r.getTonkho()));
 		tfDungLuong.setText(r.getDungLuong());
 		tfBaoHanh.setText(r.getBaoHanh());
 

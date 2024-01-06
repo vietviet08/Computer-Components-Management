@@ -409,19 +409,25 @@ public class ThemCPU extends JFrame {
 			double gia = Double.parseDouble(tfDonGia.getText());
 			String baoHanh = tfBaoHanh.getText();
 
-			cpu cc = new cpu(id, idcpu, ten, xungNhip, soNhan, soLuong, dienNang, boNho, soLuong, gia, baoHanh, null);
+			cpu cc = new cpu(id, idcpu, ten, xungNhip, soNhan, soLuong, dienNang, boNho, 0, gia, baoHanh, null);
 			if (insert.equals("")) {
 				int check = cpuDAO.getInstance().insertNotIMG(cc);
-				if (check > 0)
-					JOptionPane.showMessageDialog(null, "Thêm thành công");
-				else
-					JOptionPane.showMessageDialog(null, "Thêm Thất bại!");
+				if (check > 0) {
+					JOptionPane.showMessageDialog(null, "Thêm thành công!");
+					setInsert("");
+				} else {
+					JOptionPane.showMessageDialog(null, "Thêm không thành công!");
+					setInsert("");
+				}
 			} else {
 				int check = cpuDAO.getInstance().insert(cc);
-				if (check > 0)
-					JOptionPane.showMessageDialog(null, "Thêm thành công");
-				else
-					JOptionPane.showMessageDialog(null, "Thêm Thất bại!!!");
+				if (check > 0) {
+					JOptionPane.showMessageDialog(null, "Thêm thành công!");
+					setInsert("");
+				} else {
+					JOptionPane.showMessageDialog(null, "Thêm không thành công!");
+					setInsert("");
+				}
 			}
 			CPUForm.loadDataToTable(cpuDAO.getInstance().selectAll());
 			closeFrame();

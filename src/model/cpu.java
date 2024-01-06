@@ -19,7 +19,7 @@ public class cpu extends Products {
 	public cpu() {
 		super();
 	}
-
+//nhap hang
 	public cpu(String idSanPham, String idCpu, String nameCpu, double donGia, String baoHanh) {
 		super(idSanPham);
 		this.idCpu = idCpu;
@@ -42,7 +42,7 @@ public class cpu extends Products {
 		this.donGia = donGia;
 	}
 
-//	
+//	main
 	public cpu(String idSanPham, String idCpu, String nameCpu, String xungNhip, int soNhan, int soLuong,
 			String dienNangTieuThu, String boNhoDem, int tonKho, double donGia, String baoHanh, Blob img) {
 		super(idSanPham);
@@ -59,6 +59,23 @@ public class cpu extends Products {
 		this.img = img;
 
 	}
+	
+// them cpu khong co ton kho
+	
+//	public cpu(String idSanPham, String idCpu, String nameCpu, String xungNhip, int soNhan, int soLuong,
+//			String dienNangTieuThu, String boNhoDem, double donGia, String baoHanh, Blob img) {
+//		super(idSanPham);
+//		this.idCpu = idCpu;
+//		this.nameCpu = nameCpu;
+//		this.xungNhip = xungNhip;
+//		this.soNhan = soNhan;
+//		this.soLuong = soLuong;
+//		this.dienNangTieuThu = dienNangTieuThu;
+//		this.boNhoDem = boNhoDem;
+//		this.donGia = donGia;
+//		this.baoHanh = baoHanh;
+//		this.img = img;
+//	}
 
 	public cpu(String idSanPham, String tenSanPham, int trangThai, String moTa, String idCpu, String nameCpu,
 			String xungNhip, int soNhan, int soLuong, String dienNangTieuThu, String boNhoDem, int tonKho,
@@ -75,6 +92,7 @@ public class cpu extends Products {
 		this.donGia = donGia;
 	}
 
+	
 	public int getTonKho() {
 		return tonKho;
 	}

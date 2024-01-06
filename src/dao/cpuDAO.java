@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import db.JDBCUntil;
-import model.ProductNhap;
+import model.ChiTietPhieu;
 import model.cpu;
 import view.CapNhatCPU;
 import view.ThemCPU;
@@ -41,7 +41,7 @@ public class cpuDAO implements DAOInterface<cpu> {
 			ps.setInt(6, t.getSoLuong());
 			ps.setString(7, t.getDienNangTieuThu());
 			ps.setString(8, t.getBoNhoDem());
-			ps.setInt(9, t.getTonKho());
+			ps.setInt(9, 0);
 			ps.setDouble(10, t.getDonGia());
 			ps.setString(11, t.getBaoHanh());
 
@@ -69,7 +69,7 @@ public class cpuDAO implements DAOInterface<cpu> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "INSERT INTO cpu (idsanpham, idcpu, tencpu, xungnhip, sonhan, soluong, diennangtieuthu, bonhodem, tonkho, dongia, baohanh) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			String sql = "INSERT INTO cpu (idsanpham, idcpu, tencpu, xungnhip, sonhan, soluong, diennangtieuthu, bonhodem,tonkho, dongia, baohanh) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -81,7 +81,7 @@ public class cpuDAO implements DAOInterface<cpu> {
 			ps.setInt(6, t.getSoLuong());
 			ps.setString(7, t.getDienNangTieuThu());
 			ps.setString(8, t.getBoNhoDem());
-			ps.setInt(9, t.getTonKho());
+			ps.setInt(9, 0);
 			ps.setDouble(10, t.getDonGia());
 			ps.setString(11, t.getBaoHanh());
 
@@ -103,7 +103,7 @@ public class cpuDAO implements DAOInterface<cpu> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "UPDATE cpu SET idsanpham = ?, tencpu = ?, xungnhip = ?, sonhan = ?, soluong = ?, diennangtieuthu = ?, bonhodem = ?, tonkho = ?, dongia = ?, baohanh = ?, img = ? WHERE idcpu = ?;";
+			String sql = "UPDATE cpu SET idsanpham = ?, tencpu = ?, xungnhip = ?, sonhan = ?, soluong = ?, diennangtieuthu = ?, bonhodem = ?, dongia = ?, baohanh = ?, img = ? WHERE idcpu = ?;";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, t.getIdSanPham());
@@ -113,17 +113,17 @@ public class cpuDAO implements DAOInterface<cpu> {
 			ps.setInt(5, t.getSoLuong());
 			ps.setString(6, t.getDienNangTieuThu());
 			ps.setString(7, t.getBoNhoDem());
-			ps.setInt(8, t.getTonKho());
-			ps.setDouble(9, t.getDonGia());
-			ps.setString(10, t.getBaoHanh());
-			
+//			ps.setInt(8, t.getTonKho());
+			ps.setDouble(8, t.getDonGia());
+			ps.setString(9, t.getBaoHanh());
+
 			try {
 				InputStream is = new FileInputStream(new File(CapNhatCPU.getInsert()));
-				ps.setBlob(11, is);
+				ps.setBlob(10, is);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-			ps.setString(12, t.getIdCpu());
+			ps.setString(11, t.getIdCpu());
 			check = ps.executeUpdate();
 
 			JDBCUntil.closeConnection(con);
@@ -134,14 +134,14 @@ public class cpuDAO implements DAOInterface<cpu> {
 
 		return check;
 	}
-	
+
 	public int updateNotIMG(cpu t) {
 		int check = 0;
 
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "UPDATE cpu SET idsanpham = ?, tencpu = ?, xungnhip = ?, sonhan = ?, soluong = ?, diennangtieuthu = ?, bonhodem = ?, tonkho = ?, dongia = ?, baohanh = ? WHERE idcpu = ?;";
+			String sql = "UPDATE cpu SET idsanpham = ?, tencpu = ?, xungnhip = ?, sonhan = ?, soluong = ?, diennangtieuthu = ?, bonhodem = ?, dongia = ?, baohanh = ? WHERE idcpu = ?;";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, t.getIdSanPham());
@@ -151,10 +151,10 @@ public class cpuDAO implements DAOInterface<cpu> {
 			ps.setInt(5, t.getSoLuong());
 			ps.setString(6, t.getDienNangTieuThu());
 			ps.setString(7, t.getBoNhoDem());
-			ps.setInt(8, t.getTonKho());
-			ps.setDouble(9, t.getDonGia());
-			ps.setString(10, t.getBaoHanh());
-			ps.setString(11, t.getIdCpu());
+//			ps.setInt(8, t.getTonKho());
+			ps.setDouble(8, t.getDonGia());
+			ps.setString(9, t.getBaoHanh());
+			ps.setString(10, t.getIdCpu());
 			check = ps.executeUpdate();
 
 			JDBCUntil.closeConnection(con);
@@ -168,20 +168,20 @@ public class cpuDAO implements DAOInterface<cpu> {
 
 //	cần tạo method update số lượng sản phẩm khi được nhập hàng hoặc xuất hàng
 
-	public int updateTonKho(ArrayList<ProductNhap> pn) {
+	public int updateTonKho(ArrayList<ChiTietPhieu> pn) {
 		int check = 0;
 
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			for (ProductNhap productNhap : pn) {
+			for (ChiTietPhieu productNhap : pn) {
 
-				if (productNhap.getPrivateId().contains("cpu")) {
+				if (productNhap.getIdRieng().contains("cpu")) {
 					String sql = "UPDATE cpu SET  tonkho = tonkho + ? WHERE idcpu = ?;";
 
 					PreparedStatement ps = con.prepareStatement(sql);
 					ps.setInt(1, productNhap.getSoLuong());
-					ps.setString(2, productNhap.getPrivateId());
+					ps.setString(2, productNhap.getIdRieng());
 					check = ps.executeUpdate();
 				}
 

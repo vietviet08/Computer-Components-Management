@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -57,8 +58,6 @@ import dao.SanPhamDAO;
 import dao.cpuDAO;
 import font.SetFont;
 import model.cpu;
-import javax.swing.border.LineBorder;
-import javax.swing.JTextArea;
 
 public class CPUForm extends JInternalFrame {
 
@@ -388,7 +387,10 @@ public class CPUForm extends JInternalFrame {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				cpu c = getSelectCPU();
+
+//				cpu c = getSelectCPU();
+				cpu c = cpuDAO.getInstance().selectById(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
+
 				labelTen.setText(c.getNameCpu());
 				labelBaoHanh.setText("Bảo hành: " + c.getBaoHanh());
 				labelTien.setText(FormatToVND.vnd(c.getDonGia()));
@@ -397,6 +399,7 @@ public class CPUForm extends JInternalFrame {
 
 				if (c.getImg() == null) {
 					labelIMG.setIcon(null);
+					labelIMG.setIcon(new ImageIcon(MainboardForm.class.getResource("/icon/icons8-no-image-14.png")));
 					labelIMG.setText("Sản phẩm hiện chưa có ảnh mẫu!");
 				} else {
 					Blob blob = c.getImg();
@@ -424,7 +427,7 @@ public class CPUForm extends JInternalFrame {
 		setDefaultTable();
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(635, 0, 557, 49);
+		panel_1.setBounds(635, 0, 527, 49);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 
@@ -525,7 +528,7 @@ public class CPUForm extends JInternalFrame {
 		});
 		comboBoxSort.setModel(new DefaultComboBoxModel<String>(
 				new String[] { "Sắp xếp", "Giá tăng dần", "Giá giảm dần", "Tồn kho tăng dần", "Tồn kho giảm dần" }));
-		comboBoxSort.setBounds(0, 8, 125, 32);
+		comboBoxSort.setBounds(0, 8, 125, 33);
 		panel_1.add(comboBoxSort);
 
 		JPanel panel_2 = new JPanel();
@@ -535,15 +538,17 @@ public class CPUForm extends JInternalFrame {
 		panel_2.setLayout(null);
 
 		labelIMG = new JLabel("Ảnh sản phẩm");
-		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
+		labelIMG.setFont(SetFont.font());
+		labelIMG.setIcon(new ImageIcon(CPUForm.class.getResource("/icon/icons8-no-image-14.png")));
+		labelIMG.setBorder(null);
 		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
-		labelIMG.setBounds(41, 50, 300, 350);
+		labelIMG.setBounds(12, 50, 350, 350);
 		panel_2.add(labelIMG);
 
 		labelTien = new JLabel("0 đ");
 		labelTien.setForeground(new Color(190, 14, 30));
 		labelTien.setFont(SetFont.font1());
-		labelTien.setBounds(41, 402, 187, 23);
+		labelTien.setBounds(41, 402, 131, 23);
 		panel_2.add(labelTien);
 
 		labelBaoHanh = new JLabel("Bảo hành");
@@ -553,7 +558,7 @@ public class CPUForm extends JInternalFrame {
 
 		labelTen = new JLabel("Tên CPU");
 		labelTen.setFont(SetFont.fontCategory());
-		labelTen.setBounds(41, 8, 300, 31);
+		labelTen.setBounds(30, 11, 341, 31);
 		panel_2.add(labelTen);
 
 		txtrAbc = new JTextArea();
@@ -568,8 +573,8 @@ public class CPUForm extends JInternalFrame {
 	}
 
 	public static cpu getSelectCPU() {
-		cpu c = cpuDAO.getInstance().selectAll().get(table.getSelectedRow());
-		return c;
+//		cpu c = cpuDAO.getInstance().selectAll().get(table.getSelectedRow());
+		return cpuDAO.getInstance().selectById(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
 	}
 
 	private void openFile(String file) {

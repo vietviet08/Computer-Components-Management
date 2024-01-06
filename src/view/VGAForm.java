@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedInputStream;
@@ -28,10 +30,12 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -54,11 +58,6 @@ import dao.SanPhamDAO;
 import dao.vgaDAO;
 import font.SetFont;
 import model.vga;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import javax.swing.JLabel;
-import javax.swing.border.LineBorder;
-import javax.swing.JTextArea;
 
 public class VGAForm extends JInternalFrame {
 
@@ -184,7 +183,10 @@ public class VGAForm extends JInternalFrame {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				vga v = getVGASelect();
+//				vga v = getVGASelect();
+
+				vga v = vgaDAO.getInstance().selectById(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
+
 				lblTnVga.setText(v.getTenVGA());
 				labelTien.setText(FormatToVND.vnd(v.getDonGia()));
 				labelBaoHanh.setText("Bảo hành: " + v.getBaoHanh());
@@ -192,6 +194,7 @@ public class VGAForm extends JInternalFrame {
 
 				if (v.getImg() == null) {
 					labelIMG.setIcon(null);
+					labelIMG.setIcon(new ImageIcon(MainboardForm.class.getResource("/icon/icons8-no-image-14.png")));
 					labelIMG.setText("Sản phẩm hiện chưa có ảnh mẫu");
 				} else {
 					labelIMG.setBorder(null);
@@ -488,9 +491,11 @@ public class VGAForm extends JInternalFrame {
 		getContentPane().add(panel_2);
 
 		labelIMG = new JLabel("Ảnh sản phẩm");
+		labelIMG.setIcon(new ImageIcon(VGAForm.class.getResource("/icon/icons8-no-image-14.png")));
+		labelIMG.setFont(SetFont.font());
 		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
-		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
-		labelIMG.setBounds(41, 50, 300, 350);
+		labelIMG.setBorder(null);
+		labelIMG.setBounds(10, 50, 350, 350);
 		panel_2.add(labelIMG);
 
 		labelTien = new JLabel("0 đ");
@@ -506,7 +511,7 @@ public class VGAForm extends JInternalFrame {
 
 		lblTnVga = new JLabel("Tên VGA");
 		lblTnVga.setFont(SetFont.fontCategory());
-		lblTnVga.setBounds(41, 8, 331, 31);
+		lblTnVga.setBounds(30, 8, 343, 31);
 		panel_2.add(lblTnVga);
 
 		txtrAbc = new JTextArea();
@@ -521,8 +526,8 @@ public class VGAForm extends JInternalFrame {
 	}
 
 	public static vga getVGASelect() {
-		vga v = vgaDAO.getInstance().selectAll().get(table.getSelectedRow());
-		return v;
+//		vga v = vgaDAO.getInstance().selectAll().get(table.getSelectedRow());
+		return vgaDAO.getInstance().selectById(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
 	}
 
 	private ArrayList<vga> sxTangDan() {

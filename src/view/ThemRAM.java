@@ -51,7 +51,6 @@ public class ThemRAM extends JFrame {
 	private JTextField tfGia;
 	private JComboBox<String> comboBox;
 	private static JTextField tfIDRAM;
-	private JTextField tfTonKho;
 	private JTextField tfBaoHanh;
 
 	public static String insert = "";
@@ -167,7 +166,6 @@ public class ThemRAM extends JFrame {
 					String loai = tfLoai.getText();
 					String dungluong = tfDungLuong.getText();
 					String bus = tfBus.getText();
-					int tonkho = Integer.parseInt(tfTonKho.getText());
 					double gia = Double.parseDouble(tfGia.getText());
 					String baoHanh = tfBaoHanh.getText();
 
@@ -175,20 +173,28 @@ public class ThemRAM extends JFrame {
 							|| tfBus.getText().equals("") || tfGia.getText().equals("")) {
 						JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!");
 					} else {
-						ram r = new ram(id, idram, ten, loai, dungluong, bus, tonkho, gia, baoHanh, null);
+						ram r = new ram(id, idram, ten, loai, dungluong, bus, 0, gia, baoHanh, null);
 
 						if (insert.equals("")) {
 							int check = ramDAO.getInstance().insertNotIMG(r);
-							if (check > 0)
-								JOptionPane.showMessageDialog(null, "Thêm thành công");
-							else
-								JOptionPane.showMessageDialog(null, "Thêm không thành công");
+							if (check > 0) {
+								JOptionPane.showMessageDialog(null, "Thêm thành công!");
+								setInsert("");
+							}
+							else {
+								JOptionPane.showMessageDialog(null, "Thêm không thành công!");
+								setInsert("");						
+							}
 						} else {
 							int check = ramDAO.getInstance().insert(r);
-							if (check > 0)
-								JOptionPane.showMessageDialog(null, "Thêm thành công");
-							else
-								JOptionPane.showMessageDialog(null, "Thêm không thành công");
+							if (check > 0) {
+								JOptionPane.showMessageDialog(null, "Thêm thành công!");
+								setInsert("");
+							}
+							else {
+								JOptionPane.showMessageDialog(null, "Thêm không thành công!");
+								setInsert("");						
+							}
 						}
 						RAMForm.loadDataToTable(ramDAO.getInstance().selectAll());
 						closeFrame();
@@ -198,7 +204,7 @@ public class ThemRAM extends JFrame {
 		});
 		btnNewButton.setBorder(null);
 		btnNewButton.setFont(SetFont.font1());
-		btnNewButton.setBounds(281, 242, 89, 27);
+		btnNewButton.setBounds(192, 251, 89, 27);
 		contentPane.add(btnNewButton);
 
 		JButton btnHy = new JButton("Hủy");
@@ -210,7 +216,7 @@ public class ThemRAM extends JFrame {
 		});
 		btnHy.setBorder(null);
 		btnHy.setFont(SetFont.font1());
-		btnHy.setBounds(392, 242, 89, 27);
+		btnHy.setBounds(303, 251, 89, 27);
 		contentPane.add(btnHy);
 
 		tfLoai = new JTextField();
@@ -277,19 +283,6 @@ public class ThemRAM extends JFrame {
 		tfIDRAM.setBounds(350, 41, 142, 26);
 		contentPane.add(tfIDRAM);
 
-		tfTonKho = new JTextField();
-		tfTonKho.setColumns(10);
-		tfTonKho.setFont(SetFont.fontDetails());
-		tfTonKho.setBorder(null);
-		tfTonKho.setBounds(99, 198, 144, 26);
-		contentPane.add(tfTonKho);
-
-		JLabel lblNewLabel_1_5_1 = new JLabel("Tồn kho");
-		lblNewLabel_1_5_1.setForeground(new Color(254, 254, 254));
-		lblNewLabel_1_5_1.setFont(SetFont.font1_());
-		lblNewLabel_1_5_1.setBounds(10, 198, 83, 23);
-		contentPane.add(lblNewLabel_1_5_1);
-
 		JLabel labelIMG = new JLabel("Ảnh CPU");
 		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
 		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -326,13 +319,13 @@ public class ThemRAM extends JFrame {
 		tfBaoHanh.setFont(SetFont.fontDetails());
 		tfBaoHanh.setColumns(10);
 		tfBaoHanh.setBorder(null);
-		tfBaoHanh.setBounds(99, 243, 144, 26);
+		tfBaoHanh.setBounds(99, 200, 144, 26);
 		contentPane.add(tfBaoHanh);
 
 		JLabel lblNewLabel_1_5_1_1 = new JLabel("Bảo hành");
 		lblNewLabel_1_5_1_1.setForeground(new Color(254, 254, 254));
 		lblNewLabel_1_5_1_1.setFont(SetFont.font1_());
-		lblNewLabel_1_5_1_1.setBounds(10, 243, 83, 23);
+		lblNewLabel_1_5_1_1.setBounds(10, 200, 83, 23);
 		contentPane.add(lblNewLabel_1_5_1_1);
 	}
 

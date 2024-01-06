@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedInputStream;
@@ -33,6 +35,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -55,10 +58,6 @@ import dao.SanPhamDAO;
 import dao.ramDAO;
 import font.SetFont;
 import model.ram;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import javax.swing.border.LineBorder;
-import javax.swing.JTextArea;
 
 public class RAMForm extends JInternalFrame {
 
@@ -341,7 +340,7 @@ public class RAMForm extends JInternalFrame {
 		panel.add(btnNewButton_5);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 53, 785, 648);
+		scrollPane.setBounds(0, 53, 780, 648);
 		getContentPane().add(scrollPane);
 
 		table = new JTable() {
@@ -363,16 +362,18 @@ public class RAMForm extends JInternalFrame {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ram r = getSelectRAM();
+//				ram r = getSelectRAM();
+
+				ram r = ramDAO.getInstance().selectById(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
 
 				labelTen.setText(r.getTenRam());
 				labelTien.setText(FormatToVND.vnd(r.getDonGia()));
 				labelBaoHanh.setText("Bảo hành: " + r.getBaoHanh());
 				textArea.setText(SanPhamDAO.getInstance().selectById(r.getIdSanPham()).getMoTa());
-			
-				
+
 				if (r.getImg() == null) {
 					labelIMG.setIcon(null);
+					labelIMG.setIcon(new ImageIcon(MainboardForm.class.getResource("/icon/icons8-no-image-14.png")));
 					labelIMG.setText("Sản phẩm hiện chưa có ảnh mẫu!");
 				} else {
 					labelIMG.setBorder(null);
@@ -488,30 +489,32 @@ public class RAMForm extends JInternalFrame {
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.WHITE);
-		panel_2.setBounds(795, 53, 367, 648);
+		panel_2.setBounds(790, 53, 372, 648);
 		getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 
 		labelTen = new JLabel("Tên RAM");
 		labelTen.setFont(SetFont.fontCategory());
-		labelTen.setBounds(45, 22, 323, 31);
+		labelTen.setBounds(30, 11, 348, 31);
 		panel_2.add(labelTen);
 
 		labelIMG = new JLabel("Ảnh sản phẩm");
+		labelIMG.setFont(SetFont.font());
+		labelIMG.setIcon(new ImageIcon(RAMForm.class.getResource("/icon/icons8-no-image-14.png")));
 		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
-		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
-		labelIMG.setBounds(43, 65, 300, 350);
+		labelIMG.setBorder(null);
+		labelIMG.setBounds(10, 50, 350, 350);
 		panel_2.add(labelIMG);
 
 		labelTien = new JLabel("0 đ");
 		labelTien.setForeground(new Color(190, 14, 30));
 		labelTien.setFont(SetFont.font1());
-		labelTien.setBounds(43, 417, 187, 23);
+		labelTien.setBounds(43, 402, 187, 23);
 		panel_2.add(labelTien);
 
 		labelBaoHanh = new JLabel("Bảo hành");
 		labelBaoHanh.setFont(SetFont.font1());
-		labelBaoHanh.setBounds(43, 451, 143, 23);
+		labelBaoHanh.setBounds(43, 436, 143, 23);
 		panel_2.add(labelBaoHanh);
 
 		textArea = new JTextArea();
@@ -520,7 +523,7 @@ public class RAMForm extends JInternalFrame {
 		textArea.setOpaque(false);
 		textArea.setWrapStyleWord(true);
 		textArea.setLineWrap(true);
-		textArea.setBounds(35, 485, 312, 152);
+		textArea.setBounds(35, 469, 312, 168);
 		panel_2.add(textArea);
 	}
 
@@ -585,8 +588,8 @@ public class RAMForm extends JInternalFrame {
 	}
 
 	public static ram getSelectRAM() {
-		ram c = ramDAO.getInstance().selectAll().get(table.getSelectedRow());
-		return c;
+//		ram c = ramDAO.getInstance().selectAll().get(table.getSelectedRow());
+		return ramDAO.getInstance().selectById(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
 	}
 
 	private void openFile(String file) {
