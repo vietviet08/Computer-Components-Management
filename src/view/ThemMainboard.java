@@ -353,19 +353,19 @@ public class ThemMainboard extends JFrame {
 		if (insert.equals("")) {
 			int check = mainDAO.getInstance().insertNotIMG(mb);
 			if (check > 0) {
-				JOptionPane.showMessageDialog(null, "Thêm nhật thành công!");
+				JOptionPane.showMessageDialog(null, "Thêm thành công!");
 				setInsert("");
 			} else {
-				JOptionPane.showMessageDialog(null, "Thêm nhật không thành công!");
+				JOptionPane.showMessageDialog(null, "Thêm không thành công!");
 				setInsert("");
 			}
 		} else {
 			int check = mainDAO.getInstance().insert(mb);
 			if (check > 0) {
-				JOptionPane.showMessageDialog(null, "Thêm nhật thành công!");
+				JOptionPane.showMessageDialog(null, "Thêm thành công!");
 				setInsert("");
 			} else {
-				JOptionPane.showMessageDialog(null, "Thêm nhật không thành công!");
+				JOptionPane.showMessageDialog(null, "Thêm không thành công!");
 				setInsert("");
 			}
 		}

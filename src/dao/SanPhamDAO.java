@@ -173,8 +173,8 @@ public class SanPhamDAO implements DAOInterface<Products> {
 				break;
 			case "psu":
 				sql = "select * from sanpham where idsanpham like 'psu%';";
-				break;	
-				
+				break;
+
 			case "chuot":
 				sql = "select * from sanpham where idsanpham like 'mou%';";
 				break;
@@ -187,9 +187,13 @@ public class SanPhamDAO implements DAOInterface<Products> {
 				sql = "select * from sanpham where idsanpham like 'scr%';";
 				break;
 
-			case "disk":
-				sql = "select * from sanpham where idsanpham like 'disk%';";
+			case "ssd":
+				sql = "select * from sanpham where idsanpham like 'ssd%';";
 				break;
+			case "hdd":
+				sql = "select * from sanpham where idsanpham like 'hdd%';";
+				break;
+
 			case "headphone":
 				sql = "select * from sanpham where idsanpham like 'hp%';";
 				break;

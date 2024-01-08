@@ -287,7 +287,7 @@ public class PSUForm extends JInternalFrame {
 
 		labelBaoHanh = new JLabel("Bảo hành");
 		labelBaoHanh.setFont(SetFont.font1());
-		labelBaoHanh.setBounds(41, 436, 143, 23);
+		labelBaoHanh.setBounds(41, 436, 178, 23);
 		panel_2.add(labelBaoHanh);
 
 		labelTen = new JLabel("Tên PSU");

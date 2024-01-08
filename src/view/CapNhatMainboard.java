@@ -242,7 +242,7 @@ public class CapNhatMainboard extends JFrame {
 						setInsert("");						
 					}
 				}
-
+				MainboardForm.loadDataToTable(mainDAO.getInstance().selectAll());
 				closeFrame();
 			}
 		});

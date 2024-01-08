@@ -1,6 +1,7 @@
 package decor;
 
 public class BooleanClick {
+	private static boolean btnTrangChu;
 	private static boolean btnNhaCungCap;
 	private static boolean btnNhapHang;
 	private static boolean btnPhieuNhap;
@@ -8,6 +9,14 @@ public class BooleanClick {
 	private static boolean btnPhieuXuat;
 	private static boolean btnThongKe;
 	private static boolean btnKhchHng;
+
+	public static boolean isBtnTrangChu() {
+		return btnTrangChu;
+	}
+
+	public static void setBtnTrangChu(boolean btnTrangChu) {
+		BooleanClick.btnTrangChu = btnTrangChu;
+	}
 
 	public static boolean isBtnNhaCungCap() {
 		return btnNhaCungCap;

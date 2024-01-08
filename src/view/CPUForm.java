@@ -131,16 +131,16 @@ public class CPUForm extends JInternalFrame {
 		tableModel.setColumnIdentifiers(columName);
 		table.setDefaultEditor(Object.class, null);
 		table.setModel(tableModel);
-		table.getColumnModel().getColumn(0).setPreferredWidth(150);
+		table.getColumnModel().getColumn(0).setPreferredWidth(200);
 		table.getColumnModel().getColumn(1).setPreferredWidth(150);
 		table.getColumnModel().getColumn(2).setPreferredWidth(500);
 		table.getColumnModel().getColumn(3).setPreferredWidth(500);
 		table.getColumnModel().getColumn(4).setPreferredWidth(100);
 		table.getColumnModel().getColumn(5).setPreferredWidth(100);
-		table.getColumnModel().getColumn(6).setPreferredWidth(450);
-		table.getColumnModel().getColumn(7).setPreferredWidth(200);
-		table.getColumnModel().getColumn(8).setPreferredWidth(250);
-		table.getColumnModel().getColumn(9).setPreferredWidth(250);
+		table.getColumnModel().getColumn(6).setPreferredWidth(250);
+		table.getColumnModel().getColumn(7).setPreferredWidth(250);
+		table.getColumnModel().getColumn(8).setPreferredWidth(150);
+		table.getColumnModel().getColumn(9).setPreferredWidth(300);
 		loadDataToTable(cpuDAO.getInstance().selectAll());
 	}
 

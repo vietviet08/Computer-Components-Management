@@ -78,6 +78,9 @@ public class MainForm extends JFrame {
 	private JPanel panel_4;
 	private JPanel panel_10;
 	private JLabel lblNewLabel_2;
+	private JLabel btnSSD;
+	private JLabel btnHDD;
+	private JLabel btnTrangChu;
 
 	/**
 	 * Launch the application.
@@ -194,6 +197,8 @@ public class MainForm extends JFrame {
 				btnChut.setForeground(whiteFont);
 				btnBnPhm.setForeground(whiteFont);
 				btnTaiNghe.setForeground(whiteFont);
+				btnSSD.setForeground(whiteFont);
+				btnHDD.setForeground(whiteFont);
 			}
 		});
 		btnAllProduct.setBackground(blue);
@@ -226,6 +231,8 @@ public class MainForm extends JFrame {
 				btnChut.setForeground(whiteFont);
 				btnBnPhm.setForeground(whiteFont);
 				btnTaiNghe.setForeground(whiteFont);
+				btnSSD.setForeground(whiteFont);
+				btnHDD.setForeground(whiteFont);
 			}
 		});
 		btnCpu.setBackground(blue);
@@ -260,6 +267,8 @@ public class MainForm extends JFrame {
 				btnChut.setForeground(whiteFont);
 				btnBnPhm.setForeground(whiteFont);
 				btnTaiNghe.setForeground(whiteFont);
+				btnSSD.setForeground(whiteFont);
+				btnHDD.setForeground(whiteFont);
 			}
 		});
 		btnRam.setBackground(blue);
@@ -293,6 +302,8 @@ public class MainForm extends JFrame {
 				btnChut.setForeground(whiteFont);
 				btnBnPhm.setForeground(whiteFont);
 				btnTaiNghe.setForeground(whiteFont);
+				btnSSD.setForeground(whiteFont);
+				btnHDD.setForeground(whiteFont);
 			}
 		});
 		btnVga.setBackground(blue);
@@ -326,6 +337,8 @@ public class MainForm extends JFrame {
 				btnChut.setForeground(whiteFont);
 				btnBnPhm.setForeground(whiteFont);
 				btnTaiNghe.setForeground(whiteFont);
+				btnSSD.setForeground(whiteFont);
+				btnHDD.setForeground(whiteFont);
 			}
 		});
 		btnMainboard.setBackground(blue);
@@ -358,6 +371,8 @@ public class MainForm extends JFrame {
 				btnChut.setForeground(whiteFont);
 				btnBnPhm.setForeground(whiteFont);
 				btnTaiNghe.setForeground(whiteFont);
+				btnSSD.setForeground(whiteFont);
+				btnHDD.setForeground(whiteFont);
 			}
 		});
 		btnNgun.setForeground(whiteFont);
@@ -389,6 +404,8 @@ public class MainForm extends JFrame {
 				btnChut.setForeground(whiteFont);
 				btnBnPhm.setForeground(whiteFont);
 				btnTaiNghe.setForeground(whiteFont);
+				btnSSD.setForeground(whiteFont);
+				btnHDD.setForeground(whiteFont);
 			}
 		});
 		btnMnHnh.setForeground(whiteFont);
@@ -420,6 +437,8 @@ public class MainForm extends JFrame {
 				btnChut.setForeground(green);
 				btnBnPhm.setForeground(whiteFont);
 				btnTaiNghe.setForeground(whiteFont);
+				btnSSD.setForeground(whiteFont);
+				btnHDD.setForeground(whiteFont);
 			}
 		});
 		btnChut.setForeground(whiteFont);
@@ -451,6 +470,8 @@ public class MainForm extends JFrame {
 				btnChut.setForeground(whiteFont);
 				btnBnPhm.setForeground(green);
 				btnTaiNghe.setForeground(whiteFont);
+				btnSSD.setForeground(whiteFont);
+				btnHDD.setForeground(whiteFont);
 			}
 		});
 		btnBnPhm.setForeground(whiteFont);
@@ -477,6 +498,8 @@ public class MainForm extends JFrame {
 				btnChut.setForeground(whiteFont);
 				btnBnPhm.setForeground(whiteFont);
 				btnTaiNghe.setForeground(whiteFont);
+				btnSSD.setForeground(whiteFont);
+				btnHDD.setForeground(whiteFont);
 			}
 
 			@Override
@@ -509,6 +532,8 @@ public class MainForm extends JFrame {
 				btnChut.setForeground(whiteFont);
 				btnBnPhm.setForeground(whiteFont);
 				btnTaiNghe.setForeground(green);
+				btnSSD.setForeground(whiteFont);
+				btnHDD.setForeground(whiteFont);
 			}
 
 			@Override
@@ -522,16 +547,76 @@ public class MainForm extends JFrame {
 		btnTaiNghe.setBackground(blue);
 		btnTaiNghe.setBounds(888, 7, 95, 22);
 		navbar.add(btnTaiNghe);
-		
-		JLabel lblCng = new JLabel("Ổ cứng");
-		lblCng.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-ssd-20.png")));
-		lblCng.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCng.setForeground(new Color(254, 254, 254));
-		lblCng.setFont(SetFont.fontCategoryPr());
-		lblCng.setBorder(null);
-		lblCng.setBackground(new Color(64, 143, 221));
-		lblCng.setBounds(985, 7, 95, 22);
-		navbar.add(lblCng);
+
+		btnSSD = new JLabel("SSD");
+		btnSSD.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				maincontent.removeAll();
+				maincontent.add(new SSDForm());
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				btnAllProduct.setForeground(whiteFont);
+				btnCpu.setForeground(whiteFont);
+				btnRam.setForeground(whiteFont);
+				btnVga.setForeground(whiteFont);
+				btnMainboard.setForeground(whiteFont);
+				btnCase.setForeground(whiteFont);
+				btnNgun.setForeground(whiteFont);
+				btnMnHnh.setForeground(whiteFont);
+				btnChut.setForeground(whiteFont);
+				btnBnPhm.setForeground(whiteFont);
+				btnTaiNghe.setForeground(whiteFont);
+				btnSSD.setForeground(green);
+				btnHDD.setForeground(whiteFont);
+			}
+
+		});
+		btnSSD.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-ssd-20.png")));
+		btnSSD.setHorizontalAlignment(SwingConstants.CENTER);
+		btnSSD.setForeground(new Color(254, 254, 254));
+		btnSSD.setFont(SetFont.fontCategoryPr());
+		btnSSD.setBorder(null);
+		btnSSD.setBackground(new Color(64, 143, 221));
+		btnSSD.setBounds(985, 7, 95, 22);
+		navbar.add(btnSSD);
+
+		btnHDD = new JLabel("HDD");
+		btnHDD.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				btnAllProduct.setForeground(whiteFont);
+				btnCpu.setForeground(whiteFont);
+				btnRam.setForeground(whiteFont);
+				btnVga.setForeground(whiteFont);
+				btnMainboard.setForeground(whiteFont);
+				btnCase.setForeground(whiteFont);
+				btnNgun.setForeground(whiteFont);
+				btnMnHnh.setForeground(whiteFont);
+				btnChut.setForeground(whiteFont);
+				btnBnPhm.setForeground(whiteFont);
+				btnTaiNghe.setForeground(whiteFont);
+				btnSSD.setForeground(whiteFont);
+				btnHDD.setForeground(green);
+
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				maincontent.removeAll();
+				maincontent.add(new HDDForm());
+			}
+		});
+		btnHDD.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-hdd-20.png")));
+		btnHDD.setHorizontalAlignment(SwingConstants.CENTER);
+		btnHDD.setForeground(new Color(254, 254, 254));
+		btnHDD.setFont(SetFont.fontCategoryPr());
+		btnHDD.setBorder(null);
+		btnHDD.setBackground(new Color(64, 143, 221));
+		btnHDD.setBounds(1075, 7, 95, 22);
+		navbar.add(btnHDD);
 
 		maincontent = new JPanel();
 		maincontent.setBounds(220, 37, 1175, 730);
@@ -627,7 +712,7 @@ public class MainForm extends JFrame {
 //				btnPhieuNhap.setBackground(blue);
 //				btnKhchHng.setBackground(blue);
 //				btnThongKe.setBackground(blue);
-
+				btnTrangChu.setForeground(whiteFont);
 				btnNhaCungCap.setForeground(green);
 				btnNhapHang.setForeground(whiteFont);
 				btnXuatHang.setForeground(whiteFont);
@@ -636,6 +721,7 @@ public class MainForm extends JFrame {
 				btnKhchHng.setForeground(whiteFont);
 				btnThongKe.setForeground(whiteFont);
 
+				BooleanClick.setBtnTrangChu(false);
 				BooleanClick.setBtnNhaCungCap(true);
 				BooleanClick.setBtnNhapHang(false);
 				BooleanClick.setBtnPhieuNhap(false);
@@ -704,7 +790,7 @@ public class MainForm extends JFrame {
 //				btnPhieuNhap.setBackground(blue);
 //				btnKhchHng.setBackground(blue);
 //				btnThongKe.setBackground(blue);
-
+				btnTrangChu.setForeground(whiteFont);
 				btnNhaCungCap.setForeground(whiteFont);
 				btnNhapHang.setForeground(green);
 				btnXuatHang.setForeground(whiteFont);
@@ -713,6 +799,7 @@ public class MainForm extends JFrame {
 				btnKhchHng.setForeground(whiteFont);
 				btnThongKe.setForeground(whiteFont);
 
+				BooleanClick.setBtnTrangChu(false);
 				BooleanClick.setBtnNhaCungCap(false);
 				BooleanClick.setBtnNhapHang(true);
 				BooleanClick.setBtnPhieuNhap(false);
@@ -780,7 +867,7 @@ public class MainForm extends JFrame {
 //				btnThongKe.setBackground(blueOp);
 //				btnKhchHng.setBackground(blue);
 ////				btnThongKe.setColor(blueOp);
-
+				btnTrangChu.setForeground(whiteFont);
 				btnNhaCungCap.setForeground(whiteFont);
 				btnNhapHang.setForeground(whiteFont);
 				btnXuatHang.setForeground(whiteFont);
@@ -789,6 +876,7 @@ public class MainForm extends JFrame {
 				btnKhchHng.setForeground(whiteFont);
 				btnThongKe.setForeground(green);
 
+				BooleanClick.setBtnTrangChu(false);
 				BooleanClick.setBtnNhaCungCap(false);
 				BooleanClick.setBtnNhapHang(false);
 				BooleanClick.setBtnPhieuNhap(false);
@@ -857,7 +945,7 @@ public class MainForm extends JFrame {
 //				btnPhieuNhap.setBackground(blueOp);
 //				btnKhchHng.setBackground(blue);
 //				btnThongKe.setBackground(blue);
-
+				btnTrangChu.setForeground(whiteFont);
 				btnNhaCungCap.setForeground(whiteFont);
 				btnNhapHang.setForeground(whiteFont);
 				btnXuatHang.setForeground(whiteFont);
@@ -866,6 +954,7 @@ public class MainForm extends JFrame {
 				btnKhchHng.setForeground(whiteFont);
 				btnThongKe.setForeground(whiteFont);
 
+				BooleanClick.setBtnTrangChu(false);
 				BooleanClick.setBtnNhaCungCap(false);
 				BooleanClick.setBtnNhapHang(false);
 				BooleanClick.setBtnPhieuNhap(true);
@@ -930,7 +1019,7 @@ public class MainForm extends JFrame {
 //				btnPhieuNhap.setBackground(blue);
 //				btnKhchHng.setBackground(blue);
 //				btnThongKe.setBackground(blue);
-
+				btnTrangChu.setForeground(whiteFont);
 				btnNhaCungCap.setForeground(whiteFont);
 				btnNhapHang.setForeground(whiteFont);
 				btnXuatHang.setForeground(green);
@@ -939,6 +1028,7 @@ public class MainForm extends JFrame {
 				btnKhchHng.setForeground(whiteFont);
 				btnThongKe.setForeground(whiteFont);
 
+				BooleanClick.setBtnTrangChu(false);
 				BooleanClick.setBtnNhaCungCap(false);
 				BooleanClick.setBtnNhapHang(false);
 				BooleanClick.setBtnPhieuNhap(false);
@@ -1004,7 +1094,7 @@ public class MainForm extends JFrame {
 //				btnPhieuNhap.setBackground(blue);
 //				btnKhchHng.setBackground(blue);
 //				btnThongKe.setBackground(blue);
-
+				btnTrangChu.setForeground(whiteFont);
 				btnNhaCungCap.setForeground(whiteFont);
 				btnNhapHang.setForeground(whiteFont);
 				btnXuatHang.setForeground(whiteFont);
@@ -1013,6 +1103,7 @@ public class MainForm extends JFrame {
 				btnKhchHng.setForeground(whiteFont);
 				btnThongKe.setForeground(whiteFont);
 
+				BooleanClick.setBtnTrangChu(false);
 				BooleanClick.setBtnNhaCungCap(false);
 				BooleanClick.setBtnNhapHang(false);
 				BooleanClick.setBtnPhieuNhap(false);
@@ -1087,7 +1178,7 @@ public class MainForm extends JFrame {
 //				btnPhieuNhap.setBackground(blue);
 //				btnKhchHng.setBackground(blueOp);
 //				btnThongKe.setBackground(blue);
-
+				btnTrangChu.setForeground(whiteFont);
 				btnNhaCungCap.setForeground(whiteFont);
 				btnNhapHang.setForeground(whiteFont);
 				btnXuatHang.setForeground(whiteFont);
@@ -1096,6 +1187,7 @@ public class MainForm extends JFrame {
 				btnKhchHng.setForeground(green);
 				btnThongKe.setForeground(whiteFont);
 
+				BooleanClick.setBtnTrangChu(false);
 				BooleanClick.setBtnNhaCungCap(false);
 				BooleanClick.setBtnNhapHang(false);
 				BooleanClick.setBtnPhieuNhap(false);
@@ -1196,7 +1288,7 @@ public class MainForm extends JFrame {
 		btnDangXuat.setBorder(null);
 		btnDangXuat.setFont(SetFont.fontCategory());
 
-		lblNewLabel_2 = new JLabel("New label");
+		lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_2.setBounds(35, -15, 150, 150);
 		ImageIcon ii = new ImageIcon(new File("src/icon/viequoc-computer-re.png").getAbsolutePath());
@@ -1205,24 +1297,71 @@ public class MainForm extends JFrame {
 		lblNewLabel_2.setIcon(new ImageIcon(i));
 
 		panel_1.add(lblNewLabel_2);
-		
+
 		JPanel panel_2_1 = new JPanel();
 		panel_2_1.setLayout(null);
 		panel_2_1.setOpaque(false);
 		panel_2_1.setBounds(0, 143, 210, 45);
 		panel_1.add(panel_2_1);
-		
-		JLabel lblTrangCh = new JLabel();
-		lblTrangCh.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-home-address-32.png")));
-		lblTrangCh.setText("Trang chủ");
-		lblTrangCh.setIconTextGap(15);
-		lblTrangCh.setHorizontalAlignment(SwingConstants.LEADING);
-		lblTrangCh.setForeground(new Color(254, 254, 254));
-		lblTrangCh.setFont(SetFont.fontCategory());
-		lblTrangCh.setBorder(null);
-		lblTrangCh.setBackground(new Color(98, 181, 244));
-		lblTrangCh.setBounds(25, 5, 160, 34);
-		panel_2_1.add(lblTrangCh);
+
+		btnTrangChu = new JLabel();
+		btnTrangChu.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				maincontent.removeAll();
+				maincontent.add(new TrangChuForm());
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				btnTrangChu.setForeground(green);
+				btnNhaCungCap.setForeground(whiteFont);
+				btnNhapHang.setForeground(whiteFont);
+				btnXuatHang.setForeground(whiteFont);
+				btnPhieuXuat.setForeground(whiteFont);
+				btnPhieuNhap.setForeground(whiteFont);
+				btnKhchHng.setForeground(whiteFont);
+				btnThongKe.setForeground(whiteFont);
+
+				BooleanClick.setBtnTrangChu(true);
+				BooleanClick.setBtnNhaCungCap(false);
+				BooleanClick.setBtnNhapHang(false);
+				BooleanClick.setBtnPhieuNhap(false);
+				BooleanClick.setBtnXuatHang(false);
+				BooleanClick.setBtnPhieuXuat(false);
+				BooleanClick.setBtnKhchHng(false);
+				BooleanClick.setBtnThongKe(false);
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+//				btnNhaCungCap.setBackground(blueOp);
+
+				btnTrangChu.setForeground(green);
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				if (BooleanClick.isBtnTrangChu()) {
+					btnTrangChu.setForeground(green);
+				} else {
+					btnTrangChu.setForeground(whiteFont);
+				}
+
+			}
+		});
+		btnTrangChu.setIcon(new ImageIcon(MainForm.class.getResource("/icon/icons8-home-address-32.png")));
+		btnTrangChu.setText("Trang chủ");
+		btnTrangChu.setIconTextGap(15);
+		btnTrangChu.setHorizontalAlignment(SwingConstants.LEADING);
+		btnTrangChu.setForeground(new Color(254, 254, 254));
+		btnTrangChu.setFont(SetFont.fontCategory());
+		btnTrangChu.setBorder(null);
+		btnTrangChu.setBackground(new Color(98, 181, 244));
+		btnTrangChu.setBounds(25, 5, 160, 34);
+		panel_2_1.add(btnTrangChu);
 
 //		btnNewButton = new JButton("Light");
 //		btnNewButton.addMouseListener(new MouseAdapter() {
@@ -1280,7 +1419,6 @@ public class MainForm extends JFrame {
 		try {
 			UIManager.setLookAndFeel(new FlatDarkLaf());
 		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
