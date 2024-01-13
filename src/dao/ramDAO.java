@@ -3,7 +3,9 @@ package dao;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,6 +57,42 @@ public class ramDAO implements DAOInterface<ram> {
 			JDBCUntil.closeConnection(con);
 
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
+	public int insertIMGURL(ram t, String stringUrl) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "INSERT INTO ram (idsanpham, idram, tenram, loairam, dungluong, bus, tonkho, dongia, baohanh, img) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getIdRam());
+			ps.setString(3, t.getTenRam());
+			ps.setString(4, t.getLoai());
+			ps.setString(5, t.getDungLuong());
+			ps.setString(6, t.getBus());
+			ps.setInt(7, t.getTonkho());
+			ps.setDouble(8, t.getDonGia());
+			ps.setString(9, t.getBaoHanh());
+
+			@SuppressWarnings("deprecation")
+			URL url = new URL(stringUrl);
+			InputStream is = url.openStream();
+			ps.setBlob(10, is);
+
+			check = ps.executeUpdate();
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
 

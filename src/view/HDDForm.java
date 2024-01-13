@@ -51,6 +51,8 @@ public class HDDForm extends JInternalFrame {
 	private static DefaultTableModel tableModel;
 	private static final String columnName[] = { "ID Sản phẩm", "ID HDD", "Tên HDD", "Hãng", "Dung lượng", "Bộ nhớ đệm",
 			"Tốc độ vòng quay", "Tồn kho", "Bảo hành", "Đơn giá" };
+	private JComboBox<String> comboBoxSort;
+	private JComboBox<String> comboBox;
 
 	/**
 	 * Launch the application.
@@ -253,7 +255,7 @@ public class HDDForm extends JInternalFrame {
 		lblNewLabel_2.setBounds(471, 15, 48, 22);
 		panel_1.add(lblNewLabel_2);
 
-		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox = new JComboBox<String>();
 		comboBox.setFont(SetFont.font());
 		comboBox.setBounds(146, 8, 89, 33);
 		panel_1.add(comboBox);
@@ -264,7 +266,7 @@ public class HDDForm extends JInternalFrame {
 		textField.setBounds(248, 8, 277, 33);
 		panel_1.add(textField);
 
-		JComboBox<String> comboBoxSort = new JComboBox<String>();
+		comboBoxSort = new JComboBox<String>();
 		comboBoxSort.setFont(null);
 		comboBoxSort.setBounds(0, 8, 125, 33);
 		panel_1.add(comboBoxSort);
@@ -276,6 +278,7 @@ public class HDDForm extends JInternalFrame {
 		getContentPane().add(panel_2);
 
 		labelIMG = new JLabel("Ảnh sản phẩm");
+		labelIMG.setIcon(new ImageIcon(HDDForm.class.getResource("/icon/icons8-no-image-14.png")));
 		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
 		labelIMG.setFont(SetFont.font());
 		labelIMG.setBorder(null);

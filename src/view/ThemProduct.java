@@ -181,7 +181,7 @@ public class ThemProduct extends JFrame {
 			comboID[i] = npp.getIdNPP();
 		}
 
-		JLabel lblNewLabel = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
+		JLabel lblNewLabel = new JLabel("© 2023 NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel.setFont(SetFont.font());
 		lblNewLabel.setForeground(SetColor.copyRight);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);

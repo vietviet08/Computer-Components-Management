@@ -83,7 +83,7 @@ public class CapNhatCPU extends JFrame {
 	public CapNhatCPU() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 763, 384);
+		setBounds(100, 100, 763, 399);
 		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
 		contentPane = new JPanel() {
 			/**
@@ -260,11 +260,11 @@ public class CapNhatCPU extends JFrame {
 		lblNewLabel.setBounds(10, 11, 169, 31);
 		contentPane.add(lblNewLabel);
 
-		JLabel lblNewLabel_1 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
+		JLabel lblNewLabel_1 = new JLabel("© 2023 NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_1.setFont(SetFont.font());
 		lblNewLabel_1.setForeground(new Color(224, 255, 255));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(10, 355, 754, 14);
+		lblNewLabel_1.setBounds(10, 374, 754, 14);
 		contentPane.add(lblNewLabel_1);
 
 		labelIMG = new JLabel("Ảnh CPU");

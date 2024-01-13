@@ -3,7 +3,9 @@ package dao;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -51,6 +53,38 @@ public class mainDAO implements DAOInterface<mainboard> {
 			check = ps.executeUpdate();
 
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
+	public int insertIMGURL(mainboard t, String stringUrl) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+			String sql = "insert into mainboard (idsanpham, idmainboard, tenmain, tenhang, hotrocpu, hotroram, kichthuoc, tonkho, dongia, baohanh, img) values (?,?,?,?,?,?,?,?,?,?,?);";
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getIdMainboard());
+			ps.setString(3, t.getTenMain());
+			ps.setString(4, t.getTenHang());
+			ps.setString(5, t.getHoTroCPU());
+			ps.setString(6, t.getHoTroRAM());
+			ps.setString(7, t.getKichThuoc());
+			ps.setInt(8, 0);
+			ps.setDouble(9, t.getDonGia());
+			ps.setString(10, t.getBaoHanh());
+
+			URL url = new URL(stringUrl);
+			InputStream is = url.openStream();
+			ps.setBlob(11, is);
+
+			check = ps.executeUpdate();
+
+		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
 

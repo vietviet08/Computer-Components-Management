@@ -179,7 +179,7 @@ public class CapNhatProduct extends JFrame {
 		lblNewLabel_1.setBounds(10, 11, 253, 28);
 		panel.add(lblNewLabel_1);
 
-		JLabel lblNewLabel_2 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
+		JLabel lblNewLabel_2 = new JLabel("© 2023 NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_2.setFont(SetFont.font());
 		lblNewLabel_2.setForeground(SetColor.copyRight);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);

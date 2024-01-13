@@ -3,12 +3,15 @@ package dao;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import db.JDBCUntil;
+import model.ChiTietPhieu;
 import model.ssd;
 import view.ThemSSD;
 
@@ -41,6 +44,43 @@ public class ssdDAO implements DAOInterface<ssd> {
 			ps.setString(11, t.getBaoHanh());
 
 			InputStream is = new FileInputStream(new File(ThemSSD.getInsert()));
+
+			ps.setBlob(12, is);
+
+			check = ps.executeUpdate();
+			JDBCUntil.closeConnection(con);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+		return check;
+	}
+
+	public int insertIMGURL(ssd t, String stringUrl) {
+		int check = 0;
+		try {
+
+			Connection con = JDBCUntil.getConnection();
+			String sql = "insert into ssd (idsanpham, idssd, tenssd, hang, dungluong, loai, tocdodoc, tocdoghi, tonkho, gia, baohanh, img) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getIdSdd());
+			ps.setString(3, t.getTenSsd());
+			ps.setString(4, t.getHang());
+			ps.setString(5, t.getDungLuong());
+			ps.setString(6, t.getLoai());
+			ps.setString(7, t.getTocDoDoc());
+			ps.setString(8, t.getTocDoGhi());
+			ps.setInt(9, 0);
+			ps.setDouble(10, t.getGia());
+			ps.setString(11, t.getBaoHanh());
+
+			@SuppressWarnings("deprecation")
+			URL url = new URL(stringUrl);
+
+			InputStream is = url.openStream();
 
 			ps.setBlob(12, is);
 
@@ -143,6 +183,33 @@ public class ssdDAO implements DAOInterface<ssd> {
 			JDBCUntil.closeConnection(con);
 		} catch (Exception e) {
 			System.out.println(e);
+		}
+
+		return check;
+	}
+
+	public int updateTonKho(ArrayList<ChiTietPhieu> pn) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			for (ChiTietPhieu productNhap : pn) {
+
+				if (productNhap.getIdRieng().contains("ssd")) {
+					String sql = "UPDATE ssd SET  tonkho = tonkho + ? WHERE idssd = ?;";
+
+					PreparedStatement ps = con.prepareStatement(sql);
+					ps.setInt(1, productNhap.getSoLuong());
+					ps.setString(2, productNhap.getIdRieng());
+					check = ps.executeUpdate();
+				}
+
+			}
+			JDBCUntil.closeConnection(con);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 
 		return check;

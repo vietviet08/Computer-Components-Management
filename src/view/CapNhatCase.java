@@ -252,7 +252,7 @@ public class CapNhatCase extends JFrame {
 		btnCancel.setBounds(335, 314, 97, 30);
 		contentPane.add(btnCancel);
 
-		JLabel lblNewLabel_1 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
+		JLabel lblNewLabel_1 = new JLabel("© 2023 NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setForeground(new Color(224, 255, 255));
 		lblNewLabel_1.setFont(null);

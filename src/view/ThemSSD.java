@@ -10,9 +10,14 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -57,6 +62,7 @@ public class ThemSSD extends JFrame {
 	private JComboBox<String> comboBox_IDSP;
 
 	private final String[] comboLoai = { "2.5'SATA", "M.2 SATA", "M.2 NVMe", "USB" };
+	private JTextField tfLink;
 
 	/**
 	 * Launch the application.
@@ -147,6 +153,7 @@ public class ThemSSD extends JFrame {
 					i = i.getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(), Image.SCALE_SMOOTH);
 					labelIMG.setText("");
 					labelIMG.setIcon(new ImageIcon(i));
+					tfLink.setText("");
 					insert = selectFile.getAbsolutePath();
 				} else
 					JOptionPane.showMessageDialog(null, "Lỗi file!");
@@ -159,10 +166,10 @@ public class ThemSSD extends JFrame {
 		});
 		btnUpload.setFont(SetFont.font());
 		btnUpload.setBorder(null);
-		btnUpload.setBounds(717, 300, 71, 21);
+		btnUpload.setBounds(717, 294, 71, 21);
 		contentPane.add(btnUpload);
 
-		JLabel lblNewLabel_1 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
+		JLabel lblNewLabel_1 = new JLabel("© 2023 NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setForeground(new Color(224, 255, 255));
 		lblNewLabel_1.setFont(null);
@@ -193,41 +200,58 @@ public class ThemSSD extends JFrame {
 		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String idsp = comboBox_IDSP.getSelectedItem().toString();
-				String idssd = tfIDSSD.getText();
-				String tenssd = tfTen.getText();
-				String hang = tfHang.getText();
-				String dungLuong = tfDungLuong.getText();
-				String loai = comboBox_Loai.getSelectedItem().toString();
-				String tocdodoc = tfTocDoDoc.getText();
-				String tocdoghi = tfTocDoGhi.getText();
-				double gia = Double.parseDouble(tfGia.getText());
-				String baohanh = tfBaoHanh.getText();
-
-				ssd ssd = new ssd(idsp, idssd, tenssd, hang, dungLuong, loai, tocdodoc, tocdoghi, 0, gia, baohanh,
-						null);
-
-				if (insert.equals("")) {
-					int check = ssdDAO.getInstance().insertNotIMG(ssd);
-					if (check > 0) {
-						JOptionPane.showMessageDialog(null, "Thêm thành công!");
-						insert = "";
-					} else {
-						JOptionPane.showMessageDialog(null, "Thêm không thành công!");
-						insert = "";
-					}
+				String url = tfLink.getText() + "";
+				if (insert.length() > 0 && url.length() > 0) {
+					JOptionPane.showMessageDialog(null, "Chỉ được chọn 1 trong 2 nguồn hình ảnh!");
 				} else {
-					int check = ssdDAO.getInstance().insert(ssd);
-					if (check > 0) {
-						JOptionPane.showMessageDialog(null, "Thêm thành công!");
-						insert = "";
+
+					String idsp = comboBox_IDSP.getSelectedItem().toString();
+					String idssd = tfIDSSD.getText();
+					String tenssd = tfTen.getText();
+					String hang = tfHang.getText();
+					String dungLuong = tfDungLuong.getText();
+					String loai = comboBox_Loai.getSelectedItem().toString();
+					String tocdodoc = tfTocDoDoc.getText();
+					String tocdoghi = tfTocDoGhi.getText();
+					double gia = Double.parseDouble(tfGia.getText());
+					String baohanh = tfBaoHanh.getText();
+
+					ssd ssd = new ssd(idsp, idssd, tenssd, hang, dungLuong, loai, tocdodoc, tocdoghi, 0, gia, baohanh,
+							null);
+
+					if (insert.equals("") && url.equals("")) {
+						int check = ssdDAO.getInstance().insertNotIMG(ssd);
+						if (check > 0) {
+							JOptionPane.showMessageDialog(null, "Thêm thành công!");
+							insert = "";
+						} else {
+							JOptionPane.showMessageDialog(null, "Thêm không thành công!");
+							insert = "";
+						}
 					} else {
-						JOptionPane.showMessageDialog(null, "Thêm không thành công!");
-						insert = "";
+						if (url.equals("")) {
+							int check = ssdDAO.getInstance().insert(ssd);
+							if (check > 0) {
+								JOptionPane.showMessageDialog(null, "Thêm thành công!");
+								insert = "";
+							} else {
+								JOptionPane.showMessageDialog(null, "Thêm không thành công!");
+								insert = "";
+							}
+						} else if (insert.equals("")) {
+							int check = ssdDAO.getInstance().insertIMGURL(ssd, url);
+							if (check > 0) {
+								JOptionPane.showMessageDialog(null, "Thêm thành công!");
+								insert = "";
+							} else {
+								JOptionPane.showMessageDialog(null, "Thêm không thành công!");
+								insert = "";
+							}
+						}
 					}
+					SSDForm.loadDataToTable(ssdDAO.getInstance().selectAll());
+					closeFrame();
 				}
-				SSDForm.loadDataToTable(ssdDAO.getInstance().selectAll());
-				closeFrame();
 			}
 		});
 		btnAdd.setFont(SetFont.font1());
@@ -346,6 +370,34 @@ public class ThemSSD extends JFrame {
 		comboBox_Loai = new JComboBox<>(comboLoai);
 		comboBox_Loai.setBounds(402, 181, 141, 30);
 		contentPane.add(comboBox_Loai);
+
+		tfLink = new JTextField("");
+		tfLink.setFont(SetFont.fontDetails());
+		tfLink.setBounds(402, 19, 330, 20);
+		contentPane.add(tfLink);
+		tfLink.setColumns(10);
+
+		JLabel lblTnNgun_1_2_1 = new JLabel("Link hình ảnh:");
+		lblTnNgun_1_2_1.setForeground(new Color(254, 254, 254));
+		lblTnNgun_1_2_1.setFont(SetFont.font());
+		lblTnNgun_1_2_1.setBounds(320, 20, 82, 21);
+		contentPane.add(lblTnNgun_1_2_1);
+
+		JButton btnNewButton = new JButton("OK");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String url = tfLink.getText();
+				ImageIcon ii = loadIMG_URL(url);
+				Image i = ii.getImage().getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(),
+						Image.SCALE_SMOOTH);
+				ii = new ImageIcon(i);
+				labelIMG.setIcon(ii);
+				insert = "";
+			}
+		});
+		btnNewButton.setBounds(736, 19, 52, 20);
+		contentPane.add(btnNewButton);
 	}
 
 	public static String getInsert() {
@@ -382,5 +434,22 @@ public class ThemSSD extends JFrame {
 
 	private void closeFrame() {
 		this.dispose();
+	}
+
+	@SuppressWarnings("deprecation")
+	private ImageIcon loadIMG_URL(String stringURL) {
+		ImageIcon ii = null;
+		try {
+			URL url = new URL(stringURL);
+			try {
+				BufferedImage bi = ImageIO.read(url);
+				ii = new ImageIcon(bi);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null, "Lỗi: " + e);
+			}
+		} catch (MalformedURLException e) {
+			JOptionPane.showMessageDialog(null, "Lỗi: " + e);
+		}
+		return ii;
 	}
 }

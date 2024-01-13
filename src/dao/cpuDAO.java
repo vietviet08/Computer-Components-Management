@@ -3,7 +3,9 @@ package dao;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -57,6 +59,46 @@ public class cpuDAO implements DAOInterface<cpu> {
 			JDBCUntil.closeConnection(con);
 
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
+	@SuppressWarnings("deprecation")
+	public int insertIMGURL(cpu t, String stringUrl) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "INSERT INTO cpu (idsanpham, idcpu, tencpu, xungnhip, sonhan, soluong, diennangtieuthu, bonhodem, tonkho, dongia, baohanh, img) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getIdCpu());
+			ps.setString(3, t.getNameCpu());
+			ps.setString(4, t.getXungNhip());
+			ps.setInt(5, t.getSoNhan());
+			ps.setInt(6, t.getSoLuong());
+			ps.setString(7, t.getDienNangTieuThu());
+			ps.setString(8, t.getBoNhoDem());
+			ps.setInt(9, 0);
+			ps.setDouble(10, t.getDonGia());
+			ps.setString(11, t.getBaoHanh());
+
+			InputStream is;
+			URL url;
+			url = new URL(stringUrl);
+			is = url.openStream();
+			ps.setBlob(12, is);
+
+			check = ps.executeUpdate();
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
 

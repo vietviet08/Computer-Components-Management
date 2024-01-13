@@ -1,18 +1,23 @@
 package view;
 
+import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Image;
-
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import java.awt.Color;
-import javax.swing.JTextArea;
-
-import font.SetFont;
-import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+import javax.swing.ImageIcon;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+
+import font.SetFont;
 
 public class TrangChuForm extends JInternalFrame {
 
@@ -68,6 +73,7 @@ public class TrangChuForm extends JInternalFrame {
 		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				openWebpage("https://www.facebook.com/viequoc24.08/");
 			}
 		});
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -79,6 +85,7 @@ public class TrangChuForm extends JInternalFrame {
 		lblNewLabel_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				openWebpage("https://www.instagram.com/viequoc_/");
 			}
 		});
 		lblNewLabel_1.setIcon(new ImageIcon(TrangChuForm.class.getResource("/icon/icons8-instagram-24.png")));
@@ -90,6 +97,7 @@ public class TrangChuForm extends JInternalFrame {
 		lblNewLabel_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				openWebpage(" https://zalo.me/0935526710");
 			}
 		});
 		lblNewLabel_2.setIcon(new ImageIcon(TrangChuForm.class.getResource("/icon/icons8-zalo-24.png")));
@@ -101,6 +109,7 @@ public class TrangChuForm extends JInternalFrame {
 		lblNewLabel_2_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				openWebpage("https://github.com/vietviet08");
 			}
 		});
 		lblNewLabel_2_1.setIcon(new ImageIcon(TrangChuForm.class.getResource("/icon/icons8-github-24.png")));
@@ -108,5 +117,35 @@ public class TrangChuForm extends JInternalFrame {
 		lblNewLabel_2_1.setBounds(193, 311, 30, 30);
 		getContentPane().add(lblNewLabel_2_1);
 
+	}
+
+//	public static boolean openWebpage(URI uri) {
+//		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+//		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+//			try {
+//				desktop.browse(uri);
+//				return true;
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		return false;
+//	}
+//
+//	public static boolean openWebpage(URL url) {
+//		try {
+//			return openWebpage(url.toURI());
+//		} catch (URISyntaxException e) {
+//			e.printStackTrace();
+//		}
+//		return false;
+//	}
+
+	public static void openWebpage(String urlString) {
+		try {
+			Desktop.getDesktop().browse(new URL(urlString).toURI());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -50,6 +50,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.toedter.calendar.JDateChooser;
 
 import color.SetColor;
+import controller.TimKiemKhachHang;
 import dao.KhachHangDAO;
 import font.SetFont;
 import model.KhachHang;
@@ -68,7 +69,7 @@ public class KhachHangForm extends JInternalFrame {
 	private JTextField tfSDT;
 	private JTextField tfDiaChi;
 	private JTextField tfEmail;
-	private JTextField textField_4;
+	private JTextField tfSearch;
 	private JTextField tfNgayThamGia;
 	private JLabel labelIMG;
 	private static String insert = "";
@@ -151,7 +152,7 @@ public class KhachHangForm extends JInternalFrame {
 		lblNewLabel_3.setToolTipText("Click Me!!!");
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3.setIcon(new ImageIcon(KhachHangForm.class.getResource("/icon/icons8-add-24.png")));
-		lblNewLabel_3.setBounds(1025, 40, 32, 34);
+		lblNewLabel_3.setBounds(1026, 50, 32, 34);
 		panel.add(lblNewLabel_3);
 
 		JLabel lblNewLabel_2 = new JLabel("");
@@ -232,53 +233,53 @@ public class KhachHangForm extends JInternalFrame {
 		});
 		lblNewLabel.setFont(SetFont.font1());
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(839, 41, 232, 34);
+		lblNewLabel.setBounds(840, 51, 232, 34);
 		panel.add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel("ID khách hàng");
 		lblNewLabel_1.setFont(SetFont.font1_());
-		lblNewLabel_1.setBounds(794, 95, 154, 26);
+		lblNewLabel_1.setBounds(796, 114, 154, 26);
 		panel.add(lblNewLabel_1);
 
 		tfID = new JTextField();
 		tfID.setEditable(false);
 		tfID.setText(setIDKhachHang());
 		tfID.setFont(SetFont.fontDetails());
-		tfID.setBounds(793, 132, 155, 26);
+		tfID.setBounds(795, 151, 155, 26);
 		panel.add(tfID);
 		tfID.setColumns(10);
 
 		tfTen = new JTextField();
 		tfTen.setFont(SetFont.fontDetails());
 		tfTen.setColumns(10);
-		tfTen.setBounds(986, 132, 155, 26);
+		tfTen.setBounds(988, 151, 155, 26);
 		panel.add(tfTen);
 
 		JLabel lblNewLabel_1_1 = new JLabel("Tên khách hàng");
 		lblNewLabel_1_1.setFont(SetFont.font1_());
-		lblNewLabel_1_1.setBounds(987, 95, 154, 26);
+		lblNewLabel_1_1.setBounds(989, 114, 154, 26);
 		panel.add(lblNewLabel_1_1);
 
 		tfSDT = new JTextField();
 		tfSDT.setFont(SetFont.fontDetails());
 		tfSDT.setColumns(10);
-		tfSDT.setBounds(986, 233, 155, 26);
+		tfSDT.setBounds(988, 250, 155, 26);
 		panel.add(tfSDT);
 
 		JLabel lblNewLabel_1_1_1 = new JLabel("Số điện thoại");
 		lblNewLabel_1_1_1.setFont(SetFont.font1_());
-		lblNewLabel_1_1_1.setBounds(987, 196, 154, 26);
+		lblNewLabel_1_1_1.setBounds(989, 213, 154, 26);
 		panel.add(lblNewLabel_1_1_1);
 
 		tfDiaChi = new JTextField();
 		tfDiaChi.setFont(SetFont.fontDetails());
 		tfDiaChi.setColumns(10);
-		tfDiaChi.setBounds(793, 233, 155, 26);
+		tfDiaChi.setBounds(795, 250, 155, 26);
 		panel.add(tfDiaChi);
 
 		JLabel lblNewLabel_1_2 = new JLabel("Địa chỉ");
 		lblNewLabel_1_2.setFont(SetFont.font1_());
-		lblNewLabel_1_2.setBounds(794, 196, 154, 26);
+		lblNewLabel_1_2.setBounds(796, 213, 154, 26);
 		panel.add(lblNewLabel_1_2);
 
 		JLabel lblNewLabel_1_1_1_1 = new JLabel("Ảnh");
@@ -289,12 +290,12 @@ public class KhachHangForm extends JInternalFrame {
 		tfEmail = new JTextField();
 		tfEmail.setFont(SetFont.fontDetails());
 		tfEmail.setColumns(10);
-		tfEmail.setBounds(794, 339, 155, 26);
+		tfEmail.setBounds(796, 347, 155, 26);
 		panel.add(tfEmail);
 
 		JLabel lblNewLabel_1_2_1 = new JLabel("Email");
 		lblNewLabel_1_2_1.setFont(SetFont.font1_());
-		lblNewLabel_1_2_1.setBounds(795, 302, 154, 26);
+		lblNewLabel_1_2_1.setBounds(797, 310, 154, 26);
 		panel.add(lblNewLabel_1_2_1);
 
 		JButton btnHy = new JButton("Hủy");
@@ -330,7 +331,7 @@ public class KhachHangForm extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnHy.setBounds(1005, 558, 122, 30);
+		btnHy.setBounds(1006, 582, 122, 30);
 		panel.add(btnHy);
 
 		JButton btnNewButton_1 = new JButton("Upload");
@@ -339,7 +340,8 @@ public class KhachHangForm extends JInternalFrame {
 			public void mouseClicked(MouseEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("*.IMAGE", "webp", "jpg", "jpeg", "gif", "png"));
+				fileChooser.addChoosableFileFilter(
+						new FileNameExtensionFilter("*.IMAGE", "webp", "jpg", "jpeg", "gif", "png"));
 				int result = fileChooser.showSaveDialog(null);
 				if (result == JFileChooser.APPROVE_OPTION) {
 					File selectFile = fileChooser.getSelectedFile();
@@ -357,7 +359,7 @@ public class KhachHangForm extends JInternalFrame {
 			}
 		});
 		btnNewButton_1.setFont(SetFont.font());
-		btnNewButton_1.setBounds(824, 648, 100, 26);
+		btnNewButton_1.setBounds(824, 657, 100, 26);
 		panel.add(btnNewButton_1);
 
 		JButton btnNewButton = new JButton("Thêm");
@@ -427,7 +429,7 @@ public class KhachHangForm extends JInternalFrame {
 			}
 		});
 		btnNewButton.setFont(SetFont.font1_());
-		btnNewButton.setBounds(1005, 454, 122, 30);
+		btnNewButton.setBounds(1006, 478, 122, 30);
 		panel.add(btnNewButton);
 
 		JButton btnNewButton_2 = new JButton("Xóa");
@@ -577,28 +579,29 @@ public class KhachHangForm extends JInternalFrame {
 		btnNewButton_2_2.setBounds(110, 11, 123, 30);
 		panel.add(btnNewButton_2_2);
 
-		textField_4 = new JTextField();
-		textField_4.addKeyListener(new KeyAdapter() {
+		tfSearch = new JTextField();
+		tfSearch.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
+				loadDataToTable(TimKiemKhachHang.byALL(tfSearch.getText()));
 			}
 		});
-		textField_4.setFont(SetFont.font());
-		textField_4.setColumns(10);
-		textField_4.setBounds(605, 11, 154, 30);
-		panel.add(textField_4);
+		tfSearch.setFont(SetFont.fontDetails());
+		tfSearch.setColumns(10);
+		tfSearch.setBounds(605, 11, 154, 30);
+		panel.add(tfSearch);
 
 		tfNgayThamGia = new JTextField();
 		tfNgayThamGia.setEditable(false);
 		tfNgayThamGia.setText(setDateNow());
 		tfNgayThamGia.setFont(SetFont.fontDetails());
 		tfNgayThamGia.setColumns(10);
-		tfNgayThamGia.setBounds(986, 339, 155, 26);
+		tfNgayThamGia.setBounds(988, 347, 155, 26);
 		panel.add(tfNgayThamGia);
 
 		JLabel lblNewLabel_1_2_1_1 = new JLabel("Ngày tham gia");
 		lblNewLabel_1_2_1_1.setFont(SetFont.font1_());
-		lblNewLabel_1_2_1_1.setBounds(987, 302, 154, 26);
+		lblNewLabel_1_2_1_1.setBounds(989, 310, 154, 26);
 		panel.add(lblNewLabel_1_2_1_1);
 
 		labelIMG = new JLabel("Ảnh 3 x 4");
@@ -648,11 +651,13 @@ public class KhachHangForm extends JInternalFrame {
 					e1.printStackTrace();
 				}
 			}
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				btnCpNht.setForeground(SetColor.green);
 				btnCpNht.setBackground(SetColor.yellow);
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				btnCpNht.setForeground(Color.black);
@@ -660,7 +665,7 @@ public class KhachHangForm extends JInternalFrame {
 			}
 		});
 		btnCpNht.setFont(SetFont.font1_());
-		btnCpNht.setBounds(1005, 507, 122, 30);
+		btnCpNht.setBounds(1006, 531, 122, 30);
 		panel.add(btnCpNht);
 
 		JDateChooser chooseFrom = new JDateChooser();

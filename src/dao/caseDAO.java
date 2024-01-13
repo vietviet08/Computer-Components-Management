@@ -149,7 +149,7 @@ public class caseDAO implements DAOInterface<Case> {
 			Connection con = JDBCUntil.getConnection();
 
 			for (ChiTietPhieu productNhap : pn) {
-				if (productNhap.getIdRieng().contains("mba")) {
+				if (productNhap.getIdRieng().contains("case")) {
 					String sql = "UPDATE cases SET tonkho = tonkho + ? WHERE idcase = ? ;";
 					PreparedStatement ps = con.prepareStatement(sql);
 					ps.setInt(1, productNhap.getSoLuong());

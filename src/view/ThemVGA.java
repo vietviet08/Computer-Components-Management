@@ -10,9 +10,13 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -52,6 +56,7 @@ public class ThemVGA extends JFrame {
 	private JTextField tfBaoHanh;
 	private JButton btnUpload;
 	private JLabel labelIMG;
+	private JTextField tfLink;
 
 	/**
 	 * Launch the application.
@@ -109,7 +114,7 @@ public class ThemVGA extends JFrame {
 		lblNewLabel.setBounds(10, 11, 138, 24);
 		contentPane.add(lblNewLabel);
 
-		JLabel lblNewLabel_1 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
+		JLabel lblNewLabel_1 = new JLabel("© 2023 NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_1.setForeground(SetColor.copyRight);
 		lblNewLabel_1.setFont(SetFont.font());
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -119,59 +124,59 @@ public class ThemVGA extends JFrame {
 		JLabel lblNewLabel_2 = new JLabel("ID Sản phẩm");
 		lblNewLabel_2.setFont(SetFont.font1_());
 		lblNewLabel_2.setForeground(SetColor.whiteFont);
-		lblNewLabel_2.setBounds(30, 63, 87, 25);
+		lblNewLabel_2.setBounds(30, 67, 87, 25);
 		contentPane.add(lblNewLabel_2);
 
 		tfTen = new JTextField();
 		tfTen.setFont(SetFont.fontDetails());
 		tfTen.setColumns(10);
 		tfTen.setBorder(null);
-		tfTen.setBounds(116, 123, 149, 25);
+		tfTen.setBounds(116, 123, 149, 30);
 		contentPane.add(tfTen);
 
 		JLabel lblNewLabel_2_1 = new JLabel("Tên VGA");
 		lblNewLabel_2_1.setFont(SetFont.font1_());
 		lblNewLabel_2_1.setForeground(SetColor.whiteFont);
-		lblNewLabel_2_1.setBounds(30, 123, 87, 25);
+		lblNewLabel_2_1.setBounds(30, 126, 87, 25);
 		contentPane.add(lblNewLabel_2_1);
 
 		tfBoNho = new JTextField();
 		tfBoNho.setFont(SetFont.fontDetails());
 		tfBoNho.setColumns(10);
 		tfBoNho.setBorder(null);
-		tfBoNho.setBounds(116, 183, 149, 25);
+		tfBoNho.setBounds(116, 183, 149, 30);
 		contentPane.add(tfBoNho);
 
 		JLabel lblNewLabel_2_1_1 = new JLabel("Bộ nhớ");
 		lblNewLabel_2_1_1.setFont(SetFont.font1_());
 		lblNewLabel_2_1_1.setForeground(SetColor.whiteFont);
-		lblNewLabel_2_1_1.setBounds(30, 183, 87, 25);
+		lblNewLabel_2_1_1.setBounds(30, 186, 87, 25);
 		contentPane.add(lblNewLabel_2_1_1);
 
 		tfHang = new JTextField();
 		tfHang.setFont(SetFont.fontDetails());
 		tfHang.setColumns(10);
 		tfHang.setBorder(null);
-		tfHang.setBounds(378, 123, 149, 25);
+		tfHang.setBounds(378, 123, 149, 30);
 		contentPane.add(tfHang);
 
 		JLabel lblNewLabel_2_2 = new JLabel("Hãng VGA");
 		lblNewLabel_2_2.setFont(SetFont.font1_());
 		lblNewLabel_2_2.setForeground(SetColor.whiteFont);
-		lblNewLabel_2_2.setBounds(292, 123, 87, 25);
+		lblNewLabel_2_2.setBounds(289, 127, 87, 25);
 		contentPane.add(lblNewLabel_2_2);
 
 		tfDonGia = new JTextField();
 		tfDonGia.setFont(SetFont.fontDetails());
 		tfDonGia.setColumns(10);
 		tfDonGia.setBorder(null);
-		tfDonGia.setBounds(378, 183, 149, 25);
+		tfDonGia.setBounds(378, 183, 149, 30);
 		contentPane.add(tfDonGia);
 
 		JLabel lblNewLabel_2_3 = new JLabel("Đơn giá");
 		lblNewLabel_2_3.setFont(SetFont.font1_());
 		lblNewLabel_2_3.setForeground(SetColor.whiteFont);
-		lblNewLabel_2_3.setBounds(292, 183, 87, 25);
+		lblNewLabel_2_3.setBounds(289, 187, 87, 25);
 		contentPane.add(lblNewLabel_2_3);
 
 		ArrayList<Products> list = SanPhamDAO.getIDSanPham("vga");
@@ -182,7 +187,7 @@ public class ThemVGA extends JFrame {
 		}
 		comboBox = new JComboBox<>(new DefaultComboBoxModel<String>(combo));
 		comboBox.setFont(SetFont.fontDetails());
-		comboBox.setBounds(116, 64, 149, 25);
+		comboBox.setBounds(116, 64, 149, 30);
 		contentPane.add(comboBox);
 
 		JButton btnNewButton = new JButton("Thêm");
@@ -200,36 +205,45 @@ public class ThemVGA extends JFrame {
 				if (ten.equals("") || hang.equals("") || bonho.equals("") || tfDonGia.equals("")) {
 					JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!");
 				} else {
-					vga v = new vga(idsp, idvga, ten, hang, bonho, 0, gia, baohanh, null);
+					String url = tfLink.getText();
+					if (insert.length() > 0 && url.length() > 0)
+						JOptionPane.showMessageDialog(null, "Chỉ chọn 1 trong 2 nguồn hình ảnh!");
+					else {
+						vga v = new vga(idsp, idvga, ten, hang, bonho, 0, gia, baohanh, null);
 
-					if (insert.equals("")) {
-						int check = vgaDAO.getInstance().insertNotIMG(v);
-						if (check > 0) {
-							JOptionPane.showMessageDialog(null, "Thêm thành công!");
-							setInsert("");
+						if (insert.equals("") && url.equals("")) {
+							int check = vgaDAO.getInstance().insertNotIMG(v);
+							checked(check);
 						} else {
-							JOptionPane.showMessageDialog(null, "Thêm không thành công!");
-							setInsert("");
+							if (url.equals("")) {
+								int check = vgaDAO.getInstance().insert(v);
+								checked(check);
+							} else if (insert.equals("")) {
+								int check = vgaDAO.getInstance().insertIMGURL(v, url);
+								checked(check);
+							}
 						}
-					} else {
-						int check = vgaDAO.getInstance().insert(v);
-						if (check > 0) {
-							JOptionPane.showMessageDialog(null, "Thêm thành công!");
-							setInsert("");
-						} else {
-							JOptionPane.showMessageDialog(null, "Thêm không thành công!");
-							setInsert("");
-						}
-
+						VGAForm.loadDataToTable(vgaDAO.getInstance().selectAll());
+						closeFrame();
 					}
-					VGAForm.loadDataToTable(vgaDAO.getInstance().selectAll());
-					closeFrame();
 				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnNewButton.setForeground(SetColor.whiteFont);
+				btnNewButton.setBackground(SetColor.green);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnNewButton.setForeground(Color.black);
+				btnNewButton.setBackground(Color.white);
 			}
 		});
 		btnNewButton.setFont(SetFont.font1());
 		btnNewButton.setBorder(null);
-		btnNewButton.setBounds(314, 240, 89, 30);
+		btnNewButton.setBounds(289, 240, 89, 30);
 		contentPane.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("Hủy");
@@ -237,6 +251,18 @@ public class ThemVGA extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				closeFrame();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnNewButton_1.setForeground(SetColor.whiteFont);
+				btnNewButton_1.setBackground(SetColor.redB);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnNewButton_1.setForeground(Color.black);
+				btnNewButton_1.setBackground(Color.white);
 			}
 		});
 		btnNewButton_1.setFont(SetFont.font1());
@@ -247,30 +273,31 @@ public class ThemVGA extends JFrame {
 		JLabel lblNewLabel_2_1_2 = new JLabel("ID VGA");
 		lblNewLabel_2_1_2.setForeground(new Color(254, 254, 254));
 		lblNewLabel_2_1_2.setFont(SetFont.font1_());
-		lblNewLabel_2_1_2.setBounds(292, 63, 87, 25);
+		lblNewLabel_2_1_2.setBounds(289, 67, 87, 25);
 		contentPane.add(lblNewLabel_2_1_2);
 
 		tfIDVGA = new JTextField();
+		tfIDVGA.setEditable(false);
 		tfIDVGA.setFont(SetFont.fontDetails());
 		tfIDVGA.setColumns(10);
 		tfIDVGA.setBorder(null);
-		tfIDVGA.setBounds(378, 63, 149, 25);
+		tfIDVGA.setBounds(378, 63, 149, 30);
 		contentPane.add(tfIDVGA);
 
 		tfBaoHanh = new JTextField();
 		tfBaoHanh.setFont(SetFont.fontDetails());
 		tfBaoHanh.setColumns(10);
 		tfBaoHanh.setBorder(null);
-		tfBaoHanh.setBounds(116, 240, 149, 25);
+		tfBaoHanh.setBounds(116, 240, 149, 30);
 		contentPane.add(tfBaoHanh);
 
 		JLabel lblNewLabel_2_1_3_1 = new JLabel("Bảo hành");
 		lblNewLabel_2_1_3_1.setForeground(new Color(254, 254, 254));
 		lblNewLabel_2_1_3_1.setFont(SetFont.font1_());
-		lblNewLabel_2_1_3_1.setBounds(30, 240, 87, 25);
+		lblNewLabel_2_1_3_1.setBounds(30, 243, 87, 25);
 		contentPane.add(lblNewLabel_2_1_3_1);
 
-		labelIMG = new JLabel("Ảnh CPU");
+		labelIMG = new JLabel("Ảnh VGA");
 		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
 		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
 		labelIMG.setBounds(550, 53, 223, 230);
@@ -293,6 +320,7 @@ public class ThemVGA extends JFrame {
 					labelIMG.setText("");
 					labelIMG.setIcon(new ImageIcon(i));
 					insert = selectFile.getAbsolutePath();
+					tfLink.setText("");
 				} else
 					JOptionPane.showMessageDialog(null, "Lỗi file!");
 			}
@@ -301,6 +329,33 @@ public class ThemVGA extends JFrame {
 		btnUpload.setBorder(null);
 		btnUpload.setBounds(702, 291, 71, 21);
 		contentPane.add(btnUpload);
+
+		JLabel lblTnNgun_1_2_1 = new JLabel("Link hình ảnh:");
+		lblTnNgun_1_2_1.setForeground(new Color(254, 254, 254));
+		lblTnNgun_1_2_1.setFont(SetFont.font1_());
+		lblTnNgun_1_2_1.setBounds(289, 22, 89, 21);
+		contentPane.add(lblTnNgun_1_2_1);
+
+		tfLink = new JTextField("");
+		tfLink.setFont(null);
+		tfLink.setColumns(10);
+		tfLink.setBounds(378, 22, 334, 20);
+		contentPane.add(tfLink);
+
+		JButton btnNewButton_2 = new JButton("OK");
+		btnNewButton_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ImageIcon ii = loadIMGURL(tfLink.getText());
+				Image i = ii.getImage().getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(),
+						Image.SCALE_SMOOTH);
+				ii = new ImageIcon(i);
+				labelIMG.setIcon(ii);
+				insert = "";
+			}
+		});
+		btnNewButton_2.setBounds(722, 22, 51, 20);
+		contentPane.add(btnNewButton_2);
 	}
 
 	private void closeFrame() {
@@ -338,4 +393,25 @@ public class ThemVGA extends JFrame {
 		ThemVGA.insert = insert;
 	}
 
+	private ImageIcon loadIMGURL(String stringUrl) {
+		ImageIcon ii = null;
+		try {
+			URL url = new URL(stringUrl);
+			BufferedImage bi = ImageIO.read(url);
+			ii = new ImageIcon(bi);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Lỗi: " + e);
+		}
+		return ii;
+	}
+
+	private void checked(int check) {
+		if (check > 0) {
+			JOptionPane.showMessageDialog(null, "Thêm thành công!");
+			setInsert("");
+		} else {
+			JOptionPane.showMessageDialog(null, "Thêm không thành công!");
+			setInsert("");
+		}
+	}
 }

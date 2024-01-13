@@ -3,7 +3,9 @@ package dao;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,6 +56,40 @@ public class vgaDAO implements DAOInterface<vga> {
 			JDBCUntil.closeConnection(con);
 
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
+	public int insertIMGURL(vga t, String stringUrl) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "INSERT INTO vga (idsanpham, idvga, tenvga, hangvga, bonho, tonkho, dongia, baohanh, img) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getIdVga());
+			ps.setString(3, t.getTenVGA());
+			ps.setString(4, t.getHangVGA());
+			ps.setString(5, t.getBoNho());
+			ps.setInt(6, t.getTonKho());
+			ps.setDouble(7, t.getDonGia());
+			ps.setString(8, t.getBaoHanh());
+
+			URL url = new URL(stringUrl);
+			InputStream is = url.openStream();
+			ps.setBlob(9, is);
+
+			check = ps.executeUpdate();
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
 

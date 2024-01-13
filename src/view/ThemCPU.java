@@ -7,16 +7,19 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,6 +32,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import color.SetColor;
 import dao.SanPhamDAO;
@@ -36,8 +41,6 @@ import dao.cpuDAO;
 import font.SetFont;
 import model.Products;
 import model.cpu;
-import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ThemCPU extends JFrame {
 
@@ -48,7 +51,6 @@ public class ThemCPU extends JFrame {
 	private JPanel contentPane;
 	private JTextField tfSoNhan;
 	private JTextField tfXungNhip;
-	private JTextField tfTonKho;
 	private JTextField tfDienNang;
 	private JTextField tfSoLuong;
 	private JTextField tfBoNhoDem;
@@ -61,6 +63,7 @@ public class ThemCPU extends JFrame {
 	private JTextField tfBaoHanh;
 
 	public static String insert = "";
+	private JTextField tfLink;
 
 	/**
 	 * Launch the application.
@@ -86,7 +89,7 @@ public class ThemCPU extends JFrame {
 	public ThemCPU() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 779, 409);
+		setBounds(100, 100, 825, 409);
 		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
 		contentPane = new JPanel() {
 			/**
@@ -121,61 +124,49 @@ public class ThemCPU extends JFrame {
 		JLabel lblSNhn = new JLabel("Số nhân");
 		lblSNhn.setForeground(SetColor.whiteFont);
 		lblSNhn.setFont(SetFont.font1_());
-		lblSNhn.setBounds(284, 57, 83, 30);
+		lblSNhn.setBounds(330, 57, 83, 30);
 		contentPane.add(lblSNhn);
 
 		JLabel lblNewLabel_1_1 = new JLabel("Số luồng");
 		lblNewLabel_1_1.setForeground(SetColor.whiteFont);
 		lblNewLabel_1_1.setFont(SetFont.font1_());
-		lblNewLabel_1_1.setBounds(399, 57, 80, 30);
+		lblNewLabel_1_1.setBounds(445, 57, 80, 30);
 		contentPane.add(lblNewLabel_1_1);
 
 		JLabel lblXungNhp = new JLabel("Xung nhịp");
 		lblXungNhp.setFont(SetFont.font1_());
 		lblXungNhp.setForeground(SetColor.whiteFont);
-		lblXungNhp.setBounds(299, 122, 71, 30);
+		lblXungNhp.setBounds(330, 122, 97, 30);
 		contentPane.add(lblXungNhp);
-
-		JLabel lblNewLabel_1_2 = new JLabel("Tồn kho");
-		lblNewLabel_1_2.setForeground(SetColor.whiteFont);
-		lblNewLabel_1_2.setFont(SetFont.font1_());
-		lblNewLabel_1_2.setBounds(299, 257, 83, 30);
-		contentPane.add(lblNewLabel_1_2);
 
 		JLabel lblinNngTiu = new JLabel("Điện năng tiêu thụ");
 		lblinNngTiu.setForeground(SetColor.whiteFont);
 		lblinNngTiu.setFont(SetFont.font1_());
-		lblinNngTiu.setBounds(21, 257, 116, 30);
+		lblinNngTiu.setBounds(21, 257, 126, 30);
 		contentPane.add(lblinNngTiu);
 
 		tfSoNhan = new JTextField();
 		tfSoNhan.setFont(SetFont.fontDetails());
 		tfSoNhan.setColumns(10);
-		tfSoNhan.setBounds(344, 57, 45, 30);
+		tfSoNhan.setBounds(390, 57, 45, 30);
 		contentPane.add(tfSoNhan);
 
 		tfXungNhip = new JTextField();
 		tfXungNhip.setColumns(10);
 		tfXungNhip.setFont(SetFont.fontDetails());
-		tfXungNhip.setBounds(385, 122, 141, 30);
+		tfXungNhip.setBounds(431, 122, 141, 30);
 		contentPane.add(tfXungNhip);
-
-		tfTonKho = new JTextField();
-		tfTonKho.setFont(SetFont.fontDetails());
-		tfTonKho.setColumns(10);
-		tfTonKho.setBounds(385, 257, 141, 30);
-		contentPane.add(tfTonKho);
 
 		tfDienNang = new JTextField();
 		tfDienNang.setColumns(10);
 		tfDienNang.setFont(SetFont.fontDetails());
-		tfDienNang.setBounds(133, 257, 141, 30);
+		tfDienNang.setBounds(147, 257, 141, 30);
 		contentPane.add(tfDienNang);
 
 		tfSoLuong = new JTextField();
 		tfSoLuong.setColumns(10);
 		tfSoLuong.setFont(SetFont.fontDetails());
-		tfSoLuong.setBounds(481, 57, 45, 30);
+		tfSoLuong.setBounds(527, 57, 45, 30);
 		contentPane.add(tfSoLuong);
 
 		JButton btnAdd = new JButton("Thêm");
@@ -193,13 +184,21 @@ public class ThemCPU extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				addCPU();
 			}
-		});
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnAdd.setForeground(SetColor.whiteFont);
+				btnAdd.setBackground(SetColor.green);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnAdd.setForeground(Color.black);
+				btnAdd.setBackground(Color.white);
 			}
 		});
 		btnAdd.setFont(SetFont.font1());
-		btnAdd.setBounds(542, 319, 97, 30);
+		btnAdd.setBounds(330, 319, 97, 30);
 		contentPane.add(btnAdd);
 
 		JButton btnCancel = new JButton("Hủy");
@@ -212,30 +211,38 @@ public class ThemCPU extends JFrame {
 				}
 			}
 		});
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnCancel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				closeFrame();
 			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnCancel.setForeground(SetColor.whiteFont);
+				btnCancel.setBackground(SetColor.redB);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnCancel.setForeground(Color.black);
+				btnCancel.setBackground(Color.white);
+			}
 		});
 		btnCancel.setFont(SetFont.font1());
-		btnCancel.setBounds(672, 319, 97, 30);
+		btnCancel.setBounds(475, 319, 97, 30);
 		contentPane.add(btnCancel);
 
 		JLabel lblNewLabel_1_1_1 = new JLabel("Bộ nhớ đệm");
 		lblNewLabel_1_1_1.setForeground(SetColor.whiteFont);
 		lblNewLabel_1_1_1.setFont(SetFont.font1_());
-		lblNewLabel_1_1_1.setBounds(299, 192, 71, 30);
+		lblNewLabel_1_1_1.setBounds(330, 192, 97, 30);
 		contentPane.add(lblNewLabel_1_1_1);
 
 		tfBoNhoDem = new JTextField();
 		tfBoNhoDem.setFont(SetFont.fontDetails());
 		tfBoNhoDem.setColumns(10);
-		tfBoNhoDem.setBounds(385, 191, 141, 30);
+		tfBoNhoDem.setBounds(431, 191, 141, 30);
 		contentPane.add(tfBoNhoDem);
 
 		ArrayList<Products> list = SanPhamDAO.getIDSanPham("cpu");
@@ -248,7 +255,7 @@ public class ThemCPU extends JFrame {
 		comboBox = new JComboBox<String>();
 		comboBox.setFont(SetFont.fontDetails());
 		comboBox.setModel(new DefaultComboBoxModel<String>(choose));
-		comboBox.setBounds(133, 57, 141, 30);
+		comboBox.setBounds(147, 57, 141, 30);
 		contentPane.add(comboBox);
 
 		JLabel lblTnCpu = new JLabel("Tên cpu");
@@ -260,14 +267,14 @@ public class ThemCPU extends JFrame {
 		tfTenCPU = new JTextField();
 		tfTenCPU.setColumns(10);
 		tfTenCPU.setFont(SetFont.fontDetails());
-		tfTenCPU.setBounds(133, 188, 141, 30);
+		tfTenCPU.setBounds(147, 188, 141, 30);
 		contentPane.add(tfTenCPU);
 
-		JLabel lblNewLabel_1 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
+		JLabel lblNewLabel_1 = new JLabel("© 2023 NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_1.setForeground(SetColor.copyRight);
 		lblNewLabel_1.setFont(SetFont.font());
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(10, 381, 759, 14);
+		lblNewLabel_1.setBounds(10, 384, 815, 14);
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel("THÊM CPU");
@@ -283,27 +290,28 @@ public class ThemCPU extends JFrame {
 		contentPane.add(lblIdCpu);
 
 		tfIDCPU = new JTextField();
+		tfIDCPU.setEditable(false);
 		tfIDCPU.setFont(SetFont.fontDetails());
 		tfIDCPU.setColumns(10);
-		tfIDCPU.setBounds(133, 122, 141, 30);
+		tfIDCPU.setBounds(147, 122, 141, 30);
 		contentPane.add(tfIDCPU);
 
 		JLabel lblNewLabel_1_2_1 = new JLabel("Đơn giá");
 		lblNewLabel_1_2_1.setForeground(new Color(254, 254, 254));
 		lblNewLabel_1_2_1.setFont(SetFont.font1_());
-		lblNewLabel_1_2_1.setBounds(19, 319, 83, 30);
+		lblNewLabel_1_2_1.setBounds(330, 257, 97, 30);
 		contentPane.add(lblNewLabel_1_2_1);
 
 		tfDonGia = new JTextField();
 		tfDonGia.setColumns(10);
 		tfDonGia.setFont(SetFont.fontDetails());
-		tfDonGia.setBounds(133, 319, 141, 30);
+		tfDonGia.setBounds(431, 257, 141, 30);
 		contentPane.add(tfDonGia);
 
 		labelIMG = new JLabel("Ảnh CPU");
 		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
 		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
-		labelIMG.setBounds(546, 57, 223, 230);
+		labelIMG.setBounds(592, 57, 223, 230);
 		contentPane.add(labelIMG);
 
 		btnUpload = new JButton("Upload");
@@ -322,6 +330,7 @@ public class ThemCPU extends JFrame {
 					i = i.getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(), Image.SCALE_SMOOTH);
 					labelIMG.setText("");
 					labelIMG.setIcon(new ImageIcon(i));
+					tfLink.setText("");
 					insert = selectFile.getAbsolutePath();
 				} else
 					JOptionPane.showMessageDialog(null, "Lỗi file!");
@@ -329,20 +338,48 @@ public class ThemCPU extends JFrame {
 		});
 		btnUpload.setFont(SetFont.font());
 		btnUpload.setBorder(null);
-		btnUpload.setBounds(698, 290, 71, 21);
+		btnUpload.setBounds(744, 290, 71, 21);
 		contentPane.add(btnUpload);
 
 		tfBaoHanh = new JTextField();
 		tfBaoHanh.setFont(SetFont.fontDetails());
 		tfBaoHanh.setColumns(10);
-		tfBaoHanh.setBounds(385, 319, 141, 30);
+		tfBaoHanh.setBounds(147, 319, 141, 30);
 		contentPane.add(tfBaoHanh);
 
 		JLabel lblNewLabel_1_2_1_1 = new JLabel("Bảo hành");
 		lblNewLabel_1_2_1_1.setForeground(new Color(254, 254, 254));
 		lblNewLabel_1_2_1_1.setFont(SetFont.font1_());
-		lblNewLabel_1_2_1_1.setBounds(299, 319, 83, 30);
+		lblNewLabel_1_2_1_1.setBounds(21, 319, 83, 30);
 		contentPane.add(lblNewLabel_1_2_1_1);
+
+		tfLink = new JTextField("");
+		tfLink.setFont(SetFont.fontDetails());
+		tfLink.setColumns(10);
+		tfLink.setBounds(431, 23, 329, 20);
+		contentPane.add(tfLink);
+
+		JLabel lblTnNgun_1_2_1 = new JLabel("Link hình ảnh:");
+		lblTnNgun_1_2_1.setForeground(new Color(254, 254, 254));
+		lblTnNgun_1_2_1.setFont(SetFont.font1_());
+		lblTnNgun_1_2_1.setBounds(330, 25, 103, 21);
+		contentPane.add(lblTnNgun_1_2_1);
+
+		JButton btnNewButton = new JButton("OK");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String url = tfLink.getText();
+				ImageIcon ii = loadIMG_URL(url);
+				Image i = ii.getImage().getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(),
+						Image.SCALE_SMOOTH);
+				ii = new ImageIcon(i);
+				labelIMG.setIcon(ii);
+				insert = "";
+			}
+		});
+		btnNewButton.setBounds(770, 23, 51, 20);
+		contentPane.add(btnNewButton);
 	}
 
 	private void closeFrame() {
@@ -397,7 +434,7 @@ public class ThemCPU extends JFrame {
 		if (kiemTraIDCPU()) {
 			JOptionPane.showMessageDialog(null, "ID CPU đã tồn tại");
 		} else {
-
+			String url = tfLink.getText() + "";
 			String id = (String) comboBox.getSelectedItem();
 			String idcpu = tfIDCPU.getText();
 			String ten = tfTenCPU.getText();
@@ -410,28 +447,28 @@ public class ThemCPU extends JFrame {
 			String baoHanh = tfBaoHanh.getText();
 
 			cpu cc = new cpu(id, idcpu, ten, xungNhip, soNhan, soLuong, dienNang, boNho, 0, gia, baoHanh, null);
-			if (insert.equals("")) {
-				int check = cpuDAO.getInstance().insertNotIMG(cc);
-				if (check > 0) {
-					JOptionPane.showMessageDialog(null, "Thêm thành công!");
-					setInsert("");
+
+			if (insert.length() > 0 && url.length() > 0)
+				JOptionPane.showMessageDialog(null, "Chỉ chọn được 1 trong 2 nguồn ảnh!");
+			else {
+				if (insert.equals("") && url.equals("")) {
+					int check = cpuDAO.getInstance().insertNotIMG(cc);
+					checked(check);
 				} else {
-					JOptionPane.showMessageDialog(null, "Thêm không thành công!");
-					setInsert("");
+					if (url.equals("")) {
+						int check = cpuDAO.getInstance().insert(cc);
+						checked(check);
+					} else if (insert.equals("")) {
+						int check = cpuDAO.getInstance().insertIMGURL(cc, url);
+						checked(check);
+					}
 				}
-			} else {
-				int check = cpuDAO.getInstance().insert(cc);
-				if (check > 0) {
-					JOptionPane.showMessageDialog(null, "Thêm thành công!");
-					setInsert("");
-				} else {
-					JOptionPane.showMessageDialog(null, "Thêm không thành công!");
-					setInsert("");
-				}
+				CPUForm.loadDataToTable(cpuDAO.getInstance().selectAll());
+				closeFrame();
 			}
-			CPUForm.loadDataToTable(cpuDAO.getInstance().selectAll());
-			closeFrame();
+
 		}
+
 	}
 
 	public static String getInsert() {
@@ -442,4 +479,26 @@ public class ThemCPU extends JFrame {
 		ThemCPU.insert = insert;
 	}
 
+	private ImageIcon loadIMG_URL(String stringURL) {
+		ImageIcon ii = null;
+		try {
+			@SuppressWarnings("deprecation")
+			URL url = new URL(stringURL);
+			BufferedImage bi = ImageIO.read(url);
+			ii = new ImageIcon(bi);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Lỗi: " + e);
+		}
+		return ii;
+	}
+
+	private void checked(int check) {
+		if (check > 0) {
+			JOptionPane.showMessageDialog(null, "Thêm thành công!");
+			setInsert("");
+		} else {
+			JOptionPane.showMessageDialog(null, "Thêm không thành công!");
+			setInsert("");
+		}
+	}
 }

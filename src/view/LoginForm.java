@@ -277,11 +277,11 @@ public class LoginForm extends JFrame {
 		lblNewLabel_2_1.setBounds(86, 402, 114, 17);
 		contentPane.add(lblNewLabel_2_1);
 
-		JLabel lblNewLabel_3 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
+		JLabel lblNewLabel_3 = new JLabel("© 2023 NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_3.setFont(font);
 		lblNewLabel_3.setForeground(Color.BLACK);
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3.setBounds(10, 485, 406, 31);
+		lblNewLabel_3.setBounds(10, 508, 406, 31);
 		contentPane.add(lblNewLabel_3);
 
 		JLabel lblNewLabel_4 = new JLabel("");

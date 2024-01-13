@@ -12,9 +12,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -29,6 +33,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import color.SetColor;
 import dao.SanPhamDAO;
 import dao.mainDAO;
 import font.SetFont;
@@ -53,6 +58,7 @@ public class ThemMainboard extends JFrame {
 
 	public static String insert = "";
 	private JComboBox<String> comboBox;
+	private JTextField tfLink;
 
 	/**
 	 * Launch the application.
@@ -78,7 +84,7 @@ public class ThemMainboard extends JFrame {
 	public ThemMainboard() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 767, 379);
+		setBounds(100, 100, 757, 379);
 		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
 		contentPane = new JPanel() {
 			/**
@@ -137,14 +143,22 @@ public class ThemMainboard extends JFrame {
 		contentPane.add(labelIMG);
 
 		JButton btnAdd = new JButton("Thêm");
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				addMainboard();
-			}
-		});
 		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				addMainboard();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnAdd.setForeground(Color.white);
+				btnAdd.setBackground(SetColor.green);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnAdd.setForeground(Color.black);
+				btnAdd.setBackground(Color.white);
 			}
 		});
 		btnAdd.setFont(SetFont.font1_());
@@ -157,6 +171,18 @@ public class ThemMainboard extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				closeFram();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnCancel.setForeground(SetColor.whiteFont);
+				btnCancel.setBackground(SetColor.redB);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnCancel.setForeground(Color.black);
+				btnCancel.setBackground(Color.white);
 			}
 		});
 		btnCancel.setFont(SetFont.font1_());
@@ -180,6 +206,7 @@ public class ThemMainboard extends JFrame {
 					labelIMG.setText("");
 					labelIMG.setIcon(new ImageIcon(i));
 					insert = selectFile.getAbsolutePath();
+					tfLink.setText("");
 				} else
 					JOptionPane.showMessageDialog(null, "Lỗi file!");
 			}
@@ -195,7 +222,7 @@ public class ThemMainboard extends JFrame {
 		btnUpload.setBounds(670, 300, 71, 21);
 		contentPane.add(btnUpload);
 
-		JLabel lblNewLabel_1 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
+		JLabel lblNewLabel_1 = new JLabel("© 2023 NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setForeground(new Color(224, 255, 255));
 		lblNewLabel_1.setFont(SetFont.font());
@@ -297,6 +324,34 @@ public class ThemMainboard extends JFrame {
 		tfDonGia.setColumns(10);
 		tfDonGia.setBounds(367, 222, 141, 30);
 		contentPane.add(tfDonGia);
+
+		JLabel lblTnNgun_1_2_1 = new JLabel("Link hình ảnh:");
+		lblTnNgun_1_2_1.setForeground(new Color(254, 254, 254));
+		lblTnNgun_1_2_1.setFont(SetFont.font1_());
+		lblTnNgun_1_2_1.setBounds(276, 11, 91, 21);
+		contentPane.add(lblTnNgun_1_2_1);
+
+		tfLink = new JTextField("");
+		tfLink.setFont(SetFont.fontDetails());
+		tfLink.setColumns(10);
+		tfLink.setBounds(367, 11, 313, 20);
+		contentPane.add(tfLink);
+
+		JButton btnNewButton = new JButton("OK");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String url = tfLink.getText();
+				ImageIcon ii = loadIMG_URL(url);
+				Image i = ii.getImage().getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(),
+						Image.SCALE_SMOOTH);
+				ii = new ImageIcon(i);
+				labelIMG.setIcon(ii);
+				insert = "";
+			}
+		});
+		btnNewButton.setBounds(690, 11, 51, 20);
+		contentPane.add(btnNewButton);
 	}
 
 	private void closeFram() {
@@ -347,31 +402,28 @@ public class ThemMainboard extends JFrame {
 		double donGia = Double.parseDouble(tfDonGia.getText());
 		String baoHanh = tfBaoHanh.getText();
 
-		mainboard mb = new mainboard(idSP, idMainboard, ten, tenHang, hoTroCPU, hoTroRAM, kichThuoc, 0, donGia, baoHanh,
-				null);
+		String url = tfLink.getText();
+		if (insert.length() > 0 && url.length() > 0)
+			JOptionPane.showMessageDialog(null, "Chỉ chọn 1 trong 2 nguồn hình ảnh!");
+		else {
+			mainboard mb = new mainboard(idSP, idMainboard, ten, tenHang, hoTroCPU, hoTroRAM, kichThuoc, 0, donGia,
+					baoHanh, null);
 
-		if (insert.equals("")) {
-			int check = mainDAO.getInstance().insertNotIMG(mb);
-			if (check > 0) {
-				JOptionPane.showMessageDialog(null, "Thêm thành công!");
-				setInsert("");
+			if (insert.equals("") && url.equals("")) {
+				int check = mainDAO.getInstance().insertNotIMG(mb);
+				checked(check);
 			} else {
-				JOptionPane.showMessageDialog(null, "Thêm không thành công!");
-				setInsert("");
+				if (url.equals("")) {
+					int check = mainDAO.getInstance().insert(mb);
+					checked(check);
+				} else if (insert.equals("")) {
+					int check = mainDAO.getInstance().insertIMGURL(mb, url);
+					checked(check);
+				}
 			}
-		} else {
-			int check = mainDAO.getInstance().insert(mb);
-			if (check > 0) {
-				JOptionPane.showMessageDialog(null, "Thêm thành công!");
-				setInsert("");
-			} else {
-				JOptionPane.showMessageDialog(null, "Thêm không thành công!");
-				setInsert("");
-			}
+			MainboardForm.loadDataToTable(mainDAO.getInstance().selectAll());
+			closeFram();
 		}
-		MainboardForm.loadDataToTable(mainDAO.getInstance().selectAll());
-		closeFram();
-
 	}
 
 	public static String getInsert() {
@@ -380,6 +432,29 @@ public class ThemMainboard extends JFrame {
 
 	public static void setInsert(String insert) {
 		ThemMainboard.insert = insert;
+	}
+
+	private ImageIcon loadIMG_URL(String stringURL) {
+		ImageIcon ii = null;
+		try {
+			@SuppressWarnings("deprecation")
+			URL url = new URL(stringURL);
+			BufferedImage bi = ImageIO.read(url);
+			ii = new ImageIcon(bi);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Lỗi: " + e);
+		}
+		return ii;
+	}
+
+	private void checked(int check) {
+		if (check > 0) {
+			JOptionPane.showMessageDialog(null, "Thêm thành công!");
+			setInsert("");
+		} else {
+			JOptionPane.showMessageDialog(null, "Thêm không thành công!");
+			setInsert("");
+		}
 	}
 
 }

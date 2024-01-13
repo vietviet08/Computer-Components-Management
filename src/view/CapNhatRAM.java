@@ -112,7 +112,7 @@ public class CapNhatRAM extends JFrame {
 		lblNewLabel.setBounds(10, 11, 155, 39);
 		contentPane.add(lblNewLabel);
 
-		JLabel lblNewLabel_1 = new JLabel("© Copyright 2023, Bản quyền thuộc về NGUYỄN QUỐC VIỆT - 23CE.B029");
+		JLabel lblNewLabel_1 = new JLabel("© 2023 NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_1.setFont(SetFont.font());
 		lblNewLabel_1.setForeground(SetColor.copyRight);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -257,7 +257,7 @@ public class CapNhatRAM extends JFrame {
 		comboBox.setBounds(115, 74, 164, 28);
 		contentPane.add(comboBox);
 
-		labelIMG = new JLabel("Ảnh CPU");
+		labelIMG = new JLabel("Ảnh RAM");
 		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
 		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
 		labelIMG.setBounds(557, 74, 223, 230);

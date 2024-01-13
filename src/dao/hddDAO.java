@@ -6,9 +6,11 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import db.JDBCUntil;
+import model.ChiTietPhieu;
 import model.hdd;
 import view.ThemHDD;
 
@@ -138,6 +140,33 @@ public class hddDAO implements DAOInterface<hdd> {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+		return check;
+	}
+	
+	public int updateTonKho(ArrayList<ChiTietPhieu> pn) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			for (ChiTietPhieu productNhap : pn) {
+
+				if (productNhap.getIdRieng().contains("hdd")) {
+					String sql = "UPDATE hdd SET  tonkho = tonkho + ? WHERE idhdd = ?;";
+
+					PreparedStatement ps = con.prepareStatement(sql);
+					ps.setInt(1, productNhap.getSoLuong());
+					ps.setString(2, productNhap.getIdRieng());
+					check = ps.executeUpdate();
+				}
+
+			}
+			JDBCUntil.closeConnection(con);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 		return check;
 	}
 

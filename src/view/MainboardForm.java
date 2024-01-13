@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -57,6 +59,10 @@ public class MainboardForm extends JInternalFrame {
 	private JLabel labelHoTroRAM;
 	private JLabel labelHoTroCPU;
 	private JLabel labelKichThuoc;
+	private JComboBox<String> comboBoxSort;
+	private JComboBox<String> comboBox;
+
+	private final String[] comboSort = { "Sắp xếp", "Giá tăng dần", "Giá giảm dần", "Tồn kho tăng", "Tồn kho giảm" };
 
 	/**
 	 * Launch the application.
@@ -283,7 +289,7 @@ public class MainboardForm extends JInternalFrame {
 		lblNewLabel_2.setBounds(471, 15, 48, 22);
 		panel_1.add(lblNewLabel_2);
 
-		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox = new JComboBox<String>();
 		comboBox.setFont(SetFont.font());
 		comboBox.setBounds(146, 8, 89, 33);
 		panel_1.add(comboBox);
@@ -293,9 +299,24 @@ public class MainboardForm extends JInternalFrame {
 		textField.setBounds(248, 8, 277, 33);
 		panel_1.add(textField);
 
-		JComboBox<String> comboBoxSort = new JComboBox<String>();
+		comboBoxSort = new JComboBox<String>(comboSort);
 		comboBoxSort.setFont(SetFont.font());
 		comboBoxSort.setBounds(0, 8, 125, 32);
+		comboBoxSort.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String src = comboBoxSort.getSelectedItem().toString();
+				if (src.equals("Giá tăng dần"))
+					loadDataToTable(sortByGiaTangDan());
+				else if (src.equals("Giá giảm dần"))
+					loadDataToTable(sortByGiaGiamDan());
+				else if (src.equals("Tồn kho tăng"))
+					loadDataToTable(sortByTonKhoTang());
+				else if (src.equals("Tồn kho giảm"))
+					loadDataToTable(sortByTonKhoGiam());
+			}
+		});
 		panel_1.add(comboBoxSort);
 
 		JPanel panel_2 = new JPanel();
@@ -364,5 +385,85 @@ public class MainboardForm extends JInternalFrame {
 
 	public static mainboard getMainboardSellect() {
 		return mainDAO.getInstance().selectAll().get(table.getSelectedRow());
+	}
+
+	private ArrayList<mainboard> sortByGiaTangDan() {
+		ArrayList<mainboard> mb = mainDAO.getInstance().selectAll();
+		ArrayList<mainboard> list = new ArrayList<mainboard>();
+		for (mainboard mainboard : mb) {
+			list.add(mainboard);
+		}
+		Collections.sort(list, new Comparator<mainboard>() {
+
+			@Override
+			public int compare(mainboard o1, mainboard o2) {
+				if (o1.getDonGia() > o2.getDonGia())
+					return 1;
+				else if (o1.getDonGia() < o2.getDonGia())
+					return -1;
+				return 0;
+			}
+		});
+		return list;
+	}
+
+	private ArrayList<mainboard> sortByGiaGiamDan() {
+		ArrayList<mainboard> mb = mainDAO.getInstance().selectAll();
+		ArrayList<mainboard> list = new ArrayList<mainboard>();
+		for (mainboard mainboard : mb) {
+			list.add(mainboard);
+		}
+		Collections.sort(list, new Comparator<mainboard>() {
+
+			@Override
+			public int compare(mainboard o1, mainboard o2) {
+				if (o1.getDonGia() > o2.getDonGia())
+					return -1;
+				else if (o1.getDonGia() < o2.getDonGia())
+					return 1;
+				return 0;
+			}
+		});
+		return list;
+	}
+
+	private ArrayList<mainboard> sortByTonKhoTang() {
+		ArrayList<mainboard> mb = mainDAO.getInstance().selectAll();
+		ArrayList<mainboard> list = new ArrayList<mainboard>();
+		for (mainboard mainboard : mb) {
+			list.add(mainboard);
+		}
+		Collections.sort(list, new Comparator<mainboard>() {
+
+			@Override
+			public int compare(mainboard o1, mainboard o2) {
+				if (o1.getTonKho() > o2.getTonKho())
+					return 1;
+				else if (o1.getTonKho() < o2.getTonKho())
+					return -1;
+				return 0;
+			}
+		});
+		return list;
+	}
+
+	private ArrayList<mainboard> sortByTonKhoGiam() {
+		ArrayList<mainboard> mb = mainDAO.getInstance().selectAll();
+		ArrayList<mainboard> list = new ArrayList<mainboard>();
+		for (mainboard mainboard : mb) {
+			list.add(mainboard);
+		}
+		Collections.sort(list, new Comparator<mainboard>() {
+
+			@Override
+			public int compare(mainboard o1, mainboard o2) {
+				if (o1.getTonKho() > o2.getTonKho())
+					return -1;
+				else if (o1.getTonKho() < o2.getTonKho())
+					return 1;
+				return 0;
+			}
+		});
+		return list;
 	}
 }
