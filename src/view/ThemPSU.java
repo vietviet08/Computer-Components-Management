@@ -5,18 +5,16 @@ import java.awt.EventQueue;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
-import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -25,8 +23,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
+import color.SetColor;
+import controller.Checked;
+import controller.LoadIMGURL;
 import dao.SanPhamDAO;
 import dao.psuDAO;
 import font.SetFont;
@@ -57,6 +57,8 @@ public class ThemPSU extends JFrame {
 			"80 Plus Titanium" };
 	private final String[] kieuDay = { "Full Modular", "Non Modular" };
 	private final String[] kichThuoc = { "ATX", "SFX-L" };
+	private JTextField tfLink;
+	private JLabel labelTenSP;
 
 	/**
 	 * Launch the application.
@@ -130,7 +132,7 @@ public class ThemPSU extends JFrame {
 		tfIDNguon.setEditable(false);
 		tfIDNguon.setColumns(10);
 		tfIDNguon.setBackground(Color.WHITE);
-		tfIDNguon.setBounds(385, 62, 141, 30);
+		tfIDNguon.setBounds(395, 62, 141, 30);
 		contentPane.add(tfIDNguon);
 
 		JLabel lblTnNgun = new JLabel("Tên nguồn");
@@ -160,7 +162,7 @@ public class ThemPSU extends JFrame {
 		tfHang = new JTextField();
 		tfHang.setFont(SetFont.fontDetails());
 		tfHang.setColumns(10);
-		tfHang.setBounds(385, 126, 141, 30);
+		tfHang.setBounds(395, 126, 141, 30);
 		contentPane.add(tfHang);
 
 		labelIMG = new JLabel("Ảnh PSU");
@@ -173,21 +175,7 @@ public class ThemPSU extends JFrame {
 		btnUpload.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-				fileChooser.addChoosableFileFilter(
-						new FileNameExtensionFilter("*.IMAGE", "webp", "jpg", "jpeg", "gif", "png"));
-				int result = fileChooser.showSaveDialog(null);
-				if (result == JFileChooser.APPROVE_OPTION) {
-					File selectFile = fileChooser.getSelectedFile();
-					ImageIcon ii = new ImageIcon(selectFile.getAbsolutePath());
-					Image i = ii.getImage();
-					i = i.getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(), Image.SCALE_SMOOTH);
-					labelIMG.setText("");
-					labelIMG.setIcon(new ImageIcon(i));
-					insert = selectFile.getAbsolutePath();
-				} else
-					JOptionPane.showMessageDialog(null, "Lỗi file!");
+				insert = LoadIMGURL.loadIMGFromDirecory(labelIMG, insert);
 			}
 		});
 		btnUpload.setFont(SetFont.font());
@@ -210,30 +198,41 @@ public class ThemPSU extends JFrame {
 				double gia = Double.parseDouble(tfGia.getText());
 				String baoHanh = tfBaoHanh.getText();
 
-				psu psu = new psu(idSP, idNguon, ten, hang, congSuat, chuanNguon, kieuDay, kichThuoc, 0, gia, baoHanh,
-						null);
+				String url = tfLink.getText();
+				if (insert.length() > 0 && url.length() > 0)
+					JOptionPane.showMessageDialog(null, "Chỉ chọn 1 trong 2 nguồn hình ảnh!");
+				else {
 
-				if (insert.equals("")) {
-					int check = psuDAO.getInstance().insertNotIMG(psu);
-					if (check > 0) {
-						JOptionPane.showMessageDialog(null, "Thêm thành công");
-						insert = "";
+					psu psu = new psu(idSP, idNguon, ten, hang, congSuat, chuanNguon, kieuDay, kichThuoc, 0, gia,
+							baoHanh, null);
+
+					if (insert.equals("") && url.equals("")) {
+						int check = psuDAO.getInstance().insertNotIMG(psu);
+						insert = Checked.checkedAdd(check, insert);
 					} else {
-						JOptionPane.showMessageDialog(null, "Thêm thất bại!");
-						insert = "";
+						if (url.equals("")) {
+							int check = psuDAO.getInstance().insert(psu);
+							insert = Checked.checkedAdd(check, insert);
+						} else if (insert.equals("")) {
+							int check = psuDAO.getInstance().insertIMGURL(psu, url);
+							insert = Checked.checkedAdd(check, insert);
+						}
 					}
-				} else {
-					int check = psuDAO.getInstance().insert(psu);
-					if (check > 0) {
-						JOptionPane.showMessageDialog(null, "Thêm thành công");
-						insert = "";
-					} else {
-						JOptionPane.showMessageDialog(null, "Thêm thất bại!");
-						insert = "";
-					}
+					PSUForm.loadDataToTable(psuDAO.getInstance().selectAll());
+					closeFrame();
 				}
-				PSUForm.loadDataToTable(psuDAO.getInstance().selectAll());
-				closeFrame();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnAdd.setForeground(Color.white);
+				btnAdd.setBackground(SetColor.green);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnAdd.setForeground(Color.black);
+				btnAdd.setBackground(Color.white);
 			}
 		});
 		btnAdd.setFont(SetFont.font1());
@@ -246,6 +245,18 @@ public class ThemPSU extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				closeFrame();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnCancel.setForeground(Color.white);
+				btnCancel.setBackground(SetColor.redB);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnCancel.setForeground(Color.black);
+				btnCancel.setBackground(Color.white);
 			}
 		});
 		btnCancel.setFont(SetFont.font1());
@@ -293,7 +304,7 @@ public class ThemPSU extends JFrame {
 		tfBaoHanh = new JTextField();
 		tfBaoHanh.setFont(SetFont.fontDetails());
 		tfBaoHanh.setColumns(10);
-		tfBaoHanh.setBounds(385, 314, 141, 30);
+		tfBaoHanh.setBounds(395, 314, 141, 30);
 		contentPane.add(tfBaoHanh);
 
 		JLabel lblGi = new JLabel("Giá");
@@ -324,22 +335,58 @@ public class ThemPSU extends JFrame {
 		comboBox_IDSP = new JComboBox<>(combo);
 		comboBox_IDSP.setFont(SetFont.fontDetails());
 		comboBox_IDSP.setBounds(136, 62, 141, 30);
+		comboBox_IDSP.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String src = comboBox_IDSP.getSelectedItem().toString();
+				labelTenSP.setText(SanPhamDAO.getInstance().selectById(src).getTenSanPham());
+			}
+		});
 		contentPane.add(comboBox_IDSP);
 
 		comboBox_ChuanNguon = new JComboBox<>(chuanNguon);
 		comboBox_ChuanNguon.setFont(SetFont.fontDetails());
-		comboBox_ChuanNguon.setBounds(385, 193, 141, 30);
+		comboBox_ChuanNguon.setBounds(395, 193, 141, 30);
 		contentPane.add(comboBox_ChuanNguon);
 
 		comboBox_KichThuoc = new JComboBox<>(kichThuoc);
 		comboBox_KichThuoc.setFont(SetFont.fontDetails());
-		comboBox_KichThuoc.setBounds(385, 258, 141, 30);
+		comboBox_KichThuoc.setBounds(395, 258, 141, 30);
 		contentPane.add(comboBox_KichThuoc);
 
 		comboBox_KieuDay = new JComboBox<>(kieuDay);
 		comboBox_KieuDay.setFont(SetFont.fontDetails());
 		comboBox_KieuDay.setBounds(136, 258, 141, 30);
 		contentPane.add(comboBox_KieuDay);
+
+		tfLink = new JTextField("");
+		tfLink.setFont(SetFont.fontDetails());
+		tfLink.setColumns(10);
+		tfLink.setBounds(395, 19, 313, 20);
+		contentPane.add(tfLink);
+
+		JLabel lblTnNgun_1_2_1 = new JLabel("Link hình ảnh:");
+		lblTnNgun_1_2_1.setForeground(new Color(254, 254, 254));
+		lblTnNgun_1_2_1.setFont(SetFont.font1_());
+		lblTnNgun_1_2_1.setBounds(299, 19, 97, 21);
+		contentPane.add(lblTnNgun_1_2_1);
+
+		JButton btnNewButton = new JButton("OK");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				insert = LoadIMGURL.setIMG(tfLink, labelIMG, insert);
+			}
+		});
+		btnNewButton.setBounds(718, 19, 51, 20);
+		contentPane.add(btnNewButton);
+
+		labelTenSP = new JLabel("");
+		labelTenSP.setFont(SetFont.font());
+		labelTenSP.setForeground(SetColor.whiteFont);
+		labelTenSP.setBounds(136, 95, 141, 14);
+		contentPane.add(labelTenSP);
 	}
 
 	private void closeFrame() {

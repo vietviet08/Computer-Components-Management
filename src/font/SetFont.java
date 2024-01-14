@@ -57,7 +57,7 @@ public class SetFont {
 		return f1;
 	}
 
-	public static Font font1_() {
+	public static Font font1_ () {
 		Font f1 = null;
 		try {
 			File fontStyle = new File("src/font/Roboto-Medium.ttf");

@@ -34,6 +34,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import color.SetColor;
+import controller.Checked;
+import controller.LoadIMGURL;
 import dao.SanPhamDAO;
 import dao.mainDAO;
 import font.SetFont;
@@ -193,22 +195,7 @@ public class ThemMainboard extends JFrame {
 		JButton btnUpload = new JButton("Upload");
 		btnUpload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-				fileChooser.addChoosableFileFilter(
-						new FileNameExtensionFilter("*.IMAGE", "webp", "jpg", "jpeg", "gif", "png"));
-				int result = fileChooser.showSaveDialog(null);
-				if (result == JFileChooser.APPROVE_OPTION) {
-					File selectFile = fileChooser.getSelectedFile();
-					ImageIcon ii = new ImageIcon(selectFile.getAbsolutePath());
-					Image i = ii.getImage();
-					i = i.getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(), Image.SCALE_SMOOTH);
-					labelIMG.setText("");
-					labelIMG.setIcon(new ImageIcon(i));
-					insert = selectFile.getAbsolutePath();
-					tfLink.setText("");
-				} else
-					JOptionPane.showMessageDialog(null, "Lỗi file!");
+				insert = LoadIMGURL.loadIMGFromDirecory(labelIMG, insert);
 			}
 		});
 		btnUpload.addMouseListener(new MouseAdapter() {
@@ -341,13 +328,7 @@ public class ThemMainboard extends JFrame {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String url = tfLink.getText();
-				ImageIcon ii = loadIMG_URL(url);
-				Image i = ii.getImage().getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(),
-						Image.SCALE_SMOOTH);
-				ii = new ImageIcon(i);
-				labelIMG.setIcon(ii);
-				insert = "";
+				insert = LoadIMGURL.setIMG(tfLink, labelIMG, insert);
 			}
 		});
 		btnNewButton.setBounds(690, 11, 51, 20);
@@ -411,14 +392,14 @@ public class ThemMainboard extends JFrame {
 
 			if (insert.equals("") && url.equals("")) {
 				int check = mainDAO.getInstance().insertNotIMG(mb);
-				checked(check);
+				insert = Checked.checkedAdd(check, insert);
 			} else {
 				if (url.equals("")) {
 					int check = mainDAO.getInstance().insert(mb);
-					checked(check);
+					insert = Checked.checkedAdd(check, insert);
 				} else if (insert.equals("")) {
 					int check = mainDAO.getInstance().insertIMGURL(mb, url);
-					checked(check);
+					insert = Checked.checkedAdd(check, insert);
 				}
 			}
 			MainboardForm.loadDataToTable(mainDAO.getInstance().selectAll());
@@ -432,29 +413,6 @@ public class ThemMainboard extends JFrame {
 
 	public static void setInsert(String insert) {
 		ThemMainboard.insert = insert;
-	}
-
-	private ImageIcon loadIMG_URL(String stringURL) {
-		ImageIcon ii = null;
-		try {
-			@SuppressWarnings("deprecation")
-			URL url = new URL(stringURL);
-			BufferedImage bi = ImageIO.read(url);
-			ii = new ImageIcon(bi);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Lỗi: " + e);
-		}
-		return ii;
-	}
-
-	private void checked(int check) {
-		if (check > 0) {
-			JOptionPane.showMessageDialog(null, "Thêm thành công!");
-			setInsert("");
-		} else {
-			JOptionPane.showMessageDialog(null, "Thêm không thành công!");
-			setInsert("");
-		}
 	}
 
 }

@@ -12,13 +12,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -35,6 +31,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import color.SetColor;
+import controller.Checked;
+import controller.LoadIMGURL;
 import dao.SanPhamDAO;
 import dao.ramDAO;
 import font.SetFont;
@@ -187,14 +185,14 @@ public class ThemRAM extends JFrame {
 						else {
 							if (insert.equals("") && url.equals("")) {
 								int check = ramDAO.getInstance().insertNotIMG(r);
-								checked(check);
+								insert = Checked.checkedAdd(check, insert);
 							} else {
 								if (url.equals("")) {
 									int check = ramDAO.getInstance().insert(r);
-									checked(check);
+									insert = Checked.checkedAdd(check, insert);
 								} else if (insert.equals("")) {
 									int check = ramDAO.getInstance().insertIMGURL(r, url);
-									checked(check);
+									insert = Checked.checkedAdd(check, insert);
 								}
 
 							}
@@ -290,22 +288,7 @@ public class ThemRAM extends JFrame {
 		btnUpload.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-				fileChooser.addChoosableFileFilter(
-						new FileNameExtensionFilter("*.IMAGE", "webp", "jpg", "jpeg", "gif", "png"));
-				int result = fileChooser.showSaveDialog(null);
-				if (result == JFileChooser.APPROVE_OPTION) {
-					File selectFile = fileChooser.getSelectedFile();
-					ImageIcon ii = new ImageIcon(selectFile.getAbsolutePath());
-					Image i = ii.getImage();
-					i = i.getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(), Image.SCALE_SMOOTH);
-					labelIMG.setText("");
-					labelIMG.setIcon(new ImageIcon(i));
-					insert = selectFile.getAbsolutePath();
-					tfLink.setText("");
-				} else
-					JOptionPane.showMessageDialog(null, "Lỗi file!");
+				insert = LoadIMGURL.loadIMGFromDirecory(labelIMG, insert);
 			}
 		});
 		btnUpload.setFont(SetFont.font());
@@ -346,12 +329,7 @@ public class ThemRAM extends JFrame {
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ImageIcon ii = loadIMGURL(tfLink.getText());
-				Image i = ii.getImage().getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(),
-						Image.SCALE_SMOOTH);
-				ii = new ImageIcon(i);
-				labelIMG.setIcon(ii);
-				insert = "";
+				insert = LoadIMGURL.setIMG(tfLink, labelIMG, insert);
 			}
 		});
 		btnNewButton_1.setBounds(674, 7, 51, 20);
@@ -403,27 +381,4 @@ public class ThemRAM extends JFrame {
 		ThemRAM.insert = insert;
 	}
 
-	private ImageIcon loadIMGURL(String stringUrl) {
-		ImageIcon ii = null;
-		try {
-			@SuppressWarnings("deprecation")
-			URL url = new URL(stringUrl);
-			BufferedImage bi = ImageIO.read(url);
-			ii = new ImageIcon(bi);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Lỗi: " + e);
-		}
-
-		return ii;
-	}
-
-	private void checked(int check) {
-		if (check > 0) {
-			JOptionPane.showMessageDialog(null, "Thêm thành công!");
-			setInsert("");
-		} else {
-			JOptionPane.showMessageDialog(null, "Thêm không thành công!");
-			setInsert("");
-		}
-	}
 }

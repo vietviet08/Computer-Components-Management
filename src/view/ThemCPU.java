@@ -5,26 +5,17 @@ import java.awt.EventQueue;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -33,9 +24,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import color.SetColor;
+import controller.Checked;
+import controller.LoadIMGURL;
 import dao.SanPhamDAO;
 import dao.cpuDAO;
 import font.SetFont;
@@ -318,22 +310,7 @@ public class ThemCPU extends JFrame {
 		btnUpload.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-				fileChooser.addChoosableFileFilter(
-						new FileNameExtensionFilter("*.IMAGE", "webp", "jpg", "jpeg", "gif", "png"));
-				int result = fileChooser.showSaveDialog(null);
-				if (result == JFileChooser.APPROVE_OPTION) {
-					File selectFile = fileChooser.getSelectedFile();
-					ImageIcon ii = new ImageIcon(selectFile.getAbsolutePath());
-					Image i = ii.getImage();
-					i = i.getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(), Image.SCALE_SMOOTH);
-					labelIMG.setText("");
-					labelIMG.setIcon(new ImageIcon(i));
-					tfLink.setText("");
-					insert = selectFile.getAbsolutePath();
-				} else
-					JOptionPane.showMessageDialog(null, "Lỗi file!");
+				insert = LoadIMGURL.loadIMGFromDirecory(labelIMG, insert);
 			}
 		});
 		btnUpload.setFont(SetFont.font());
@@ -369,13 +346,7 @@ public class ThemCPU extends JFrame {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String url = tfLink.getText();
-				ImageIcon ii = loadIMG_URL(url);
-				Image i = ii.getImage().getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(),
-						Image.SCALE_SMOOTH);
-				ii = new ImageIcon(i);
-				labelIMG.setIcon(ii);
-				insert = "";
+				insert = LoadIMGURL.setIMG(tfLink, labelIMG, insert);
 			}
 		});
 		btnNewButton.setBounds(770, 23, 51, 20);
@@ -453,14 +424,14 @@ public class ThemCPU extends JFrame {
 			else {
 				if (insert.equals("") && url.equals("")) {
 					int check = cpuDAO.getInstance().insertNotIMG(cc);
-					checked(check);
+					insert = Checked.checkedAdd(check, insert);
 				} else {
 					if (url.equals("")) {
 						int check = cpuDAO.getInstance().insert(cc);
-						checked(check);
+						insert = Checked.checkedAdd(check, insert);
 					} else if (insert.equals("")) {
 						int check = cpuDAO.getInstance().insertIMGURL(cc, url);
-						checked(check);
+						insert = Checked.checkedAdd(check, insert);
 					}
 				}
 				CPUForm.loadDataToTable(cpuDAO.getInstance().selectAll());
@@ -479,26 +450,4 @@ public class ThemCPU extends JFrame {
 		ThemCPU.insert = insert;
 	}
 
-	private ImageIcon loadIMG_URL(String stringURL) {
-		ImageIcon ii = null;
-		try {
-			@SuppressWarnings("deprecation")
-			URL url = new URL(stringURL);
-			BufferedImage bi = ImageIO.read(url);
-			ii = new ImageIcon(bi);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Lỗi: " + e);
-		}
-		return ii;
-	}
-
-	private void checked(int check) {
-		if (check > 0) {
-			JOptionPane.showMessageDialog(null, "Thêm thành công!");
-			setInsert("");
-		} else {
-			JOptionPane.showMessageDialog(null, "Thêm không thành công!");
-			setInsert("");
-		}
-	}
 }

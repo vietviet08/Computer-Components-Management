@@ -4,15 +4,26 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,14 +33,23 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import color.SetColor;
 import controller.FormatToVND;
+import controller.IEExcel;
+import controller.TimKiemCase;
 import dao.SanPhamDAO;
 import dao.caseDAO;
+import decor.SetTitleForJF;
 import font.SetFont;
 import model.Case;
 
@@ -39,20 +59,24 @@ public class CaseForm extends JInternalFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
+	private JTextField tfSearch;
 	private JLabel labelIMG;
 	private JLabel labelTen;
 	private JLabel labelTien;
 	private JLabel labelBaoHanh;
 	private JTextArea txtrAbc;
 
-	private String[] columnName = { "ID SP", "ID Case", "Tên case", "Hãng", "Loại case", "Chất liệu", "Kích thước mb",
-			"Tồn kho", "Giá" };
+	private final String[] columnName = { "ID SP", "ID Case", "Tên case", "Hãng", "Loại case", "Chất liệu",
+			"Kích thước mb", "Tồn kho", "Giá" };
 	private static JTable table;
 	private static DefaultTableModel tableModel;
 	private JLabel labelLoai;
 	private JLabel labelChatLieu;
 	private JLabel labelKichThuoc;
+	private JComboBox<String> comboBoxSort;
+	private JComboBox<String> comboBox;
+	private final String[] comboSort = { "Sắp xếp", "Tăng theo giá", "Giảm theo giá", "Tồn kho tăng", "Tồn kho giảm" };
+	private final String[] comboSearch = columnName;
 
 	/**
 	 * Launch the application.
@@ -114,6 +138,8 @@ public class CaseForm extends JInternalFrame {
 	}
 
 	public CaseForm() {
+		SetTitleForJF.setTitle(this, "/icon/icons8-workstation-20 (1).png");
+
 		setBounds(100, 100, 1170, 730);
 		getContentPane().setLayout(null);
 
@@ -141,7 +167,15 @@ public class CaseForm extends JInternalFrame {
 				if (table.getSelectedRow() == -1)
 					JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm để xóa!");
 				else {
-					CapNhatCase.main(null);
+					int answ = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn xóa sản phẩm này?", "Cảnh báo",
+							JOptionPane.YES_NO_OPTION);
+					if (answ == JOptionPane.YES_OPTION) {
+						int check = caseDAO.getInstance().delete(getSelectCase());
+						if (check > 0)
+							JOptionPane.showMessageDialog(null, "Xóa thành công!");
+						else
+							JOptionPane.showMessageDialog(null, "Xóa thất bại!");
+					}
 				}
 			}
 		});
@@ -171,6 +205,84 @@ public class CaseForm extends JInternalFrame {
 		btnNewButton_4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+				int rowBanDau = model.getRowCount();
+
+				File excelFile;
+				FileInputStream excelFIS = null;
+				BufferedInputStream excelBIS = null;
+				XSSFWorkbook excelImportToJTable = null;
+				String defaultCurrentDirectoryPath = "C:\\Users\\DELL\\Desktop";
+				JFileChooser excelFileChooser = new JFileChooser(defaultCurrentDirectoryPath);
+				excelFileChooser.setDialogTitle("Select Excel File");
+				FileNameExtensionFilter fnef = new FileNameExtensionFilter("EXCEL FILES", "xls", "xlsx", "xlsm");
+				excelFileChooser.setFileFilter(fnef);
+				int excelChooser = excelFileChooser.showOpenDialog(null);
+				if (excelChooser == JFileChooser.APPROVE_OPTION) {
+					try {
+						excelFile = excelFileChooser.getSelectedFile();
+//		                jExcelFilePath.setText(excelFile.toString());
+						excelFIS = new FileInputStream(excelFile);
+						excelBIS = new BufferedInputStream(excelFIS);
+						excelImportToJTable = new XSSFWorkbook(excelBIS);
+						XSSFSheet excelSheet = excelImportToJTable.getSheetAt(0);
+
+						for (int row = 1; row <= excelSheet.getLastRowNum(); row++) {
+							XSSFRow excelRow = excelSheet.getRow(row);
+							XSSFCell idsp = excelRow.getCell(0);
+							XSSFCell idcase = excelRow.getCell(1);
+							XSSFCell ten = excelRow.getCell(2);
+							XSSFCell hang = excelRow.getCell(3);
+							XSSFCell loai = excelRow.getCell(4);
+							XSSFCell chatlieu = excelRow.getCell(5);
+							XSSFCell kichthuoc = excelRow.getCell(6);
+							XSSFCell tonkho = excelRow.getCell(7);
+							XSSFCell dongia = excelRow.getCell(8);
+
+							model.addRow(new Object[] { idsp, idcase, ten, hang, loai, chatlieu, kichthuoc, tonkho,
+									dongia });
+						}
+						JOptionPane.showMessageDialog(null, "Thêm thành công!");
+						int answ = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm vào csdl không", "Thông báo",
+								JOptionPane.YES_NO_OPTION);
+						if (answ == JOptionPane.YES_OPTION) {
+							for (int i = rowBanDau; i <= model.getRowCount(); i++) {
+
+								String idsp = model.getValueAt(i, 0).toString();
+								String idcase = model.getValueAt(i, 1).toString();
+								String ten = model.getValueAt(i, 2).toString();
+								String hang = model.getValueAt(i, 3).toString();
+								String loai = model.getValueAt(i, 4).toString();
+								String chatlieu = model.getValueAt(i, 5).toString();
+								String kichthuoc = model.getValueAt(i, 6).toString();
+								int tonkho = (int) model.getValueAt(i, 7);
+								double dongia = (double) model.getValueAt(i, 8);
+
+								Case c = new Case(idsp, idcase, ten, hang, loai, chatlieu, kichthuoc, tonkho, dongia,
+										"", null);
+
+								caseDAO.getInstance().insertNotIMG(c);
+							}
+						}
+					} catch (IOException iOException) {
+						JOptionPane.showMessageDialog(null, iOException.getMessage());
+					} finally {
+						try {
+							if (excelFIS != null) {
+								excelFIS.close();
+							}
+							if (excelBIS != null) {
+								excelBIS.close();
+							}
+							if (excelImportToJTable != null) {
+								excelImportToJTable.close();
+							}
+						} catch (IOException iOException) {
+							JOptionPane.showMessageDialog(null, iOException.getMessage());
+						}
+					}
+				}
 			}
 		});
 		btnNewButton_4.setIcon(new ImageIcon(CaseForm.class.getResource("/icon/icons8-import-csv-24.png")));
@@ -182,6 +294,7 @@ public class CaseForm extends JInternalFrame {
 		btnNewButton_5.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				IEExcel.exportExcel(table, "Case");
 			}
 		});
 		btnNewButton_5.setIcon(new ImageIcon(CaseForm.class.getResource("/icon/icons8-export-excel-24.png")));
@@ -260,20 +373,63 @@ public class CaseForm extends JInternalFrame {
 		lblNewLabel_2.setBounds(471, 15, 48, 22);
 		panel_1.add(lblNewLabel_2);
 
-		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox = new JComboBox<String>(comboSearch);
 		comboBox.setFont(SetFont.font());
 		comboBox.setBounds(146, 8, 89, 33);
 		panel_1.add(comboBox);
 
-		textField = new JTextField();
-		textField.setFont(SetFont.font());
-		textField.setColumns(10);
-		textField.setBounds(248, 8, 277, 33);
-		panel_1.add(textField);
+		tfSearch = new JTextField();
+		tfSearch.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+//				"ID SP", "ID Case", "Tên case", "Hãng", "Loại case", "Chất liệu", "Kích thước mb",
+//				"Tồn kho", "Giá" 
+				String src = comboBox.getSelectedItem().toString();
+				if (src.equals("ID SP"))
+					loadDataToTable(TimKiemCase.byIDSP(tfSearch.getText()));
+				else if (src.equals("ID Case"))
+					loadDataToTable(TimKiemCase.byIDCase(tfSearch.getText()));
+				else if (src.equals("Tên case"))
+					loadDataToTable(TimKiemCase.byTen(tfSearch.getText()));
+				else if (src.equals("Hãng"))
+					loadDataToTable(TimKiemCase.byHang(tfSearch.getText()));
+				else if (src.equals("Loại case"))
+					loadDataToTable(TimKiemCase.byLoai(tfSearch.getText()));
+				else if (src.equals("Chất liệu"))
+					loadDataToTable(TimKiemCase.byChatLieu(tfSearch.getText()));
+				else if (src.equals("Kích thước mb"))
+					loadDataToTable(TimKiemCase.byKichThuoc(tfSearch.getText()));
+				else if (src.equals("Tồn kho"))
+					loadDataToTable(TimKiemCase.byTonKho(tfSearch.getText()));
+				else if (src.equals("Giá"))
+					loadDataToTable(TimKiemCase.byGia(tfSearch.getText()));
 
-		JComboBox<String> comboBoxSort = new JComboBox<String>();
+			}
+		});
+		tfSearch.setFont(SetFont.font());
+		tfSearch.setColumns(10);
+		tfSearch.setBounds(248, 8, 277, 33);
+		panel_1.add(tfSearch);
+
+		comboBoxSort = new JComboBox<String>(comboSort);
 		comboBoxSort.setFont(SetFont.font());
 		comboBoxSort.setBounds(0, 8, 125, 33);
+		comboBoxSort.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String src = comboBoxSort.getSelectedItem().toString();
+//				"Tăng theo giá", "Giảm theo giá", "Tồn kho tăng", "Tồn kho giảm"
+				if (src.equals("Tăng theo giá"))
+					loadDataToTable(sortGiaTangDan());
+				else if (src.equals("Giảm theo giá"))
+					loadDataToTable(sortGiaGiamDan());
+				else if (src.equals("Tồn kho tăng"))
+					loadDataToTable(sortTonKhoTangDan());
+				else if (src.equals("Tồn kho giảm"))
+					loadDataToTable(sortTonKhoGiamDan());
+			}
+		});
 		panel_1.add(comboBoxSort);
 
 		JPanel panel_2 = new JPanel();
@@ -334,5 +490,77 @@ public class CaseForm extends JInternalFrame {
 
 	public static Case getSelectCase() {
 		return caseDAO.getInstance().selectById(table.getValueAt(table.getSelectedRow(), 1).toString());
+	}
+
+	private ArrayList<Case> sortGiaTangDan() {
+		ArrayList<Case> list = caseDAO.getInstance().selectAll();
+
+		Collections.sort(list, new Comparator<Case>() {
+
+			@Override
+			public int compare(Case o1, Case o2) {
+				if (o1.getGia() > o2.getGia())
+					return 1;
+				else if (o1.getGia() < o2.getGia())
+					return -1;
+				else
+					return 0;
+			}
+		});
+		return list;
+	}
+
+	private ArrayList<Case> sortGiaGiamDan() {
+		ArrayList<Case> list = caseDAO.getInstance().selectAll();
+
+		Collections.sort(list, new Comparator<Case>() {
+
+			@Override
+			public int compare(Case o1, Case o2) {
+				if (o1.getGia() > o2.getGia())
+					return -1;
+				else if (o1.getGia() < o2.getGia())
+					return 1;
+				else
+					return 0;
+			}
+		});
+		return list;
+	}
+
+	private ArrayList<Case> sortTonKhoTangDan() {
+		ArrayList<Case> list = caseDAO.getInstance().selectAll();
+
+		Collections.sort(list, new Comparator<Case>() {
+
+			@Override
+			public int compare(Case o1, Case o2) {
+				if (o1.getTonKho() > o2.getTonKho())
+					return 1;
+				else if (o1.getTonKho() < o2.getTonKho())
+					return -1;
+				else
+					return 0;
+			}
+		});
+		return list;
+	}
+
+	private ArrayList<Case> sortTonKhoGiamDan() {
+		ArrayList<Case> list = caseDAO.getInstance().selectAll();
+
+		Collections.sort(list, new Comparator<Case>() {
+
+			@Override
+			public int compare(Case o1, Case o2) {
+				if (o1.getTonKho() > o2.getTonKho())
+					return -1;
+				else if (o1.getTonKho() < o2.getTonKho())
+					return 1;
+				else
+					return 0;
+			}
+		});
+		return list;
 	}
 }

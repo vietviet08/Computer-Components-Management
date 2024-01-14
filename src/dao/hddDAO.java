@@ -3,6 +3,7 @@ package dao;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,6 +40,40 @@ public class hddDAO implements DAOInterface<hdd> {
 			ps.setDouble(9, t.getGia());
 			ps.setString(10, t.getBaoHanh());
 			InputStream is = new FileInputStream(new File(ThemHDD.getInsert()));
+			ps.setBlob(11, is);
+
+			check = ps.executeUpdate();
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return check;
+	}
+
+	public int insertIMGURL(hdd t, String stringUrl) {
+		int check = 0;
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "insert into hdd (idsanpham, idhdd, tenhdd, hang, dungluong, bonhodem, tocdovongquay, tonkho, dongia, baohanh, img) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getIdhHdd());
+			ps.setString(3, t.getTenHdd());
+			ps.setString(4, t.getHang());
+			ps.setString(5, t.getDungLuong());
+			ps.setString(6, t.getBoNhoDem());
+			ps.setString(7, t.getTocDoVongQuay());
+			ps.setInt(8, 0);
+			ps.setDouble(9, t.getGia());
+			ps.setString(10, t.getBaoHanh());
+
+			@SuppressWarnings("deprecation")
+			URL url = new URL(stringUrl);
+			InputStream is = url.openStream();
 			ps.setBlob(11, is);
 
 			check = ps.executeUpdate();
@@ -142,7 +177,7 @@ public class hddDAO implements DAOInterface<hdd> {
 		}
 		return check;
 	}
-	
+
 	public int updateTonKho(ArrayList<ChiTietPhieu> pn) {
 		int check = 0;
 

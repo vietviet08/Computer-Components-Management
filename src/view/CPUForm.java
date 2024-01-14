@@ -2,7 +2,6 @@ package view;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
@@ -15,7 +14,6 @@ import java.awt.event.MouseEvent;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -43,9 +41,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -53,9 +48,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import color.SetColor;
 import controller.FormatToVND;
+import controller.IEExcel;
 import controller.TimKiemCPU;
 import dao.SanPhamDAO;
 import dao.cpuDAO;
+import decor.SetTitleForJF;
 import font.SetFont;
 import model.cpu;
 
@@ -80,6 +77,11 @@ public class CPUForm extends JInternalFrame {
 	private JLabel labelTien;
 	private JLabel labelBaoHanh;
 	private JTextArea txtrAbc;
+	private JLabel labelXungNhip;
+	private JLabel labelSoLuong;
+	private JLabel labelDienNang;
+	private JLabel labelSoNhan;
+	private JLabel labelBoNhoDem;
 
 	/**
 	 * Launch the application.
@@ -145,6 +147,7 @@ public class CPUForm extends JInternalFrame {
 	}
 
 	public CPUForm() {
+		SetTitleForJF.setTitle(this, "/icon/icons8-cpu-20.png");
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -322,40 +325,7 @@ public class CPUForm extends JInternalFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				try {
-					JFileChooser jFileChooser = new JFileChooser();
-					jFileChooser.showSaveDialog(null);
-					File saveFile = jFileChooser.getSelectedFile();
-					if (saveFile != null) {
-						saveFile = new File(saveFile.toString() + ".xlsx");
-						Workbook wb = new XSSFWorkbook();
-						Sheet sheet = wb.createSheet("CPU");
-
-						Row rowCol = sheet.createRow(0);
-						for (int i = 0; i < table.getColumnCount(); i++) {
-							org.apache.poi.ss.usermodel.Cell cell = rowCol.createCell(i);
-							cell.setCellValue(table.getColumnName(i));
-						}
-
-						for (int j = 0; j < table.getRowCount(); j++) {
-							Row row = sheet.createRow(j + 1);
-							for (int k = 0; k < table.getColumnCount(); k++) {
-								org.apache.poi.ss.usermodel.Cell ce = row.createCell(k);
-								if (table.getValueAt(j, k) != null) {
-									ce.setCellValue(table.getValueAt(j, k).toString());
-								}
-
-							}
-						}
-						FileOutputStream out = new FileOutputStream(new File(saveFile.toString()));
-						wb.write(out);
-						wb.close();
-						out.close();
-						openFile(saveFile.toString());
-					}
-				} catch (Exception ex) {
-					System.out.println(ex);
-				}
+				IEExcel.exportExcel(table, "CPU");
 
 			}
 		});
@@ -394,6 +364,11 @@ public class CPUForm extends JInternalFrame {
 				labelTen.setText(c.getNameCpu());
 				labelBaoHanh.setText("Bảo hành: " + c.getBaoHanh());
 				labelTien.setText(FormatToVND.vnd(c.getDonGia()));
+				labelXungNhip.setText("Xung nhịp: " + c.getXungNhip());
+				labelSoNhan.setText("Số nhân: " + c.getSoNhan());
+				labelSoLuong.setText("Số luồng: " + c.getSoLuong());
+				labelDienNang.setText("Điện năng tiêu thụ: " + c.getDienNangTieuThu());
+				labelBoNhoDem.setText("Bộ nhớ đệm: " + c.getBoNhoDem());
 
 				txtrAbc.setText(SanPhamDAO.getInstance().selectById(c.getIdSanPham()).getMoTa());
 
@@ -570,6 +545,31 @@ public class CPUForm extends JInternalFrame {
 		txtrAbc.setBounds(33, 470, 310, 167);
 		panel_2.add(txtrAbc);
 
+		labelXungNhip = new JLabel("Xung nhịp: ");
+		labelXungNhip.setFont(SetFont.fontDetails());
+		labelXungNhip.setBounds(193, 402, 178, 14);
+		panel_2.add(labelXungNhip);
+
+		labelSoNhan = new JLabel("Số Nhân: ");
+		labelSoNhan.setFont(SetFont.fontDetails());
+		labelSoNhan.setBounds(193, 417, 85, 14);
+		panel_2.add(labelSoNhan);
+
+		labelDienNang = new JLabel("Điện năng tiêu thụ: ");
+		labelDienNang.setFont(SetFont.fontDetails());
+		labelDienNang.setBounds(193, 432, 178, 14);
+		panel_2.add(labelDienNang);
+
+		labelBoNhoDem = new JLabel("Bộ Nhớ Đệm: ");
+		labelBoNhoDem.setFont(SetFont.fontDetails());
+		labelBoNhoDem.setBounds(193, 446, 179, 14);
+		panel_2.add(labelBoNhoDem);
+
+		labelSoLuong = new JLabel("Số Luồng: ");
+		labelSoLuong.setFont(SetFont.fontDetails());
+		labelSoLuong.setBounds(280, 417, 85, 14);
+		panel_2.add(labelSoLuong);
+
 	}
 
 	public static cpu getSelectCPU() {
@@ -577,14 +577,6 @@ public class CPUForm extends JInternalFrame {
 		return cpuDAO.getInstance().selectById(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
 	}
 
-	private void openFile(String file) {
-		try {
-			File path = new File(file);
-			Desktop.getDesktop().open(path);
-		} catch (IOException e) {
-			System.out.println(e);
-		}
-	}
 
 	private ArrayList<cpu> giaTangDan() {
 		ArrayList<cpu> list = cpuDAO.getInstance().selectAll();

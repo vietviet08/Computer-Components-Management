@@ -56,6 +56,7 @@ import controller.FormatToVND;
 import controller.TimKiemVGA;
 import dao.SanPhamDAO;
 import dao.vgaDAO;
+import decor.SetTitleForJF;
 import font.SetFont;
 import model.vga;
 
@@ -138,6 +139,7 @@ public class VGAForm extends JInternalFrame {
 	}
 
 	public VGAForm() {
+		SetTitleForJF.setTitle(this, "/icon/icons8-video-card-20.png");
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 

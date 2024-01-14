@@ -56,6 +56,7 @@ import controller.FormatToVND;
 import controller.TimKiemRAM;
 import dao.SanPhamDAO;
 import dao.ramDAO;
+import decor.SetTitleForJF;
 import font.SetFont;
 import model.ram;
 
@@ -140,6 +141,8 @@ public class RAMForm extends JInternalFrame {
 	}
 
 	public RAMForm() {
+		SetTitleForJF.setTitle(this, "/icon/icons8-memory-slot-20.png");
+		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		try {

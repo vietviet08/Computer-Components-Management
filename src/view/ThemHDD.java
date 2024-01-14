@@ -5,18 +5,14 @@ import java.awt.EventQueue;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
-import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -25,8 +21,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
+import color.SetColor;
+import controller.Checked;
+import controller.LoadIMGURL;
 import dao.SanPhamDAO;
 import dao.hddDAO;
 import font.SetFont;
@@ -51,6 +49,7 @@ public class ThemHDD extends JFrame {
 	private JLabel labelIMG;
 	private JComboBox<String> comboBox;
 	private static String insert = "";
+	private JTextField tfLink;
 
 	/**
 	 * Launch the application.
@@ -114,7 +113,7 @@ public class ThemHDD extends JFrame {
 		lblNewLabel_2.setBounds(10, 11, 267, 36);
 		contentPane.add(lblNewLabel_2);
 
-		labelIMG = new JLabel("Ảnh CPU");
+		labelIMG = new JLabel("Ảnh HDD");
 		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
 		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
 		labelIMG.setBounds(546, 58, 223, 230);
@@ -124,21 +123,7 @@ public class ThemHDD extends JFrame {
 		btnUpload.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-				fileChooser.addChoosableFileFilter(
-						new FileNameExtensionFilter("*.IMAGE", "webp", "jpg", "jpeg", "gif", "png"));
-				int result = fileChooser.showSaveDialog(null);
-				if (result == JFileChooser.APPROVE_OPTION) {
-					File selectFile = fileChooser.getSelectedFile();
-					ImageIcon ii = new ImageIcon(selectFile.getAbsolutePath());
-					Image i = ii.getImage();
-					i = i.getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(), Image.SCALE_SMOOTH);
-					labelIMG.setText("");
-					labelIMG.setIcon(new ImageIcon(i));
-					insert = selectFile.getAbsolutePath();
-				} else
-					JOptionPane.showMessageDialog(null, "Lỗi file!");
+				insert = LoadIMGURL.loadIMGFromDirecory(labelIMG, insert);
 			}
 		});
 		btnUpload.setFont(SetFont.font());
@@ -152,56 +137,80 @@ public class ThemHDD extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				closeFrame();
 			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnCancel.setForeground(Color.white);
+				btnCancel.setBackground(SetColor.redB);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnCancel.setForeground(Color.black);
+				btnCancel.setBackground(Color.white);
+			}
 		});
 		btnCancel.setFont(SetFont.font1());
 		btnCancel.setBorder(null);
 		btnCancel.setBounds(440, 323, 97, 30);
 		contentPane.add(btnCancel);
 
-		JButton btnThm = new JButton("Thêm");
-		btnThm.addMouseListener(new MouseAdapter() {
+		JButton btnAdd = new JButton("Thêm");
+		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String idSP = comboBox.getSelectedItem().toString();
-				String idHDD = tfIDHDD.getText();
-				String ten = tfTen.getText().toUpperCase();
-				String hang = tfHang.getText().toUpperCase();
-				String dungLuong = tfDungLuong.getText().toUpperCase();
-				String boNhoDem = tfBoNhoDem.getText().toUpperCase();
-				String tocDoVongQuay = tfTocDo.getText().toUpperCase();
-				double donGia = Double.parseDouble(tfGia.getText());
-				String baoHanh = tfBaoHanh.getText();
+				String url = tfLink.getText();
 
-				hdd hdd = new hdd(idSP, idHDD, ten, hang, dungLuong, boNhoDem, tocDoVongQuay, 0, donGia, baoHanh, null);
+				if (insert.length() > 0 && url.length() > 0)
+					JOptionPane.showMessageDialog(null, "Chỉ chọn 1 trong 2 nguồn hình ảnh!");
+				else {
+					String idSP = comboBox.getSelectedItem().toString();
+					String idHDD = tfIDHDD.getText();
+					String ten = tfTen.getText().toUpperCase();
+					String hang = tfHang.getText().toUpperCase();
+					String dungLuong = tfDungLuong.getText().toUpperCase();
+					String boNhoDem = tfBoNhoDem.getText().toUpperCase();
+					String tocDoVongQuay = tfTocDo.getText().toUpperCase();
+					double donGia = Double.parseDouble(tfGia.getText());
+					String baoHanh = tfBaoHanh.getText();
 
-				if (insert.equals("")) {
-					int check = hddDAO.getInstance().insertNotIMG(hdd);
-					if (check > 0) {
-						JOptionPane.showMessageDialog(null, "Thêm thành công");
-						insert = "";
+					hdd hdd = new hdd(idSP, idHDD, ten, hang, dungLuong, boNhoDem, tocDoVongQuay, 0, donGia, baoHanh,
+							null);
+
+					if (insert.equals("") && url.equals("")) {
+						int check = hddDAO.getInstance().insertNotIMG(hdd);
+						insert = Checked.checkedAdd(check, insert);
 					} else {
-						JOptionPane.showMessageDialog(null, "Thêm không thành công");
-						insert = "";
+						if (url.equals("")) {
+							int check = hddDAO.getInstance().insert(hdd);
+							insert = Checked.checkedAdd(check, insert);
+						} else if (insert.equals("")) {
+							int check = hddDAO.getInstance().insertIMGURL(hdd, url);
+							insert = Checked.checkedAdd(check, insert);
+						}
 					}
-				} else {
-					int check = hddDAO.getInstance().insert(hdd);
-					if (check > 0) {
-						JOptionPane.showMessageDialog(null, "Thêm thành công");
-						insert = "";
-					} else {
-						JOptionPane.showMessageDialog(null, "Thêm không thành công");
-						insert = "";
-					}
+
+					HDDForm.loadDataToTable(hddDAO.getInstance().selectAll());
+					closeFrame();
 				}
+			}
 
-				HDDForm.loadDataToTable(hddDAO.getInstance().selectAll());
-				closeFrame();
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnAdd.setForeground(Color.white);
+				btnAdd.setBackground(SetColor.green);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnAdd.setForeground(Color.black);
+				btnAdd.setBackground(Color.white);
 			}
 		});
-		btnThm.setFont(SetFont.font1());
-		btnThm.setBorder(null);
-		btnThm.setBounds(284, 323, 97, 30);
-		contentPane.add(btnThm);
+		btnAdd.setFont(SetFont.font1());
+		btnAdd.setBorder(null);
+		btnAdd.setBounds(284, 323, 97, 30);
+		contentPane.add(btnAdd);
 
 		JLabel lblNewLabel_1 = new JLabel("© 2023 NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -318,6 +327,28 @@ public class ThemHDD extends JFrame {
 		tfGia.setColumns(10);
 		tfGia.setBounds(133, 323, 141, 30);
 		contentPane.add(tfGia);
+
+		JLabel lblTnNgun_1_2_1 = new JLabel("Link hình ảnh:");
+		lblTnNgun_1_2_1.setForeground(new Color(254, 254, 254));
+		lblTnNgun_1_2_1.setFont(SetFont.font());
+		lblTnNgun_1_2_1.setBounds(287, 11, 108, 21);
+		contentPane.add(lblTnNgun_1_2_1);
+
+		tfLink = new JTextField("");
+		tfLink.setFont(SetFont.fontDetails());
+		tfLink.setColumns(10);
+		tfLink.setBounds(396, 11, 317, 20);
+		contentPane.add(tfLink);
+
+		JButton btnNewButton = new JButton("OK");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				insert = LoadIMGURL.setIMG(tfLink, labelIMG, insert);
+			}
+		});
+		btnNewButton.setBounds(717, 11, 52, 20);
+		contentPane.add(btnNewButton);
 	}
 
 	public static String getInsert() {

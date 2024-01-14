@@ -5,18 +5,16 @@ import java.awt.EventQueue;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
-import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -25,8 +23,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
+import color.SetColor;
+import controller.Checked;
+import controller.LoadIMGURL;
 import dao.SanPhamDAO;
 import dao.caseDAO;
 import font.SetFont;
@@ -53,6 +53,8 @@ public class ThemCase extends JFrame {
 	public static String insert = "";
 	private JComboBox<String> comboBox_Loai;
 	private JComboBox<String> comboBox_KichThuoc;
+	private JTextField tfLink;
+	private JLabel labelTenSP;
 
 	/**
 	 * Launch the application.
@@ -119,6 +121,14 @@ public class ThemCase extends JFrame {
 		comboBox = new JComboBox<String>(combo);
 		comboBox.setFont(SetFont.fontDetails());
 		comboBox.setBounds(133, 58, 141, 30);
+		comboBox.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String src = comboBox.getSelectedItem().toString();
+				labelTenSP.setText(SanPhamDAO.getInstance().selectById(src).getTenSanPham());
+			}
+		});
 		contentPane.add(comboBox);
 
 		JLabel lblIdCase = new JLabel("ID case");
@@ -171,7 +181,7 @@ public class ThemCase extends JFrame {
 		tfChatLieu.setBounds(385, 192, 141, 30);
 		contentPane.add(tfChatLieu);
 
-		labelIMG = new JLabel("Ảnh CPU");
+		labelIMG = new JLabel("Ảnh CASE");
 		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
 		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
 		labelIMG.setBounds(546, 58, 223, 230);
@@ -181,21 +191,7 @@ public class ThemCase extends JFrame {
 		btnUpload.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-				fileChooser.addChoosableFileFilter(
-						new FileNameExtensionFilter("*.IMAGE", "webp", "jpg", "jpeg", "gif", "png"));
-				int result = fileChooser.showSaveDialog(null);
-				if (result == JFileChooser.APPROVE_OPTION) {
-					File selectFile = fileChooser.getSelectedFile();
-					ImageIcon ii = new ImageIcon(selectFile.getAbsolutePath());
-					Image i = ii.getImage();
-					i = i.getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(), Image.SCALE_SMOOTH);
-					labelIMG.setText("");
-					labelIMG.setIcon(new ImageIcon(i));
-					insert = selectFile.getAbsolutePath();
-				} else
-					JOptionPane.showMessageDialog(null, "Lỗi file!");
+				insert = LoadIMGURL.loadIMGFromDirecory(labelIMG, insert);
 			}
 		});
 		btnUpload.setFont(SetFont.font());
@@ -208,7 +204,18 @@ public class ThemCase extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				addCase();
-//				closeFrame();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnAdd.setForeground(Color.white);
+				btnAdd.setBackground(SetColor.green);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnAdd.setForeground(Color.black);
+				btnAdd.setBackground(Color.white);
 			}
 		});
 		btnAdd.setFont(SetFont.font1());
@@ -221,6 +228,18 @@ public class ThemCase extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				closeFrame();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnCancel.setForeground(Color.white);
+				btnCancel.setBackground(SetColor.redB);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnCancel.setForeground(Color.black);
+				btnCancel.setBackground(Color.white);
 			}
 		});
 		btnCancel.setFont(SetFont.font1());
@@ -288,6 +307,34 @@ public class ThemCase extends JFrame {
 		comboBox_KichThuoc.setFont(SetFont.fontDetails());
 		comboBox_KichThuoc.setBounds(133, 258, 141, 30);
 		contentPane.add(comboBox_KichThuoc);
+
+		JLabel lblTnNgun_1_2_1 = new JLabel("Link hình ảnh:");
+		lblTnNgun_1_2_1.setForeground(new Color(254, 254, 254));
+		lblTnNgun_1_2_1.setFont(SetFont.font1_());
+		lblTnNgun_1_2_1.setBounds(295, 20, 90, 21);
+		contentPane.add(lblTnNgun_1_2_1);
+
+		tfLink = new JTextField("");
+		tfLink.setFont(SetFont.fontDetails());
+		tfLink.setColumns(10);
+		tfLink.setBounds(385, 20, 323, 20);
+		contentPane.add(tfLink);
+
+		JButton btnNewButton = new JButton("OK");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				insert = LoadIMGURL.setIMG(tfLink, labelIMG, insert);
+			}
+		});
+		btnNewButton.setBounds(718, 20, 51, 20);
+		contentPane.add(btnNewButton);
+
+		labelTenSP = new JLabel("");
+		labelTenSP.setFont(SetFont.font());
+		labelTenSP.setForeground(SetColor.whiteFont);
+		labelTenSP.setBounds(133, 93, 141, 15);
+		contentPane.add(labelTenSP);
 	}
 
 	private void closeFrame() {
@@ -313,30 +360,29 @@ public class ThemCase extends JFrame {
 		double gia = Double.parseDouble(tfGia.getText());
 		String baoHanh = tfBaoHanh.getText();
 
-		Case c = new Case(idSP, idCase, ten, hang, loai, chatLieu, kichThuoc, 0, gia, baoHanh, null);
+		String url = tfLink.getText();
 
-		if (insert.equals("")) {
-			int check = caseDAO.getInstance().insertNotIMG(c);
-			if (check > 0) {
-				JOptionPane.showMessageDialog(null, "Thêm thành công!");
-				setInsert("");
+		if (insert.length() > 0 && url.length() > 0)
+			JOptionPane.showMessageDialog(null, "Chỉ chọn 1 trong 2 nguồn hình ảnh!");
+		else {
+
+			Case c = new Case(idSP, idCase, ten, hang, loai, chatLieu, kichThuoc, 0, gia, baoHanh, null);
+
+			if (insert.equals("") && url.equals("")) {
+				int check = caseDAO.getInstance().insertNotIMG(c);
+				Checked.checkedAdd(check, insert);
 			} else {
-				JOptionPane.showMessageDialog(null, "Thêm không thành công!");
-				setInsert("");
+				if (url.equals("")) {
+					int check = caseDAO.getInstance().insert(c);
+					Checked.checkedAdd(check, insert);
+				} else if (insert.equals("")) {
+					int check = caseDAO.getInstance().insertIMGURL(c, url);
+					Checked.checkedAdd(check, insert);
+				}
 			}
-		} else {
-			int check = caseDAO.getInstance().insert(c);
-			if (check > 0) {
-				JOptionPane.showMessageDialog(null, "Thêm thành công!");
-				setInsert("");
-			} else {
-				JOptionPane.showMessageDialog(null, "Thêm không thành công!");
-				setInsert("");
-			}
+			CaseForm.loadDataToTable(caseDAO.getInstance().selectAll());
+			closeFrame();
 		}
-		CaseForm.loadDataToTable(caseDAO.getInstance().selectAll());
-		closeFrame();
-
 	}
 
 	private static void setDefaultIDCase(ArrayList<Case> arr) {

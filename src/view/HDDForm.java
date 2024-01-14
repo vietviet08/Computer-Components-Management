@@ -30,6 +30,7 @@ import color.SetColor;
 import controller.FormatToVND;
 import dao.SanPhamDAO;
 import dao.hddDAO;
+import decor.SetTitleForJF;
 import font.SetFont;
 import model.hdd;
 
@@ -111,6 +112,8 @@ public class HDDForm extends JInternalFrame {
 	}
 
 	public HDDForm() {
+		SetTitleForJF.setTitle(this, "/icon/icons8-hdd-20.png");
+
 		setBounds(100, 100, 1170, 730);
 		getContentPane().setLayout(null);
 

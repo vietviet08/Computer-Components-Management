@@ -4,11 +4,17 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,6 +36,7 @@ import color.SetColor;
 import controller.FormatToVND;
 import dao.SanPhamDAO;
 import dao.ssdDAO;
+import decor.SetTitleForJF;
 import font.SetFont;
 import model.ssd;
 
@@ -39,7 +46,7 @@ public class SSDForm extends JInternalFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
+	private JTextField tfSearch;
 	private JLabel labelIMG;
 	private JLabel labelTen;
 	private JLabel labelBaoHanh;
@@ -47,12 +54,17 @@ public class SSDForm extends JInternalFrame {
 	private static JTable table;
 	private static DefaultTableModel tableModel;
 
-	private static final String[] columnName = { "ID sản phẩm", "ID SSD", "Tên SSD", "Hãng", "Dung lượng", "Loại",
+	private final String[] columnName = { "ID sản phẩm", "ID SSD", "Tên SSD", "Hãng", "Dung lượng", "Loại",
 			"Tốc độ đọc", "Tốc độ ghi", "Tồn kho", "Bảo hành", "Giá" };
 	private JTextArea txtrAbc;
 	private JLabel labelLoaiAndDungLuong;
 	private JLabel labelTocDoDoc;
 	private JLabel labelTocDoGhi;
+	private final String[] comboSort = { "Sắp xếp", "Tăng theo giá", "Giảm theo giá", "Tồn kho tăng", "Tồn kho giảm" };
+
+	private final String[] comboSearch = columnName;
+	private JComboBox<String> comboBoxSort;
+	private JComboBox<String> comboBox;
 
 	/**
 	 * Launch the application.
@@ -115,6 +127,8 @@ public class SSDForm extends JInternalFrame {
 	}
 
 	public SSDForm() {
+		SetTitleForJF.setTitle(this, "/icon/icons8-ssd-20.png");
+
 		setBounds(100, 100, 1170, 730);
 		getContentPane().setLayout(null);
 
@@ -261,20 +275,41 @@ public class SSDForm extends JInternalFrame {
 		lblNewLabel_2.setBounds(471, 15, 48, 22);
 		panel_1.add(lblNewLabel_2);
 
-		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setFont(null);
+		comboBox = new JComboBox<String>(comboSearch);
+		comboBox.setFont(SetFont.font());
 		comboBox.setBounds(146, 8, 89, 33);
 		panel_1.add(comboBox);
 
-		textField = new JTextField();
-		textField.setFont(null);
-		textField.setColumns(10);
-		textField.setBounds(248, 8, 277, 33);
-		panel_1.add(textField);
+		tfSearch = new JTextField();
+		tfSearch.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
 
-		JComboBox<String> comboBoxSort = new JComboBox<String>();
-		comboBoxSort.setFont(null);
+			}
+		});
+		tfSearch.setFont(null);
+		tfSearch.setColumns(10);
+		tfSearch.setBounds(248, 8, 277, 33);
+		panel_1.add(tfSearch);
+
+		comboBoxSort = new JComboBox<String>(comboSort);
+		comboBoxSort.setFont(SetFont.font());
 		comboBoxSort.setBounds(0, 8, 125, 33);
+		comboBoxSort.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String src = comboBoxSort.getSelectedItem().toString();
+				if (src.equals("Tăng theo giá"))
+					loadDataToTable(sortGiaTangDan());
+				else if (src.equals("Giảm theo giá"))
+					loadDataToTable(sortGiaGiamDan());
+				else if (src.equals("Tồn kho tăng"))
+					loadDataToTable(sortTonKhoTangDan());
+				else if (src.equals("Tồn kho giảm"))
+					loadDataToTable(sortTonKhoGiamDan());
+			}
+		});
 		panel_1.add(comboBoxSort);
 
 		JPanel panel_2 = new JPanel();
@@ -335,5 +370,73 @@ public class SSDForm extends JInternalFrame {
 
 	public static ssd getSsdSelect() {
 		return ssdDAO.getInstance().selectById(table.getValueAt(table.getSelectedRow(), 1).toString());
+	}
+
+	private ArrayList<ssd> sortGiaTangDan() {
+		ArrayList<ssd> list = ssdDAO.getInstance().selectAll();
+
+		Collections.sort(list, new Comparator<ssd>() {
+
+			@Override
+			public int compare(ssd o1, ssd o2) {
+				if (o1.getGia() > o2.getGia())
+					return 1;
+				else if (o1.getGia() < o2.getGia())
+					return -1;
+				return 0;
+			}
+		});
+		return list;
+	}
+
+	private ArrayList<ssd> sortGiaGiamDan() {
+		ArrayList<ssd> list = ssdDAO.getInstance().selectAll();
+
+		Collections.sort(list, new Comparator<ssd>() {
+
+			@Override
+			public int compare(ssd o1, ssd o2) {
+				if (o1.getGia() > o2.getGia())
+					return -1;
+				else if (o1.getGia() < o2.getGia())
+					return 1;
+				return 0;
+			}
+		});
+		return list;
+	}
+
+	private ArrayList<ssd> sortTonKhoTangDan() {
+		ArrayList<ssd> list = ssdDAO.getInstance().selectAll();
+
+		Collections.sort(list, new Comparator<ssd>() {
+
+			@Override
+			public int compare(ssd o1, ssd o2) {
+				if (o1.getTonKho() > o2.getTonKho())
+					return 1;
+				else if (o1.getTonKho() < o2.getTonKho())
+					return -1;
+				return 0;
+			}
+		});
+		return list;
+	}
+
+	private ArrayList<ssd> sortTonKhoGiamDan() {
+		ArrayList<ssd> list = ssdDAO.getInstance().selectAll();
+
+		Collections.sort(list, new Comparator<ssd>() {
+
+			@Override
+			public int compare(ssd o1, ssd o2) {
+				if (o1.getTonKho() > o2.getTonKho())
+					return -1;
+				else if (o1.getTonKho() < o2.getTonKho())
+					return 1;
+				return 0;
+			}
+		});
+		return list;
 	}
 }

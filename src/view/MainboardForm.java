@@ -2,14 +2,17 @@ package view;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -20,6 +23,7 @@ import java.util.Comparator;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -29,14 +33,23 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import color.SetColor;
 import controller.FormatToVND;
+import controller.IEExcel;
+import controller.TimKiemMainboard;
 import dao.SanPhamDAO;
 import dao.mainDAO;
+import decor.SetTitleForJF;
 import font.SetFont;
 import model.mainboard;
 
@@ -46,10 +59,10 @@ public class MainboardForm extends JInternalFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
+	private JTextField tfSearch;
 	private static JTable table;
 	private static DefaultTableModel tableModel;
-	private final String columName[] = { "ID sản phẩm", "ID Mainboard", "Tên mainboard", "Hãng", "Hỗ trợ CPU",
+	private final String columName[] =  { "ID sản phẩm", "ID mainboard", "Tên mainboard", "Hãng", "Hỗ trợ CPU",
 			"Hỗ trợ RAM", "Kích thước", "Tồn kho", "Đơn giá" };
 	private JLabel labelIMG;
 	private JLabel labelTen;
@@ -63,7 +76,7 @@ public class MainboardForm extends JInternalFrame {
 	private JComboBox<String> comboBox;
 
 	private final String[] comboSort = { "Sắp xếp", "Giá tăng dần", "Giá giảm dần", "Tồn kho tăng", "Tồn kho giảm" };
-
+	private final String[] comboSearch = columName;
 	/**
 	 * Launch the application.
 	 */
@@ -123,6 +136,8 @@ public class MainboardForm extends JInternalFrame {
 	}
 
 	public MainboardForm() {
+		SetTitleForJF.setTitle(this, "/icon/icons8-motherboard-20.png");
+
 		setBounds(100, 100, 1170, 730);
 		getContentPane().setLayout(null);
 
@@ -192,6 +207,84 @@ public class MainboardForm extends JInternalFrame {
 		btnNewButton_4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+				int rowBanDau = model.getRowCount();
+
+				File excelFile;
+				FileInputStream excelFIS = null;
+				BufferedInputStream excelBIS = null;
+				XSSFWorkbook excelImportToJTable = null;
+				String defaultCurrentDirectoryPath = "user.dir";
+				JFileChooser excelFileChooser = new JFileChooser(defaultCurrentDirectoryPath);
+				excelFileChooser.setDialogTitle("Select Excel File");
+				FileNameExtensionFilter fnef = new FileNameExtensionFilter("EXCEL FILES", "xls", "xlsx", "xlsm");
+				excelFileChooser.setFileFilter(fnef);
+				int excelChooser = excelFileChooser.showOpenDialog(null);
+				if (excelChooser == JFileChooser.APPROVE_OPTION) {
+					try {
+						excelFile = excelFileChooser.getSelectedFile();
+//		                jExcelFilePath.setText(excelFile.toString());
+						excelFIS = new FileInputStream(excelFile);
+						excelBIS = new BufferedInputStream(excelFIS);
+						excelImportToJTable = new XSSFWorkbook(excelBIS);
+						XSSFSheet excelSheet = excelImportToJTable.getSheetAt(0);
+
+						for (int row = 1; row <= excelSheet.getLastRowNum(); row++) {
+							XSSFRow excelRow = excelSheet.getRow(row);
+							XSSFCell idsp = excelRow.getCell(0);
+							XSSFCell idmb = excelRow.getCell(1);
+							XSSFCell ten = excelRow.getCell(2);
+							XSSFCell hang = excelRow.getCell(3);
+							XSSFCell hotrocpu = excelRow.getCell(4);
+							XSSFCell hotroram = excelRow.getCell(5);
+							XSSFCell kichthuoc = excelRow.getCell(6);
+							XSSFCell tonkho = excelRow.getCell(7);
+							XSSFCell dongia = excelRow.getCell(8);
+
+							model.addRow(new Object[] { idsp, idmb, ten, hang, hotrocpu, hotroram, kichthuoc, tonkho,
+									dongia });
+						}
+						JOptionPane.showMessageDialog(null, "Thêm thành công!");
+						int answ = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm vào csdl không", "Thông báo",
+								JOptionPane.YES_NO_OPTION);
+						if (answ == JOptionPane.YES_OPTION) {
+							for (int i = rowBanDau; i <= model.getRowCount(); i++) {
+
+								String idsp = model.getValueAt(i, 0).toString();
+								String idmb = model.getValueAt(i, 1).toString();
+								String ten = model.getValueAt(i, 2).toString();
+								String hang = model.getValueAt(i, 3).toString();
+								String hotrocpu = model.getValueAt(i, 4).toString();
+								String hotroram = model.getValueAt(i, 5).toString();
+								String kichthuoc = model.getValueAt(i, 6).toString();
+								int tonkho = (int) model.getValueAt(i, 7);
+								double dongia = (double) model.getValueAt(i, 8);
+
+								mainboard mb = new mainboard(idsp, idmb, ten, hang, hotrocpu, hotroram, kichthuoc,
+										tonkho, dongia, "", null);
+
+								mainDAO.getInstance().insertNotIMG(mb);
+							}
+						}
+					} catch (IOException iOException) {
+						JOptionPane.showMessageDialog(null, iOException.getMessage());
+					} finally {
+						try {
+							if (excelFIS != null) {
+								excelFIS.close();
+							}
+							if (excelBIS != null) {
+								excelBIS.close();
+							}
+							if (excelImportToJTable != null) {
+								excelImportToJTable.close();
+							}
+						} catch (IOException iOException) {
+							JOptionPane.showMessageDialog(null, iOException.getMessage());
+						}
+					}
+				}
 			}
 		});
 		btnNewButton_4.setIcon(new ImageIcon(MainboardForm.class.getResource("/icon/icons8-import-csv-24.png")));
@@ -203,6 +296,7 @@ public class MainboardForm extends JInternalFrame {
 		btnNewButton_5.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				IEExcel.exportExcel(table, "Mainboard");
 			}
 		});
 		btnNewButton_5.setIcon(new ImageIcon(MainboardForm.class.getResource("/icon/icons8-export-excel-24.png")));
@@ -289,15 +383,43 @@ public class MainboardForm extends JInternalFrame {
 		lblNewLabel_2.setBounds(471, 15, 48, 22);
 		panel_1.add(lblNewLabel_2);
 
-		comboBox = new JComboBox<String>();
+		comboBox = new JComboBox<String>(comboSearch);
 		comboBox.setFont(SetFont.font());
 		comboBox.setBounds(146, 8, 89, 33);
 		panel_1.add(comboBox);
 
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(248, 8, 277, 33);
-		panel_1.add(textField);
+		tfSearch = new JTextField();
+		tfSearch.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String src = comboBox.getSelectedItem().toString();
+				// "ID sản phẩm", "ID mainboard", "Tên mainboard", "Hãng", "Hỗ trợ CPU",
+				// "Hỗ trợ RAM", "Kích thước", "Tồn kho", "Đơn giá"
+
+				if (src.equals("ID sản phẩm"))
+					loadDataToTable(TimKiemMainboard.byIDSP(tfSearch.getText()));
+				else if (src.equals("ID mainboard"))
+					loadDataToTable(TimKiemMainboard.byIDMB(tfSearch.getText()));
+				else if (src.equals("Tên mainboard"))
+					loadDataToTable(TimKiemMainboard.byTen(tfSearch.getText()));
+				else if (src.equals("Hãng"))
+					loadDataToTable(TimKiemMainboard.byHang(tfSearch.getText()));
+				else if (src.equals("Hỗ trợ CPU"))
+					loadDataToTable(TimKiemMainboard.byHoTroCPU(tfSearch.getText()));
+				else if (src.equals("Hỗ trợ RAM"))
+					loadDataToTable(TimKiemMainboard.byHoTroRAM(tfSearch.getText()));
+				else if (src.equals("Kích thước"))
+					loadDataToTable(TimKiemMainboard.byKichThuoc(tfSearch.getText()));
+				else if (src.equals("Tồn kho"))
+					loadDataToTable(TimKiemMainboard.byTonKho(tfSearch.getText()));
+				else if (src.equals("Đơn giá"))
+					loadDataToTable(TimKiemMainboard.byDonGia(tfSearch.getText()));
+
+			}
+		});
+		tfSearch.setColumns(10);
+		tfSearch.setBounds(248, 8, 277, 33);
+		panel_1.add(tfSearch);
 
 		comboBoxSort = new JComboBox<String>(comboSort);
 		comboBoxSort.setFont(SetFont.font());
@@ -374,14 +496,7 @@ public class MainboardForm extends JInternalFrame {
 		panel_2.add(labelKichThuoc);
 	}
 
-	private void openFile(String file) {
-		try {
-			File path = new File(file);
-			Desktop.getDesktop().open(path);
-		} catch (IOException e) {
-			System.out.println(e);
-		}
-	}
+	
 
 	public static mainboard getMainboardSellect() {
 		return mainDAO.getInstance().selectAll().get(table.getSelectedRow());

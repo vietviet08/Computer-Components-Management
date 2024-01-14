@@ -3,7 +3,9 @@ package dao;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -50,6 +52,39 @@ public class psuDAO implements DAOInterface<psu> {
 			check = ps.executeUpdate();
 			JDBCUntil.closeConnection(con);
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
+	public int insertIMGURL(psu t, String stringUrl) {
+		int check = 0;
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "insert into psu (idsanpham, idnguon, tennguon, hang, congsuat, chuannguon, kieuday, kichthuoc, tonkho, gia, baohanh, img) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getIdNguon());
+			ps.setString(3, t.getTenNguon());
+			ps.setString(4, t.getHang());
+			ps.setString(5, t.getCongSuat());
+			ps.setString(6, t.getChuanNguon());
+			ps.setString(7, t.getKieuDay());
+			ps.setString(8, t.getKichThuoc());
+			ps.setInt(9, 0);
+			ps.setDouble(10, t.getDonGia());
+			ps.setString(11, t.getBaoHanh());
+
+			@SuppressWarnings("deprecation")
+			URL url = new URL(stringUrl);
+			InputStream is = url.openStream();
+			ps.setBlob(12, is);
+			check = ps.executeUpdate();
+			JDBCUntil.closeConnection(con);
+		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
 

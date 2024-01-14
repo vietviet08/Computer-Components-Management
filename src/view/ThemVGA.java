@@ -5,23 +5,15 @@ import java.awt.EventQueue;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -30,9 +22,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import color.SetColor;
+import controller.Checked;
+import controller.LoadIMGURL;
 import dao.SanPhamDAO;
 import dao.vgaDAO;
 import font.SetFont;
@@ -213,14 +206,14 @@ public class ThemVGA extends JFrame {
 
 						if (insert.equals("") && url.equals("")) {
 							int check = vgaDAO.getInstance().insertNotIMG(v);
-							checked(check);
+							insert = Checked.checkedAdd(check, insert);
 						} else {
 							if (url.equals("")) {
 								int check = vgaDAO.getInstance().insert(v);
-								checked(check);
+								insert = Checked.checkedAdd(check, insert);
 							} else if (insert.equals("")) {
 								int check = vgaDAO.getInstance().insertIMGURL(v, url);
-								checked(check);
+								insert = Checked.checkedAdd(check, insert);
 							}
 						}
 						VGAForm.loadDataToTable(vgaDAO.getInstance().selectAll());
@@ -307,22 +300,7 @@ public class ThemVGA extends JFrame {
 		btnUpload.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-				fileChooser.addChoosableFileFilter(
-						new FileNameExtensionFilter("*.IMAGE", "webp", "jpg", "jpeg", "gif", "png"));
-				int result = fileChooser.showSaveDialog(null);
-				if (result == JFileChooser.APPROVE_OPTION) {
-					File selectFile = fileChooser.getSelectedFile();
-					ImageIcon ii = new ImageIcon(selectFile.getAbsolutePath());
-					Image i = ii.getImage();
-					i = i.getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(), Image.SCALE_SMOOTH);
-					labelIMG.setText("");
-					labelIMG.setIcon(new ImageIcon(i));
-					insert = selectFile.getAbsolutePath();
-					tfLink.setText("");
-				} else
-					JOptionPane.showMessageDialog(null, "Lỗi file!");
+				insert = LoadIMGURL.loadIMGFromDirecory(labelIMG, insert);
 			}
 		});
 		btnUpload.setFont(SetFont.font());
@@ -346,12 +324,7 @@ public class ThemVGA extends JFrame {
 		btnNewButton_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ImageIcon ii = loadIMGURL(tfLink.getText());
-				Image i = ii.getImage().getScaledInstance(labelIMG.getWidth(), labelIMG.getHeight(),
-						Image.SCALE_SMOOTH);
-				ii = new ImageIcon(i);
-				labelIMG.setIcon(ii);
-				insert = "";
+				insert = LoadIMGURL.setIMG(tfLink, labelIMG, insert);
 			}
 		});
 		btnNewButton_2.setBounds(722, 22, 51, 20);
@@ -393,25 +366,4 @@ public class ThemVGA extends JFrame {
 		ThemVGA.insert = insert;
 	}
 
-	private ImageIcon loadIMGURL(String stringUrl) {
-		ImageIcon ii = null;
-		try {
-			URL url = new URL(stringUrl);
-			BufferedImage bi = ImageIO.read(url);
-			ii = new ImageIcon(bi);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Lỗi: " + e);
-		}
-		return ii;
-	}
-
-	private void checked(int check) {
-		if (check > 0) {
-			JOptionPane.showMessageDialog(null, "Thêm thành công!");
-			setInsert("");
-		} else {
-			JOptionPane.showMessageDialog(null, "Thêm không thành công!");
-			setInsert("");
-		}
-	}
 }

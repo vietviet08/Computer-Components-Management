@@ -3,7 +3,9 @@ package dao;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,9 +29,9 @@ public class caseDAO implements DAOInterface<Case> {
 		int check = 0;
 		try {
 			Connection con = JDBCUntil.getConnection();
-			
+
 			String sql = "insert into cases (idsanpham, idcase, tencase, hang, loai, chatlieu, kichthuocmb, tonkho, gia, baohanh, img) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-			
+
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, t.getIdSanPham());
 			ps.setString(2, t.getIdCase());
@@ -51,6 +53,38 @@ public class caseDAO implements DAOInterface<Case> {
 			check = ps.executeUpdate();
 			JDBCUntil.closeConnection(con);
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
+	public int insertIMGURL(Case t, String stringUrl) {
+		int check = 0;
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "insert into cases (idsanpham, idcase, tencase, hang, loai, chatlieu, kichthuocmb, tonkho, gia, baohanh, img) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getIdCase());
+			ps.setString(3, t.getTenCase());
+			ps.setString(4, t.getHangCase());
+			ps.setString(5, t.getLoaiCase());
+			ps.setString(6, t.getChatLieu());
+			ps.setString(7, t.getKichThuocMainboard());
+			ps.setInt(8, 0);
+			ps.setDouble(9, t.getGia());
+			ps.setString(10, t.getBaoHanh());
+
+			URL url = new URL(stringUrl);
+			InputStream is = url.openStream();
+			ps.setBlob(11, is);
+
+			check = ps.executeUpdate();
+			JDBCUntil.closeConnection(con);
+		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
 
@@ -196,8 +230,9 @@ public class caseDAO implements DAOInterface<Case> {
 
 			while (rs.next()) {
 				Case c = new Case(rs.getString("idsanpham"), rs.getString("idcase"), rs.getString("tencase"),
-						rs.getString("hang"), rs.getString("loai"), rs.getString("chatlieu"), rs.getString("kichthuocmb"),
-						rs.getInt("tonkho"), rs.getDouble("gia"), rs.getString("baohanh"), rs.getBlob("img"));
+						rs.getString("hang"), rs.getString("loai"), rs.getString("chatlieu"),
+						rs.getString("kichthuocmb"), rs.getInt("tonkho"), rs.getDouble("gia"), rs.getString("baohanh"),
+						rs.getBlob("img"));
 				list.add(c);
 			}
 
@@ -220,8 +255,9 @@ public class caseDAO implements DAOInterface<Case> {
 
 			while (rs.next()) {
 				c = new Case(rs.getString("idsanpham"), rs.getString("idcase"), rs.getString("tencase"),
-						rs.getString("hang"), rs.getString("loai"), rs.getString("chatlieu"), rs.getString("kichthuocmb"),
-						rs.getInt("tonkho"), rs.getDouble("gia"), rs.getString("baohanh"), rs.getBlob("img"));
+						rs.getString("hang"), rs.getString("loai"), rs.getString("chatlieu"),
+						rs.getString("kichthuocmb"), rs.getInt("tonkho"), rs.getDouble("gia"), rs.getString("baohanh"),
+						rs.getBlob("img"));
 			}
 			JDBCUntil.closeConnection(con);
 		} catch (SQLException e) {
