@@ -84,7 +84,7 @@ public class ThemPSU extends JFrame {
 	public ThemPSU() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 785, 447);
+		setBounds(100, 100, 785, 465);
 		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
 		contentPane = new JPanel() {
 			/**
@@ -237,10 +237,14 @@ public class ThemPSU extends JFrame {
 		});
 		btnAdd.setFont(SetFont.font1());
 		btnAdd.setBorder(null);
-		btnAdd.setBounds(202, 369, 97, 30);
+		btnAdd.setBounds(213, 381, 97, 30);
 		contentPane.add(btnAdd);
 
 		JButton btnCancel = new JButton("Hủy");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnCancel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -261,14 +265,14 @@ public class ThemPSU extends JFrame {
 		});
 		btnCancel.setFont(SetFont.font1());
 		btnCancel.setBorder(null);
-		btnCancel.setBounds(332, 369, 97, 30);
+		btnCancel.setBounds(343, 381, 97, 30);
 		contentPane.add(btnCancel);
 
 		JLabel lblNewLabel_1 = new JLabel("© 2023 NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setForeground(new Color(224, 255, 255));
 		lblNewLabel_1.setFont(null);
-		lblNewLabel_1.setBounds(26, 422, 759, 14);
+		lblNewLabel_1.setBounds(21, 440, 759, 14);
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel("THÊM NGUỒN");
@@ -298,25 +302,25 @@ public class ThemPSU extends JFrame {
 		JLabel lbael = new JLabel("Bảo hành");
 		lbael.setForeground(new Color(254, 254, 254));
 		lbael.setFont(SetFont.font1_());
-		lbael.setBounds(299, 314, 112, 30);
+		lbael.setBounds(299, 320, 97, 30);
 		contentPane.add(lbael);
 
 		tfBaoHanh = new JTextField();
 		tfBaoHanh.setFont(SetFont.fontDetails());
 		tfBaoHanh.setColumns(10);
-		tfBaoHanh.setBounds(395, 314, 141, 30);
+		tfBaoHanh.setBounds(395, 320, 141, 30);
 		contentPane.add(tfBaoHanh);
 
 		JLabel lblGi = new JLabel("Giá");
 		lblGi.setForeground(new Color(254, 254, 254));
 		lblGi.setFont(SetFont.font1_());
-		lblGi.setBounds(21, 314, 71, 30);
+		lblGi.setBounds(21, 320, 71, 30);
 		contentPane.add(lblGi);
 
 		tfGia = new JTextField();
 		tfGia.setFont(SetFont.fontDetails());
 		tfGia.setColumns(10);
-		tfGia.setBounds(136, 314, 141, 30);
+		tfGia.setBounds(136, 320, 141, 30);
 		contentPane.add(tfGia);
 
 		tfCongSuat = new JTextField();

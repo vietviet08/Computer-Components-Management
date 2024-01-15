@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import db.JDBCUntil;
 import model.ChiTietPhieu;
 import model.psu;
+import view.CapNhatPSU;
 import view.ThemPSU;
 
 public class psuDAO implements DAOInterface<psu> {
@@ -139,13 +140,47 @@ public class psuDAO implements DAOInterface<psu> {
 			ps.setDouble(9, t.getDonGia());
 			ps.setString(10, t.getBaoHanh());
 
-//			InputStream is = new FileInputStream(new File(CapNhatPSU));
-//			ps.setBlob(11, is);
+			InputStream is = new FileInputStream(new File(CapNhatPSU.getInsert()));
+			ps.setBlob(11, is);
 
 			ps.setString(12, t.getIdNguon());
 			check = ps.executeUpdate();
 			JDBCUntil.closeConnection(con);
-		} catch (SQLException e) {
+		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
+	public int updateIMGURL(psu t, String stringUrl) {
+		int check = 0;
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "update psu set idsanpham = ?, tennguon = ?, hang = ?, congsuat = ?, chuannguon = ?, kieuday = ?, kichthuoc = ?, tonkho = ?, gia = ?, baohanh = ?, img = ? where idnguon = ?;";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getTenNguon());
+			ps.setString(3, t.getHang());
+			ps.setString(4, t.getCongSuat());
+			ps.setString(5, t.getChuanNguon());
+			ps.setString(6, t.getKieuDay());
+			ps.setString(7, t.getKichThuoc());
+			ps.setInt(8, 0);
+			ps.setDouble(9, t.getDonGia());
+			ps.setString(10, t.getBaoHanh());
+			
+			@SuppressWarnings("deprecation")
+			URL url = new URL(stringUrl);
+			InputStream is = url.openStream();
+			ps.setBlob(11, is);
+
+			ps.setString(12, t.getIdNguon());
+			check = ps.executeUpdate();
+			JDBCUntil.closeConnection(con);
+		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
 

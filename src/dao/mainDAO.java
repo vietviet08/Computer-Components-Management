@@ -157,6 +157,40 @@ public class mainDAO implements DAOInterface<mainboard> {
 		return check;
 	}
 
+	public int updateIMGURL(mainboard t, String stringUrl) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+			String sql = "update mainboard set idsanpham = ?, tenmain = ?, tenhang = ?, hotrocpu = ?,"
+					+ " hotroram = ?, kichthuoc = ?, dongia = ?," + " baohanh = ?, img = ? where idmainboard = ?;";
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getTenMain());
+			ps.setString(3, t.getTenHang());
+			ps.setString(4, t.getHoTroCPU());
+			ps.setString(5, t.getHoTroRAM());
+			ps.setString(6, t.getKichThuoc());
+			ps.setDouble(7, t.getDonGia());
+			ps.setString(8, t.getBaoHanh());
+			
+			@SuppressWarnings("deprecation")
+			URL url = new URL(stringUrl);
+			InputStream is = url.openStream();
+			ps.setBlob(9, is);
+
+			ps.setString(10, t.getIdMainboard());
+
+			check = ps.executeUpdate();
+
+		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
 	public int updateNotIMG(mainboard t) {
 		int check = 0;
 

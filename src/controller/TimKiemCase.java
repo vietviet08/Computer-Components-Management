@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import dao.caseDAO;
 import model.Case;
 
-public class TimKiemCase {
+public class TimKiemCase implements TimKiemInterface<Case> {
 //	"ID SP", "ID Case", "Tên case", "Hãng", "Loại case", "Chất liệu", "Kích thước mb",
 //	"Tồn kho", "Giá" 
 
@@ -26,7 +26,11 @@ public class TimKiemCase {
 //	if (String.valueOf(c.getGia()).toLowerCase().contains(key.toLowerCase()))
 //		list.add(c);
 
-	public static ArrayList<Case> byIDSP(String key) {
+	public static TimKiemCase getInstance() {
+		return new TimKiemCase();
+	}
+
+	public ArrayList<Case> byIDSP(String key) {
 		ArrayList<Case> list = new ArrayList<Case>();
 		ArrayList<Case> cases = caseDAO.getInstance().selectAll();
 		for (Case c : cases)
@@ -35,16 +39,7 @@ public class TimKiemCase {
 		return list;
 	}
 
-	public static ArrayList<Case> byIDCase(String key) {
-		ArrayList<Case> list = new ArrayList<Case>();
-		ArrayList<Case> cases = caseDAO.getInstance().selectAll();
-		for (Case c : cases)
-			if (c.getIdCase().toLowerCase().contains(key.toLowerCase()))
-				list.add(c);
-		return list;
-	}
-
-	public static ArrayList<Case> byTen(String key) {
+	public ArrayList<Case> byTen(String key) {
 		ArrayList<Case> list = new ArrayList<Case>();
 		ArrayList<Case> cases = caseDAO.getInstance().selectAll();
 		for (Case c : cases)
@@ -53,7 +48,7 @@ public class TimKiemCase {
 		return list;
 	}
 
-	public static ArrayList<Case> byHang(String key) {
+	public ArrayList<Case> byHang(String key) {
 		ArrayList<Case> list = new ArrayList<Case>();
 		ArrayList<Case> cases = caseDAO.getInstance().selectAll();
 		for (Case c : cases)
@@ -62,7 +57,7 @@ public class TimKiemCase {
 		return list;
 	}
 
-	public static ArrayList<Case> byLoai(String key) {
+	public ArrayList<Case> byLoai(String key) {
 		ArrayList<Case> list = new ArrayList<Case>();
 		ArrayList<Case> cases = caseDAO.getInstance().selectAll();
 		for (Case c : cases)
@@ -71,7 +66,7 @@ public class TimKiemCase {
 		return list;
 	}
 
-	public static ArrayList<Case> byChatLieu(String key) {
+	public  ArrayList<Case> byChatLieu(String key) {
 		ArrayList<Case> list = new ArrayList<Case>();
 		ArrayList<Case> cases = caseDAO.getInstance().selectAll();
 		for (Case c : cases)
@@ -80,7 +75,7 @@ public class TimKiemCase {
 		return list;
 	}
 
-	public static ArrayList<Case> byKichThuoc(String key) {
+	public  ArrayList<Case> byKichThuoc(String key) {
 		ArrayList<Case> list = new ArrayList<Case>();
 		ArrayList<Case> cases = caseDAO.getInstance().selectAll();
 		for (Case c : cases)
@@ -89,7 +84,7 @@ public class TimKiemCase {
 		return list;
 	}
 
-	public static ArrayList<Case> byTonKho(String key) {
+	public ArrayList<Case> byTonKho(String key) {
 		ArrayList<Case> list = new ArrayList<Case>();
 		ArrayList<Case> cases = caseDAO.getInstance().selectAll();
 		for (Case c : cases)
@@ -98,12 +93,28 @@ public class TimKiemCase {
 		return list;
 	}
 
-	public static ArrayList<Case> byGia(String key) {
+	public ArrayList<Case> byGia(String key) {
 		ArrayList<Case> list = new ArrayList<Case>();
 		ArrayList<Case> cases = caseDAO.getInstance().selectAll();
 		for (Case c : cases)
 			if (String.valueOf(c.getGia()).toLowerCase().contains(key.toLowerCase()))
 				list.add(c);
 		return list;
+	}
+
+	@Override
+	public ArrayList<Case> byIDRieng(String key) {
+		ArrayList<Case> list = new ArrayList<Case>();
+		ArrayList<Case> cases = caseDAO.getInstance().selectAll();
+		for (Case c : cases)
+			if (c.getIdCase().toLowerCase().contains(key.toLowerCase()))
+				list.add(c);
+		return list;
+	}
+
+	@Override
+	public ArrayList<Case> byBaoHanh(String key) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

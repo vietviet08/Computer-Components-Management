@@ -10,6 +10,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,6 +23,7 @@ import java.util.Comparator;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,12 +33,20 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import color.SetColor;
 import controller.FormatToVND;
+import controller.IEExcel;
+import controller.TimKiemSSD;
 import dao.SanPhamDAO;
 import dao.ssdDAO;
 import decor.SetTitleForJF;
@@ -185,6 +198,87 @@ public class SSDForm extends JInternalFrame {
 		btnNewButton_4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+				int rowBanDau = model.getRowCount();
+
+				File excelFile;
+				FileInputStream excelFIS = null;
+				BufferedInputStream excelBIS = null;
+				XSSFWorkbook excelImportToJTable = null;
+				String defaultCurrentDirectoryPath = "C:\\Users\\DELL\\Desktop";
+				JFileChooser excelFileChooser = new JFileChooser(defaultCurrentDirectoryPath);
+				excelFileChooser.setDialogTitle("Select Excel File");
+				FileNameExtensionFilter fnef = new FileNameExtensionFilter("EXCEL FILES", "xls", "xlsx", "xlsm");
+				excelFileChooser.setFileFilter(fnef);
+				int excelChooser = excelFileChooser.showOpenDialog(null);
+				if (excelChooser == JFileChooser.APPROVE_OPTION) {
+					try {
+						excelFile = excelFileChooser.getSelectedFile();
+//		                jExcelFilePath.setText(excelFile.toString());
+						excelFIS = new FileInputStream(excelFile);
+						excelBIS = new BufferedInputStream(excelFIS);
+						excelImportToJTable = new XSSFWorkbook(excelBIS);
+						XSSFSheet excelSheet = excelImportToJTable.getSheetAt(0);
+
+						for (int row = 1; row <= excelSheet.getLastRowNum(); row++) {
+							XSSFRow excelRow = excelSheet.getRow(row);
+							XSSFCell idsp = excelRow.getCell(0);
+							XSSFCell idssd = excelRow.getCell(1);
+							XSSFCell ten = excelRow.getCell(2);
+							XSSFCell hang = excelRow.getCell(3);
+							XSSFCell dungluong = excelRow.getCell(4);
+							XSSFCell loai = excelRow.getCell(5);
+							XSSFCell tocdodoc = excelRow.getCell(6);
+							XSSFCell tocdoghi = excelRow.getCell(7);
+							XSSFCell tonkho = excelRow.getCell(8);
+							XSSFCell baohanh = excelRow.getCell(9);
+							XSSFCell dongia = excelRow.getCell(10);
+
+							model.addRow(new Object[] { idsp, idssd, ten, hang, dungluong, loai, tocdodoc, tocdoghi,
+									tonkho, dongia, baohanh });
+						}
+						JOptionPane.showMessageDialog(null, "Thêm thành công!");
+						int answ = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm vào csdl không", "Thông báo",
+								JOptionPane.YES_NO_OPTION);
+						if (answ == JOptionPane.YES_OPTION) {
+							for (int i = rowBanDau; i <= model.getRowCount(); i++) {
+
+								String idsp = model.getValueAt(i, 0).toString();
+								String idssd = model.getValueAt(i, 1).toString();
+								String ten = model.getValueAt(i, 2).toString();
+								String hang = model.getValueAt(i, 3).toString();
+								String dungluong = model.getValueAt(i, 4).toString();
+								String loai = model.getValueAt(i, 5).toString();
+								String tocdodoc = model.getValueAt(i, 6).toString();
+								String tocdoghi = model.getValueAt(i, 7).toString();
+								int tonkho = (int) model.getValueAt(i, 8);
+								String baohanh = model.getValueAt(i, 9).toString();
+								double dongia = (double) model.getValueAt(i, 10);
+
+								ssd ssd = new ssd(idsp, idssd, ten, hang, dungluong, loai, tocdodoc, tocdoghi, tonkho,
+										dongia, baohanh, null);
+								ssdDAO.getInstance().insertNotIMG(ssd);
+							}
+						}
+					} catch (IOException iOException) {
+						JOptionPane.showMessageDialog(null, iOException.getMessage());
+					} finally {
+						try {
+							if (excelFIS != null) {
+								excelFIS.close();
+							}
+							if (excelBIS != null) {
+								excelBIS.close();
+							}
+							if (excelImportToJTable != null) {
+								excelImportToJTable.close();
+							}
+						} catch (IOException iOException) {
+							JOptionPane.showMessageDialog(null, iOException.getMessage());
+						}
+					}
+				}
 			}
 		});
 		btnNewButton_4.setIcon(new ImageIcon(SSDForm.class.getResource("/icon/icons8-import-csv-24.png")));
@@ -196,6 +290,7 @@ public class SSDForm extends JInternalFrame {
 		btnNewButton_5.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				IEExcel.exportExcel(table, "SSD");
 			}
 		});
 		btnNewButton_5.setIcon(new ImageIcon(SSDForm.class.getResource("/icon/icons8-export-excel-24.png")));
@@ -284,7 +379,31 @@ public class SSDForm extends JInternalFrame {
 		tfSearch.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-
+//				"ID sản phẩm", "ID SSD", "Tên SSD", "Hãng", "Dung lượng", "Loại",
+//				"Tốc độ đọc", "Tốc độ ghi", "Tồn kho", "Bảo hành", "Giá"
+				String src = comboBox.getSelectedItem().toString();
+				if (src.equals("ID sản phẩm"))
+					loadDataToTable(TimKiemSSD.getInstance().byIDSP(tfSearch.getText()));
+				else if (src.equals("ID SSD"))
+					loadDataToTable(TimKiemSSD.getInstance().byIDRieng(tfSearch.getText()));
+				else if (src.equals("Tên SSD"))
+					loadDataToTable(TimKiemSSD.getInstance().byTen(tfSearch.getText()));
+				else if (src.equals("Hãng"))
+					loadDataToTable(TimKiemSSD.getInstance().byHang(tfSearch.getText()));
+				else if (src.equals("Dung luọng"))
+					loadDataToTable(TimKiemSSD.getInstance().byDungLuong(tfSearch.getText()));
+				else if (src.equals("Loại"))
+					loadDataToTable(TimKiemSSD.getInstance().byLoai(tfSearch.getText()));
+				else if (src.equals("Tốc độ đọc"))
+					loadDataToTable(TimKiemSSD.getInstance().byTocDoDoc(tfSearch.getText()));
+				else if (src.equals("Tốc độ ghi"))
+					loadDataToTable(TimKiemSSD.getInstance().byTocDoGhi(tfSearch.getText()));
+				else if (src.equals("Tồn kho"))
+					loadDataToTable(TimKiemSSD.getInstance().byTonKho(tfSearch.getText()));
+				else if (src.equals("Giá"))
+					loadDataToTable(TimKiemSSD.getInstance().byGia(tfSearch.getText()));
+				else if (src.equals("Bảo hành"))
+					loadDataToTable(TimKiemSSD.getInstance().byBaoHanh(tfSearch.getText()));
 			}
 		});
 		tfSearch.setFont(null);

@@ -78,6 +78,7 @@ public class caseDAO implements DAOInterface<Case> {
 			ps.setDouble(9, t.getGia());
 			ps.setString(10, t.getBaoHanh());
 
+			@SuppressWarnings("deprecation")
 			URL url = new URL(stringUrl);
 			InputStream is = url.openStream();
 			ps.setBlob(11, is);
@@ -145,6 +146,37 @@ public class caseDAO implements DAOInterface<Case> {
 			check = ps.executeUpdate();
 			JDBCUntil.closeConnection(con);
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
+	public int updateIMGURL(Case t, String stringUrl) {
+		int check = 0;
+		try {
+			Connection con = JDBCUntil.getConnection();
+			String sql = "update cases set  idsanpham = ?, tencase = ?, hang = ?, loai = ?, chatlieu = ?, kichthuocmb = ?, tonkho = ?, gia = ?, baohanh = ?, img = ? where idcase = ?;";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getTenCase());
+			ps.setString(3, t.getHangCase());
+			ps.setString(4, t.getLoaiCase());
+			ps.setString(5, t.getChatLieu());
+			ps.setString(6, t.getKichThuocMainboard());
+			ps.setInt(7, t.getTonKho());
+			ps.setDouble(8, t.getGia());
+			ps.setString(9, t.getBaoHanh());
+			
+			@SuppressWarnings("deprecation")
+			URL url = new URL(stringUrl);
+			InputStream is = url.openStream();
+			ps.setBlob(10, is);
+
+			ps.setString(11, t.getIdCase());
+			check = ps.executeUpdate();
+			JDBCUntil.closeConnection(con);
+		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
 

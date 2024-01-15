@@ -4,11 +4,15 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -28,18 +32,21 @@ import javax.swing.table.TableCellRenderer;
 
 import color.SetColor;
 import controller.FormatToVND;
+import controller.TimKiemHDD;
 import dao.SanPhamDAO;
 import dao.hddDAO;
 import decor.SetTitleForJF;
 import font.SetFont;
 import model.hdd;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class HDDForm extends JInternalFrame {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
+	private JTextField tfSearch;
 	private JLabel labelTocDoVongQuay;
 	private JLabel labelBoNhoDem;
 	private JLabel labelDungLuong;
@@ -50,10 +57,13 @@ public class HDDForm extends JInternalFrame {
 	private JLabel labelIMG;
 	private static JTable table;
 	private static DefaultTableModel tableModel;
-	private static final String columnName[] = { "ID Sản phẩm", "ID HDD", "Tên HDD", "Hãng", "Dung lượng", "Bộ nhớ đệm",
+	private final String columnName[] = { "ID Sản phẩm", "ID HDD", "Tên HDD", "Hãng", "Dung lượng", "Bộ nhớ đệm",
 			"Tốc độ vòng quay", "Tồn kho", "Bảo hành", "Đơn giá" };
 	private JComboBox<String> comboBoxSort;
 	private JComboBox<String> comboBox;
+
+	private final String[] comboSearch = columnName;
+	private final String[] comboSort = { "Sắp xếp", "Tăng theo giá", "Giảm theo giá", "Tồn kho tăng", "Tồn kho giảm" };
 
 	/**
 	 * Launch the application.
@@ -105,8 +115,8 @@ public class HDDForm extends JInternalFrame {
 		table.getColumnModel().getColumn(4).setPreferredWidth(100);
 		table.getColumnModel().getColumn(5).setPreferredWidth(100);
 		table.getColumnModel().getColumn(6).setPreferredWidth(250);
-		table.getColumnModel().getColumn(7).setPreferredWidth(250);
-		table.getColumnModel().getColumn(8).setPreferredWidth(100);
+		table.getColumnModel().getColumn(7).setPreferredWidth(120);
+		table.getColumnModel().getColumn(8).setPreferredWidth(200);
 		table.getColumnModel().getColumn(9).setPreferredWidth(200);
 		loadDataToTable(hddDAO.getInstance().selectAll());
 	}
@@ -258,20 +268,78 @@ public class HDDForm extends JInternalFrame {
 		lblNewLabel_2.setBounds(471, 15, 48, 22);
 		panel_1.add(lblNewLabel_2);
 
-		comboBox = new JComboBox<String>();
+		comboBox = new JComboBox<String>(comboSearch);
 		comboBox.setFont(SetFont.font());
 		comboBox.setBounds(146, 8, 89, 33);
 		panel_1.add(comboBox);
 
-		textField = new JTextField();
-		textField.setFont(SetFont.fontDetails());
-		textField.setColumns(10);
-		textField.setBounds(248, 8, 277, 33);
-		panel_1.add(textField);
+		tfSearch = new JTextField();
+		tfSearch.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+//				"ID Sản phẩm", "ID HDD", "Tên HDD", "Hãng", "Dung lượng", "Bộ nhớ đệm",
+//				"Tốc độ vòng quay", "Tồn kho", "Bảo hành", "Đơn giá"
+				String src = comboBox.getSelectedItem().toString();
+				switch (src) {
+				case "ID Sản phẩm":
+					loadDataToTable(TimKiemHDD.getInstance().byIDSP(tfSearch.getText()));
+					break;
+				case "ID HDD":
+					loadDataToTable(TimKiemHDD.getInstance().byIDRieng(tfSearch.getText()));
+					break;
+				case "Tên HDD":
+					loadDataToTable(TimKiemHDD.getInstance().byTen(tfSearch.getText()));
+					break;
+				case "Hãng":
+					loadDataToTable(TimKiemHDD.getInstance().byHang(tfSearch.getText()));
+					break;
+				case "Dung lượng":
+					loadDataToTable(TimKiemHDD.getInstance().byDungLuong(tfSearch.getText()));
+					break;
+				case "Bộ nhớ đệm":
+					loadDataToTable(TimKiemHDD.getInstance().byBoNhoDem(tfSearch.getText()));
+					break;
+				case "Tốc độ vòng quay":
+					loadDataToTable(TimKiemHDD.getInstance().byTocDoVongQuay(tfSearch.getText()));
+					break;
+				case "Tồn kho":
+					loadDataToTable(TimKiemHDD.getInstance().byTonKho(tfSearch.getText()));
+					break;
+				case "Bảo hành":
+					loadDataToTable(TimKiemHDD.getInstance().byBaoHanh(tfSearch.getText()));
+					break;
+				case "Đơn giá":
+					loadDataToTable(TimKiemHDD.getInstance().byGia(tfSearch.getText()));
+					break;
 
-		comboBoxSort = new JComboBox<String>();
-		comboBoxSort.setFont(null);
+				default:
+					break;
+				}
+			}
+		});
+		tfSearch.setFont(SetFont.fontDetails());
+		tfSearch.setColumns(10);
+		tfSearch.setBounds(248, 8, 277, 33);
+		panel_1.add(tfSearch);
+
+		comboBoxSort = new JComboBox<String>(comboSort);
+		comboBoxSort.setFont(SetFont.font());
 		comboBoxSort.setBounds(0, 8, 125, 33);
+		comboBoxSort.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String src = comboBoxSort.getSelectedItem().toString();
+				if (src.equals("Tăng theo giá"))
+					loadDataToTable(sortGiaTangDan());
+				else if (src.equals("Giảm theo giá"))
+					loadDataToTable(sortGiaGiamDan());
+				else if (src.equals("Tồn kho tăng"))
+					loadDataToTable(sortTonKhoTangDan());
+				else if (src.equals("Tồn kho giảm"))
+					loadDataToTable(sortTonKhoGiamDan());
+			}
+		});
 		panel_1.add(comboBoxSort);
 
 		JPanel panel_2 = new JPanel();
@@ -332,5 +400,69 @@ public class HDDForm extends JInternalFrame {
 
 	public static hdd getHddSelect() {
 		return hddDAO.getInstance().selectById(table.getValueAt(table.getSelectedRow(), 1).toString());
+	}
+
+	private ArrayList<hdd> sortGiaTangDan() {
+		ArrayList<hdd> list = hddDAO.getInstance().selectAll();
+		Collections.sort(list, new Comparator<hdd>() {
+
+			@Override
+			public int compare(hdd o1, hdd o2) {
+				if (o1.getGia() > o2.getGia())
+					return 1;
+				else if (o1.getGia() < o2.getGia())
+					return -1;
+				return 0;
+			}
+		});
+		return list;
+	}
+
+	private ArrayList<hdd> sortGiaGiamDan() {
+		ArrayList<hdd> list = hddDAO.getInstance().selectAll();
+		Collections.sort(list, new Comparator<hdd>() {
+
+			@Override
+			public int compare(hdd o1, hdd o2) {
+				if (o1.getGia() > o2.getGia())
+					return -1;
+				else if (o1.getGia() < o2.getGia())
+					return 1;
+				return 0;
+			}
+		});
+		return list;
+	}
+
+	private ArrayList<hdd> sortTonKhoTangDan() {
+		ArrayList<hdd> list = hddDAO.getInstance().selectAll();
+		Collections.sort(list, new Comparator<hdd>() {
+
+			@Override
+			public int compare(hdd o1, hdd o2) {
+				if (o1.getTonKho() > o2.getTonKho())
+					return 1;
+				else if (o1.getTonKho() < o2.getTonKho())
+					return -1;
+				return 0;
+			}
+		});
+		return list;
+	}
+
+	private ArrayList<hdd> sortTonKhoGiamDan() {
+		ArrayList<hdd> list = hddDAO.getInstance().selectAll();
+		Collections.sort(list, new Comparator<hdd>() {
+
+			@Override
+			public int compare(hdd o1, hdd o2) {
+				if (o1.getTonKho() > o2.getTonKho())
+					return -1;
+				else if (o1.getTonKho() < o2.getTonKho())
+					return 1;
+				return 0;
+			}
+		});
+		return list;
 	}
 }

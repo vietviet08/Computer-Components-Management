@@ -386,23 +386,23 @@ public class CaseForm extends JInternalFrame {
 //				"Tồn kho", "Giá" 
 				String src = comboBox.getSelectedItem().toString();
 				if (src.equals("ID SP"))
-					loadDataToTable(TimKiemCase.byIDSP(tfSearch.getText()));
+					loadDataToTable(TimKiemCase.getInstance().byIDSP(tfSearch.getText()));
 				else if (src.equals("ID Case"))
-					loadDataToTable(TimKiemCase.byIDCase(tfSearch.getText()));
+					loadDataToTable(TimKiemCase.getInstance().byIDRieng(tfSearch.getText()));
 				else if (src.equals("Tên case"))
-					loadDataToTable(TimKiemCase.byTen(tfSearch.getText()));
+					loadDataToTable(TimKiemCase.getInstance().byTen(tfSearch.getText()));
 				else if (src.equals("Hãng"))
-					loadDataToTable(TimKiemCase.byHang(tfSearch.getText()));
+					loadDataToTable(TimKiemCase.getInstance().byHang(tfSearch.getText()));
 				else if (src.equals("Loại case"))
-					loadDataToTable(TimKiemCase.byLoai(tfSearch.getText()));
+					loadDataToTable(TimKiemCase.getInstance().byLoai(tfSearch.getText()));
 				else if (src.equals("Chất liệu"))
-					loadDataToTable(TimKiemCase.byChatLieu(tfSearch.getText()));
+					loadDataToTable(TimKiemCase.getInstance().byChatLieu(tfSearch.getText()));
 				else if (src.equals("Kích thước mb"))
-					loadDataToTable(TimKiemCase.byKichThuoc(tfSearch.getText()));
+					loadDataToTable(TimKiemCase.getInstance().byKichThuoc(tfSearch.getText()));
 				else if (src.equals("Tồn kho"))
-					loadDataToTable(TimKiemCase.byTonKho(tfSearch.getText()));
+					loadDataToTable(TimKiemCase.getInstance().byTonKho(tfSearch.getText()));
 				else if (src.equals("Giá"))
-					loadDataToTable(TimKiemCase.byGia(tfSearch.getText()));
+					loadDataToTable(TimKiemCase.getInstance().byGia(tfSearch.getText()));
 
 			}
 		});

@@ -29,6 +29,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import controller.Checked;
+import controller.LoadIMGURL;
 import dao.SanPhamDAO;
 import dao.caseDAO;
 import font.SetFont;
@@ -54,6 +56,7 @@ public class CapNhatCase extends JFrame {
 	private static JComboBox<String> comboBox;
 	private static JComboBox<String> comboBox_Loai;
 	private static JComboBox<String> comboBox_KichThuoc;
+	private JTextField tfLink;
 
 	/**
 	 * Launch the application.
@@ -78,7 +81,7 @@ public class CapNhatCase extends JFrame {
 	 */
 	public CapNhatCase() {
 		setUndecorated(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 792, 395);
 		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
 		contentPane = new JPanel() {
@@ -195,44 +198,41 @@ public class CapNhatCase extends JFrame {
 		btnCpNht.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				String url = tfLink.getText();
+				if (insert.length() > 0 && url.length() > 0)
+					JOptionPane.showMessageDialog(null, "Chỉ chọn 1 trong 2 nguồn hình ảnh");
+				else {
 
-				Case old = CaseForm.getSelectCase();
+					Case old = CaseForm.getSelectCase();
 
-				String idsp = comboBox.getSelectedItem().toString();
-				String idCase = old.getIdCase();
-				String ten = tfTen.getText();
-				String hang = tfHang.getText();
-				String loai = comboBox_Loai.getSelectedItem().toString();
-				String chatLieu = tfChatLieu.getText();
-				String kichThuoc = comboBox_KichThuoc.getSelectedItem().toString();
-				double gia = Double.parseDouble(tfGia.getText());
-				String baoHanh = tfBaoHanh.getText();
+					String idsp = comboBox.getSelectedItem().toString();
+					String idCase = old.getIdCase();
+					String ten = tfTen.getText();
+					String hang = tfHang.getText();
+					String loai = comboBox_Loai.getSelectedItem().toString();
+					String chatLieu = tfChatLieu.getText();
+					String kichThuoc = comboBox_KichThuoc.getSelectedItem().toString();
+					double gia = Double.parseDouble(tfGia.getText());
+					String baoHanh = tfBaoHanh.getText();
 
-				Case c = new Case(idsp, idCase, ten, hang, loai, chatLieu, kichThuoc, old.getTonKho(), gia, baoHanh,
-						null);
+					Case c = new Case(idsp, idCase, ten, hang, loai, chatLieu, kichThuoc, old.getTonKho(), gia, baoHanh,
+							null);
 
-				if (insert.equals("")) {
-					int check = caseDAO.getInstance().updateNotIMG(c);
-					if (check > 0) {
-						JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
-						setInsert("");
+					if (insert.equals("") && url.equals("")) {
+						int check = caseDAO.getInstance().updateNotIMG(c);
+						insert = Checked.checkedUpdate(check, insert);
 					} else {
-						JOptionPane.showMessageDialog(null, "Cập nhật không thành công!");
-						setInsert("");
+						if (url.equals("")) {
+							int check = caseDAO.getInstance().update(c);
+							insert = Checked.checkedUpdate(check, insert);
+						} else if (insert.equals("")) {
+							int check = caseDAO.getInstance().updateIMGURL(c, url);
+							insert = Checked.checkedUpdate(check, insert);
+						}
 					}
-				} else {
-					int check = caseDAO.getInstance().update(c);
-					if (check > 0) {
-						JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
-						setInsert("");
-					} else {
-						JOptionPane.showMessageDialog(null, "Cập nhật không thành công!");
-						setInsert("");
-					}
-
+					CaseForm.loadDataToTable(caseDAO.getInstance().selectAll());
+					closeFrame();
 				}
-				CaseForm.loadDataToTable(caseDAO.getInstance().selectAll());
-				closeFrame();
 			}
 		});
 		btnCpNht.setFont(SetFont.font1());
@@ -312,6 +312,28 @@ public class CapNhatCase extends JFrame {
 		comboBox_KichThuoc.setFont(SetFont.fontDetails());
 		comboBox_KichThuoc.setBounds(133, 188, 141, 30);
 		contentPane.add(comboBox_KichThuoc);
+
+		tfLink = new JTextField("");
+		tfLink.setFont(SetFont.fontDetails());
+		tfLink.setColumns(10);
+		tfLink.setBounds(380, 11, 328, 20);
+		contentPane.add(tfLink);
+
+		JLabel lblTnNgun_1_2_1 = new JLabel("Link hình ảnh:");
+		lblTnNgun_1_2_1.setForeground(new Color(254, 254, 254));
+		lblTnNgun_1_2_1.setFont(SetFont.font1_());
+		lblTnNgun_1_2_1.setBounds(295, 11, 90, 21);
+		contentPane.add(lblTnNgun_1_2_1);
+
+		JButton btnNewButton = new JButton("OK");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				insert = LoadIMGURL.setIMG(tfLink, labelIMG, insert);
+			}
+		});
+		btnNewButton.setBounds(718, 11, 51, 20);
+		contentPane.add(btnNewButton);
 	}
 
 	public static String getInsert() {
