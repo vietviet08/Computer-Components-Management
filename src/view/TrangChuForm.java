@@ -6,9 +6,6 @@ import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -141,6 +138,7 @@ public class TrangChuForm extends JInternalFrame {
 //		return false;
 //	}
 
+	@SuppressWarnings("deprecation")
 	public static void openWebpage(String urlString) {
 		try {
 			Desktop.getDesktop().browse(new URL(urlString).toURI());

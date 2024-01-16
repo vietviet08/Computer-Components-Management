@@ -187,6 +187,10 @@ public class SSDForm extends JInternalFrame {
 		btnNewButton_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if (table.getSelectedRow() == -1)
+					JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm để sửa!");
+				else
+					CapNhatSSD.main(null);
 			}
 		});
 		btnNewButton_3.setIcon(new ImageIcon(SSDForm.class.getResource("/icon/icons8-edit-24.png")));
@@ -328,13 +332,11 @@ public class SSDForm extends JInternalFrame {
 				labelLoaiAndDungLuong.setText(ssd.getLoai() + " - " + ssd.getDungLuong());
 				labelTocDoDoc.setText("Tốc độ đọc: " + ssd.getTocDoDoc());
 				labelTocDoGhi.setText("Tốc độ ghi: " + ssd.getTocDoGhi());
-
 				txtrAbc.setText(SanPhamDAO.getInstance().selectById(ssd.getIdSanPham()).getMoTa());
-
 				if (ssd.getImg() == null) {
-					labelIMG.setIcon(new ImageIcon(SSDForm.class.getResource("/icons8-no-image-14.png")));
+					labelIMG.setIcon(null);
+					labelIMG.setIcon(new ImageIcon(SSDForm.class.getResource("/icon/icons8-no-image-14.png")));
 					labelIMG.setText("Sản phẩm hiện chưa có ảnh mẫu");
-
 				} else {
 					labelIMG.setText("");
 					Blob blob = ssd.getImg();

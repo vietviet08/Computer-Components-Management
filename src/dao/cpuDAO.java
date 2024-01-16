@@ -177,6 +177,43 @@ public class cpuDAO implements DAOInterface<cpu> {
 		return check;
 	}
 
+	public int updateIMGURL(cpu t, String stringUrl) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "UPDATE cpu SET idsanpham = ?, tencpu = ?, xungnhip = ?, sonhan = ?, soluong = ?, diennangtieuthu = ?, bonhodem = ?, dongia = ?, baohanh = ?, img = ? WHERE idcpu = ?;";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getNameCpu());
+			ps.setString(3, t.getXungNhip());
+			ps.setInt(4, t.getSoNhan());
+			ps.setInt(5, t.getSoLuong());
+			ps.setString(6, t.getDienNangTieuThu());
+			ps.setString(7, t.getBoNhoDem());
+//			ps.setInt(8, t.getTonKho());
+			ps.setDouble(8, t.getDonGia());
+			ps.setString(9, t.getBaoHanh());
+
+			@SuppressWarnings("deprecation")
+			URL url = new URL(stringUrl);
+			InputStream is = url.openStream();
+			ps.setBlob(10, is);
+
+			ps.setString(11, t.getIdCpu());
+			check = ps.executeUpdate();
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
 	public int updateNotIMG(cpu t) {
 		int check = 0;
 

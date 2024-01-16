@@ -5,21 +5,17 @@ import java.awt.EventQueue;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
-import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,13 +24,13 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import color.SetColor;
 import controller.Checked;
 import controller.LoadIMGURL;
 import dao.SanPhamDAO;
 import dao.ramDAO;
+import decor.HoverButton;
 import font.SetFont;
 import model.Products;
 import model.ram;
@@ -202,6 +198,16 @@ public class ThemRAM extends JFrame {
 					}
 				}
 			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				HoverButton.hoverOK(btnNewButton, true);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				HoverButton.hoverOK(btnNewButton, false);
+			}
 		});
 		btnNewButton.setBorder(null);
 		btnNewButton.setFont(SetFont.font1());
@@ -213,6 +219,16 @@ public class ThemRAM extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				closeFrame();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				HoverButton.hoverCancel(btnHy, true);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				HoverButton.hoverCancel(btnHy, false);
 			}
 		});
 		btnHy.setBorder(null);

@@ -29,8 +29,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import color.SetColor;
+import controller.Checked;
+import controller.LoadIMGURL;
 import dao.SanPhamDAO;
 import dao.ramDAO;
+import decor.HoverButton;
 import font.SetFont;
 import model.Products;
 import model.ram;
@@ -55,6 +58,7 @@ public class CapNhatRAM extends JFrame {
 	private static JTextField tfBaoHanh;
 
 	public static String insert = "";
+	private JTextField tfLink;
 
 	/**
 	 * Launch the application.
@@ -122,7 +126,7 @@ public class CapNhatRAM extends JFrame {
 		JLabel lblNewLabel_2 = new JLabel("Tên RAM");
 		lblNewLabel_2.setFont(SetFont.font1_());
 		lblNewLabel_2.setForeground(SetColor.whiteFont);
-		lblNewLabel_2.setBounds(302, 74, 84, 28);
+		lblNewLabel_2.setBounds(289, 74, 96, 28);
 		contentPane.add(lblNewLabel_2);
 
 		tfTen = new JTextField();
@@ -168,7 +172,7 @@ public class CapNhatRAM extends JFrame {
 		JLabel lblNewLabel_2_2 = new JLabel("Dung lượng");
 		lblNewLabel_2_2.setFont(SetFont.font1_());
 		lblNewLabel_2_2.setForeground(SetColor.whiteFont);
-		lblNewLabel_2_2.setBounds(302, 136, 84, 28);
+		lblNewLabel_2_2.setBounds(289, 136, 96, 28);
 		contentPane.add(lblNewLabel_2_2);
 
 		tfGia = new JTextField();
@@ -189,48 +193,68 @@ public class CapNhatRAM extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				ram old = RAMForm.getSelectRAM();
+				String url = tfLink.getText();
+				if (insert.length() > 0 && url.length() > 0)
+					JOptionPane.showMessageDialog(null, "Chỉ chọn 1 trong 2 nguồn hình ảnh!");
+				else {
+					ram old = RAMForm.getSelectRAM();
 
-				String idsp = comboBox.getSelectedItem().toString();
+					String idsp = comboBox.getSelectedItem().toString();
 
-				String idram = old.getIdRam();
-				ram r = new ram(idsp, idram, tfTen.getText(), tfLoai.getText(), tfDungLuong.getText(), tfBus.getText(),
-						old.getTonkho(), Double.parseDouble(tfGia.getText()), tfBaoHanh.getText(), null);
-				if (insert.equals("")) {
-					int check = ramDAO.getInstance().updateNotIMG(r);
-					if (check > 0) {
-						JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
-						setInsert("");
+					String idram = old.getIdRam();
+					ram r = new ram(idsp, idram, tfTen.getText(), tfLoai.getText(), tfDungLuong.getText(),
+							tfBus.getText(), old.getTonkho(), Double.parseDouble(tfGia.getText()), tfBaoHanh.getText(),
+							null);
+					if (insert.equals("") && url.equals("")) {
+						int check = ramDAO.getInstance().updateNotIMG(r);
+						insert = Checked.checkedUpdate(check, insert);
+
 					} else {
-						JOptionPane.showMessageDialog(null, "Cập nhật không thành công!");
-						setInsert("");
+						if (url.equals("")) {
+							int check = ramDAO.getInstance().update(r);
+							insert = Checked.checkedUpdate(check, insert);
+						} else if (insert.equals("")) {
+							int check = ramDAO.getInstance().updateIMGURL(r, url);
+							insert = Checked.checkedUpdate(check, insert);
+						}
 					}
 
-				} else {
-					int check = ramDAO.getInstance().update(r);
-					if (check > 0) {
-						JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
-						setInsert("");
-					} else {
-						JOptionPane.showMessageDialog(null, "Cập nhật không thành công!");
-						setInsert("");
-					}
+					RAMForm.loadDataToTable(ramDAO.getInstance().selectAll());
+					closeFrame();
 				}
+			}
 
-				RAMForm.loadDataToTable(ramDAO.getInstance().selectAll());
-				closeFrame();
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				HoverButton.hoverOK(btnNewButton, true);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				HoverButton.hoverOK(btnNewButton, false);
 			}
 		});
 		btnNewButton.setFont(SetFont.font1());
 		btnNewButton.setBorder(null);
-		btnNewButton.setBounds(301, 272, 112, 28);
+		btnNewButton.setBounds(289, 272, 112, 28);
 		contentPane.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("Hủy");
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				closeFrame();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				HoverButton.hoverCancel(btnNewButton_1, true);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				HoverButton.hoverCancel(btnNewButton_1, false);
 			}
 		});
 		btnNewButton_1.setFont(SetFont.font1());
@@ -299,8 +323,30 @@ public class CapNhatRAM extends JFrame {
 		JLabel lblBaoHanh = new JLabel("Bảo hành");
 		lblBaoHanh.setForeground(new Color(254, 254, 254));
 		lblBaoHanh.setFont(SetFont.font1_());
-		lblBaoHanh.setBounds(302, 205, 84, 28);
+		lblBaoHanh.setBounds(289, 205, 96, 28);
 		contentPane.add(lblBaoHanh);
+
+		tfLink = new JTextField("");
+		tfLink.setFont(SetFont.fontDetails());
+		tfLink.setColumns(10);
+		tfLink.setBounds(382, 29, 342, 20);
+		contentPane.add(tfLink);
+
+		JLabel lblTnNgun_1_2_1 = new JLabel("Link hình ảnh:");
+		lblTnNgun_1_2_1.setForeground(new Color(254, 254, 254));
+		lblTnNgun_1_2_1.setFont(SetFont.font1_());
+		lblTnNgun_1_2_1.setBounds(289, 29, 96, 21);
+		contentPane.add(lblTnNgun_1_2_1);
+
+		JButton btnNewButton_2 = new JButton("OK");
+		btnNewButton_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				insert = LoadIMGURL.setIMG(tfLink, labelIMG, insert);
+			}
+		});
+		btnNewButton_2.setBounds(728, 29, 52, 20);
+		contentPane.add(btnNewButton_2);
 	}
 
 	private void closeFrame() {

@@ -1,12 +1,17 @@
 package view;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import java.awt.Font;
 
 public class ThongKeForm extends JInternalFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Launch the application.

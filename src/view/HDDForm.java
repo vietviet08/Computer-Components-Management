@@ -169,6 +169,10 @@ public class HDDForm extends JInternalFrame {
 		btnNewButton_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if (table.getSelectedRow() == -1)
+					JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm để sửa!");
+				else
+					CapNhatHDD.main(null);
 			}
 		});
 		btnNewButton_3.setIcon(new ImageIcon(HDDForm.class.getResource("/icon/icons8-edit-24.png")));

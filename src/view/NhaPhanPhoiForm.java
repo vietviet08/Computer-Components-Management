@@ -42,10 +42,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import color.SetColor;
 import controller.TimKiemNPP;
 import dao.NhaPhanPhoiDAO;
-import dao.ramDAO;
 import font.SetFont;
 import model.NhaPhanPhoi;
-import model.ram;
 
 public class NhaPhanPhoiForm extends JInternalFrame {
 	/**

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import db.JDBCUntil;
 import model.ChiTietPhieu;
 import model.ssd;
+import view.CapNhatSSD;
 import view.ThemSSD;
 
 public class ssdDAO implements DAOInterface<ssd> {
@@ -144,9 +145,45 @@ public class ssdDAO implements DAOInterface<ssd> {
 			ps.setDouble(9, t.getGia());
 			ps.setString(10, t.getBaoHanh());
 
-//			InputStream is = new FileInputStream(new File(CapNhatssd.getInsert()));
+			InputStream is = new FileInputStream(new File(CapNhatSSD.getInsert()));
 
-//			ps.setBlob(11, is);
+			ps.setBlob(11, is);
+
+			ps.setString(12, t.getIdSdd());
+			check = ps.executeUpdate();
+			JDBCUntil.closeConnection(con);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+		return check;
+	}
+
+	public int updateIMGURL(ssd t, String stringUrl) {
+		int check = 0;
+		try {
+
+			Connection con = JDBCUntil.getConnection();
+			String sql = "update ssd set idsanpham = ? , tenssd = ?, hang = ?, dungluong = ?, loai = ?, tocdodoc = ?, tocdoghi = ?, tonkho = ?, gia = ?, baohanh = ?, img = ? where idssd = ?;";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getTenSsd());
+			ps.setString(3, t.getHang());
+			ps.setString(4, t.getDungLuong());
+			ps.setString(5, t.getLoai());
+			ps.setString(6, t.getTocDoDoc());
+			ps.setString(7, t.getTocDoGhi());
+			ps.setInt(8, t.getTonKho());
+			ps.setDouble(9, t.getGia());
+			ps.setString(10, t.getBaoHanh());
+
+			@SuppressWarnings("deprecation")
+			URL url = new URL(stringUrl);
+			InputStream is = url.openStream();
+
+			ps.setBlob(11, is);
 
 			ps.setString(12, t.getIdSdd());
 			check = ps.executeUpdate();

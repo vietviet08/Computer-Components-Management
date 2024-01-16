@@ -33,6 +33,7 @@ import controller.Checked;
 import controller.LoadIMGURL;
 import dao.SanPhamDAO;
 import dao.caseDAO;
+import decor.HoverButton;
 import font.SetFont;
 import model.Case;
 import model.Products;
@@ -234,6 +235,17 @@ public class CapNhatCase extends JFrame {
 					closeFrame();
 				}
 			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				HoverButton.hoverOK(btnCpNht, true);
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				HoverButton.hoverOK(btnCpNht, false);
+			}
 		});
 		btnCpNht.setFont(SetFont.font1());
 		btnCpNht.setBorder(null);
@@ -245,6 +257,16 @@ public class CapNhatCase extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				closeFrame();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				HoverButton.hoverCancel(btnCancel, true);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				HoverButton.hoverCancel(btnCancel, false);
 			}
 		});
 		btnCancel.setFont(SetFont.font1());

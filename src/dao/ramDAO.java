@@ -170,6 +170,43 @@ public class ramDAO implements DAOInterface<ram> {
 		return check;
 	}
 
+	public int updateIMGURL(ram t, String stringUrl) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "UPDATE ram SET idsanpham = ?, tenram = ?, loairam = ?, dungluong = ?, bus = ?, tonkho = ?, dongia = ?, baohanh = ?, img = ? WHERE idram = ?;";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getTenRam());
+			ps.setString(3, t.getLoai());
+			ps.setString(4, t.getDungLuong());
+			ps.setString(5, t.getBus());
+			ps.setInt(6, t.getTonkho());
+			ps.setDouble(7, t.getDonGia());
+			ps.setString(8, t.getBaoHanh());
+
+			@SuppressWarnings("deprecation")
+			URL url = new URL(stringUrl);
+			InputStream is = url.openStream();
+			ps.setBlob(9, is);
+
+			ps.setString(10, t.getIdRam());
+
+			check = ps.executeUpdate();
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
 	public int updateNotIMG(ram t) {
 		int check = 0;
 

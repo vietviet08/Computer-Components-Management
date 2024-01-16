@@ -33,8 +33,11 @@ import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import color.SetColor;
+import controller.Checked;
+import controller.LoadIMGURL;
 import dao.SanPhamDAO;
 import dao.cpuDAO;
+import decor.HoverButton;
 import font.SetFont;
 import model.Products;
 import model.cpu;
@@ -58,6 +61,7 @@ public class CapNhatCPU extends JFrame {
 
 	public static String insert = "";
 	private static JLabel labelIMG;
+	private JTextField tfLink;
 
 	/**
 	 * Launch the application.
@@ -198,9 +202,20 @@ public class CapNhatCPU extends JFrame {
 				updateCPU();
 
 			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				HoverButton.hoverOK(btnCpNht, true);
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				HoverButton.hoverOK(btnCpNht, false);
+			}
 		});
 		btnCpNht.setFont(SetFont.font1());
-		btnCpNht.setBounds(302, 314, 97, 30);
+		btnCpNht.setBounds(197, 314, 97, 30);
 		contentPane.add(btnCpNht);
 
 		JButton btnCancel = new JButton("Hủy");
@@ -219,9 +234,19 @@ public class CapNhatCPU extends JFrame {
 				closeFrame();
 
 			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				HoverButton.hoverCancel(btnCancel, true);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				HoverButton.hoverCancel(btnCancel, false);
+			}
 		});
 		btnCancel.setFont(SetFont.font1());
-		btnCancel.setBounds(411, 314, 97, 30);
+		btnCancel.setBounds(306, 314, 97, 30);
 		contentPane.add(btnCancel);
 
 		JLabel lblSLung = new JLabel("Số luồng");
@@ -309,6 +334,28 @@ public class CapNhatCPU extends JFrame {
 		tfBaoHanh.setColumns(10);
 		tfBaoHanh.setBounds(128, 257, 141, 30);
 		contentPane.add(tfBaoHanh);
+
+		JLabel lblTnNgun_1_2_1 = new JLabel("Link hình ảnh:");
+		lblTnNgun_1_2_1.setForeground(new Color(254, 254, 254));
+		lblTnNgun_1_2_1.setFont(SetFont.font1_());
+		lblTnNgun_1_2_1.setBounds(289, 11, 116, 21);
+		contentPane.add(lblTnNgun_1_2_1);
+
+		tfLink = new JTextField("");
+		tfLink.setFont(SetFont.fontDetails());
+		tfLink.setColumns(10);
+		tfLink.setBounds(402, 11, 294, 20);
+		contentPane.add(tfLink);
+
+		JButton btnNewButton = new JButton("OK");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				insert = LoadIMGURL.setIMG(tfLink, labelIMG, insert);
+			}
+		});
+		btnNewButton.setBounds(700, 11, 52, 20);
+		contentPane.add(btnNewButton);
 	}
 
 	private void closeFrame() {
@@ -347,42 +394,43 @@ public class CapNhatCPU extends JFrame {
 	}
 
 	private void updateCPU() {
-		String idcpu = CPUForm.getSelectCPU().getIdCpu();
-		String ten = tfTen.getText();
-		String xn = tfXungNhip.getText();
-		int sonhan = Integer.parseInt(tfSoNhan.getText());
-		int soluong = Integer.parseInt(tfSoluong.getText());
-		String dien = tfDienNang.getText();
-		String bonho = tfBoNhoDem.getText();
-		double gia = Double.parseDouble(tfGia.getText());
-		String baoHanh = tfBaoHanh.getText();
+		String url = tfLink.getText();
 
-		String id = comboBox.getSelectedItem().toString();
+		if (insert.length() > 0 && url.length() > 0)
+			JOptionPane.showMessageDialog(null, "Chỉ chọn 1 trong 2 nguồn hình ảnh!");
+		else {
 
-		cpu cc = new cpu(id, idcpu, ten, xn, sonhan, soluong, dien, bonho, CPUForm.getSelectCPU().getTonKho(), gia,
-				baoHanh, null);
+			String idcpu = CPUForm.getSelectCPU().getIdCpu();
+			String ten = tfTen.getText();
+			String xn = tfXungNhip.getText();
+			int sonhan = Integer.parseInt(tfSoNhan.getText());
+			int soluong = Integer.parseInt(tfSoluong.getText());
+			String dien = tfDienNang.getText();
+			String bonho = tfBoNhoDem.getText();
+			double gia = Double.parseDouble(tfGia.getText());
+			String baoHanh = tfBaoHanh.getText();
 
-		if (insert.equals("")) {
-			int check = cpuDAO.getInstance().updateNotIMG(cc);
-			if (check > 0) {
-				JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
-				setInsert("");
+			String id = comboBox.getSelectedItem().toString();
+
+			cpu cc = new cpu(id, idcpu, ten, xn, sonhan, soluong, dien, bonho, CPUForm.getSelectCPU().getTonKho(), gia,
+					baoHanh, null);
+
+			if (insert.equals("") && url.equals("")) {
+				int check = cpuDAO.getInstance().updateNotIMG(cc);
+				insert = Checked.checkedUpdate(check, insert);
 			} else {
-				JOptionPane.showMessageDialog(null, "Cập nhật không thành công!");
-				setInsert("");
+				if (url.equals("")) {
+					int check = cpuDAO.getInstance().update(cc);
+					insert = Checked.checkedUpdate(check, insert);
+				} else if (insert.equals("")) {
+					int check = cpuDAO.getInstance().updateIMGURL(cc, url);
+					insert = Checked.checkedUpdate(check, insert);
+				}
 			}
-		} else {
-			int check = cpuDAO.getInstance().update(cc);
-			if (check > 0) {
-				JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
-				setInsert("");
-			} else {
-				JOptionPane.showMessageDialog(null, "Cập nhật không thành công!");
-				setInsert("");
-			}
+			CPUForm.loadDataToTable(cpuDAO.getInstance().selectAll());
+			closeFrame();
 		}
-		CPUForm.loadDataToTable(cpuDAO.getInstance().selectAll());
-		closeFrame();
+
 	}
 
 	public static String getInsert() {
@@ -392,5 +440,4 @@ public class CapNhatCPU extends JFrame {
 	public static void setInsert(String insert) {
 		CapNhatCPU.insert = insert;
 	}
-
 }

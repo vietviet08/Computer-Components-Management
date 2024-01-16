@@ -81,6 +81,7 @@ public class vgaDAO implements DAOInterface<vga> {
 			ps.setDouble(7, t.getDonGia());
 			ps.setString(8, t.getBaoHanh());
 
+			@SuppressWarnings("deprecation")
 			URL url = new URL(stringUrl);
 			InputStream is = url.openStream();
 			ps.setBlob(9, is);
@@ -158,6 +159,41 @@ public class vgaDAO implements DAOInterface<vga> {
 			JDBCUntil.closeConnection(con);
 
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return check;
+	}
+
+	public int updateIMGURL(vga t, String stringUrl) {
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "UPDATE vga SET idsanpham = ?, tenvga = ?, hangvga = ?, bonho = ?, tonkho = ?, dongia = ?, baohanh = ?, img = ? WHERE idvga = ?;";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getTenVGA());
+			ps.setString(3, t.getHangVGA());
+			ps.setString(4, t.getBoNho());
+			ps.setInt(5, t.getTonKho());
+			ps.setDouble(6, t.getDonGia());
+			ps.setString(7, t.getBaoHanh());
+			
+			@SuppressWarnings("deprecation")
+			URL url = new URL(stringUrl);
+			InputStream is = url.openStream();
+			ps.setBlob(8, is);
+			ps.setString(9, t.getIdVga());
+
+			check = ps.executeUpdate();
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

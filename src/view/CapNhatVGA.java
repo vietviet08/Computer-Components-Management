@@ -29,8 +29,10 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import color.SetColor;
+import controller.Checked;
 import dao.SanPhamDAO;
 import dao.vgaDAO;
+import decor.HoverButton;
 import font.SetFont;
 import model.Products;
 import model.vga;
@@ -54,6 +56,7 @@ public class CapNhatVGA extends JFrame {
 	private JButton btnUpload;
 
 	public static String insert = "";
+	private JTextField tfLink;
 
 	/**
 	 * Launch the application.
@@ -79,7 +82,7 @@ public class CapNhatVGA extends JFrame {
 	public CapNhatVGA() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 781, 322);
+		setBounds(100, 100, 781, 351);
 		setShape(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 25, 25));
 		contentPane = new JPanel() {
 			/**
@@ -115,79 +118,86 @@ public class CapNhatVGA extends JFrame {
 		lblNewLabel_1.setForeground(SetColor.copyRight);
 		lblNewLabel_1.setFont(SetFont.font());
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(10, 299, 762, 14);
+		lblNewLabel_1.setBounds(10, 326, 762, 14);
 		contentPane.add(lblNewLabel_1);
 
 		JLabel lblTnVga = new JLabel("Tên VGA");
 		lblTnVga.setForeground(SetColor.whiteFont);
 		lblTnVga.setFont(SetFont.font1_());
-		lblTnVga.setBounds(293, 57, 78, 25);
+		lblTnVga.setBounds(281, 60, 90, 25);
 		contentPane.add(lblTnVga);
 
 		tfTen = new JTextField();
 		tfTen.setFont(SetFont.fontDetails());
 		tfTen.setBorder(null);
-		tfTen.setBounds(381, 57, 158, 25);
+		tfTen.setBounds(381, 57, 158, 30);
 		contentPane.add(tfTen);
 		tfTen.setColumns(10);
 
 		JLabel lblNewLabel_2_1 = new JLabel("Hãng");
 		lblNewLabel_2_1.setForeground(SetColor.whiteFont);
 		lblNewLabel_2_1.setFont(SetFont.font1_());
-		lblNewLabel_2_1.setBounds(20, 117, 78, 25);
+		lblNewLabel_2_1.setBounds(20, 127, 78, 25);
 		contentPane.add(lblNewLabel_2_1);
 
 		JLabel lblNewLabel_2_1_1 = new JLabel("Đơn giá");
 		lblNewLabel_2_1_1.setForeground(SetColor.whiteFont);
 		lblNewLabel_2_1_1.setFont(SetFont.font1_());
-		lblNewLabel_2_1_1.setBounds(293, 176, 78, 25);
+		lblNewLabel_2_1_1.setBounds(281, 192, 90, 25);
 		contentPane.add(lblNewLabel_2_1_1);
 
 		JLabel lblNewLabel_2_2 = new JLabel("Bộ nhớ");
 		lblNewLabel_2_2.setForeground(SetColor.whiteFont);
 		lblNewLabel_2_2.setFont(SetFont.font1_());
-		lblNewLabel_2_2.setBounds(293, 117, 78, 25);
+		lblNewLabel_2_2.setBounds(281, 127, 90, 25);
 		contentPane.add(lblNewLabel_2_2);
 
 		JButton btnNewButton = new JButton("Cập nhật");
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				vga v = VGAForm.getVGASelect();
+				String url = tfLink.getText();
+				if (insert.length() > 0 && url.length() > 0)
+					JOptionPane.showMessageDialog(null, "Chỉ chọn 1 trong 2 nguồn hình ảnh!");
+				else {
+					vga v = VGAForm.getVGASelect();
 
-				vga vvga = new vga(comboBox.getSelectedItem().toString(), v.getIdVga(), tfTen.getText(),
-						tfHang.getText(), tfBoNho.getText(), v.getTonKho(), Double.parseDouble(tfDonGia.getText()),
-						tfBaoHanh.getText(), null);
+					vga vvga = new vga(comboBox.getSelectedItem().toString(), v.getIdVga(), tfTen.getText(),
+							tfHang.getText(), tfBoNho.getText(), v.getTonKho(), Double.parseDouble(tfDonGia.getText()),
+							tfBaoHanh.getText(), null);
 
-				if (insert.equals("")) {
-					int check = vgaDAO.getInstance().updateNotIMG(vvga);
-					if (check > 0) {
-						JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
-						setInsert("");
+					if (insert.equals("") && url.equals("")) {
+						int check = vgaDAO.getInstance().updateNotIMG(vvga);
+						insert = Checked.checkedUpdate(check, insert);
+
 					} else {
-						JOptionPane.showMessageDialog(null, "Cập nhật không thành công!");
-						setInsert("");
+						if (url.equals("")) {
+							int check = vgaDAO.getInstance().update(vvga);
+							insert = Checked.checkedUpdate(check, insert);
+						} else if (insert.equals("")) {
+							int check = vgaDAO.getInstance().updateIMGURL(vvga, url);
+							insert = Checked.checkedUpdate(check, insert);
+						}
 					}
 
-				} else {
-					int check = vgaDAO.getInstance().update(vvga);
-					if (check > 0) {
-						JOptionPane.showMessageDialog(null, "Cập nhật thành công!");
-						setInsert("");
-					} else {
-						JOptionPane.showMessageDialog(null, "Cập nhật không thành công!");
-						setInsert("");
-					}
-
+					VGAForm.loadDataToTable(vgaDAO.getInstance().selectAll());
+					closeFrame();
 				}
+			}
 
-				VGAForm.loadDataToTable(vgaDAO.getInstance().selectAll());
-				closeFrame();
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				HoverButton.hoverOK(btnNewButton, true);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				HoverButton.hoverOK(btnNewButton, false);
 			}
 		});
 		btnNewButton.setFont(SetFont.font1());
 		btnNewButton.setBorder(null);
-		btnNewButton.setBounds(201, 229, 89, 30);
+		btnNewButton.setBounds(188, 259, 89, 30);
 		contentPane.add(btnNewButton);
 
 		JButton btnHy = new JButton("Hủy");
@@ -196,37 +206,47 @@ public class CapNhatVGA extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				closeFrame();
 			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				HoverButton.hoverCancel(btnHy, true);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				HoverButton.hoverCancel(btnHy, false);
+			}
 		});
 		btnHy.setFont(SetFont.font1());
 		btnHy.setBorder(null);
-		btnHy.setBounds(329, 229, 89, 30);
+		btnHy.setBounds(316, 259, 89, 30);
 		contentPane.add(btnHy);
 
 		tfBoNho = new JTextField();
 		tfBoNho.setFont(SetFont.fontDetails());
 		tfBoNho.setColumns(10);
 		tfBoNho.setBorder(null);
-		tfBoNho.setBounds(381, 117, 158, 25);
+		tfBoNho.setBounds(381, 124, 158, 30);
 		contentPane.add(tfBoNho);
 
 		tfDonGia = new JTextField();
 		tfDonGia.setFont(SetFont.fontDetails());
 		tfDonGia.setColumns(10);
 		tfDonGia.setBorder(null);
-		tfDonGia.setBounds(381, 176, 158, 25);
+		tfDonGia.setBounds(381, 189, 158, 30);
 		contentPane.add(tfDonGia);
 
 		tfHang = new JTextField();
 		tfHang.setFont(SetFont.fontDetails());
 		tfHang.setColumns(10);
 		tfHang.setBorder(null);
-		tfHang.setBounds(101, 117, 158, 25);
+		tfHang.setBounds(101, 124, 158, 30);
 		contentPane.add(tfHang);
 
 		JLabel lblNewLabel_2_1_2 = new JLabel("ID sản phẩm");
 		lblNewLabel_2_1_2.setForeground(new Color(254, 254, 254));
 		lblNewLabel_2_1_2.setFont(SetFont.font1_());
-		lblNewLabel_2_1_2.setBounds(20, 57, 78, 25);
+		lblNewLabel_2_1_2.setBounds(20, 60, 78, 25);
 		contentPane.add(lblNewLabel_2_1_2);
 
 		ArrayList<Products> list = SanPhamDAO.getIDSanPham("vga");
@@ -239,7 +259,7 @@ public class CapNhatVGA extends JFrame {
 
 		comboBox = new JComboBox<>(new DefaultComboBoxModel<String>(combo));
 		comboBox.setFont(SetFont.fontDetails());
-		comboBox.setBounds(101, 57, 158, 25);
+		comboBox.setBounds(101, 57, 158, 30);
 		contentPane.add(comboBox);
 
 		btnUpload = new JButton("Upload");
@@ -265,27 +285,43 @@ public class CapNhatVGA extends JFrame {
 		});
 		btnUpload.setFont(SetFont.font());
 		btnUpload.setBorder(null);
-		btnUpload.setBounds(701, 267, 71, 21);
+		btnUpload.setBounds(701, 298, 71, 21);
 		contentPane.add(btnUpload);
 
 		labelIMG = new JLabel("Ảnh VGA");
 		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
 		labelIMG.setBorder(new LineBorder(new Color(0, 0, 0)));
-		labelIMG.setBounds(549, 26, 223, 230);
+		labelIMG.setBounds(549, 57, 223, 230);
 		contentPane.add(labelIMG);
 
 		JLabel lblNewLabel_2_1_3_1 = new JLabel("Bảo hành");
 		lblNewLabel_2_1_3_1.setForeground(new Color(254, 254, 254));
 		lblNewLabel_2_1_3_1.setFont(SetFont.font1_());
-		lblNewLabel_2_1_3_1.setBounds(20, 176, 78, 25);
+		lblNewLabel_2_1_3_1.setBounds(20, 192, 78, 25);
 		contentPane.add(lblNewLabel_2_1_3_1);
 
 		tfBaoHanh = new JTextField();
 		tfBaoHanh.setFont(SetFont.fontDetails());
 		tfBaoHanh.setColumns(10);
 		tfBaoHanh.setBorder(null);
-		tfBaoHanh.setBounds(101, 176, 158, 25);
+		tfBaoHanh.setBounds(101, 189, 158, 30);
 		contentPane.add(tfBaoHanh);
+
+		tfLink = new JTextField("");
+		tfLink.setFont(SetFont.fontDetails());
+		tfLink.setColumns(10);
+		tfLink.setBounds(381, 11, 335, 20);
+		contentPane.add(tfLink);
+
+		JButton btnNewButton_2 = new JButton("OK");
+		btnNewButton_2.setBounds(720, 11, 52, 20);
+		contentPane.add(btnNewButton_2);
+
+		JLabel lblTnNgun_1_2_1 = new JLabel("Link hình ảnh:");
+		lblTnNgun_1_2_1.setForeground(new Color(254, 254, 254));
+		lblTnNgun_1_2_1.setFont(SetFont.font1_());
+		lblTnNgun_1_2_1.setBounds(281, 11, 96, 21);
+		contentPane.add(lblTnNgun_1_2_1);
 	}
 
 	private void closeFrame() {

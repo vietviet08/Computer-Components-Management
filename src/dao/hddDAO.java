@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import db.JDBCUntil;
 import model.ChiTietPhieu;
 import model.hdd;
+import view.CapNhatHDD;
 import view.ThemHDD;
 
 public class hddDAO implements DAOInterface<hdd> {
@@ -133,8 +134,44 @@ public class hddDAO implements DAOInterface<hdd> {
 			ps.setInt(7, t.getTonKho());
 			ps.setDouble(8, t.getGia());
 			ps.setString(9, t.getBaoHanh());
-//			InputStream is = new FileInputStream(new File());
-//			ps.setBlob(10, is);
+			InputStream is = new FileInputStream(new File(CapNhatHDD.getInsert()));
+			ps.setBlob(10, is);
+
+			ps.setString(11, t.getIdhHdd());
+
+			check = ps.executeUpdate();
+
+			JDBCUntil.closeConnection(con);
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return check;
+	}
+
+	public int updateIMGURL(hdd t, String stringUrl) {
+
+		int check = 0;
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "update hdd set idsanpham = ?, tenhdd = ?, hang = ?, dungluong = ?, bonhodem = ?, tocdovongquay = ?, tonkho = ?, dongia = ?, baohanh = ?, img = ? where idhdd = ?";
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getIdSanPham());
+			ps.setString(2, t.getTenHdd());
+			ps.setString(3, t.getHang());
+			ps.setString(4, t.getDungLuong());
+			ps.setString(5, t.getBoNhoDem());
+			ps.setString(6, t.getTocDoVongQuay());
+			ps.setInt(7, t.getTonKho());
+			ps.setDouble(8, t.getGia());
+			ps.setString(9, t.getBaoHanh());
+
+			@SuppressWarnings("deprecation")
+			URL url = new URL(stringUrl);
+			InputStream is = url.openStream();
+			ps.setBlob(10, is);
 
 			ps.setString(11, t.getIdhHdd());
 

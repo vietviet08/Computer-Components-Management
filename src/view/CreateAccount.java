@@ -99,6 +99,11 @@ public class CreateAccount extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 644, 365);
 		contentPane = new JPanel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void paintComponent(Graphics grphcs) {
 				super.paintComponent(grphcs);
@@ -191,6 +196,7 @@ public class CreateAccount extends JFrame {
 		btnNewButton.setText("Đăng kí");
 		btnNewButton.setBorder(null);
 		btnNewButton.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String otp = tfotp.getText();
@@ -316,7 +322,7 @@ public class CreateAccount extends JFrame {
 		contentPane.add(chckbxNewCheckBox_1);
 
 		JLabel lblNewLabel_5 = new JLabel("***Vui lòng điền đầy đủ thông tin để hoàn tất quá trình đăng ký tài khoản!");
-		lblNewLabel_5.setForeground(SetColor.redB);
+		lblNewLabel_5.setForeground(SetColor.copyRight);
 		lblNewLabel_5.setFont(font);
 		lblNewLabel_5.setBounds(50, 11, 552, 34);
 		contentPane.add(lblNewLabel_5);
@@ -327,15 +333,15 @@ public class CreateAccount extends JFrame {
 		return email.matches(regex);
 	}
 
-	private boolean checkEmail(String email) {
-		ArrayList<Account> acc = AccountDAO.getInstance().selectAll();
-		for (Account i : acc) {
-			if (i.getEmail().toLowerCase().equals(email.toLowerCase())) {
-				return true;
-			}
-		}
-		return false;
-	}
+//	private boolean checkEmail(String email) {
+//		ArrayList<Account> acc = AccountDAO.getInstance().selectAll();
+//		for (Account i : acc) {
+//			if (i.getEmail().toLowerCase().equals(email.toLowerCase())) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
 	private String getOTP() {
 		int min = 100000;
@@ -354,6 +360,7 @@ public class CreateAccount extends JFrame {
 		return false;
 	}
 
+	@SuppressWarnings("deprecation")
 	private boolean kiemTraMatKhau() {
 		if (pass1.getText().equals(pass2.getText())) {
 			return true;

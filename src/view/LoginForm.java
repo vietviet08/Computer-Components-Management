@@ -302,6 +302,7 @@ public class LoginForm extends JFrame {
 
 	public void checkLogin() {
 		String usercheck = jtfuser.getText();
+		@SuppressWarnings("deprecation")
 		String passwordcheck = jtfpassword.getText();
 		if (usercheck.equals("") || passwordcheck.equals("")) {
 			JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ username và passoword!", "Cảnh báo!",
@@ -319,7 +320,6 @@ public class LoginForm extends JFrame {
 								fullN = checkFullName(acc);
 								JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
 								this.dispose();
-								// setvisible main;
 								MainForm.main(null);
 							} catch (Exception e) {
 								System.out.println(e);

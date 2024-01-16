@@ -288,6 +288,7 @@ public class ForgotPassword extends JFrame {
 		panel_2.add(pass2);
 	}
 
+	@SuppressWarnings("deprecation")
 	private void checkPanel3() {
 		if (pass1.getText().equals("") || pass2.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "Mật khẩu không được để trống!");

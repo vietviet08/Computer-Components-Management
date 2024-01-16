@@ -788,15 +788,25 @@ public class NhapHangForm extends JInternalFrame {
 						ChiTietSP.setId(mb.getIdMainboard());
 						ChiTietSP.main(null);
 					} else if (products.equals("Case")) {
-
+						Case c = caseDAO.getInstance()
+								.selectById(tableALL.getValueAt(tableALL.getSelectedRow(), 1).toString());
+						ChiTietSP.setId(c.getIdCase());
+						ChiTietSP.main(null);
 					} else if (products.equals("Nguồn")) {
-
-					} else if (products.equals("Màn hình")) {
-
-					} else if (products.equals("Chuột")) {
-
-					} else if (products.equals("Bàn phím")) {
-
+						psu pus = psuDAO.getInstance()
+								.selectById(tableALL.getValueAt(tableALL.getSelectedRow(), 1).toString());
+						ChiTietSP.setId(pus.getIdNguon());
+						ChiTietSP.main(null);
+					} else if (products.equals("SSD")) {
+						ssd ssd = ssdDAO.getInstance()
+								.selectById(tableALL.getValueAt(tableALL.getSelectedRow(), 1).toString());
+						ChiTietSP.setId(ssd.getIdSdd());
+						ChiTietSP.main(null);
+					} else if (products.equals("HDD")) {
+						hdd hdd = hddDAO.getInstance()
+								.selectById(tableALL.getValueAt(tableALL.getSelectedRow(), 1).toString());
+						ChiTietSP.setId(hdd.getIdhHdd());
+						ChiTietSP.main(null);
 					}
 
 				}

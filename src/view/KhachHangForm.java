@@ -482,33 +482,32 @@ public class KhachHangForm extends JInternalFrame {
 
 						for (int row = 1; row <= excelSheet.getLastRowNum(); row++) {
 							XSSFRow excelRow = excelSheet.getRow(row);
-							XSSFCell iddonnhap = excelRow.getCell(0);
-							XSSFCell idnpp = excelRow.getCell(1);
-							XSSFCell tgnhap = excelRow.getCell(2);
-							XSSFCell nguoitao = excelRow.getCell(3);
-							XSSFCell tongtien = excelRow.getCell(4);
-							XSSFCell trangthai = excelRow.getCell(5);
+							XSSFCell idkhachhang = excelRow.getCell(0);
+							XSSFCell ten = excelRow.getCell(1);
+							XSSFCell diachi = excelRow.getCell(2);
+							XSSFCell email = excelRow.getCell(3);
+							XSSFCell sdt = excelRow.getCell(4);
+							XSSFCell ngaythamgia = excelRow.getCell(5);
 
-							model.addRow(new Object[] { iddonnhap, idnpp, tgnhap, nguoitao, tongtien, trangthai });
+							model.addRow(new Object[] { idkhachhang, ten, diachi, email, sdt, ngaythamgia });
 						}
 						JOptionPane.showMessageDialog(null, "Thêm thành công!");
-//						int answ = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm vào csdl không", "Thông báo",
-//								JOptionPane.YES_NO_OPTION);
-//						if (answ == JOptionPane.YES_OPTION) {
-//							for (int i = rowBanDau; i <= model.getRowCount(); i++) {
-//
-//								String iddonnhap = model.getValueAt(i, 0).toString();
-//								String idnpp = model.getValueAt(i, 1).toString();
-//								java.sql.Timestamp tgnhap = (java.sql.Timestamp) model.getValueAt(i, 2);
-//								String nguoitao = model.getValueAt(i, 3).toString();
-//								double tongtien = (double) model.getValueAt(i, 4);
-//								int trangthai = (int) model.getValueAt(i, 5);
-//
-//								PhieuNhap pn = new PhieuNhap(iddonnhap, idnpp, tgnhap, nguoitao, tongtien, trangthai);
-//
-//								PhieuNhapDAO.getInstance().insert(pn);
-//							}
-//						}
+						int answ = JOptionPane.showConfirmDialog(null, "Bạn có muốn thêm vào csdl không", "Thông báo",
+								JOptionPane.YES_NO_OPTION);
+						if (answ == JOptionPane.YES_OPTION) {
+							for (int i = rowBanDau; i <= model.getRowCount(); i++) {
+
+								String id = model.getValueAt(i, 0).toString();
+								String ten = model.getValueAt(i, 1).toString();
+								String diachi = model.getValueAt(i, 2).toString();
+								String email = model.getValueAt(i, 3).toString();
+								String sdt = model.getValueAt(i, 4).toString();
+								java.sql.Timestamp tgnhap = (java.sql.Timestamp) model.getValueAt(i, 5);
+
+								KhachHang kh = new KhachHang(id, ten, diachi, email, sdt, tgnhap);
+								KhachHangDAO.getInstance().insertNotIMG(kh);
+							}
+						}
 					} catch (IOException iOException) {
 						JOptionPane.showMessageDialog(null, iOException.getMessage());
 					} finally {

@@ -265,6 +265,7 @@ public class XuatPDF {
 			cellEmtity.setBorder(0);
 
 			Date now = new Date();
+			@SuppressWarnings("deprecation")
 			PdfPCell date = new PdfPCell(
 					new Phrase("Đà Nẵng, ngày " + now.getDate() + " tháng " + String.valueOf(now.getMonth() + 1)
 							+ " năm " + String.valueOf(now.getYear() + 1900), SetFont.fontTNR()));
@@ -490,6 +491,7 @@ public class XuatPDF {
 			cellEmtity.setBorder(0);
 
 			Date now = new Date();
+			@SuppressWarnings("deprecation")
 			PdfPCell date = new PdfPCell(
 					new Phrase("Đà Nẵng, ngày " + now.getDate() + " tháng " + String.valueOf(now.getMonth() + 1)
 							+ " năm " + String.valueOf(now.getYear() + 1900), SetFont.fontTNR()));

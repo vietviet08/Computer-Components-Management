@@ -78,6 +78,7 @@ public class mainDAO implements DAOInterface<mainboard> {
 			ps.setDouble(9, t.getDonGia());
 			ps.setString(10, t.getBaoHanh());
 
+			@SuppressWarnings("deprecation")
 			URL url = new URL(stringUrl);
 			InputStream is = url.openStream();
 			ps.setBlob(11, is);
