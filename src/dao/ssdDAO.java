@@ -225,16 +225,18 @@ public class ssdDAO implements DAOInterface<ssd> {
 		return check;
 	}
 
-	public int updateTonKho(ArrayList<ChiTietPhieu> pn) {
+	public int updateTonKho(ArrayList<ChiTietPhieu> pn, boolean nhapHang) {
 		int check = 0;
 
 		try {
 			Connection con = JDBCUntil.getConnection();
+			String sql = "UPDATE ssd SET  tonkho = tonkho + ? WHERE idssd = ?;";
+			if (nhapHang == false)
+				sql = "UPDATE ssd SET  tonkho = tonkho - ? WHERE idssd = ?;";
 
 			for (ChiTietPhieu productNhap : pn) {
 
 				if (productNhap.getIdRieng().contains("ssd")) {
-					String sql = "UPDATE ssd SET  tonkho = tonkho + ? WHERE idssd = ?;";
 
 					PreparedStatement ps = con.prepareStatement(sql);
 					ps.setInt(1, productNhap.getSoLuong());

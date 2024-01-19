@@ -180,9 +180,31 @@ public class KhachHangDAO implements DAOInterface<KhachHang> {
 
 		try {
 			Connection con = JDBCUntil.getConnection();
-			String sql = "select * from khachhang;";
+			String sql = "select * from khachhang where idkhachhang = ?;";
 			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, t);
+			ResultSet rs = ps.executeQuery();
 
+			while (rs.next()) {
+				kh = new KhachHang(rs.getString("idkhachhang"), rs.getString("tenkhachhang"), rs.getString("diachi"),
+						rs.getString("email"), rs.getString("sdt"), rs.getTimestamp("ngaythamgia"), rs.getBlob("img"));
+			}
+
+			JDBCUntil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return kh;
+	}
+	
+	public KhachHang selectBySDT(String t) {
+		KhachHang kh = null;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+			String sql = "select * from khachhang where sdt = ?;";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, t);
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {

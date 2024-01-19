@@ -247,16 +247,20 @@ public class cpuDAO implements DAOInterface<cpu> {
 
 //	cần tạo method update số lượng sản phẩm khi được nhập hàng hoặc xuất hàng
 
-	public int updateTonKho(ArrayList<ChiTietPhieu> pn) {
+	public int updateTonKho(ArrayList<ChiTietPhieu> pn, boolean nhapHang) {
 		int check = 0;
 
 		try {
 			Connection con = JDBCUntil.getConnection();
-
+			String sql = "";
+			if (nhapHang) {
+				sql = "UPDATE cpu SET  tonkho = tonkho + ? WHERE idcpu = ?;";
+				
+			} else
+				sql = "UPDATE cpu SET  tonkho = tonkho - ? WHERE idcpu = ?;";
 			for (ChiTietPhieu productNhap : pn) {
 
 				if (productNhap.getIdRieng().contains("cpu")) {
-					String sql = "UPDATE cpu SET  tonkho = tonkho + ? WHERE idcpu = ?;";
 
 					PreparedStatement ps = con.prepareStatement(sql);
 					ps.setInt(1, productNhap.getSoLuong());

@@ -171,7 +171,7 @@ public class psuDAO implements DAOInterface<psu> {
 			ps.setInt(8, 0);
 			ps.setDouble(9, t.getDonGia());
 			ps.setString(10, t.getBaoHanh());
-			
+
 			@SuppressWarnings("deprecation")
 			URL url = new URL(stringUrl);
 			InputStream is = url.openStream();
@@ -215,15 +215,16 @@ public class psuDAO implements DAOInterface<psu> {
 		return check;
 	}
 
-	public int updateTonKho(ArrayList<ChiTietPhieu> pn) {
+	public int updateTonKho(ArrayList<ChiTietPhieu> pn, boolean nhapHang) {
 		int check = 0;
 
 		try {
 			Connection con = JDBCUntil.getConnection();
-
+			String sql = "UPDATE psu SET tonkho = tonkho + ? WHERE idnguon = ? ;";
+			if (nhapHang == false)
+				sql = "UPDATE psu SET tonkho = tonkho - ? WHERE idnguon = ? ;";
 			for (ChiTietPhieu productNhap : pn) {
 				if (productNhap.getIdRieng().contains("psu")) {
-					String sql = "UPDATE psu SET tonkho = tonkho + ? WHERE idnguon = ? ;";
 					PreparedStatement ps = con.prepareStatement(sql);
 					ps.setInt(1, productNhap.getSoLuong());
 					ps.setString(2, productNhap.getIdRieng());

@@ -167,7 +167,7 @@ public class caseDAO implements DAOInterface<Case> {
 			ps.setInt(7, t.getTonKho());
 			ps.setDouble(8, t.getGia());
 			ps.setString(9, t.getBaoHanh());
-			
+
 			@SuppressWarnings("deprecation")
 			URL url = new URL(stringUrl);
 			InputStream is = url.openStream();
@@ -208,15 +208,18 @@ public class caseDAO implements DAOInterface<Case> {
 		return check;
 	}
 
-	public int updateTonKho(ArrayList<ChiTietPhieu> pn) {
+	public int updateTonKho(ArrayList<ChiTietPhieu> pn, boolean nhapHang) {
 		int check = 0;
 
 		try {
 			Connection con = JDBCUntil.getConnection();
 
+			String sql = "UPDATE cases SET tonkho = tonkho + ? WHERE idcase = ? ;";
+			if(nhapHang == false)
+				sql = "UPDATE cases SET tonkho = tonkho - ? WHERE idcase = ? ;";
 			for (ChiTietPhieu productNhap : pn) {
 				if (productNhap.getIdRieng().contains("case")) {
-					String sql = "UPDATE cases SET tonkho = tonkho + ? WHERE idcase = ? ;";
+					
 					PreparedStatement ps = con.prepareStatement(sql);
 					ps.setInt(1, productNhap.getSoLuong());
 					ps.setString(2, productNhap.getIdRieng());

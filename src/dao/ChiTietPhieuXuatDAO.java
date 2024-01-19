@@ -22,7 +22,7 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "insert into chitietdonnhap (iddonxuat, idsanpham, idrieng = ?, tensanpham, soluong, dongia, baohanh) values (?, ?, ?, ?, ?, ?, ?)";
+			String sql = "insert into chitietdonxuat (iddonxuat, idsanpham, idrieng , tensanpham, soluong, dongia, baohanh) values (?, ?, ?, ?, ?, ?, ?)";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -49,7 +49,7 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "update chitietdonnhap set  idsanpham = ?, idrieng = ?, tensanpham = ?, soluong = ?, dongia = ?, baohanh = ? where iddonxuat = ?";
+			String sql = "update chitietdonxuat set  idsanpham = ?, idrieng = ?, tensanpham = ?, soluong = ?, dongia = ?, baohanh = ? where iddonxuat = ?";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -76,11 +76,31 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "delete from chitietdonnhap where iddonxuat = ?";
+			String sql = "delete from chitietdonxuat where iddonxuat = ?";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
 			ps.setString(1, t.getIdPhieu());
+
+			check = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return check;
+	}
+	
+	public int deleteByID(String t) {
+
+		int check = 0;
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			String sql = "delete from chitietdonxuat where iddonxuat = ?";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t);
 
 			check = ps.executeUpdate();
 		} catch (SQLException e) {
@@ -96,7 +116,7 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "select * from chitietdonnhap";
+			String sql = "select * from chitietdonxuat";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -122,7 +142,7 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "select * from chitietdonxuat where idkhachhang = ?";
+			String sql = "select * from chitietdonxuat where iddonxuat = ?";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -151,9 +171,10 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "select * from chitietdonnhap";
+			String sql = "select * from chitietdonxuat where iddonxuat = ?";
 
 			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, t);
 
 			ResultSet rs = ps.executeQuery();
 

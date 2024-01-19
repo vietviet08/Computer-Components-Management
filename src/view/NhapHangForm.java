@@ -304,6 +304,8 @@ public class NhapHangForm extends JInternalFrame {
 	}
 
 	public NhapHangForm() {
+		setFrameIcon(new ImageIcon(NhapHangForm.class.getResource("/icon/icons8-load-cargo-24.png")));
+		setTitle("NHẬP HÀNG");
 		setBounds(100, 100, 1170, 730);
 		getContentPane().setLayout(null);
 
@@ -455,14 +457,14 @@ public class NhapHangForm extends JInternalFrame {
 					JOptionPane.showMessageDialog(null, "Không có sản phẩm nào để nhập hàng!");
 				} else {
 
-					int check = cpuDAO.getInstance().updateTonKho(listNhap);
-					check += ramDAO.getInstance().updateTonKho(listNhap);
-					check += vgaDAO.getInstance().updateTonKho(listNhap);
-					check += mainDAO.getInstance().updateTonKho(listNhap);
-					check += caseDAO.getInstance().updateTonKho(listNhap);
-					check += psuDAO.getInstance().updateTonKho(listNhap);
-					check += ssdDAO.getInstance().updateTonKho(listNhap);
-					check += hddDAO.getInstance().updateTonKho(listNhap);
+					int check = cpuDAO.getInstance().updateTonKho(listNhap, true);
+					check += ramDAO.getInstance().updateTonKho(listNhap, true);
+					check += vgaDAO.getInstance().updateTonKho(listNhap, true);
+					check += mainDAO.getInstance().updateTonKho(listNhap, true);
+					check += caseDAO.getInstance().updateTonKho(listNhap, true);
+					check += psuDAO.getInstance().updateTonKho(listNhap, true);
+					check += ssdDAO.getInstance().updateTonKho(listNhap, true);
+					check += hddDAO.getInstance().updateTonKho(listNhap, true);
 					if (check > 0) {
 
 						JOptionPane.showMessageDialog(null, "Nhập hàng thành công!");

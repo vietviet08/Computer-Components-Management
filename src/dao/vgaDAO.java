@@ -230,7 +230,7 @@ public class vgaDAO implements DAOInterface<vga> {
 		return check;
 	}
 
-	public int updateTonKho(ArrayList<ChiTietPhieu> pn) {
+	public int updateTonKho(ArrayList<ChiTietPhieu> pn, boolean nhapHang) {
 		int check = 0;
 
 		try {
@@ -240,6 +240,8 @@ public class vgaDAO implements DAOInterface<vga> {
 				if (productNhap.getIdRieng().contains("vga")) {
 
 					String sql = "UPDATE vga SET  tonkho = tonkho + ? WHERE idvga = ?;";
+					if(nhapHang == false)
+						sql = "UPDATE vga SET  tonkho = tonkho - ? WHERE idvga = ?;";
 
 					PreparedStatement ps = con.prepareStatement(sql);
 					ps.setInt(1, productNhap.getSoLuong());

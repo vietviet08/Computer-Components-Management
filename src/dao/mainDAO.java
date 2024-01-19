@@ -175,7 +175,7 @@ public class mainDAO implements DAOInterface<mainboard> {
 			ps.setString(6, t.getKichThuoc());
 			ps.setDouble(7, t.getDonGia());
 			ps.setString(8, t.getBaoHanh());
-			
+
 			@SuppressWarnings("deprecation")
 			URL url = new URL(stringUrl);
 			InputStream is = url.openStream();
@@ -220,16 +220,18 @@ public class mainDAO implements DAOInterface<mainboard> {
 		return check;
 	}
 
-	public int updateTonKho(ArrayList<ChiTietPhieu> pn) {
+	public int updateTonKho(ArrayList<ChiTietPhieu> pn, boolean nhapHang) {
 		int check = 0;
 
 		try {
 			Connection con = JDBCUntil.getConnection();
 
+			String sql = "UPDATE mainboard SET  tonkho = tonkho + ? WHERE idmainboard = ?;";
+			if (nhapHang == false)
+				sql = "UPDATE mainboard SET  tonkho = tonkho - ? WHERE idmainboard = ?;";
 			for (ChiTietPhieu productNhap : pn) {
 
 				if (productNhap.getIdRieng().contains("mba")) {
-					String sql = "UPDATE mainboard SET  tonkho = tonkho + ? WHERE idmainboard = ?;";
 
 					PreparedStatement ps = con.prepareStatement(sql);
 					ps.setInt(1, productNhap.getSoLuong());

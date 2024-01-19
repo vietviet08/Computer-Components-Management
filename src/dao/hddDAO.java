@@ -215,16 +215,17 @@ public class hddDAO implements DAOInterface<hdd> {
 		return check;
 	}
 
-	public int updateTonKho(ArrayList<ChiTietPhieu> pn) {
+	public int updateTonKho(ArrayList<ChiTietPhieu> pn, boolean nhapHang) {
 		int check = 0;
 
 		try {
 			Connection con = JDBCUntil.getConnection();
-
+			String sql = "UPDATE hdd SET  tonkho = tonkho + ? WHERE idhdd = ?;";
+			if (nhapHang == false)
+				sql = "UPDATE hdd SET  tonkho = tonkho - ? WHERE idhdd = ?;";
 			for (ChiTietPhieu productNhap : pn) {
 
 				if (productNhap.getIdRieng().contains("hdd")) {
-					String sql = "UPDATE hdd SET  tonkho = tonkho + ? WHERE idhdd = ?;";
 
 					PreparedStatement ps = con.prepareStatement(sql);
 					ps.setInt(1, productNhap.getSoLuong());

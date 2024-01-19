@@ -9,7 +9,7 @@ import db.JDBCUntil;
 import model.PhieuXuat;
 
 public class PhieuXuatDAO implements DAOInterface<PhieuXuat> {
-	
+
 	public static PhieuXuatDAO getInstance() {
 		return new PhieuXuatDAO();
 	}
@@ -21,7 +21,7 @@ public class PhieuXuatDAO implements DAOInterface<PhieuXuat> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "insert into donxuathang (iddonnhap, idkhachhang, thoigiannhap, nguoitao, tongtien, trangthai) values (?, ?, ?, ?, ?, ?)";
+			String sql = "insert into donxuathang (iddonxuat, idkhachhang, thoigianxuat, nguoitao, tongtien, trangthai) values (?, ?, ?, ?, ?, ?)";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -49,7 +49,7 @@ public class PhieuXuatDAO implements DAOInterface<PhieuXuat> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "delete from donxuathang where iddonnhap = ?)";
+			String sql = "delete from donxuathang where iddonxuat = ?)";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -71,7 +71,7 @@ public class PhieuXuatDAO implements DAOInterface<PhieuXuat> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "update donxuathang set idkhachhang = ?, thoigiannhap = ?, nguoitao = ?, tongtien = ?, trangthai = ? where iddonnhap = ?)";
+			String sql = "update donxuathang set idkhachhang = ?, thoigianxuat = ?, nguoitao = ?, tongtien = ?, trangthai = ? where iddonxuat = ?)";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -104,8 +104,8 @@ public class PhieuXuatDAO implements DAOInterface<PhieuXuat> {
 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				PhieuXuat pn = new PhieuXuat(rs.getString("iddonnhap"), rs.getString("idnpp"),
-						rs.getTimestamp("thoigiannhap"), rs.getString("nguoitao"), rs.getDouble("tongtien"),
+				PhieuXuat pn = new PhieuXuat(rs.getString("iddonxuat"), rs.getString("idkhachhang"),
+						rs.getTimestamp("thoigianxuat"), rs.getString("nguoitao"), rs.getDouble("tongtien"),
 						rs.getInt("trangthai"));
 
 				list.add(pn);
@@ -124,7 +124,7 @@ public class PhieuXuatDAO implements DAOInterface<PhieuXuat> {
 		try {
 			Connection con = JDBCUntil.getConnection();
 
-			String sql = "select * from donxuathang where iddonnhap = ?";
+			String sql = "select * from donxuathang where iddonxuat = ?";
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
@@ -132,8 +132,9 @@ public class PhieuXuatDAO implements DAOInterface<PhieuXuat> {
 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				pn = new PhieuXuat(rs.getString("iddonnhap"), rs.getString("idnpp"), rs.getTimestamp("thoigiannhap"),
-						rs.getString("nguoitao"), rs.getDouble("tongtien"), rs.getInt("trangthai"));
+				pn = new PhieuXuat(rs.getString("iddonxuat"), rs.getString("idkhachhang"),
+						rs.getTimestamp("thoigianxuat"), rs.getString("nguoitao"), rs.getDouble("tongtien"),
+						rs.getInt("trangthai"));
 
 			}
 

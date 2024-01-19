@@ -66,7 +66,7 @@ public class KhachHangForm extends JInternalFrame {
 			"Ngày tham gia", "Ảnh" };
 	private JTextField tfID;
 	private JTextField tfTen;
-	private JTextField tfSDT;
+	public static JTextField tfSDT;
 	private JTextField tfDiaChi;
 	private JTextField tfEmail;
 	private JTextField tfSearch;

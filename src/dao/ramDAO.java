@@ -237,15 +237,18 @@ public class ramDAO implements DAOInterface<ram> {
 		return check;
 	}
 
-	public int updateTonKho(ArrayList<ChiTietPhieu> pn) {
+	public int updateTonKho(ArrayList<ChiTietPhieu> pn, boolean nhapHang) {
 		int check = 0;
 
 		try {
 			Connection con = JDBCUntil.getConnection();
 
+			String sql = "UPDATE ram SET tonkho = tonkho + ? WHERE idram = ? ;";
+			if (nhapHang == false)
+				sql = "UPDATE ram SET tonkho = tonkho - ? WHERE idram = ? ;";
+
 			for (ChiTietPhieu productNhap : pn) {
 				if (productNhap.getIdRieng().contains("r")) {
-					String sql = "UPDATE ram SET tonkho = tonkho + ? WHERE idram = ? ;";
 					PreparedStatement ps = con.prepareStatement(sql);
 					ps.setInt(1, productNhap.getSoLuong());
 					ps.setString(2, productNhap.getIdRieng());

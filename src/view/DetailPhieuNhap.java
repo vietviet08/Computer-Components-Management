@@ -35,6 +35,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import color.SetColor;
 import controller.FormatToVND;
+import controller.XuatPDF;
 import dao.ChiTietPhieuNhapDAO;
 import font.SetFont;
 import model.ChiTietPhieu;
@@ -279,6 +280,13 @@ public class DetailPhieuNhap extends JFrame {
 		panel_1.add(lblNewLabel);
 
 		JButton btnNewButton_3 = new JButton("In PDF");
+		btnNewButton_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				XuatPDF xuatpdf = new XuatPDF();
+				xuatpdf.taoPhieuNhap(PhieuNhapForm.getPhieuNhapSelect().getIdPhieu());
+			}
+		});
 		btnNewButton_3.setBounds(22, 11, 89, 23);
 		panel_1.add(btnNewButton_3);
 	}

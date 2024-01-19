@@ -46,6 +46,28 @@ public class SetFont {
 		return f1;
 	}
 
+	public static Font fontThongKe() {
+		Font f1 = null;
+		try {
+			File fontStyle = new File("src/font/Roboto-Medium.ttf");
+			f1 = Font.createFont(Font.TRUETYPE_FONT, fontStyle).deriveFont(20f);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return f1;
+	}
+	
+	public static Font fontThongKe1() {
+		Font f1 = null;
+		try {
+			File fontStyle = new File("src/font/Roboto-Light.ttf");
+			f1 = Font.createFont(Font.TRUETYPE_FONT, fontStyle).deriveFont(26f);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return f1;
+	}
+	
 	public static Font font() {
 		Font f1 = null;
 		try {
