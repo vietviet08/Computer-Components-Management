@@ -375,4 +375,21 @@ public class ramDAO implements DAOInterface<ram> {
 		return r;
 	}
 
+	public static int tongTonKho() {
+		int tonkho = 0;
+		String sql = "SELECT SUM(ram.tonkho) AS total\r\n" + "FROM ram";
+		try {
+			Connection con = JDBCUntil.getConnection();
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				tonkho = rs.getInt("total");
+			}
+			JDBCUntil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tonkho;
+	}
+
 }

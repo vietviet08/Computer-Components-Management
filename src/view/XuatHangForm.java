@@ -409,6 +409,9 @@ public class XuatHangForm extends JInternalFrame {
 					int answ = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn xóa sản phẩm này?", "Cảnh báo",
 							JOptionPane.YES_NO_OPTION);
 					if (answ == JOptionPane.YES_OPTION) {
+						tien -= Double.parseDouble(tableMin.getValueAt(tableMin.getSelectedRow(), 5).toString())
+								* Integer.parseInt(tableMin.getValueAt(tableMin.getSelectedRow(), 4).toString());
+						tfTongTien.setText(FormatToVND.vnd(tien));
 						listXuat.remove(tableMin.getSelectedRow());
 						JOptionPane.showMessageDialog(null, "Xóa thành công!");
 						loadDataToTableBill(listXuat);
@@ -1024,29 +1027,37 @@ public class XuatHangForm extends JInternalFrame {
 	private boolean kiemTraGioiHanKho(String id, ArrayList<ChiTietPhieu> list) {
 		for (ChiTietPhieu sp : list) {
 			if (id.contains("cpu")) {
-				if (cpuDAO.getInstance().selectById(id).getTonKho() == sp.getSoLuong())
-					return false;
+				if (sp.getIdRieng().equals(id))
+					if (cpuDAO.getInstance().selectById(id).getTonKho() == sp.getSoLuong())
+						return false;
 			} else if (id.contains("ram")) {
-				if (ramDAO.getInstance().selectById(id).getTonkho() == sp.getSoLuong())
-					return false;
+				if (sp.getIdRieng().equals(id))
+					if (ramDAO.getInstance().selectById(id).getTonkho() == sp.getSoLuong())
+						return false;
 			} else if (id.contains("vga")) {
-				if (vgaDAO.getInstance().selectById(id).getTonKho() == sp.getSoLuong())
-					return false;
+				if (sp.getIdRieng().equals(id))
+					if (vgaDAO.getInstance().selectById(id).getTonKho() == sp.getSoLuong())
+						return false;
 			} else if (id.contains("mba")) {
-				if (mainDAO.getInstance().selectById(id).getTonKho() == sp.getSoLuong())
-					return false;
+				if (sp.getIdRieng().equals(id))
+					if (mainDAO.getInstance().selectById(id).getTonKho() == sp.getSoLuong())
+						return false;
 			} else if (id.contains("case")) {
-				if (caseDAO.getInstance().selectById(id).getTonKho() == sp.getSoLuong())
-					return false;
+				if (sp.getIdRieng().equals(id))
+					if (caseDAO.getInstance().selectById(id).getTonKho() == sp.getSoLuong())
+						return false;
 			} else if (id.contains("psu")) {
-				if (psuDAO.getInstance().selectById(id).getTonKho() == sp.getSoLuong())
-					return false;
+				if (sp.getIdRieng().equals(id))
+					if (psuDAO.getInstance().selectById(id).getTonKho() == sp.getSoLuong())
+						return false;
 			} else if (id.contains("ssd")) {
-				if (ssdDAO.getInstance().selectById(id).getTonKho() == sp.getSoLuong())
-					return false;
+				if (sp.getIdRieng().equals(id))
+					if (ssdDAO.getInstance().selectById(id).getTonKho() == sp.getSoLuong())
+						return false;
 			} else if (id.contains("hdd")) {
-				if (hddDAO.getInstance().selectById(id).getTonKho() == sp.getSoLuong())
-					return false;
+				if (sp.getIdRieng().equals(id))
+					if (hddDAO.getInstance().selectById(id).getTonKho() == sp.getSoLuong())
+						return false;
 			}
 		}
 

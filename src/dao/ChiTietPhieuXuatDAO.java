@@ -35,6 +35,7 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 			ps.setString(7, t.getBaoHanh());
 
 			check = ps.executeUpdate();
+			JDBCUntil.closeConnection(con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -62,6 +63,7 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 			ps.setString(7, t.getIdPhieu());
 
 			check = ps.executeUpdate();
+			JDBCUntil.closeConnection(con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -83,12 +85,13 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 			ps.setString(1, t.getIdPhieu());
 
 			check = ps.executeUpdate();
+			JDBCUntil.closeConnection(con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return check;
 	}
-	
+
 	public int deleteByID(String t) {
 
 		int check = 0;
@@ -103,6 +106,7 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 			ps.setString(1, t);
 
 			check = ps.executeUpdate();
+			JDBCUntil.closeConnection(con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -130,6 +134,7 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 				ttp.add(ct);
 
 			}
+			JDBCUntil.closeConnection(con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -158,6 +163,7 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 				ttp.add(ct);
 
 			}
+			JDBCUntil.closeConnection(con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -183,11 +189,76 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 						rs.getString("idrieng"), rs.getInt("soluong"), rs.getDouble("dongia"), rs.getString("baohanh"));
 
 			}
+			JDBCUntil.closeConnection(con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		return ttp;
+	}
+
+	public ArrayList<ChiTietPhieu> sanPhamBanChay() {
+		String sql = "SELECT *, sum(chitietdonxuat.soluong) AS total\r\n" + "FROM chitietdonxuat\r\n"
+				+ "GROUP BY idrieng\r\n" + "ORDER BY total DESC ";
+
+		ArrayList<ChiTietPhieu> ttp = new ArrayList<ChiTietPhieu>();
+
+		try {
+			Connection con = JDBCUntil.getConnection();
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				ChiTietPhieu ct = new ChiTietPhieu(rs.getString("iddonxuat"), rs.getString("idsanpham"),
+						rs.getString("idrieng"), rs.getString("tensanpham"), rs.getInt("total"), rs.getDouble("dongia"),
+						rs.getString("baohanh"));
+
+				ttp.add(ct);
+
+			}
+			JDBCUntil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ttp;
+	}
+
+	public int tongDonXuat(String t) {
+		int total = 0;
+		try {
+			String sql = "SELECT SUM(tbcpu.soluong) AS total " + "FROM ( " + "SELECT * " + "FROM chitietdonxuat AS dx "
+					+ "WHERE dx.idrieng LIKE 'cpu%' " + ") AS tbcpu";
+			switch (t) {
+			case "cpu":
+				sql = "SELECT SUM(tb.soluong) AS total " + "FROM ( " + "SELECT * " + "FROM chitietdonxuat AS dx "
+						+ "WHERE dx.idrieng LIKE 'cpu%' " + ") AS tb";
+				break;
+			case "ram":
+				sql = "SELECT SUM(tb.soluong) AS total " + "FROM ( " + "SELECT * " + "FROM chitietdonxuat AS dx "
+						+ "WHERE dx.idrieng LIKE 'r%' " + ") AS tb";
+				break;
+
+			default:
+				break;
+			}
+			
+			Connection con = JDBCUntil.getConnection();
+
+			PreparedStatement ps = con.prepareStatement(sql);
+
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				total = rs.getInt("total");
+			}
+			JDBCUntil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return total;
 	}
 
 }

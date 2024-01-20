@@ -255,7 +255,7 @@ public class cpuDAO implements DAOInterface<cpu> {
 			String sql = "";
 			if (nhapHang) {
 				sql = "UPDATE cpu SET  tonkho = tonkho + ? WHERE idcpu = ?;";
-				
+
 			} else
 				sql = "UPDATE cpu SET  tonkho = tonkho - ? WHERE idcpu = ?;";
 			for (ChiTietPhieu productNhap : pn) {
@@ -405,6 +405,23 @@ public class cpuDAO implements DAOInterface<cpu> {
 		}
 
 		return list;
+	}
+
+	public static int tongTonKho() {
+		int tonkho = 0;
+		String sql = "SELECT SUM(cpu.tonkho) AS total\r\n" + "FROM cpu";
+		try {
+			Connection con = JDBCUntil.getConnection();
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				tonkho = rs.getInt("total");
+			}
+			JDBCUntil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tonkho;
 	}
 
 }

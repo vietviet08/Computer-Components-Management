@@ -411,6 +411,9 @@ public class NhapHangForm extends JInternalFrame {
 					int answ = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn xóa sản phẩm này?", "Cảnh báo",
 							JOptionPane.YES_NO_OPTION);
 					if (answ == JOptionPane.YES_OPTION) {
+						tien -= Double.parseDouble(tableMin.getValueAt(tableMin.getSelectedRow(), 5).toString())
+								* Integer.parseInt(tableMin.getValueAt(tableMin.getSelectedRow(), 4).toString());
+						tfTongTien.setText(FormatToVND.vnd(tien));
 						listNhap.remove(tableMin.getSelectedRow());
 						JOptionPane.showMessageDialog(null, "Xóa thành công!");
 						loadDataToTableBill(listNhap);

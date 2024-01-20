@@ -28,6 +28,7 @@ import controller.Checked;
 import controller.LoadIMGURL;
 import dao.SanPhamDAO;
 import dao.ssdDAO;
+import decor.HoverButton;
 import font.SetFont;
 import model.Products;
 import model.ssd;
@@ -163,6 +164,16 @@ public class ThemSSD extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				closeFrame();
 			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				HoverButton.hoverCancel(btnCancel, true);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				HoverButton.hoverCancel(btnCancel, false);
+			}
 		});
 		btnCancel.setFont(SetFont.font1());
 		btnCancel.setBorder(null);
@@ -211,6 +222,16 @@ public class ThemSSD extends JFrame {
 					SSDForm.loadDataToTable(ssdDAO.getInstance().selectAll());
 					closeFrame();
 				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				HoverButton.hoverOK(btnAdd, true);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				HoverButton.hoverOK(btnAdd, false);
 			}
 		});
 		btnAdd.setFont(SetFont.font1());

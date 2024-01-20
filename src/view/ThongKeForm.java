@@ -2,22 +2,46 @@ package view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
+import chart.ModelPieChart;
+import chart.PieChart;
+import chart.PieChart.PeiChartType;
 import color.SetColor;
+import controller.FormatToVND;
+import dao.ChiTietPhieuXuatDAO;
 import dao.KhachHangDAO;
 import dao.PhieuNhapDAO;
 import dao.PhieuXuatDAO;
 import dao.SanPhamDAO;
+import dao.caseDAO;
+import dao.cpuDAO;
+import dao.hddDAO;
+import dao.mainDAO;
+import dao.psuDAO;
+import dao.ramDAO;
+import dao.ssdDAO;
+import dao.vgaDAO;
 import decor.PanelRoundThongKe;
 import font.SetFont;
-import javax.swing.JTabbedPane;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import model.ChiTietPhieu;
+import model.cpu;
+import model.ram;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class ThongKeForm extends JInternalFrame {
 
@@ -25,6 +49,25 @@ public class ThongKeForm extends JInternalFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private JLabel labelIMG_1st;
+	private JLabel labelGia_1st;
+	private JLabel labelTenSP_1st;
+	private JLabel labelGia_3rd;
+	private JLabel labelTenSP_3rd;
+	private JLabel labelIMG_3rd;
+	private JLabel labelTenSP_2nd;
+	private JLabel labelIMG_2nd;
+	private JLabel labelGia_2nd;
+	private JLabel labelLuotBan_2nd;
+	private JLabel labelLuotBan_1st;
+	private JLabel labelLuotBan_3rd;
+	private JLabel labelName;
+	private JTable table;
+	private JLabel labelLoaiSP;
+	private JLabel labelTongDong;
+	private JLabel labelTongTonKho;
+	private JLabel labelTongSP;
+	private JLabel labelTongLuotBan;
 
 	/**
 	 * Launch the application.
@@ -75,7 +118,11 @@ public class ThongKeForm extends JInternalFrame {
 		tfLoaiSP_1.setBounds(156, 26, 94, 68);
 		panel.add(tfLoaiSP_1);
 
-		JLabel tfLoaiSP_1_1 = new JLabel(String.valueOf(SanPhamDAO.getInstance().selectAll().size()));
+		JLabel tfLoaiSP_1_1 = new JLabel(
+				String.valueOf(cpuDAO.getInstance().selectAll().size() + ramDAO.getInstance().selectAll().size()
+						+ vgaDAO.getInstance().selectAll().size() + caseDAO.getInstance().selectAll().size()
+						+ mainDAO.getInstance().selectAll().size() + psuDAO.getInstance().selectAll().size()
+						+ ssdDAO.getInstance().selectAll().size() + hddDAO.getInstance().selectAll().size()));
 		tfLoaiSP_1_1.setHorizontalAlignment(SwingConstants.CENTER);
 		tfLoaiSP_1_1.setForeground(new Color(254, 254, 254));
 		tfLoaiSP_1_1.setFont(SetFont.fontThongKe1());
@@ -188,42 +235,286 @@ public class ThongKeForm extends JInternalFrame {
 		tfLoaiSP_1_3.setFont(null);
 		tfLoaiSP_1_3.setBounds(156, 37, 94, 68);
 		panel_2.add(tfLoaiSP_1_3);
-		
+
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(22, 197, 1118, 493);
 		getContentPane().add(tabbedPane);
-		
+
 		JPanel panel_3 = new JPanel();
+		panel_3.setBackground(Color.WHITE);
 		tabbedPane.addTab("Sản phẩm nổi bật", null, panel_3, null);
 		panel_3.setLayout(null);
-		
-		JLabel labelIMG = new JLabel("Ảnh sản phẩm");
-		labelIMG.setHorizontalAlignment(SwingConstants.CENTER);
-		labelIMG.setBounds(43, 34, 380, 380);
-		panel_3.add(labelIMG);
-		
-		JLabel labelTenSP = new JLabel("Tên sản phẩm");
-		labelTenSP.setBounds(477, 36, 626, 29);
-		panel_3.add(labelTenSP);
-		
-		JLabel labelGia = new JLabel("1999999vnd");
-		labelGia.setBounds(477, 274, 626, 29);
-		panel_3.add(labelGia);
-		
-		JLabel labelBaoHanh = new JLabel("12 Tháng");
-		labelBaoHanh.setBounds(477, 323, 626, 29);
-		panel_3.add(labelBaoHanh);
-		
-		JTextArea textArea = new JTextArea();
-		textArea.setBackground(new Color(240, 240, 240));
-		textArea.setBounds(477, 74, 449, 189);
-		panel_3.add(textArea);
-		
+
+		labelIMG_1st = new JLabel("Ảnh sản phẩm");
+		labelIMG_1st.setHorizontalAlignment(SwingConstants.CENTER);
+		labelIMG_1st.setBounds(420, 43, 280, 280);
+		panel_3.add(labelIMG_1st);
+
+		labelTenSP_1st = new JLabel("Tên sản phẩm");
+		labelTenSP_1st.setHorizontalAlignment(SwingConstants.CENTER);
+		labelTenSP_1st.setFont(SetFont.fontCategory());
+		labelTenSP_1st.setBounds(420, 334, 280, 21);
+		panel_3.add(labelTenSP_1st);
+
+		labelGia_1st = new JLabel("1999999vnd");
+		labelGia_1st.setHorizontalAlignment(SwingConstants.CENTER);
+		labelGia_1st.setFont(SetFont.font1());
+		labelGia_1st.setForeground(SetColor.redB);
+		labelGia_1st.setBounds(420, 366, 280, 21);
+		panel_3.add(labelGia_1st);
+
+		labelIMG_3rd = new JLabel("Ảnh sản phẩm");
+		labelIMG_3rd.setHorizontalAlignment(SwingConstants.CENTER);
+		labelIMG_3rd.setBounds(795, 43, 230, 230);
+		panel_3.add(labelIMG_3rd);
+
+		labelIMG_2nd = new JLabel("Ảnh sản phẩm");
+		labelIMG_2nd.setHorizontalAlignment(SwingConstants.CENTER);
+		labelIMG_2nd.setBounds(60, 43, 230, 230);
+		panel_3.add(labelIMG_2nd);
+
+		labelTenSP_3rd = new JLabel("Tên sản phẩm");
+		labelTenSP_3rd.setHorizontalAlignment(SwingConstants.CENTER);
+		labelTenSP_3rd.setFont(SetFont.fontCategory().deriveFont(13f));
+		labelTenSP_3rd.setBounds(795, 284, 230, 29);
+		panel_3.add(labelTenSP_3rd);
+
+		labelTenSP_2nd = new JLabel("Tên sản phẩm");
+		labelTenSP_2nd.setHorizontalAlignment(SwingConstants.CENTER);
+		labelTenSP_2nd.setFont(SetFont.fontCategory().deriveFont(13f));
+		labelTenSP_2nd.setBounds(60, 284, 230, 29);
+		panel_3.add(labelTenSP_2nd);
+
+		labelGia_2nd = new JLabel("1999999vnd");
+		labelGia_2nd.setHorizontalAlignment(SwingConstants.CENTER);
+		labelGia_2nd.setForeground(new Color(220, 19, 46));
+		labelGia_2nd.setFont(SetFont.font1().deriveFont(13f));
+		labelGia_2nd.setBounds(60, 314, 230, 29);
+		panel_3.add(labelGia_2nd);
+
+		labelGia_3rd = new JLabel("1999999vnd");
+		labelGia_3rd.setHorizontalAlignment(SwingConstants.CENTER);
+		labelGia_3rd.setForeground(new Color(220, 19, 46));
+		labelGia_3rd.setFont(SetFont.font1().deriveFont(13f));
+		labelGia_3rd.setBounds(795, 314, 230, 29);
+		panel_3.add(labelGia_3rd);
+
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setIcon(new ImageIcon(ThongKeForm.class.getResource("/icon/icons8-2nd-place-50.png")));
+		lblNewLabel.setBounds(133, 344, 85, 73);
+		panel_3.add(lblNewLabel);
+
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setIcon(new ImageIcon(ThongKeForm.class.getResource("/icon/icons8-1st-place-70.png")));
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setBounds(515, 392, 85, 73);
+		panel_3.add(lblNewLabel_1);
+
+		JLabel lblNewLabel_1_1 = new JLabel("");
+		lblNewLabel_1_1.setIcon(new ImageIcon(ThongKeForm.class.getResource("/icon/icons8-3rd-place-50.png")));
+		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1_1.setBounds(868, 344, 85, 73);
+		panel_3.add(lblNewLabel_1_1);
+
+		labelLuotBan_2nd = new JLabel("Tổng lượt bán");
+		labelLuotBan_2nd.setHorizontalAlignment(SwingConstants.CENTER);
+		labelLuotBan_2nd.setFont(SetFont.font1().deriveFont(13f));
+		labelLuotBan_2nd.setBounds(60, 11, 230, 29);
+		panel_3.add(labelLuotBan_2nd);
+
+		labelLuotBan_3rd = new JLabel("Tổng lượt bán");
+		labelLuotBan_3rd.setHorizontalAlignment(SwingConstants.CENTER);
+		labelLuotBan_3rd.setFont(SetFont.font1().deriveFont(13f));
+		labelLuotBan_3rd.setBounds(795, 11, 230, 29);
+		panel_3.add(labelLuotBan_3rd);
+
+		labelLuotBan_1st = new JLabel("Tổng lượt bán");
+		labelLuotBan_1st.setHorizontalAlignment(SwingConstants.CENTER);
+		labelLuotBan_1st.setFont(SetFont.font1());
+		labelLuotBan_1st.setBounds(420, 11, 280, 29);
+		panel_3.add(labelLuotBan_1st);
+
+		ArrayList<ChiTietPhieu> spBanChay = ChiTietPhieuXuatDAO.getInstance().sanPhamBanChay();
+		String idsp_1st = spBanChay.get(0).getIdRieng();
+
+		setDetalProduct(idsp_1st, spBanChay.get(0).getSoLuong(), labelIMG_1st, labelTenSP_1st, labelGia_1st,
+				labelLuotBan_1st);
+
+		String idsp_2nd = spBanChay.get(1).getIdRieng();
+		setDetalProduct(idsp_2nd, spBanChay.get(1).getSoLuong(), labelIMG_2nd, labelTenSP_2nd, labelGia_2nd,
+				labelLuotBan_2nd);
+
+		String idsp_3rd = spBanChay.get(2).getIdRieng();
+		setDetalProduct(idsp_3rd, spBanChay.get(2).getSoLuong(), labelIMG_3rd, labelTenSP_3rd, labelGia_3rd,
+				labelLuotBan_3rd);
+
 		JPanel panel_4 = new JPanel();
-		tabbedPane.addTab("Khách hàng thân quen", null, panel_4, null);
-		
+		tabbedPane.addTab("Thống kê nhập xuất", null, panel_4, null);
+
 		JPanel panel_5 = new JPanel();
 		tabbedPane.addTab("Thống kê sản phẩm", null, panel_5, null);
+		panel_5.setLayout(null);
 
+		ModelPieChart cpu = new ModelPieChart();
+		cpu.setName("CPU");
+		cpu.setValues(cpuDAO.getInstance().selectAll().size());
+		cpu.setColor(new Color(236, 112, 99));
+		ModelPieChart ram = new ModelPieChart();
+		ram.setName("RAM");
+		ram.setValues(ramDAO.getInstance().selectAll().size());
+		ram.setColor(new Color(165, 105, 189));
+		ModelPieChart vga = new ModelPieChart();
+		vga.setName("VGA");
+		vga.setValues(vgaDAO.getInstance().selectAll().size());
+		vga.setColor(new Color(93, 173, 226));
+		ModelPieChart casee = new ModelPieChart();
+		casee.setName("CASE");
+		casee.setValues(caseDAO.getInstance().selectAll().size());
+		casee.setColor(new Color(69, 179, 157));
+		ModelPieChart mb = new ModelPieChart();
+		mb.setName("Mainboard");
+		mb.setValues(mainDAO.getInstance().selectAll().size());
+		mb.setColor(new Color(247, 220, 111));
+		ModelPieChart psu = new ModelPieChart();
+		psu.setName("Nguồn");
+		psu.setValues(psuDAO.getInstance().selectAll().size());
+		psu.setColor(new Color(235, 152, 78));
+		ModelPieChart ssd = new ModelPieChart();
+		ssd.setName("SSD");
+		ssd.setValues(ssdDAO.getInstance().selectAll().size());
+		ssd.setColor(new Color(202, 207, 210));
+		ModelPieChart hdd = new ModelPieChart();
+		hdd.setName("HDD");
+		hdd.setValues(hddDAO.getInstance().selectAll().size());
+		hdd.setColor(new Color(86, 101, 115));
+
+		PieChart chart = new PieChart();
+		chart.setChartType(PeiChartType.DONUT_CHART);
+		chart.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (chart.getSelectedIndex() == 0) {
+					labelLoaiSP.setText("CPU");
+					labelTongDong.setText(SanPhamDAO.getIDSanPham("cpu").size() + "");
+					labelTongSP.setText(cpuDAO.getInstance().selectAll().size() + "");
+					labelTongTonKho.setText(cpuDAO.tongTonKho() + "");
+					labelTongLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuat("cpu") + "");
+				} else if (chart.getSelectedIndex() == 1) {
+					labelLoaiSP.setText("RAM");
+					labelTongDong.setText(SanPhamDAO.getIDSanPham("ram").size() + "");
+					labelTongSP.setText(ramDAO.getInstance().selectAll().size() + "");
+					labelTongTonKho.setText(ramDAO.tongTonKho() + "");
+					labelTongLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuat("ram") + "");
+				}
+			}
+		});
+		chart.setBounds(0, 0, 400, 400);
+
+		chart.addData(cpu);
+		chart.addData(ram);
+		chart.addData(vga);
+		chart.addData(casee);
+		chart.addData(mb);
+		chart.addData(psu);
+		chart.addData(ssd);
+		chart.addData(hdd);
+
+		panel_5.add(chart);
+
+		labelName = new JLabel("Loại sản phẩm:");
+		labelName.setFont(SetFont.fontCategory());
+		labelName.setBounds(425, 52, 166, 39);
+		panel_5.add(labelName);
+
+		JLabel lblTngCcLoi = new JLabel("Tổng dòng sản phẩm:");
+		lblTngCcLoi.setFont(SetFont.fontCategory());
+		lblTngCcLoi.setBounds(425, 102, 166, 39);
+		panel_5.add(lblTngCcLoi);
+
+		JLabel lblTngTnKho = new JLabel("Tổng các sản phẩm:");
+		lblTngTnKho.setFont(SetFont.fontCategory());
+		lblTngTnKho.setBounds(425, 152, 166, 39);
+		panel_5.add(lblTngTnKho);
+
+		JLabel lblTngLtBn = new JLabel("Tổng lượt bán:");
+		lblTngLtBn.setFont(SetFont.fontCategory());
+		lblTngLtBn.setBounds(425, 252, 166, 39);
+		panel_5.add(lblTngLtBn);
+
+		JLabel lblTngTnKho_1 = new JLabel("Tổng tồn kho:");
+		lblTngTnKho_1.setFont(SetFont.fontCategory());
+		lblTngTnKho_1.setBounds(425, 202, 166, 39);
+		panel_5.add(lblTngTnKho_1);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(672, 32, 415, 325);
+		panel_5.add(scrollPane);
+
+		table = new JTable();
+		table.setModel(new DefaultTableModel(new Object[][] {},
+				new String[] { "New column", "New column", "New column", "New column" }));
+		scrollPane.setViewportView(table);
+
+		labelTongDong = new JLabel("0");
+		labelTongDong.setFont(SetFont.fontCategory());
+		labelTongDong.setBounds(601, 102, 61, 39);
+		panel_5.add(labelTongDong);
+
+		labelLoaiSP = new JLabel("Name");
+		labelLoaiSP.setFont(SetFont.fontCategory());
+		labelLoaiSP.setBounds(601, 52, 61, 39);
+		panel_5.add(labelLoaiSP);
+
+		labelTongSP = new JLabel("0");
+		labelTongSP.setFont(SetFont.fontCategory());
+		labelTongSP.setBounds(601, 152, 61, 39);
+		panel_5.add(labelTongSP);
+
+		labelTongTonKho = new JLabel("0");
+		labelTongTonKho.setFont(SetFont.fontCategory());
+		labelTongTonKho.setBounds(601, 202, 61, 39);
+		panel_5.add(labelTongTonKho);
+
+		labelTongLuotBan = new JLabel("0");
+		labelTongLuotBan.setFont(SetFont.fontCategory());
+		labelTongLuotBan.setBounds(601, 252, 61, 39);
+		panel_5.add(labelTongLuotBan);
+
+	}
+
+	private void setDetalProduct(String idsp, int luotban, JLabel labelIMG, JLabel labelTenSp, JLabel labelGia,
+			JLabel labelLuotBan) {
+		if (idsp.contains("cpu")) {
+			cpu cpu = cpuDAO.getInstance().selectById(idsp);
+			Blob blob = cpu.getImg();
+			try {
+				byte[] by = blob.getBytes(1, (int) blob.length());
+				ImageIcon ii = new ImageIcon(by);
+				Image i = ii.getImage().getScaledInstance(labelIMG_1st.getWidth(), labelIMG_1st.getHeight(),
+						Image.SCALE_SMOOTH);
+				labelIMG.setIcon(ii = new ImageIcon(i));
+				labelTenSp.setText(cpu.getNameCpu());
+				labelGia.setText(FormatToVND.vnd(cpu.getDonGia()));
+				labelLuotBan.setText("Tổng lượt bán: " + luotban);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else if (idsp.contains("r")) {
+			ram ram = ramDAO.getInstance().selectById(idsp);
+			Blob blob = ram.getImg();
+			try {
+				byte[] by = blob.getBytes(1, (int) blob.length());
+				ImageIcon ii = new ImageIcon(by);
+				Image i = ii.getImage().getScaledInstance(labelIMG_1st.getWidth(), labelIMG_1st.getHeight(),
+						Image.SCALE_SMOOTH);
+				labelIMG.setIcon(ii = new ImageIcon(i));
+				labelTenSp.setText(ram.getTenRam());
+				labelGia.setText(FormatToVND.vnd(ram.getDonGia()));
+				labelLuotBan.setText("Tổng lượt bán: " + luotban);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
