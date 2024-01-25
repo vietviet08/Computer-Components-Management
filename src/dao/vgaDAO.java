@@ -362,5 +362,22 @@ public class vgaDAO implements DAOInterface<vga> {
 
 		return v;
 	}
+	
+	public static int tongTonKho() {
+		int tonkho = 0;
+		String sql = "SELECT SUM(vga.tonkho) AS total\r\n" + "FROM vga";
+		try {
+			Connection con = JDBCUntil.getConnection();
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				tonkho = rs.getInt("total");
+			}
+			JDBCUntil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tonkho;
+	}
 
 }

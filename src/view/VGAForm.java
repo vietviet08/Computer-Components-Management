@@ -54,6 +54,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import color.SetColor;
 import controller.FormatToVND;
 import controller.TimKiemVGA;
+import dao.ChiTietPhieuXuatDAO;
 import dao.SanPhamDAO;
 import dao.vgaDAO;
 import decor.SetTitleForJF;
@@ -80,6 +81,9 @@ public class VGAForm extends JInternalFrame {
 	private JLabel labelTien;
 	private JLabel lblTnVga;
 	private JLabel labelIMG;
+	private JLabel labelBoNho;
+	private JLabel labelHang;
+	private JLabel labelLuotBan;
 
 	/**
 	 * Launch the application.
@@ -192,6 +196,9 @@ public class VGAForm extends JInternalFrame {
 				lblTnVga.setText(v.getTenVGA());
 				labelTien.setText(FormatToVND.vnd(v.getDonGia()));
 				labelBaoHanh.setText("Bảo hành: " + v.getBaoHanh());
+				labelLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuatSPRieng(v.getIdVga()) + "");
+				labelHang.setText("Hãng: " + v.getHangVGA());
+				labelBoNho.setText("Bộ nhớ: " + v.getBoNho());
 				txtrAbc.setText(SanPhamDAO.getInstance().selectById(v.getIdSanPham()).getMoTa());
 
 				if (v.getImg() == null) {
@@ -503,7 +510,7 @@ public class VGAForm extends JInternalFrame {
 		labelTien = new JLabel("0 đ");
 		labelTien.setForeground(new Color(190, 14, 30));
 		labelTien.setFont(SetFont.font1());
-		labelTien.setBounds(41, 402, 187, 23);
+		labelTien.setBounds(41, 402, 174, 23);
 		panel_2.add(labelTien);
 
 		labelBaoHanh = new JLabel("Bảo hành");
@@ -525,6 +532,27 @@ public class VGAForm extends JInternalFrame {
 		txtrAbc.setLineWrap(true);
 		txtrAbc.setFont(SetFont.fontDetails_1());
 		txtrAbc.setEditable(false);
+
+		JLabel labelLuot = new JLabel("Lượt bán: ");
+		labelLuot.setFont(SetFont.fontDetails());
+		labelLuot.setBounds(30, 35, 53, 14);
+		panel_2.add(labelLuot);
+
+		labelLuotBan = new JLabel("0");
+		labelLuotBan.setForeground(new Color(64, 143, 221));
+		labelLuotBan.setFont(SetFont.fontDetails());
+		labelLuotBan.setBounds(85, 35, 51, 14);
+		panel_2.add(labelLuotBan);
+
+		labelHang = new JLabel("Hãng: ");
+		labelHang.setFont(SetFont.fontDetails());
+		labelHang.setBounds(225, 406, 148, 14);
+		panel_2.add(labelHang);
+
+		labelBoNho = new JLabel("Bộ nhớ: ");
+		labelBoNho.setFont(SetFont.fontDetails());
+		labelBoNho.setBounds(225, 431, 148, 14);
+		panel_2.add(labelBoNho);
 	}
 
 	public static vga getVGASelect() {
@@ -534,6 +562,7 @@ public class VGAForm extends JInternalFrame {
 
 	private ArrayList<vga> sxTangDan() {
 		ArrayList<vga> list = vgaDAO.getInstance().selectAll();
+
 		Collections.sort(list, new Comparator<vga>() {
 
 			@Override
@@ -562,6 +591,7 @@ public class VGAForm extends JInternalFrame {
 			}
 		});
 		return list;
+		
 	}
 
 	private ArrayList<vga> tonKhoTang() {

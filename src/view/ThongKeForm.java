@@ -13,8 +13,20 @@ import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DatasetGroup;
 
 import chart.ModelPieChart;
 import chart.PieChart;
@@ -36,12 +48,15 @@ import dao.ssdDAO;
 import dao.vgaDAO;
 import decor.PanelRoundThongKe;
 import font.SetFont;
+import model.Case;
 import model.ChiTietPhieu;
 import model.cpu;
+import model.hdd;
+import model.mainboard;
+import model.psu;
 import model.ram;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import model.ssd;
+import model.vga;
 
 public class ThongKeForm extends JInternalFrame {
 
@@ -348,9 +363,55 @@ public class ThongKeForm extends JInternalFrame {
 		String idsp_3rd = spBanChay.get(2).getIdRieng();
 		setDetalProduct(idsp_3rd, spBanChay.get(2).getSoLuong(), labelIMG_3rd, labelTenSP_3rd, labelGia_3rd,
 				labelLuotBan_3rd);
-
+		/*************************/
 		JPanel panel_4 = new JPanel();
 		tabbedPane.addTab("Thống kê nhập xuất", null, panel_4, null);
+		panel_4.setLayout(null);
+
+		JPanel panelLineChart = new JPanel();
+		panelLineChart.setBounds(10, 11, 976, 443);
+		panel_4.add(panelLineChart);
+		panelLineChart.setLayout(null);
+
+		
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		dataset.setValue(200, "Amount", "Tháng 1");
+		dataset.setValue(150, "Amount", "Tháng 2");
+		dataset.setValue(18, "Amount", "Tháng 3");
+		dataset.setValue(100, "Amount", "Tháng 4");
+		dataset.setValue(80, "Amount", "Tháng 5");
+		dataset.setValue(250, "Amount", "Tháng 6");
+		dataset.setValue(300, "Amount", "Tháng 7");
+		dataset.setValue(220, "Amount", "Tháng 8");
+		dataset.setValue(150, "Amount", "Tháng 9");
+		dataset.setValue(460, "Amount", "Tháng 10");
+		dataset.setValue(440, "Amount", "Tháng 11");
+		dataset.setValue(390, "Amount", "Tháng 12");
+
+		dataset.setGroup(new DatasetGroup("test"));
+
+		// create chart
+		JFreeChart linechart = ChartFactory.createLineChart("", "Tháng", "Tổng giá", dataset, PlotOrientation.VERTICAL,
+				false, true, false);
+
+		// create plot object
+		CategoryPlot lineCategoryPlot = linechart.getCategoryPlot();
+		
+		// lineCategoryPlot.setRangeGridlinePaint(Color.BLUE);
+		lineCategoryPlot.setBackgroundPaint(Color.white);
+
+		// create render object to change the moficy the line properties like color
+		LineAndShapeRenderer lineRenderer = (LineAndShapeRenderer) lineCategoryPlot.getRenderer();
+		Color lineChartColor = new Color(204, 0, 51);
+		lineRenderer.setSeriesPaint(0, lineChartColor);
+
+		// create chartPanel to display chart(graph)
+		ChartPanel lineChartPanel = new ChartPanel(linechart);
+		lineChartPanel.setBounds(0, 0, 976, 443);
+		panelLineChart.removeAll();
+		panelLineChart.add(lineChartPanel);
+		panelLineChart.validate();
+		/*************************/
 
 		JPanel panel_5 = new JPanel();
 		tabbedPane.addTab("Thống kê sản phẩm", null, panel_5, null);
@@ -406,6 +467,42 @@ public class ThongKeForm extends JInternalFrame {
 					labelTongSP.setText(ramDAO.getInstance().selectAll().size() + "");
 					labelTongTonKho.setText(ramDAO.tongTonKho() + "");
 					labelTongLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuat("ram") + "");
+				} else if (chart.getSelectedIndex() == 2) {
+					labelLoaiSP.setText("VGA");
+					labelTongDong.setText(SanPhamDAO.getIDSanPham("vga").size() + "");
+					labelTongSP.setText(vgaDAO.getInstance().selectAll().size() + "");
+					labelTongTonKho.setText(vgaDAO.tongTonKho() + "");
+					labelTongLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuat("vga") + "");
+				} else if (chart.getSelectedIndex() == 4) {
+					labelLoaiSP.setText("Mainboard");
+					labelTongDong.setText(SanPhamDAO.getIDSanPham("main").size() + "");
+					labelTongSP.setText(mainDAO.getInstance().selectAll().size() + "");
+					labelTongTonKho.setText(mainDAO.tongTonKho() + "");
+					labelTongLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuat("main") + "");
+				} else if (chart.getSelectedIndex() == 5) {
+					labelLoaiSP.setText("PSU");
+					labelTongDong.setText(SanPhamDAO.getIDSanPham("psu").size() + "");
+					labelTongSP.setText(psuDAO.getInstance().selectAll().size() + "");
+					labelTongTonKho.setText(psuDAO.tongTonKho() + "");
+					labelTongLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuat("psu") + "");
+				} else if (chart.getSelectedIndex() == 3) {
+					labelLoaiSP.setText("CASE");
+					labelTongDong.setText(SanPhamDAO.getIDSanPham("case").size() + "");
+					labelTongSP.setText(caseDAO.getInstance().selectAll().size() + "");
+					labelTongTonKho.setText(caseDAO.tongTonKho() + "");
+					labelTongLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuat("cases") + "");
+				} else if (chart.getSelectedIndex() == 6) {
+					labelLoaiSP.setText("SSD");
+					labelTongDong.setText(SanPhamDAO.getIDSanPham("ssd").size() + "");
+					labelTongSP.setText(ssdDAO.getInstance().selectAll().size() + "");
+					labelTongTonKho.setText(ssdDAO.tongTonKho() + "");
+					labelTongLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuat("ssd") + "");
+				} else if (chart.getSelectedIndex() == 7) {
+					labelLoaiSP.setText("HDD");
+					labelTongDong.setText(SanPhamDAO.getIDSanPham("hdd").size() + "");
+					labelTongSP.setText(hddDAO.getInstance().selectAll().size() + "");
+					labelTongTonKho.setText(hddDAO.tongTonKho() + "");
+					labelTongLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuat("hdd") + "");
 				}
 			}
 		});
@@ -511,6 +608,96 @@ public class ThongKeForm extends JInternalFrame {
 				labelIMG.setIcon(ii = new ImageIcon(i));
 				labelTenSp.setText(ram.getTenRam());
 				labelGia.setText(FormatToVND.vnd(ram.getDonGia()));
+				labelLuotBan.setText("Tổng lượt bán: " + luotban);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else if (idsp.contains("vga")) {
+			vga vga = vgaDAO.getInstance().selectById(idsp);
+			Blob blob = vga.getImg();
+			try {
+				byte[] by = blob.getBytes(1, (int) blob.length());
+				ImageIcon ii = new ImageIcon(by);
+				Image i = ii.getImage().getScaledInstance(labelIMG_1st.getWidth(), labelIMG_1st.getHeight(),
+						Image.SCALE_SMOOTH);
+				labelIMG.setIcon(ii = new ImageIcon(i));
+				labelTenSp.setText(vga.getTenVGA());
+				labelGia.setText(FormatToVND.vnd(vga.getDonGia()));
+				labelLuotBan.setText("Tổng lượt bán: " + luotban);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else if (idsp.contains("case")) {
+			Case c = caseDAO.getInstance().selectById(idsp);
+			Blob blob = c.getImg();
+			try {
+				byte[] by = blob.getBytes(1, (int) blob.length());
+				ImageIcon ii = new ImageIcon(by);
+				Image i = ii.getImage().getScaledInstance(labelIMG_1st.getWidth(), labelIMG_1st.getHeight(),
+						Image.SCALE_SMOOTH);
+				labelIMG.setIcon(ii = new ImageIcon(i));
+				labelTenSp.setText(c.getTenCase());
+				labelGia.setText(FormatToVND.vnd(c.getGia()));
+				labelLuotBan.setText("Tổng lượt bán: " + luotban);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else if (idsp.contains("mba")) {
+			mainboard mb = mainDAO.getInstance().selectById(idsp);
+			Blob blob = mb.getImg();
+			try {
+				byte[] by = blob.getBytes(1, (int) blob.length());
+				ImageIcon ii = new ImageIcon(by);
+				Image i = ii.getImage().getScaledInstance(labelIMG_1st.getWidth(), labelIMG_1st.getHeight(),
+						Image.SCALE_SMOOTH);
+				labelIMG.setIcon(ii = new ImageIcon(i));
+				labelTenSp.setText(mb.getTenMain());
+				labelGia.setText(FormatToVND.vnd(mb.getDonGia()));
+				labelLuotBan.setText("Tổng lượt bán: " + luotban);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else if (idsp.contains("psu")) {
+			psu psu = psuDAO.getInstance().selectById(idsp);
+			Blob blob = psu.getImg();
+			try {
+				byte[] by = blob.getBytes(1, (int) blob.length());
+				ImageIcon ii = new ImageIcon(by);
+				Image i = ii.getImage().getScaledInstance(labelIMG_1st.getWidth(), labelIMG_1st.getHeight(),
+						Image.SCALE_SMOOTH);
+				labelIMG.setIcon(ii = new ImageIcon(i));
+				labelTenSp.setText(psu.getTenNguon());
+				labelGia.setText(FormatToVND.vnd(psu.getDonGia()));
+				labelLuotBan.setText("Tổng lượt bán: " + luotban);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else if (idsp.contains("hdd")) {
+			hdd hdd = hddDAO.getInstance().selectById(idsp);
+			Blob blob = hdd.getImg();
+			try {
+				byte[] by = blob.getBytes(1, (int) blob.length());
+				ImageIcon ii = new ImageIcon(by);
+				Image i = ii.getImage().getScaledInstance(labelIMG_1st.getWidth(), labelIMG_1st.getHeight(),
+						Image.SCALE_SMOOTH);
+				labelIMG.setIcon(ii = new ImageIcon(i));
+				labelTenSp.setText(hdd.getTenHdd());
+				labelGia.setText(FormatToVND.vnd(hdd.getGia()));
+				labelLuotBan.setText("Tổng lượt bán: " + luotban);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else if (idsp.contains("ssd")) {
+			ssd ssd = ssdDAO.getInstance().selectById(idsp);
+			Blob blob = ssd.getImg();
+			try {
+				byte[] by = blob.getBytes(1, (int) blob.length());
+				ImageIcon ii = new ImageIcon(by);
+				Image i = ii.getImage().getScaledInstance(labelIMG_1st.getWidth(), labelIMG_1st.getHeight(),
+						Image.SCALE_SMOOTH);
+				labelIMG.setIcon(ii = new ImageIcon(i));
+				labelTenSp.setText(ssd.getTenSsd());
+				labelGia.setText(FormatToVND.vnd(ssd.getGia()));
 				labelLuotBan.setText("Tổng lượt bán: " + luotban);
 			} catch (SQLException e) {
 				e.printStackTrace();

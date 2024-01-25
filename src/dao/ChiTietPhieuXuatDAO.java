@@ -187,7 +187,6 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 			while (rs.next()) {
 				ttp = new ChiTietPhieu(rs.getString("iddonxuat"), rs.getString("idsanpham"), rs.getString("tensanpham"),
 						rs.getString("idrieng"), rs.getInt("soluong"), rs.getDouble("dongia"), rs.getString("baohanh"));
-
 			}
 			JDBCUntil.closeConnection(con);
 		} catch (SQLException e) {
@@ -239,6 +238,30 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 				sql = "SELECT SUM(tb.soluong) AS total " + "FROM ( " + "SELECT * " + "FROM chitietdonxuat AS dx "
 						+ "WHERE dx.idrieng LIKE 'r%' " + ") AS tb";
 				break;
+			case "vga":
+				sql = "SELECT SUM(tb.soluong) AS total " + "FROM ( " + "SELECT * " + "FROM chitietdonxuat AS dx "
+						+ "WHERE dx.idrieng LIKE 'vga%' " + ") AS tb";
+				break;
+			case "cases":
+				sql = "SELECT SUM(tb.soluong) AS total " + "FROM ( " + "SELECT * " + "FROM chitietdonxuat AS dx "
+						+ "WHERE dx.idrieng LIKE 'cs%' " + ") AS tb";
+				break;
+			case "main":
+				sql = "SELECT SUM(tb.soluong) AS total " + "FROM ( " + "SELECT * " + "FROM chitietdonxuat AS dx "
+						+ "WHERE dx.idrieng LIKE 'main%' " + ") AS tb";
+				break;
+			case "psu":
+				sql = "SELECT SUM(tb.soluong) AS total " + "FROM ( " + "SELECT * " + "FROM chitietdonxuat AS dx "
+						+ "WHERE dx.idrieng LIKE 'psu%' " + ") AS tb";
+				break;
+			case "ssd":
+				sql = "SELECT SUM(tb.soluong) AS total " + "FROM ( " + "SELECT * " + "FROM chitietdonxuat AS dx "
+						+ "WHERE dx.idrieng LIKE 'ssd%' " + ") AS tb";
+				break;
+			case "hdd":
+				sql = "SELECT SUM(tb.soluong) AS total " + "FROM ( " + "SELECT * " + "FROM chitietdonxuat AS dx "
+						+ "WHERE dx.idrieng LIKE 'hdd%' " + ") AS tb";
+				break;
 
 			default:
 				break;
@@ -248,6 +271,31 @@ public class ChiTietPhieuXuatDAO implements DAOInterface<ChiTietPhieu> {
 
 			PreparedStatement ps = con.prepareStatement(sql);
 
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				total = rs.getInt("total");
+			}
+			JDBCUntil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return total;
+	}
+	
+	public int tongDonXuatSPRieng(String t) {
+		int total = 0;
+		try {
+			String sql = "SELECT SUM(tb.soluong) AS total " + "FROM ( " + "SELECT * " + "FROM chitietdonxuat AS dx "
+					+ "WHERE dx.idrieng LIKE ? " + ") AS tb";
+			
+			
+			Connection con = JDBCUntil.getConnection();
+
+			PreparedStatement ps = con.prepareStatement(sql);
+			
+			ps.setString(1, t);
 
 			ResultSet rs = ps.executeQuery();
 

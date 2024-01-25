@@ -47,6 +47,7 @@ import color.SetColor;
 import controller.FormatToVND;
 import controller.IEExcel;
 import controller.TimKiemCase;
+import dao.ChiTietPhieuXuatDAO;
 import dao.SanPhamDAO;
 import dao.caseDAO;
 import decor.SetTitleForJF;
@@ -77,6 +78,8 @@ public class CaseForm extends JInternalFrame {
 	private JComboBox<String> comboBox;
 	private final String[] comboSort = { "Sắp xếp", "Tăng theo giá", "Giảm theo giá", "Tồn kho tăng", "Tồn kho giảm" };
 	private final String[] comboSearch = columnName;
+	private JLabel labelLuot;
+	private JLabel labelLuotBan;
 
 	/**
 	 * Launch the application.
@@ -335,6 +338,7 @@ public class CaseForm extends JInternalFrame {
 				labelChatLieu.setText(c.getChatLieu());
 				labelLoai.setText(c.getLoaiCase());
 				labelKichThuoc.setText(c.getKichThuocMainboard());
+				labelLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuatSPRieng(c.getIdCase()) + "");
 
 				txtrAbc.setText(SanPhamDAO.getInstance().selectById(c.getIdSanPham()).getMoTa());
 
@@ -485,6 +489,17 @@ public class CaseForm extends JInternalFrame {
 		labelKichThuoc.setFont(SetFont.fontDetails());
 		labelKichThuoc.setBounds(198, 447, 183, 14);
 		panel_2.add(labelKichThuoc);
+
+		labelLuot = new JLabel("Lượt bán: ");
+		labelLuot.setFont(SetFont.fontDetails());
+		labelLuot.setBounds(30, 37, 53, 14);
+		panel_2.add(labelLuot);
+
+		labelLuotBan = new JLabel("0");
+		labelLuotBan.setForeground(new Color(64, 143, 221));
+		labelLuotBan.setFont(SetFont.fontDetails());
+		labelLuotBan.setBounds(85, 37, 51, 14);
+		panel_2.add(labelLuotBan);
 
 	}
 

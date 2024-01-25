@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -32,24 +33,26 @@ import color.SetColor;
 import controller.BCrypt;
 import dao.AccountDAO;
 import decor.ButtonRound;
+import decor.ProgressBarCustom;
 import model.Account;
+import java.awt.CardLayout;
 
 public class LoginForm extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField jtfuser;
-	private JPasswordField jtfpassword;
 	public Font font;
 	public Font font1;
 	public Font font2;
 	public Font font_1;
 	public static String fullN;
+	private JTextField jtfuser;
+	private JPasswordField jtfpassword;
+	private JLabel labelLogoCompany;
+	private JLabel labelStatus;
 
-	/**
-	 * Launch the application.
-	 */
-//	static LoginForm frame = new LoginForm();
+	private ProgressBarCustom pbc;
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -97,7 +100,8 @@ public class LoginForm extends JFrame {
 				super.paintComponent(grphcs);
 				Graphics2D g2d = (Graphics2D) grphcs;
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				GradientPaint gp = new GradientPaint(0, 0,new Color(16,141,199), 240, getHeight(), new Color(239,142,56));
+				GradientPaint gp = new GradientPaint(0, 0, new Color(16, 141, 199), 240, getHeight(),
+						new Color(239, 142, 56));
 //				GradientPaint gp = new GradientPaint(0, 0, new Color(186,20,20), 300, getHeight(),
 //						new Color(51, 51, 51));
 				g2d.setPaint(gp);
@@ -109,7 +113,34 @@ public class LoginForm extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(new CardLayout(0, 0));
+		/*
+			  **
+			 ****
+			******
+				
+				*/
+		JPanel panelLogin = new JPanel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void paintComponent(Graphics grphcs) {
+				super.paintComponent(grphcs);
+				Graphics2D g2d = (Graphics2D) grphcs;
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				GradientPaint gp = new GradientPaint(0, 0, new Color(16, 141, 199), 240, getHeight(),
+						new Color(239, 142, 56));
+//				GradientPaint gp = new GradientPaint(0, 0, new Color(186,20,20), 300, getHeight(),
+//						new Color(51, 51, 51));
+				g2d.setPaint(gp);
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+
+			}
+		};
+		panelLogin.setBackground(Color.LIGHT_GRAY);
 
 		JCheckBox chckbxNewCheckBox = new JCheckBox("Show password");
 		chckbxNewCheckBox.setBorder(null);
@@ -126,28 +157,28 @@ public class LoginForm extends JFrame {
 		chckbxNewCheckBox.setFont(font);
 		chckbxNewCheckBox.setForeground(SetColor.whiteFont);
 		chckbxNewCheckBox.setBounds(86, 302, 147, 15);
-		contentPane.add(chckbxNewCheckBox);
+		panelLogin.add(chckbxNewCheckBox);
 
 		JLabel lblNewLabel = new JLabel("Login");
 		lblNewLabel.setForeground(Color.black);
 		lblNewLabel.setFont(new Font("Stencil", Font.BOLD, 65));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(86, 23, 199, 77);
-		contentPane.add(lblNewLabel);
+		panelLogin.add(lblNewLabel);
 
 		JLabel lblNewLabel_1 = new JLabel("Username");
 		lblNewLabel_1.setFont(font1);
 		lblNewLabel_1.setForeground(SetColor.whiteFont);
 //		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 19));
 		lblNewLabel_1.setBounds(86, 125, 260, 23);
-		contentPane.add(lblNewLabel_1);
+		panelLogin.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_1_2 = new JLabel("Password");
 		lblNewLabel_1_2.setFont(font1);
 		lblNewLabel_1_2.setForeground(SetColor.whiteFont);
 //		lblNewLabel_1_2.setFont(new Font("Tahoma", Font.PLAIN, 19));
 		lblNewLabel_1_2.setBounds(86, 226, 260, 23);
-		contentPane.add(lblNewLabel_1_2);
+		panelLogin.add(lblNewLabel_1_2);
 
 		ButtonRound btnNewButton = new ButtonRound();
 		btnNewButton.setBorder(null);
@@ -184,7 +215,7 @@ public class LoginForm extends JFrame {
 		btnNewButton.setFont(font2);
 //		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnNewButton.setBounds(86, 353, 262, 38);
-		contentPane.add(btnNewButton);
+		panelLogin.add(btnNewButton);
 
 		JLabel lblNewLabel_2 = new JLabel("Forgot password");
 		lblNewLabel_2.addMouseListener(new MouseAdapter() {
@@ -211,7 +242,7 @@ public class LoginForm extends JFrame {
 		lblNewLabel_2.setFont(font_1);
 //		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel_2.setBounds(219, 402, 127, 17);
-		contentPane.add(lblNewLabel_2);
+		panelLogin.add(lblNewLabel_2);
 
 		jtfuser = new JTextField();
 		jtfuser.setForeground(Color.BLACK);
@@ -228,7 +259,7 @@ public class LoginForm extends JFrame {
 		jtfuser.setBorder(null);
 		jtfuser.setFont(font1);
 		jtfuser.setBounds(86, 168, 260, 23);
-		contentPane.add(jtfuser);
+		panelLogin.add(jtfuser);
 		jtfuser.setColumns(10);
 
 		jtfpassword = new JPasswordField();
@@ -247,7 +278,7 @@ public class LoginForm extends JFrame {
 		jtfpassword.setBorder(null);
 		jtfpassword.setFont(font1);
 		jtfpassword.setBounds(86, 268, 260, 23);
-		contentPane.add(jtfpassword);
+		panelLogin.add(jtfpassword);
 
 		JLabel lblNewLabel_2_1 = new JLabel("Create account");
 		lblNewLabel_2_1.addMouseListener(new MouseAdapter() {
@@ -275,29 +306,80 @@ public class LoginForm extends JFrame {
 		lblNewLabel_2_1.setFont(font_1);
 //		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel_2_1.setBounds(86, 402, 114, 17);
-		contentPane.add(lblNewLabel_2_1);
+		panelLogin.add(lblNewLabel_2_1);
 
 		JLabel lblNewLabel_3 = new JLabel("© 2023 NGUYỄN QUỐC VIỆT - 23CE.B029");
 		lblNewLabel_3.setFont(font);
 		lblNewLabel_3.setForeground(Color.BLACK);
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3.setBounds(10, 508, 406, 31);
-		contentPane.add(lblNewLabel_3);
+		lblNewLabel_3.setBounds(10, 498, 406, 31);
+		panelLogin.add(lblNewLabel_3);
 
 		JLabel lblNewLabel_4 = new JLabel("");
 		lblNewLabel_4.setBorder(new LineBorder(SetColor.whiteFont));
 		lblNewLabel_4.setBounds(86, 190, 260, 2);
-		contentPane.add(lblNewLabel_4);
+		panelLogin.add(lblNewLabel_4);
 
 		JLabel lblNewLabel_4_1 = new JLabel("");
 		lblNewLabel_4_1.setBorder(new LineBorder(SetColor.whiteFont));
 		lblNewLabel_4_1.setBounds(86, 290, 260, 2);
-		contentPane.add(lblNewLabel_4_1);
+		panelLogin.add(lblNewLabel_4_1);
 
 		JLabel lblNewLabel_5 = new JLabel("");
 		lblNewLabel_5.setIcon(new ImageIcon(LoginForm.class.getResource("/icon/icons8-admin-64.png")));
 		lblNewLabel_5.setBounds(284, 24, 73, 59);
-		contentPane.add(lblNewLabel_5);
+		panelLogin.add(lblNewLabel_5);
+
+		contentPane.add(panelLogin, "name_22242719206100");
+		panelLogin.setLayout(null);
+		/*
+				  **
+				 ****
+				******
+					
+					*/
+		JPanel panelLoading = new JPanel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void paintComponent(Graphics grphcs) {
+				super.paintComponent(grphcs);
+				Graphics2D g2d = (Graphics2D) grphcs;
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				GradientPaint gp = new GradientPaint(0, 0,new Color(16,141,199), 240, getHeight(), new Color(239,142,56));
+				g2d.setPaint(gp);
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+
+			}
+		};
+
+		pbc = new ProgressBarCustom();
+		pbc.setStringPainted(true);
+		pbc.setIndeterminate(true);
+		pbc.setBounds(63, 257, 300, 10);
+		panelLoading.add(pbc);
+
+		
+
+		labelLogoCompany = new JLabel("");
+		labelLogoCompany.setBounds(115, 87, 202, 159);
+		ImageIcon ii = new ImageIcon(LoginForm.class.getResource("/icon/viequoc-computer-re.png"));
+		Image i = ii.getImage().getScaledInstance(labelLogoCompany.getWidth(), labelLogoCompany.getHeight(),
+				Image.SCALE_SMOOTH);
+		ii = new ImageIcon(i);
+		labelLogoCompany.setIcon(ii);
+		panelLoading.add(labelLogoCompany);
+
+		labelStatus = new JLabel("New label");
+		labelStatus.setHorizontalAlignment(SwingConstants.CENTER);
+		labelStatus.setBounds(115, 278, 202, 14);
+		panelLoading.add(labelStatus);
+		
+		contentPane.add(panelLoading, "name_22251746400000");
+		panelLoading.setLayout(null);
 	}
 
 	public void checkLogin() {
@@ -319,8 +401,11 @@ public class LoginForm extends JFrame {
 							try {
 								fullN = checkFullName(acc);
 								JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
-								this.dispose();
+								
+//								loadLoading();							
+								
 								MainForm.main(null);
+								this.dispose();
 							} catch (Exception e) {
 								System.out.println(e);
 							}
@@ -342,6 +427,27 @@ public class LoginForm extends JFrame {
 		String name = ac.getFullName();
 
 		return name;
+
+	}
+
+	private void doTask(String taskName, int progress) throws Exception {
+		labelStatus.setText(taskName);
+		Thread.sleep(1000); // For Test
+		pbc.setValue(progress);
+	}
+	
+	private void loadLoading() {
+		CardLayout check =  (CardLayout) contentPane.getLayout();
+		check.next(contentPane);
+		try {
+			doTask("Wating...", 20);
+			doTask("Connecting to database...", 35);
+			doTask("Connected successfully..", 25);
+			doTask("Ready!", 20);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 }

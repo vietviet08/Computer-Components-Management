@@ -54,6 +54,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import color.SetColor;
 import controller.FormatToVND;
 import controller.TimKiemRAM;
+import dao.ChiTietPhieuXuatDAO;
 import dao.SanPhamDAO;
 import dao.ramDAO;
 import decor.SetTitleForJF;
@@ -80,6 +81,11 @@ public class RAMForm extends JInternalFrame {
 	private JLabel labelTien;
 	private JLabel labelBaoHanh;
 	private JTextArea textArea;
+	private JLabel labelDungLuong;
+	private JLabel labelBus;
+	private JLabel labelLoaiRam;
+	private JLabel labelLuot;
+	private JLabel labelLuotBan;
 
 	/**
 	 * Launch the application.
@@ -142,7 +148,7 @@ public class RAMForm extends JInternalFrame {
 
 	public RAMForm() {
 		SetTitleForJF.setTitle(this, "/icon/icons8-memory-slot-20.png");
-		
+
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		try {
@@ -372,6 +378,10 @@ public class RAMForm extends JInternalFrame {
 				labelTen.setText(r.getTenRam());
 				labelTien.setText(FormatToVND.vnd(r.getDonGia()));
 				labelBaoHanh.setText("Bảo hành: " + r.getBaoHanh());
+				labelLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuatSPRieng(r.getIdRam()) + "");
+				labelLoaiRam.setText("Loại RAM: " + r.getLoai());
+				labelDungLuong.setText("Dung lượng: " + r.getDungLuong());
+				labelBus.setText("BUS: " + r.getBus());
 				textArea.setText(SanPhamDAO.getInstance().selectById(r.getIdSanPham()).getMoTa());
 
 				if (r.getImg() == null) {
@@ -512,12 +522,12 @@ public class RAMForm extends JInternalFrame {
 		labelTien = new JLabel("0 đ");
 		labelTien.setForeground(new Color(190, 14, 30));
 		labelTien.setFont(SetFont.font1());
-		labelTien.setBounds(43, 402, 187, 23);
+		labelTien.setBounds(43, 402, 178, 23);
 		panel_2.add(labelTien);
 
 		labelBaoHanh = new JLabel("Bảo hành");
 		labelBaoHanh.setFont(SetFont.font1());
-		labelBaoHanh.setBounds(43, 436, 143, 23);
+		labelBaoHanh.setBounds(43, 436, 178, 23);
 		panel_2.add(labelBaoHanh);
 
 		textArea = new JTextArea();
@@ -528,6 +538,32 @@ public class RAMForm extends JInternalFrame {
 		textArea.setLineWrap(true);
 		textArea.setBounds(35, 469, 312, 168);
 		panel_2.add(textArea);
+
+		labelLuotBan = new JLabel("0");
+		labelLuotBan.setForeground(new Color(64, 143, 221));
+		labelLuotBan.setFont(SetFont.fontDetails());
+		labelLuotBan.setBounds(85, 39, 51, 14);
+		panel_2.add(labelLuotBan);
+
+		labelLuot = new JLabel("Lượt bán: ");
+		labelLuot.setFont(SetFont.fontDetails());
+		labelLuot.setBounds(30, 39, 53, 14);
+		panel_2.add(labelLuot);
+
+		labelLoaiRam = new JLabel("Loại: ");
+		labelLoaiRam.setFont(SetFont.fontDetails());
+		labelLoaiRam.setBounds(231, 402, 131, 14);
+		panel_2.add(labelLoaiRam);
+
+		labelDungLuong = new JLabel("Dung lượng: ");
+		labelDungLuong.setFont(SetFont.fontDetails());
+		labelDungLuong.setBounds(231, 420, 131, 14);
+		panel_2.add(labelDungLuong);
+
+		labelBus = new JLabel("BUS: ");
+		labelBus.setFont(SetFont.fontDetails());
+		labelBus.setBounds(231, 440, 131, 14);
+		panel_2.add(labelBus);
 	}
 
 	private ArrayList<ram> giaTangDan() {

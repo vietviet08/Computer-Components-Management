@@ -47,6 +47,7 @@ import color.SetColor;
 import controller.FormatToVND;
 import controller.IEExcel;
 import controller.TimKiemPSU;
+import dao.ChiTietPhieuXuatDAO;
 import dao.SanPhamDAO;
 import dao.psuDAO;
 import decor.SetTitleForJF;
@@ -78,6 +79,8 @@ public class PSUForm extends JInternalFrame {
 	private final String[] comboSearch = columnName;
 	private JComboBox<String> comboBoxSort;
 	private JComboBox<String> comboBox;
+	private JLabel labelLuot;
+	private JLabel labelLuotBan;
 
 	/**
 	 * Launch the application.
@@ -331,6 +334,7 @@ public class PSUForm extends JInternalFrame {
 				labelChuanNguon.setText("Chuẩn nguồn: " + psu.getChuanNguon());
 				labelKieuDay.setText(psu.getKieuDay());
 				labelKichThuoc.setText("Kích thước: " + psu.getKichThuoc());
+				labelLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuatSPRieng(psu.getIdNguon()) + "");
 
 				if (psu.getImg() == null) {
 					labelIMG.setIcon(new ImageIcon(PSUForm.class.getResource("/icon/icons8-no-image-14.png")));
@@ -486,6 +490,17 @@ public class PSUForm extends JInternalFrame {
 		labelKieuDay.setFont(SetFont.fontDetails());
 		labelKieuDay.setBounds(206, 436, 156, 14);
 		panel_2.add(labelKieuDay);
+
+		labelLuot = new JLabel("Lượt bán: ");
+		labelLuot.setFont(SetFont.fontDetails());
+		labelLuot.setBounds(30, 35, 53, 14);
+		panel_2.add(labelLuot);
+
+		labelLuotBan = new JLabel("0");
+		labelLuotBan.setForeground(new Color(64, 143, 221));
+		labelLuotBan.setFont(SetFont.fontDetails());
+		labelLuotBan.setBounds(85, 35, 51, 14);
+		panel_2.add(labelLuotBan);
 	}
 
 	public static psu getPSUSelect() {

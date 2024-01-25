@@ -49,5 +49,7 @@
 	<classpathentry kind="lib" path="src/lib/itextpdf-5.5.9.jar"/>
 	<classpathentry kind="lib" path="src/lib/kernel-7.1.19.jar"/>
 	<classpathentry kind="lib" path="src/lib/layout-7.1.19.jar"/>
+	<classpathentry kind="lib" path="src/lib/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="src/lib/jfreechart-1.0.19.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

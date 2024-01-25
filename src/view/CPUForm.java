@@ -50,6 +50,7 @@ import color.SetColor;
 import controller.FormatToVND;
 import controller.IEExcel;
 import controller.TimKiemCPU;
+import dao.ChiTietPhieuXuatDAO;
 import dao.SanPhamDAO;
 import dao.cpuDAO;
 import decor.SetTitleForJF;
@@ -82,6 +83,8 @@ public class CPUForm extends JInternalFrame {
 	private JLabel labelDienNang;
 	private JLabel labelSoNhan;
 	private JLabel labelBoNhoDem;
+	private JLabel labelLuot;
+	private JLabel labelLuotBan;
 
 	/**
 	 * Launch the application.
@@ -369,6 +372,7 @@ public class CPUForm extends JInternalFrame {
 				labelSoLuong.setText("Số luồng: " + c.getSoLuong());
 				labelDienNang.setText("Điện năng tiêu thụ: " + c.getDienNangTieuThu());
 				labelBoNhoDem.setText("Bộ nhớ đệm: " + c.getBoNhoDem());
+				labelLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuatSPRieng(c.getIdCpu()) + "");
 
 				txtrAbc.setText(SanPhamDAO.getInstance().selectById(c.getIdSanPham()).getMoTa());
 
@@ -533,7 +537,7 @@ public class CPUForm extends JInternalFrame {
 
 		labelTen = new JLabel("Tên CPU");
 		labelTen.setFont(SetFont.fontCategory());
-		labelTen.setBounds(30, 11, 341, 31);
+		labelTen.setBounds(30, 8, 341, 31);
 		panel_2.add(labelTen);
 
 		txtrAbc = new JTextArea();
@@ -570,13 +574,23 @@ public class CPUForm extends JInternalFrame {
 		labelSoLuong.setBounds(280, 417, 85, 14);
 		panel_2.add(labelSoLuong);
 
+		labelLuot = new JLabel("Lượt bán: ");
+		labelLuot.setFont(SetFont.fontDetails());
+		labelLuot.setBounds(30, 35, 53, 14);
+		panel_2.add(labelLuot);
+
+		labelLuotBan = new JLabel("0");
+		labelLuotBan.setFont(SetFont.fontDetails());
+		labelLuotBan.setForeground(SetColor.blue);
+		labelLuotBan.setBounds(85, 35, 51, 14);
+		panel_2.add(labelLuotBan);
+
 	}
 
 	public static cpu getSelectCPU() {
 //		cpu c = cpuDAO.getInstance().selectAll().get(table.getSelectedRow());
 		return cpuDAO.getInstance().selectById(String.valueOf(table.getValueAt(table.getSelectedRow(), 1)));
 	}
-
 
 	private ArrayList<cpu> giaTangDan() {
 		ArrayList<cpu> list = cpuDAO.getInstance().selectAll();

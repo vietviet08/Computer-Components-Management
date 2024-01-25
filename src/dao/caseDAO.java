@@ -215,11 +215,11 @@ public class caseDAO implements DAOInterface<Case> {
 			Connection con = JDBCUntil.getConnection();
 
 			String sql = "UPDATE cases SET tonkho = tonkho + ? WHERE idcase = ? ;";
-			if(nhapHang == false)
+			if (nhapHang == false)
 				sql = "UPDATE cases SET tonkho = tonkho - ? WHERE idcase = ? ;";
 			for (ChiTietPhieu productNhap : pn) {
 				if (productNhap.getIdRieng().contains("case")) {
-					
+
 					PreparedStatement ps = con.prepareStatement(sql);
 					ps.setInt(1, productNhap.getSoLuong());
 					ps.setString(2, productNhap.getIdRieng());
@@ -300,6 +300,23 @@ public class caseDAO implements DAOInterface<Case> {
 		}
 
 		return c;
+	}
+
+	public static int tongTonKho() {
+		int tonkho = 0;
+		String sql = "SELECT SUM(cases.tonkho) AS total\r\n" + "FROM cases";
+		try {
+			Connection con = JDBCUntil.getConnection();
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				tonkho = rs.getInt("total");
+			}
+			JDBCUntil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tonkho;
 	}
 
 }

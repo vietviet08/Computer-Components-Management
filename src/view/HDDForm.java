@@ -33,6 +33,7 @@ import javax.swing.table.TableCellRenderer;
 import color.SetColor;
 import controller.FormatToVND;
 import controller.TimKiemHDD;
+import dao.ChiTietPhieuXuatDAO;
 import dao.SanPhamDAO;
 import dao.hddDAO;
 import decor.SetTitleForJF;
@@ -64,6 +65,8 @@ public class HDDForm extends JInternalFrame {
 
 	private final String[] comboSearch = columnName;
 	private final String[] comboSort = { "Sắp xếp", "Tăng theo giá", "Giảm theo giá", "Tồn kho tăng", "Tồn kho giảm" };
+	private JLabel labelLuot;
+	private JLabel labelLuotBan;
 
 	/**
 	 * Launch the application.
@@ -234,6 +237,7 @@ public class HDDForm extends JInternalFrame {
 				labelBoNhoDem.setText(hdd.getBoNhoDem());
 				labelDungLuong.setText(hdd.getDungLuong());
 				labelTocDoVongQuay.setText(hdd.getTocDoVongQuay());
+				labelLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuatSPRieng(hdd.getIdhHdd()) + "");
 				txtrAbc.setText(SanPhamDAO.getInstance().selectById(hdd.getIdSanPham()).getMoTa());
 
 				if (hdd.getImg() == null) {
@@ -399,6 +403,17 @@ public class HDDForm extends JInternalFrame {
 		labelTocDoVongQuay.setFont(SetFont.fontDetails());
 		labelTocDoVongQuay.setBounds(218, 440, 144, 14);
 		panel_2.add(labelTocDoVongQuay);
+
+		labelLuot = new JLabel("Lượt bán: ");
+		labelLuot.setFont(SetFont.fontDetails());
+		labelLuot.setBounds(30, 38, 53, 14);
+		panel_2.add(labelLuot);
+
+		labelLuotBan = new JLabel("0");
+		labelLuotBan.setForeground(new Color(64, 143, 221));
+		labelLuotBan.setFont(SetFont.fontDetails());
+		labelLuotBan.setBounds(85, 38, 51, 14);
+		panel_2.add(labelLuotBan);
 
 	}
 

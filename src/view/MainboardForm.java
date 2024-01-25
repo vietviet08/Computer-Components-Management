@@ -47,6 +47,7 @@ import color.SetColor;
 import controller.FormatToVND;
 import controller.IEExcel;
 import controller.TimKiemMainboard;
+import dao.ChiTietPhieuXuatDAO;
 import dao.SanPhamDAO;
 import dao.mainDAO;
 import decor.SetTitleForJF;
@@ -62,7 +63,7 @@ public class MainboardForm extends JInternalFrame {
 	private JTextField tfSearch;
 	private static JTable table;
 	private static DefaultTableModel tableModel;
-	private final String columName[] =  { "ID sản phẩm", "ID mainboard", "Tên mainboard", "Hãng", "Hỗ trợ CPU",
+	private final String columName[] = { "ID sản phẩm", "ID mainboard", "Tên mainboard", "Hãng", "Hỗ trợ CPU",
 			"Hỗ trợ RAM", "Kích thước", "Tồn kho", "Đơn giá" };
 	private JLabel labelIMG;
 	private JLabel labelTen;
@@ -77,6 +78,9 @@ public class MainboardForm extends JInternalFrame {
 
 	private final String[] comboSort = { "Sắp xếp", "Giá tăng dần", "Giá giảm dần", "Tồn kho tăng", "Tồn kho giảm" };
 	private final String[] comboSearch = columName;
+	private JLabel labelLuotBan;
+	private JLabel labelLuot;
+
 	/**
 	 * Launch the application.
 	 */
@@ -342,6 +346,7 @@ public class MainboardForm extends JInternalFrame {
 				labelHoTroCPU.setText(mb.getHoTroCPU());
 				labelHoTroRAM.setText(mb.getHoTroRAM());
 				labelKichThuoc.setText(mb.getKichThuoc());
+				labelLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuatSPRieng(mb.getIdMainboard()) + "");
 				if (mb.getImg() == null) {
 					labelIMG.setIcon(null);
 					labelIMG.setIcon(new ImageIcon(MainboardForm.class.getResource("/icon/icons8-no-image-14.png")));
@@ -494,9 +499,18 @@ public class MainboardForm extends JInternalFrame {
 		labelKichThuoc.setFont(SetFont.fontDetails());
 		labelKichThuoc.setBounds(202, 440, 160, 14);
 		panel_2.add(labelKichThuoc);
-	}
 
-	
+		labelLuotBan = new JLabel("0");
+		labelLuotBan.setForeground(new Color(64, 143, 221));
+		labelLuotBan.setFont(SetFont.fontDetails());
+		labelLuotBan.setBounds(85, 33, 51, 14);
+		panel_2.add(labelLuotBan);
+
+		labelLuot = new JLabel("Lượt bán: ");
+		labelLuot.setFont(SetFont.fontDetails());
+		labelLuot.setBounds(30, 33, 53, 14);
+		panel_2.add(labelLuot);
+	}
 
 	public static mainboard getMainboardSellect() {
 		return mainDAO.getInstance().selectAll().get(table.getSelectedRow());

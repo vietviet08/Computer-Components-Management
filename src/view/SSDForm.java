@@ -47,6 +47,7 @@ import color.SetColor;
 import controller.FormatToVND;
 import controller.IEExcel;
 import controller.TimKiemSSD;
+import dao.ChiTietPhieuXuatDAO;
 import dao.SanPhamDAO;
 import dao.ssdDAO;
 import decor.SetTitleForJF;
@@ -78,6 +79,8 @@ public class SSDForm extends JInternalFrame {
 	private final String[] comboSearch = columnName;
 	private JComboBox<String> comboBoxSort;
 	private JComboBox<String> comboBox;
+	private JLabel labelLuot;
+	private JLabel labelLuotBan;
 
 	/**
 	 * Launch the application.
@@ -332,6 +335,7 @@ public class SSDForm extends JInternalFrame {
 				labelLoaiAndDungLuong.setText(ssd.getLoai() + " - " + ssd.getDungLuong());
 				labelTocDoDoc.setText("Tốc độ đọc: " + ssd.getTocDoDoc());
 				labelTocDoGhi.setText("Tốc độ ghi: " + ssd.getTocDoGhi());
+				labelLuotBan.setText(ChiTietPhieuXuatDAO.getInstance().tongDonXuatSPRieng(ssd.getIdSdd())+"");
 				txtrAbc.setText(SanPhamDAO.getInstance().selectById(ssd.getIdSanPham()).getMoTa());
 				if (ssd.getImg() == null) {
 					labelIMG.setIcon(null);
@@ -486,6 +490,17 @@ public class SSDForm extends JInternalFrame {
 		labelTocDoGhi.setFont(SetFont.fontDetails_1());
 		labelTocDoGhi.setBounds(218, 440, 144, 14);
 		panel_2.add(labelTocDoGhi);
+		
+		labelLuot = new JLabel("Lượt bán: ");
+		labelLuot.setFont(SetFont.fontDetails());
+		labelLuot.setBounds(30, 38, 53, 14);
+		panel_2.add(labelLuot);
+		
+		labelLuotBan = new JLabel("0");
+		labelLuotBan.setForeground(new Color(64, 143, 221));
+		labelLuotBan.setFont(SetFont.fontDetails());
+		labelLuotBan.setBounds(85, 38, 51, 14);
+		panel_2.add(labelLuotBan);
 
 	}
 

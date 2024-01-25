@@ -276,7 +276,7 @@ public class psuDAO implements DAOInterface<psu> {
 						rs.getString("baohanh"), rs.getBlob("img"));
 				list.add(psu);
 			}
-
+			JDBCUntil.closeConnection(con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -300,9 +300,27 @@ public class psuDAO implements DAOInterface<psu> {
 						rs.getString("kieuday"), rs.getString("kichthuoc"), rs.getInt("tonkho"), rs.getDouble("gia"),
 						rs.getString("baohanh"), rs.getBlob("img"));
 			}
+			JDBCUntil.closeConnection(con);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return psu;
+	}
+
+	public static int tongTonKho() {
+		int tonkho = 0;
+		String sql = "SELECT SUM(psu.tonkho) AS total\r\n" + "FROM psu";
+		try {
+			Connection con = JDBCUntil.getConnection();
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				tonkho = rs.getInt("total");
+			}
+			JDBCUntil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tonkho;
 	}
 }
