@@ -7,4 +7,3 @@ public class maintest {
 		LoginForm.main(null);
 	}
 }
-	
