@@ -50,7 +50,7 @@ public class KhachHangDAO implements DAOInterface<KhachHang> {
 
 		return check;
 	}
-	
+
 	public int insertNotIMG(KhachHang t) {
 		int check = 0;
 
@@ -134,7 +134,7 @@ public class KhachHangDAO implements DAOInterface<KhachHang> {
 
 		try {
 			Connection con = JDBCUntil.getConnection();
-			String sql = "delete from khachhang where idkhachhang = ?;";
+			String sql = "update khachhang set status = 0 where idkhachhang = ?;";
 			PreparedStatement ps = con.prepareStatement(sql);
 
 			ps.setString(1, t.getIdKhachHang());
@@ -146,6 +146,28 @@ public class KhachHangDAO implements DAOInterface<KhachHang> {
 			e.printStackTrace();
 		}
 		return check;
+	}
+
+	public int allowUser(KhachHang t) {
+		int check = 0;
+
+		try {
+
+			Connection con = JDBCUntil.getConnection();
+			String sql = "update khachhang set status = 1 where idkhachhang = ?;";
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			ps.setString(1, t.getIdKhachHang());
+
+			check = ps.executeUpdate();
+			JDBCUntil.closeConnection(con);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return check;
+
 	}
 
 	@Override
@@ -163,7 +185,7 @@ public class KhachHangDAO implements DAOInterface<KhachHang> {
 
 				KhachHang kh = new KhachHang(rs.getString("idkhachhang"), rs.getString("tenkhachhang"),
 						rs.getString("diachi"), rs.getString("email"), rs.getString("sdt"),
-						rs.getTimestamp("ngaythamgia"), rs.getBlob("img"));
+						rs.getTimestamp("ngaythamgia"), rs.getBlob("img"), rs.getInt("status"));
 				list.add(kh);
 			}
 
@@ -180,14 +202,15 @@ public class KhachHangDAO implements DAOInterface<KhachHang> {
 
 		try {
 			Connection con = JDBCUntil.getConnection();
-			String sql = "select * from khachhang where idkhachhang = ?;";
+			String sql = "select * from khachhang where idkhachhang = ? and status = 1 ;";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, t);
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
 				kh = new KhachHang(rs.getString("idkhachhang"), rs.getString("tenkhachhang"), rs.getString("diachi"),
-						rs.getString("email"), rs.getString("sdt"), rs.getTimestamp("ngaythamgia"), rs.getBlob("img"));
+						rs.getString("email"), rs.getString("sdt"), rs.getTimestamp("ngaythamgia"), rs.getBlob("img"),
+						rs.getInt("status"));
 			}
 
 			JDBCUntil.closeConnection(con);
@@ -196,20 +219,21 @@ public class KhachHangDAO implements DAOInterface<KhachHang> {
 		}
 		return kh;
 	}
-	
+
 	public KhachHang selectBySDT(String t) {
 		KhachHang kh = null;
 
 		try {
 			Connection con = JDBCUntil.getConnection();
-			String sql = "select * from khachhang where sdt = ?;";
+			String sql = "select * from khachhang where sdt = ? and status = 1;";
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, t);
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
 				kh = new KhachHang(rs.getString("idkhachhang"), rs.getString("tenkhachhang"), rs.getString("diachi"),
-						rs.getString("email"), rs.getString("sdt"), rs.getTimestamp("ngaythamgia"), rs.getBlob("img"));
+						rs.getString("email"), rs.getString("sdt"), rs.getTimestamp("ngaythamgia"), rs.getBlob("img"),
+						rs.getInt("status"));
 			}
 
 			JDBCUntil.closeConnection(con);

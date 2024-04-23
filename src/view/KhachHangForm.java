@@ -73,6 +73,7 @@ public class KhachHangForm extends JInternalFrame {
 	private JTextField tfNgayThamGia;
 	private JLabel labelIMG;
 	private static String insert = "";
+	private JLabel labelStatus;
 
 	/**
 	 * Launch the application.
@@ -195,6 +196,8 @@ public class KhachHangForm extends JInternalFrame {
 					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 					tfNgayThamGia.setText(sdf.format(kh.getNgayThamGia()));
 
+					labelStatus.setText("Status: " + kh.getStatus());
+					
 					if (kh.getImg() == null) {
 						labelIMG.setIcon(null);
 						labelIMG.setText("Khách hàng chưa có ảnh!");
@@ -209,6 +212,8 @@ public class KhachHangForm extends JInternalFrame {
 
 						labelIMG.setText("");
 						labelIMG.setIcon(ii);
+
+						
 					}
 
 				} catch (Exception e2) {
@@ -389,7 +394,7 @@ public class KhachHangForm extends JInternalFrame {
 								insert = "";
 							}
 						} else {
-							KhachHang kh = new KhachHang(id, ten, diaChi, email, sdt, ngayThamGia, null);
+							KhachHang kh = new KhachHang(id, ten, diaChi, email, sdt, ngayThamGia, null, 1);
 
 							int check = KhachHangDAO.getInstance().insert(kh);
 							if (check > 0) {
@@ -450,7 +455,7 @@ public class KhachHangForm extends JInternalFrame {
 		});
 		btnNewButton_2.setFont(SetFont.font());
 		btnNewButton_2.setIcon(new ImageIcon(KhachHangForm.class.getResource("/icon/icons8-delete-24.png")));
-		btnNewButton_2.setBounds(10, 11, 95, 30);
+		btnNewButton_2.setBounds(10, 11, 79, 30);
 		panel.add(btnNewButton_2);
 
 		JButton btnNewButton_2_1_1 = new JButton("Nhập excel");
@@ -530,10 +535,14 @@ public class KhachHangForm extends JInternalFrame {
 		});
 		btnNewButton_2_1_1.setFont(SetFont.font());
 		btnNewButton_2_1_1.setIcon(new ImageIcon(KhachHangForm.class.getResource("/icon/icons8-import-csv-24.png")));
-		btnNewButton_2_1_1.setBounds(240, 11, 123, 30);
+		btnNewButton_2_1_1.setBounds(296, 11, 115, 30);
 		panel.add(btnNewButton_2_1_1);
 
 		JButton btnNewButton_2_2 = new JButton("Xuất excel");
+		btnNewButton_2_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnNewButton_2_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -575,7 +584,7 @@ public class KhachHangForm extends JInternalFrame {
 		});
 		btnNewButton_2_2.setFont(SetFont.font());
 		btnNewButton_2_2.setIcon(new ImageIcon(KhachHangForm.class.getResource("/icon/icons8-export-excel-24.png")));
-		btnNewButton_2_2.setBounds(110, 11, 123, 30);
+		btnNewButton_2_2.setBounds(180, 11, 115, 30);
 		panel.add(btnNewButton_2_2);
 
 		tfSearch = new JTextField();
@@ -587,7 +596,7 @@ public class KhachHangForm extends JInternalFrame {
 		});
 		tfSearch.setFont(SetFont.fontDetails());
 		tfSearch.setColumns(10);
-		tfSearch.setBounds(605, 11, 154, 30);
+		tfSearch.setBounds(644, 11, 115, 30);
 		panel.add(tfSearch);
 
 		tfNgayThamGia = new JTextField();
@@ -633,7 +642,7 @@ public class KhachHangForm extends JInternalFrame {
 
 					} else {
 						Blob blob = null;
-						KhachHang kh = new KhachHang(id, ten, diaChi, email, sdt, blob);
+						KhachHang kh = new KhachHang(id, ten, diaChi, email, sdt, blob, 1);
 
 						int check = KhachHangDAO.getInstance().update(kh);
 						if (check > 0) {
@@ -669,13 +678,29 @@ public class KhachHangForm extends JInternalFrame {
 
 		JDateChooser chooseFrom = new JDateChooser();
 		chooseFrom.setDateFormatString("dd/MM/yyyy");
-		chooseFrom.setBounds(373, 11, 105, 30);
+		chooseFrom.setBounds(414, 11, 105, 30);
 		panel.add(chooseFrom);
 
 		JDateChooser chooseTo = new JDateChooser();
 		chooseTo.setDateFormatString("dd/MM/yyyy");
-		chooseTo.setBounds(488, 11, 105, 30);
+		chooseTo.setBounds(529, 11, 105, 30);
 		panel.add(chooseTo);
+
+		JButton btnNewButton_2_1 = new JButton("Allow");
+		btnNewButton_2_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				KhachHangDAO.getInstance().allowUser(getKhachHangSelect());
+			}
+		});
+		btnNewButton_2_1.setIcon(new ImageIcon(KhachHangForm.class.getResource("/icon/icons8-done-24.png")));
+		btnNewButton_2_1.setFont(null);
+		btnNewButton_2_1.setBounds(90, 11, 90, 30);
+		panel.add(btnNewButton_2_1);
+
+		labelStatus = new JLabel("Status: ");
+		labelStatus.setBounds(896, 120, 54, 14);
+		panel.add(labelStatus);
 	}
 
 	private String setIDKhachHang() {
