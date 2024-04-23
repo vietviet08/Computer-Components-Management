@@ -449,6 +449,10 @@ public class XuatHangForm extends JInternalFrame {
 		getContentPane().add(btnNewButton_1_1);
 
 		JButton btnNewButton_1_2 = new JButton("Xuất hàng");
+		btnNewButton_1_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnNewButton_1_2.setIcon(new ImageIcon(NhapHangForm.class.getResource("/icon/icons8-done-24.png")));
 		btnNewButton_1_2.addMouseListener(new MouseAdapter() {
 			@Override
@@ -458,7 +462,10 @@ public class XuatHangForm extends JInternalFrame {
 					JOptionPane.showMessageDialog(null, "Không có sản phẩm nào để xuất hàng!");
 				} else {
 
-					if (KhachHangDAO.getInstance().selectBySDT(tfSDT.getText()) == null) {
+					if (tfSDT.getText().equals("") || tfSDT.getText() == null)
+						JOptionPane.showMessageDialog(null, "Vui lòng nhập SDT khách hàng!");
+
+					else if (KhachHangDAO.getInstance().selectBySDT(tfSDT.getText()) == null) {
 
 						int themkhachhang = JOptionPane.showConfirmDialog(null,
 								"Khách hàng hiện chưa tồn tại trên hệ thống, thêm khách hàng này", "Thông báo",
