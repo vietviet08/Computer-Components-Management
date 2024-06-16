@@ -123,7 +123,7 @@ public class ThemNhaPhanPhoi extends JFrame {
 		panel.add(lblNewLabel_2);
 
 		JButton btnHuy = new JButton("Hủy");
-		btnHuy.setBounds(583, 188, 105, 45);
+		btnHuy.setBounds(583, 200, 115, 30);
 		panel.add(btnHuy);
 		btnHuy.setBorder(null);
 		btnHuy.addMouseListener(new MouseAdapter() {
@@ -151,7 +151,7 @@ public class ThemNhaPhanPhoi extends JFrame {
 		btnHuy.setFont(font1);
 
 		JButton btnThem = new JButton("Thêm");
-		btnThem.setBounds(412, 188, 105, 45);
+		btnThem.setBounds(412, 200, 115, 30);
 		panel.add(btnThem);
 		btnThem.setBorder(null);
 		btnThem.addMouseListener(new MouseAdapter() {
@@ -176,7 +176,7 @@ public class ThemNhaPhanPhoi extends JFrame {
 						NhaPhanPhoiDAO.getInstance().insert(npp);
 						JOptionPane.showMessageDialog(null, "Thêm thành công!");
 						NhaPhanPhoiForm.loadDataToTable(NhaPhanPhoiDAO.getInstance().selectAll());
-//						nppf.loadDataToTable(NhaPhanPhoiDAO.getInstance().selectAll());	
+						// nppf.loadDataToTable(NhaPhanPhoiDAO.getInstance().selectAll());
 						thoatCuaSo();
 					} else
 						JOptionPane.showMessageDialog(null, "ID nhà phân phối đã tồn tại!");

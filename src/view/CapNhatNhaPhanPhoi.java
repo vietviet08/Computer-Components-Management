@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 
 import color.SetColor;
 import dao.NhaPhanPhoiDAO;
+import decor.HoverButton;
 import font.SetFont;
 import model.NhaPhanPhoi;
 import java.awt.event.ActionListener;
@@ -96,7 +97,8 @@ public class CapNhatNhaPhanPhoi extends JFrame {
 				super.paintComponent(grphcs);
 				Graphics2D g2d = (Graphics2D) grphcs;
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				 GradientPaint gp = new GradientPaint(0, 0,new Color(102,125,182), 0, getHeight(), new Color(0,130,200));
+				GradientPaint gp = new GradientPaint(0, 0, new Color(102, 125, 182), 0, getHeight(),
+						new Color(0, 130, 200));
 				g2d.setPaint(gp);
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 
@@ -146,6 +148,16 @@ public class CapNhatNhaPhanPhoi extends JFrame {
 		btnNewButton.setBorder(null);
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
+			public void mouseEntered(MouseEvent e) {
+				HoverButton.hoverCancel(btnNewButton, true);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				HoverButton.hoverCancel(btnNewButton, false);
+			}
+
+			@Override
 			public void mouseClicked(MouseEvent e) {
 				NhaPhanPhoi n = NhaPhanPhoiForm.getNppSelect();
 				String id = n.getIdNPP();
@@ -169,6 +181,15 @@ public class CapNhatNhaPhanPhoi extends JFrame {
 		JButton btnHy = new JButton("Hủy");
 		btnHy.setBorder(null);
 		btnHy.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				HoverButton.hoverOK(btnHy, true);
+			}
+
+			public void mouseExited(MouseEvent e) {
+				HoverButton.hoverOK(btnHy, false);
+			}
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				closeFrame();
